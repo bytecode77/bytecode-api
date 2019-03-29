@@ -1,0 +1,21 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="Microsoft.CSharp" #>
+<#@ assembly name="$(TargetPath)" #>
+<#@ import namespace="BytecodeApi.FileIcons" #>
+<#@ output extension=".cs" #>
+namespace BytecodeApi.FileIcons
+{
+	/// <summary>
+	/// Represents a <see langword="static" /> set of <see cref="FileIcon" /> objects for all file extensions.
+	/// </summary>
+	public static class KnownFileIcons
+	{
+<# foreach (FileIcon icon in FileIcon.AllIcons) { #>
+		/// <summary>
+		/// Gets the <see cref="FileIcon" /> object for the ".<#= icon.Extension #>" file extension.
+		/// </summary>
+		public static FileIcon <#= char.ToUpper(icon.Extension[0]) + icon.Extension.Substring(1) #> => FileIcon.FromExtension("<#= icon.Extension #>");
+<# } #>
+	}
+}
