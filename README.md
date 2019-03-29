@@ -21,7 +21,7 @@ online documentation to get a complete overview.
 ```
 // Additional conversion methods:
 
-byte[] structBytes = ConvertEx.ArrayToStructure(myStruct);
+byte[] structBytes = ConvertEx.StructureToArray(myStruct);
 MyStruct myStruct = ConvertEx.ArrayToStructure<MyStruct>(structBytes);
 			
 string excelColumn = ConvertEx.ToExcelColumnString(1); // <-- "A"
