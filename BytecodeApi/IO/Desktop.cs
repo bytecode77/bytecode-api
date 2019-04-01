@@ -28,28 +28,6 @@ namespace BytecodeApi.IO
 			(success ? SystemSounds.Beep : SystemSounds.Hand).Play();
 		}
 		/// <summary>
-		/// Turns on the Windows screensaver using a HWND broadcast message, if a screensaver is configured.
-		/// </summary>
-		public static void TurnOnScreenSaver()
-		{
-			Native.SendMessage((IntPtr)0xffff, 0x112, 0xf140, 0);
-		}
-		/// <summary>
-		/// Changes the Windows wallpaper to an image from the specified file.
-		/// </summary>
-		/// <param name="path">A <see cref="string" /> specifying the path to an image file.</param>
-		/// <returns>
-		/// <see langword="true" /> on success;
-		/// otherwise, <see langword="false" />
-		/// </returns>
-		public static bool ChangeWallpaper(string path)
-		{
-			Check.ArgumentNull(path, nameof(path));
-			Check.FileNotFound(path);
-
-			return Native.SystemParametersInfo(20, 0, path, 1) == 1;
-		}
-		/// <summary>
 		/// Captures the entire virutal screen and returns a <see cref="Bitmap" /> with the image.
 		/// </summary>
 		/// <param name="allScreens"><see langword="true" /> to capture all screens, <see langword="false" /> to only capture the primary screen.</param>
@@ -70,6 +48,28 @@ namespace BytecodeApi.IO
 				graphics.CopyFromScreen(left, top, 0, 0, bitmap.Size);
 			}
 			return bitmap;
+		}
+		/// <summary>
+		/// Turns on the Windows screensaver using a HWND broadcast message, if a screensaver is configured.
+		/// </summary>
+		public static void TurnOnScreenSaver()
+		{
+			Native.SendMessage((IntPtr)0xffff, 0x112, 0xf140, 0);
+		}
+		/// <summary>
+		/// Changes the Windows wallpaper to an image from the specified file.
+		/// </summary>
+		/// <param name="path">A <see cref="string" /> specifying the path to an image file.</param>
+		/// <returns>
+		/// <see langword="true" /> on success;
+		/// otherwise, <see langword="false" />
+		/// </returns>
+		public static bool ChangeWallpaper(string path)
+		{
+			Check.ArgumentNull(path, nameof(path));
+			Check.FileNotFound(path);
+
+			return Native.SystemParametersInfo(20, 0, path, 1) == 1;
 		}
 	}
 }
