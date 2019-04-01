@@ -4,7 +4,7 @@ using System.Linq;
 namespace BytecodeApi.IO
 {
 	/// <summary>
-	/// Provides constants and <see langword="static" /> methods that extend the <see cref="Process" /> class.
+	/// Provides <see langword="static" /> methods that extend the <see cref="Process" /> class.
 	/// </summary>
 	public static class ProcessEx
 	{

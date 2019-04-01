@@ -5,7 +5,7 @@ using System.IO;
 namespace BytecodeApi.IO.FileSystem
 {
 	/// <summary>
-	/// Provides constants and <see langword="static" /> methods that extend the <see cref="File" /> class.
+	/// Provides <see langword="static" /> methods that extend the <see cref="File" /> class.
 	/// </summary>
 	public static class FileEx
 	{

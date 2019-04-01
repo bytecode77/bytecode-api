@@ -123,6 +123,7 @@
     <Compile Include="Controls\ObservableUserControl.cs" />
     <Compile Include="Controls\ObservableWindow.cs" />
     <Compile Include="Mathematics\ProgressCalculatorEventArgs.cs" />
+    <Compile Include="DependencyPropertyEx.cs" />
     <Compile Include="Packs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">

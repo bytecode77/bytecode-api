@@ -8,7 +8,7 @@ namespace BytecodeApi.Mathematics
 {
 	//FEATURE: ComputePrimeNumbers(int from, int to)
 	/// <summary>
-	/// Provides constants and <see langword="static" /> methods that extend the <see cref="Math" /> class.
+	/// Provides <see langword="static" /> methods that extend the <see cref="Math" /> class.
 	/// </summary>
 	public static class MathEx
 	{
