@@ -43,7 +43,7 @@ namespace BytecodeApi.UI.Data
 		{
 			Check.ArgumentNull(property, nameof(property));
 
-			return (T)BackingFields.ValueOrDefault(property.GetMemberName());
+			return CSharp.CastOrDefault<T>(BackingFields.ValueOrDefault(property.GetMemberName()));
 		}
 		/// <summary>
 		/// Method that can be used by the <see langword="set" /> accessor of a property. Backing fields are automatically generated and stored in a <see langword="private" /> <see cref="Dictionary{TKey, TValue}" /> field with default values set to <see langword="default" />(<typeparamref name="T" />). This method raises the <see cref="PropertyChanging" /> event and the <see cref="PropertyChanged" /> event.

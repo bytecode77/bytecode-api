@@ -215,7 +215,8 @@ namespace BytecodeApi
 								[460805] = "4.7",
 								[461308] = "4.7.1",
 								[461310] = "4.7.1",
-								[461808] = "4.7.2"
+								[461808] = "4.7.2",
+								[461814] = "4.7.2"
 							}.ValueOrDefault(version.Value, version.ToString());
 						}
 					}
