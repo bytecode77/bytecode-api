@@ -21,11 +21,11 @@ namespace BytecodeApi.Extensions
 			return dateTime.ToString(format, CultureInfo.InvariantCulture);
 		}
 		/// <summary>
-		/// Returns <see langword="null" />, if this <see cref="DateTime" /> object is default(<see cref="DateTime" />), otherwise its original value.
+		/// Returns <see langword="null" />, if this <see cref="DateTime" /> object is <see langword="default" />(<see cref="DateTime" />), otherwise its original value.
 		/// </summary>
 		/// <param name="dateTime">The <see cref="DateTime" /> value to convert.</param>
 		/// <returns>
-		/// <see langword="null" />, if this <see cref="DateTime" /> object is default(<see cref="DateTime" />);
+		/// <see langword="null" />, if this <see cref="DateTime" /> object is <see langword="default" />(<see cref="DateTime" />);
 		/// otherwise, its original value.
 		/// </returns>
 		public static DateTime? ToNullIfDefault(this DateTime dateTime)

@@ -122,27 +122,27 @@ namespace BytecodeApi.IO
 		/// <summary>
 		/// Detects one or multiple process analysers, such as sandboxes, virtual environments, or specific debuggers or profilers.
 		/// </summary>
-		/// <param name="processAnalysers">The <see cref="ProcessAnalysers" /> flags specifying which process analysers to test.</param>
+		/// <param name="processAnalysers">The <see cref="ProcessAnalyser" /> to test.</param>
 		/// <returns>
 		/// <see langword="true" />, if the specified process analyser has been detected;
 		/// otherwise, <see langword="false" />.
 		/// </returns>
-		public static bool DetectProcessAnalyser(ProcessAnalysers processAnalysers)
+		public static bool DetectProcessAnalyser(ProcessAnalyser processAnalysers)
 		{
 			//FEATURE: Sandboxes, virtual machines, CheatEngine (https://www.aspfree.com/c/a/braindump/virtualization-and-sandbox-detection/)		
-			if (processAnalysers.HasFlag(ProcessAnalysers.Sandboxie))
+			if (processAnalysers == ProcessAnalyser.Sandboxie)
 			{
 				return Native.GetModuleHandle("SbieDll") != IntPtr.Zero;
 			}
-			else if (processAnalysers.HasFlag(ProcessAnalysers.Wireshark))
+			else if (processAnalysers == ProcessAnalyser.Wireshark)
 			{
 				return Process.GetProcessesByName("Wireshark").Any() || Process.GetProcesses().Any(process => CSharp.Try(() => process?.MainWindowTitle).CompareTo("The Wireshark Network Analyzer", SpecialStringComparisons.NullAndEmptyEqual | SpecialStringComparisons.IgnoreCase) == 0);
 			}
-			else if (processAnalysers.HasFlag(ProcessAnalysers.ProcessMonitor))
+			else if (processAnalysers == ProcessAnalyser.ProcessMonitor)
 			{
 				return Process.GetProcesses().Any(process => CSharp.Try(() => process?.MainWindowTitle).Contains("Process Monitor -", SpecialStringComparisons.IgnoreCase));
 			}
-			else if (processAnalysers.HasFlag(ProcessAnalysers.Emulator))
+			else if (processAnalysers == ProcessAnalyser.Emulator)
 			{
 				int start = Environment.TickCount;
 				Stopwatch stopwatch = ThreadFactory.StartStopwatch();
