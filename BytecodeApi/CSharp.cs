@@ -382,14 +382,14 @@ namespace BytecodeApi
 		}
 
 		/// <summary>
-		/// Returns the DataContext property, if the specified <see cref="object" /> instance is either a <see cref="FrameworkElement" /> or a <see cref="FrameworkContentElement" />. If found and can be casted to the specified type, the DataContext is returned, otherwise, default(<typeparamref name="T" />).
+		/// Returns the DataContext property, if the specified <see cref="object" /> instance is either a <see cref="FrameworkElement" /> or a <see cref="FrameworkContentElement" />. If found and can be casted to the specified type, the DataContext is returned, otherwise, <see langword="default" />(<typeparamref name="T" />).
 		/// </summary>
 		/// <typeparam name="T">The return type to cast the DataContext property to.</typeparam>
-		/// <param name="obj">The <see cref="object" /> where the DataContext property looked for. This is typically a parameter from a WPF event hanlder.</param>
+		/// <param name="obj">The <see cref="object" /> where the DataContext property looked for. This is typically a parameter from a WPF event handler.</param>
 		/// <returns>
 		/// <see cref="FrameworkElement.DataContext" />, if <paramref name="obj" /> is a <see cref="FrameworkElement" />;
 		/// <see cref="FrameworkContentElement.DataContext" />, if <paramref name="obj" /> instance is a <see cref="FrameworkContentElement" />;
-		/// otherwise, default(<typeparamref name="T" />).
+		/// otherwise, <see langword="default" />(<typeparamref name="T" />).
 		/// </returns>
 		public static T FindDataContext<T>(object obj)
 		{

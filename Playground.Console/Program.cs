@@ -25,7 +25,6 @@ namespace Playground.Console
 		[STAThread]
 		public static void Main(string[] args)
 		{
-			//Console.ReadKey();
 		}
 	}
 }

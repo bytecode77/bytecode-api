@@ -12,7 +12,7 @@ namespace BytecodeApi.UI.Controls
 	{
 		private static TreeViewItem CurrentItem;
 		private static readonly RoutedEvent UpdateOverItemEvent = EventManager.RegisterRoutedEvent("UpdateOverItem", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(TreeViewItemService));
-		private static readonly DependencyPropertyKey IsMouseDirectlyOverItemKey = DependencyProperty.RegisterAttachedReadOnly("IsMouseDirectlyOverItem", typeof(bool), typeof(TreeViewItemService), new FrameworkPropertyMetadata(null, new CoerceValueCallback(CalculateIsMouseDirectlyOverItem)));
+		private static readonly DependencyPropertyKey IsMouseDirectlyOverItemKey = DependencyProperty.RegisterAttachedReadOnly("IsMouseDirectlyOverItem", typeof(bool), typeof(TreeViewItemService), new FrameworkPropertyMetadata(null, CalculateIsMouseDirectlyOverItem));
 		/// <summary>
 		/// Identifies the <see cref="TreeViewItemService" />.IsMouseDirectlyOverItem dependency property. This field is read-only.
 		/// </summary>

@@ -5,7 +5,7 @@ namespace BytecodeApi.IO.FileSystem
 {
 	//FEATURE: CompareContents - compare file&directory names and/or file contents, recursive and non-recursive
 	/// <summary>
-	/// Provides constants and <see langword="static" /> methods that extend the <see cref="Directory" /> class.
+	/// Provides <see langword="static" /> methods that extend the <see cref="Directory" /> class.
 	/// </summary>
 	public static class DirectoryEx
 	{
