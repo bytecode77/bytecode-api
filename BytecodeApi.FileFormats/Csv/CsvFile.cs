@@ -1,4 +1,4 @@
-﻿using BytecodeApi.Extensions;
+using BytecodeApi.Extensions;
 using Microsoft.VisualBasic.FileIO;
 using System.Collections.Generic;
 using System.IO;
@@ -87,7 +87,6 @@ namespace BytecodeApi.FileFormats.Csv
 		{
 			Check.ArgumentNull(path, nameof(path));
 			Check.FileNotFound(path);
-			Check.ArgumentNull(delimiter, nameof(delimiter));
 			Check.ArgumentEx.StringNotEmpty(delimiter, nameof(delimiter));
 
 			using (FileStream file = File.OpenRead(path))
@@ -136,7 +135,6 @@ namespace BytecodeApi.FileFormats.Csv
 		public static CsvFile FromBinary(byte[] file, string delimiter, bool hasHeaderRow, bool ignoreEmptyLines, Encoding encoding)
 		{
 			Check.ArgumentNull(file, nameof(file));
-			Check.ArgumentNull(delimiter, nameof(delimiter));
 			Check.ArgumentEx.StringNotEmpty(delimiter, nameof(delimiter));
 
 			using (MemoryStream memoryStream = new MemoryStream(file))
@@ -201,7 +199,6 @@ namespace BytecodeApi.FileFormats.Csv
 		public static CsvFile FromStream(Stream stream, string delimiter, bool hasHeaderRow, bool ignoreEmptyLines, Encoding encoding, bool leaveOpen)
 		{
 			Check.ArgumentNull(stream, nameof(stream));
-			Check.ArgumentNull(delimiter, nameof(delimiter));
 			Check.ArgumentEx.StringNotEmpty(delimiter, nameof(delimiter));
 
 			if (delimiter == null)
