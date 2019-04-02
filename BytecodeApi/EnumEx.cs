@@ -7,7 +7,7 @@ using System.Linq;
 namespace BytecodeApi
 {
 	/// <summary>
-	/// Proides <see langword="static" /> methods and properties serving as a general object manipulation helper class.
+	/// Provides <see langword="static" /> methods that extend the <see cref="Enum" /> class.
 	/// </summary>
 	public static class EnumEx
 	{

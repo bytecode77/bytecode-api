@@ -11,7 +11,7 @@ using System.Threading;
 namespace BytecodeApi.IO
 {
 	/// <summary>
-	/// Proides <see langword="static" /> methods for interoperability with executable files, typically EXE and DLL files.
+	/// Provides <see langword="static" /> methods for interoperability with executable files, typically EXE and DLL files.
 	/// </summary>
 	public static class Executable
 	{
