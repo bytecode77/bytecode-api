@@ -99,7 +99,6 @@
     <Compile Include="Extensions\IEnumerableConvertExtensions.cs" />
     <Compile Include="IO\SystemInfo\ProtocolMappingEntry.cs" />
     <Compile Include="IO\SystemInfo\TcpViewEntry.cs" />
-    <Compile Include="IO\Executable.cs" />
     <Compile Include="Threading\ThreadFactory.cs" />
     <Compile Include="Validate.cs" />
     <Compile Include="Comparers\AlwaysEqualComparer.cs" />
