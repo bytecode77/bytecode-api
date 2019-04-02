@@ -36,65 +36,11 @@ namespace BytecodeApi.Extensions
 		/// </returns>
 		public static Bitmap GetBitmap(this Icon icon, Size size)
 		{
-			return new Icon(icon, size).ToBitmap();
-		}
-		/// <summary>
-		/// Saves this <see cref="Image" /> in the specified format and returns a <see cref="byte" />[] representation of the <see cref="Image" />.
-		/// </summary>
-		/// <param name="image">The <see cref="Image" /> to save.</param>
-		/// <param name="format">An <see cref="ImageFormat" /> that specifies the format of the saved image.</param>
-		/// <returns>
-		/// A new <see cref="byte" />[] representing this <see cref="Image" />.
-		/// </returns>
-		public static byte[] Save(this Image image, ImageFormat format)
-		{
-			Check.ArgumentNull(image, nameof(image));
-			Check.ArgumentNull(format, nameof(format));
-
-			using (MemoryStream memoryStream = new MemoryStream())
-			{
-				image.Save(memoryStream, format);
-				return memoryStream.ToArray();
-			}
-		}
-		/// <summary>
-		/// Saves this <see cref="Image" /> with the specified encoder and image encoder parameters and returns a <see cref="byte" />[] representation of the <see cref="Image" />.
-		/// </summary>
-		/// <param name="image">The <see cref="Image" /> to save.</param>
-		/// <param name="encoder">The <see cref="ImageCodecInfo" /> for this <see cref="Image" />.</param>
-		/// <param name="encoderParams">An <see cref="EncoderParameters" /> that specifies parameters used by the image encoder.</param>
-		/// <returns>
-		/// A new <see cref="byte" />[] representing this <see cref="Image" />.
-		/// </returns>
-		public static byte[] Save(this Image image, ImageCodecInfo encoder, EncoderParameters encoderParams)
-		{
-			Check.ArgumentNull(image, nameof(image));
-			Check.ArgumentNull(encoder, nameof(encoder));
-			Check.ArgumentNull(encoderParams, nameof(encoderParams));
-
-			using (MemoryStream memoryStream = new MemoryStream())
-			{
-				image.Save(memoryStream, encoder, encoderParams);
-				return memoryStream.ToArray();
-			}
-		}
-		/// <summary>
-		/// Saves this <see cref="Icon" /> and returns a <see cref="byte" />[] representation of the <see cref="Image" />.
-		/// </summary>
-		/// <param name="icon">The <see cref="Icon" /> to save.</param>
-		/// <returns>
-		/// A new <see cref="byte" />[] representing this <see cref="Icon" />.
-		/// </returns>
-		public static byte[] Save(this Icon icon)
-		{
 			Check.ArgumentNull(icon, nameof(icon));
 
-			using (MemoryStream memoryStream = new MemoryStream())
-			{
-				icon.Save(memoryStream);
-				return memoryStream.ToArray();
-			}
+			return new Icon(icon, size).ToBitmap();
 		}
+
 		/// <summary>
 		/// Saves this <see cref="Icon" /> to the specified file.
 		/// </summary>
@@ -111,22 +57,64 @@ namespace BytecodeApi.Extensions
 			}
 		}
 		/// <summary>
-		/// Encodes a bitmap image and returns a new <see cref="byte" />[] representing the encoded image.
+		/// Converts this <see cref="Icon" /> to its <see cref="byte" />[] representation.
 		/// </summary>
-		/// <param name="bitmapEncoder">The <see cref="BitmapEncoder" /> to be used.</param>
+		/// <param name="icon">The <see cref="Icon" /> to save.</param>
 		/// <returns>
-		/// A new <see cref="byte" />[] representing the encoded image.
+		/// A new <see cref="byte" />[] representing this <see cref="Icon" />.
 		/// </returns>
-		public static byte[] Save(this BitmapEncoder bitmapEncoder)
+		public static byte[] ToArray(this Icon icon)
 		{
-			Check.ArgumentNull(bitmapEncoder, nameof(bitmapEncoder));
+			Check.ArgumentNull(icon, nameof(icon));
 
 			using (MemoryStream memoryStream = new MemoryStream())
 			{
-				bitmapEncoder.Save(memoryStream);
+				icon.Save(memoryStream);
 				return memoryStream.ToArray();
 			}
 		}
+
+		/// <summary>
+		/// Converts this <see cref="Image" /> in the specified format to its <see cref="byte" />[] representation.
+		/// </summary>
+		/// <param name="image">The <see cref="Image" /> to save.</param>
+		/// <param name="format">An <see cref="ImageFormat" /> that specifies the format of the saved image.</param>
+		/// <returns>
+		/// A new <see cref="byte" />[] representing this <see cref="Image" />.
+		/// </returns>
+		public static byte[] ToArray(this Image image, ImageFormat format)
+		{
+			Check.ArgumentNull(image, nameof(image));
+			Check.ArgumentNull(format, nameof(format));
+
+			using (MemoryStream memoryStream = new MemoryStream())
+			{
+				image.Save(memoryStream, format);
+				return memoryStream.ToArray();
+			}
+		}
+		/// <summary>
+		/// Converts this <see cref="Image" /> with the specified encoder and image encoder parameters to its <see cref="byte" />[] representation.
+		/// </summary>
+		/// <param name="image">The <see cref="Image" /> to save.</param>
+		/// <param name="encoder">The <see cref="ImageCodecInfo" /> for this <see cref="Image" />.</param>
+		/// <param name="encoderParams">An <see cref="EncoderParameters" /> that specifies parameters used by the image encoder.</param>
+		/// <returns>
+		/// A new <see cref="byte" />[] representing this <see cref="Image" />.
+		/// </returns>
+		public static byte[] ToArray(this Image image, ImageCodecInfo encoder, EncoderParameters encoderParams)
+		{
+			Check.ArgumentNull(image, nameof(image));
+			Check.ArgumentNull(encoder, nameof(encoder));
+			Check.ArgumentNull(encoderParams, nameof(encoderParams));
+
+			using (MemoryStream memoryStream = new MemoryStream())
+			{
+				image.Save(memoryStream, encoder, encoderParams);
+				return memoryStream.ToArray();
+			}
+		}
+
 		/// <summary>
 		/// Encodes a bitmap image and saves the encoded image to a file.
 		/// </summary>
@@ -140,6 +128,50 @@ namespace BytecodeApi.Extensions
 			using (FileStream file = File.Create(path))
 			{
 				bitmapEncoder.Save(file);
+			}
+		}
+		/// <summary>
+		/// Encodes a bitmap image and returns a new <see cref="byte" />[] representing the encoded image.
+		/// </summary>
+		/// <param name="bitmapEncoder">The <see cref="BitmapEncoder" /> to be used.</param>
+		/// <returns>
+		/// A new <see cref="byte" />[] representing the encoded image.
+		/// </returns>
+		public static byte[] ToArray(this BitmapEncoder bitmapEncoder)
+		{
+			Check.ArgumentNull(bitmapEncoder, nameof(bitmapEncoder));
+
+			using (MemoryStream memoryStream = new MemoryStream())
+			{
+				bitmapEncoder.Save(memoryStream);
+				return memoryStream.ToArray();
+			}
+		}
+
+		/// <summary>
+		/// Saves this <see cref="Image" /> in JPEG format with 95 % quality to the specified file.
+		/// </summary>
+		/// <param name="image">The <see cref="Image" /> to save.</param>
+		/// <param name="path">A <see cref="string" /> that contains the name of the file to which to save this <see cref="Image" />.</param>
+		public static void SaveJpeg(this Image image, string path)
+		{
+			image.SaveJpeg(path, 95);
+		}
+		/// <summary>
+		/// Saves this <see cref="Image" /> in JPEG format with the specified quality to the specified file.
+		/// </summary>
+		/// <param name="image">The <see cref="Image" /> to save.</param>
+		/// <param name="path">A <see cref="string" /> that contains the name of the file to which to save this <see cref="Image" />.</param>
+		/// <param name="quality">The quality to be used for JPEG encoding.</param>
+		public static void SaveJpeg(this Image image, string path, int quality)
+		{
+			Check.ArgumentNull(image, nameof(image));
+			Check.ArgumentNull(path, nameof(path));
+			Check.ArgumentOutOfRange(quality >= 0 && quality <= 100, nameof(quality), "Jpeg quality must be in range of 0...100.");
+
+			using (FileStream file = File.Create(path))
+			{
+				image.SaveJpeg(file, quality);
 			}
 		}
 		/// <summary>
@@ -171,25 +203,25 @@ namespace BytecodeApi.Extensions
 			}
 		}
 		/// <summary>
-		/// Saves this <see cref="Image" /> in JPEG format with 95 % quality and returns a <see cref="byte" />[] representation of the <see cref="Image" />.
+		/// Converts this <see cref="Image" /> in JPEG format with 95 % quality to its <see cref="byte" />[] representation.
 		/// </summary>
 		/// <param name="image">The <see cref="Image" /> to save.</param>
 		/// <returns>
 		/// A new <see cref="byte" />[] representing this <see cref="Image" />, saved in JPEG format with 95 % quality.
 		/// </returns>
-		public static byte[] SaveJpeg(this Image image)
+		public static byte[] ToArrayJpeg(this Image image)
 		{
-			return image.SaveJpeg(95);
+			return image.ToArrayJpeg(95);
 		}
 		/// <summary>
-		/// Saves this <see cref="Image" /> in JPEG format with the specified quality and returns a <see cref="byte" />[] representation of the <see cref="Image" />.
+		/// Converts this <see cref="Image" /> in JPEG format with the specified quality to its <see cref="byte" />[] representation.
 		/// </summary>
 		/// <param name="image">The <see cref="Image" /> to save.</param>
 		/// <param name="quality">The quality to be used for JPEG encoding.</param>
 		/// <returns>
 		/// A new <see cref="byte" />[] representing this <see cref="Image" />, saved in JPEG format with the specified quality.
 		/// </returns>
-		public static byte[] SaveJpeg(this Image image, int quality)
+		public static byte[] ToArrayJpeg(this Image image, int quality)
 		{
 			Check.ArgumentNull(image, nameof(image));
 			Check.ArgumentOutOfRange(quality >= 0 && quality <= 100, nameof(quality), "Jpeg quality must be in range of 0...100.");
@@ -200,32 +232,7 @@ namespace BytecodeApi.Extensions
 				return memoryStream.ToArray();
 			}
 		}
-		/// <summary>
-		/// Saves this <see cref="Image" /> in JPEG format with 95 % quality to the specified file.
-		/// </summary>
-		/// <param name="image">The <see cref="Image" /> to save.</param>
-		/// <param name="path">A <see cref="string" /> that contains the name of the file to which to save this <see cref="Image" />.</param>
-		public static void SaveJpeg(this Image image, string path)
-		{
-			image.SaveJpeg(path, 95);
-		}
-		/// <summary>
-		/// Saves this <see cref="Image" /> in JPEG format with the specified quality to the specified file.
-		/// </summary>
-		/// <param name="image">The <see cref="Image" /> to save.</param>
-		/// <param name="path">A <see cref="string" /> that contains the name of the file to which to save this <see cref="Image" />.</param>
-		/// <param name="quality">The quality to be used for JPEG encoding.</param>
-		public static void SaveJpeg(this Image image, string path, int quality)
-		{
-			Check.ArgumentNull(image, nameof(image));
-			Check.ArgumentNull(path, nameof(path));
-			Check.ArgumentOutOfRange(quality >= 0 && quality <= 100, nameof(quality), "Jpeg quality must be in range of 0...100.");
 
-			using (FileStream file = File.Create(path))
-			{
-				image.SaveJpeg(file, quality);
-			}
-		}
 		/// <summary>
 		/// Returns a managed <see cref="BitmapSource" />, based on the provided <see cref="Bitmap" />.
 		/// </summary>

@@ -140,7 +140,7 @@ namespace BytecodeApi.FileFormats.ResourceFile
 			List<Native.IconDirEntry> iconEntry = new List<Native.IconDirEntry>();
 			List<byte[]> iconData = new List<byte[]>();
 
-			using (BinaryReader reader = new BinaryReader(new MemoryStream(icon.Save())))
+			using (BinaryReader reader = new BinaryReader(new MemoryStream(icon.ToArray())))
 			{
 				Marshal.Copy(reader.ReadBytes(sizeof(Native.IconDir)), 0, (IntPtr)(&iconDir), sizeof(Native.IconDir));
 
