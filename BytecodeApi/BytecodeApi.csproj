@@ -63,6 +63,7 @@
     <Compile Include="Data\BlobCollection.cs" />
     <Compile Include="Extensions\ColorExtensions.cs" />
     <Compile Include="Internal\ExceptionMessages.cs" />
+    <Compile Include="IO\BlobArchive.cs" />
     <Compile Include="IO\FileSystem\AlternateDataStreamAttributes.cs" />
     <Compile Include="IO\FileSystem\AlternateDataStreamType.cs" />
     <Compile Include="IO\FileSystem\AlternateDataStreamInfo.cs" />
