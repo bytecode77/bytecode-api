@@ -1,4 +1,4 @@
-using BytecodeApi.Extensions;
+﻿using BytecodeApi.Extensions;
 using Microsoft.VisualBasic.FileIO;
 using System.Collections.Generic;
 using System.IO;
@@ -742,6 +742,29 @@ namespace BytecodeApi.FileFormats.Csv
 		{
 			if (IsColumnCountConsistent) return Rows.Count == 0 || Rows.First().Count == columnCount;
 			else return Rows.All(row => row.Count == columnCount);
+		}
+		/// <summary>
+		/// Tries to find the column index of a specified case sensitive column header name. Returns -1, if the column header was not found.
+		/// </summary>
+		/// <param name="header">A <see cref="string" /> specifying the case sensitive name of the column header to search for.</param>
+		/// <returns>
+		/// The zero-based index of the column header, or -1, if the column header was not found.
+		/// </returns>
+		public int GetColumnIndex(string header)
+		{
+			return GetColumnIndex(header, false);
+		}
+		/// <summary>
+		/// Tries to find the column index of a specified case header name. Returns -1, if the column header was not found.
+		/// </summary>
+		/// <param name="header">A <see cref="string" /> specifying the case sensitive name of the column header to search for.</param>
+		/// <param name="ignoreCase"><see langword="true" /> to ignore character casing during column name comparison.</param>
+		/// <returns>
+		/// The zero-based index of the column header, or -1, if the column header was not found.
+		/// </returns>
+		public int GetColumnIndex(string header, bool ignoreCase)
+		{
+			return Headers?.IndexOf(h => h.CompareTo(header, ignoreCase ? SpecialStringComparisons.IgnoreCase : SpecialStringComparisons.Default) == 0) ?? -1;
 		}
 		/// <summary>
 		/// Writes the contents of this flat file database to a file. If <see cref="Headers" /> is not <see langword="null" />, the header row is included. The <see cref="Delimiter" /> property specifies the delimiter to use when writing.
