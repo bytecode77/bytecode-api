@@ -9,7 +9,7 @@ namespace BytecodeApi
 	/// <summary>
 	/// Proides <see langword="static" /> methods and properties serving as a general object manipulation helper class.
 	/// </summary>
-	public static class EnumHelper
+	public static class EnumEx
 	{
 		/// <summary>
 		/// Retrieves an array of the values of the constants in the specified <see langword="enum" /> value, casted to <typeparamref name="T" />.
