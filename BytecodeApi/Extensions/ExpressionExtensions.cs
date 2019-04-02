@@ -42,10 +42,12 @@ namespace BytecodeApi.Extensions
 		/// </summary>
 		/// <typeparam name="T">The member type.</typeparam>
 		/// <param name="member">The member from which to update the value.</param>
-		/// <param name="obj">The class instance of <paramref name="member" />.</param>
+		/// <param name="obj">The class instance of <paramref name="member" />, or <see langword="null" />, if the member is <see langword="static" />.</param>
 		/// <param name="value">The new value to be assigned to <paramref name="member" />.</param>
 		public static void SetMemberValue<T>(this Expression<Func<T>> member, object obj, T value)
 		{
+			Check.ArgumentNull(member, nameof(member));
+
 			//IMPORTANT: Omit "obj" parameter; get automatically
 			MemberInfo memberInfo = (member.Body as MemberExpression)?.Member;
 
