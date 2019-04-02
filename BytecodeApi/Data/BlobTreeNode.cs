@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace BytecodeApi.Data
 {
+	//FEATURE: FindBlob(string path), RemoveBlob(string path)
 	/// <summary>
 	/// Represents a tree node within a <see cref="BlobTree" />.
 	/// </summary>
@@ -51,6 +52,41 @@ namespace BytecodeApi.Data
 		{
 			Nodes.AddRange(nodes);
 			Blobs.AddRange(blobs);
+		}
+
+		/// <summary>
+		/// Tries to find a node by the specified case sensitive path. The path contains each node name, separated by a backslash. Returns <see langword="null" />, if the <see cref="BlobTreeNode" /> could not be found.
+		/// </summary>
+		/// <param name="path">A <see cref="string" /> specifying a case sensitive path. The path contains each node name, separated by a backslash.</param>
+		/// <returns>
+		/// The <see cref="BlobTreeNode" /> that was found by the specified path, or <see langword="null" />, if it could not be found.
+		/// </returns>
+		public BlobTreeNode FindNode(string path)
+		{
+			return FindNode(path, false);
+		}
+		/// <summary>
+		/// Tries to find a node by the specified path. The path contains each node name, separated by a backslash. Returns <see langword="null" />, if the <see cref="BlobTreeNode" /> could not be found.
+		/// </summary>
+		/// <param name="path">A <see cref="string" /> specifying a path. The path contains each node name, separated by a backslash.</param>
+		/// <param name="ignoreCase"><see langword="true" /> to ignore character casing during name comparison.</param>
+		/// <returns>
+		/// The <see cref="BlobTreeNode" /> that was found by the specified path, or <see langword="null" />, if it could not be found.
+		/// </returns>
+		public BlobTreeNode FindNode(string path, bool ignoreCase)
+		{
+			Check.ArgumentNull(path, nameof(path));
+			Check.ArgumentEx.StringNotEmpty(path, nameof(path));
+
+			BlobTreeNode node = this;
+
+			foreach (string pathPart in path.Split('\\'))
+			{
+				node = CSharp.Try(() => node.Nodes[pathPart, ignoreCase]);
+				if (node == null) break;
+			}
+
+			return node;
 		}
 
 		/// <summary>
