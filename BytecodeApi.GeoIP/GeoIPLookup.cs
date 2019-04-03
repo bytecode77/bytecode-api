@@ -58,6 +58,8 @@ namespace BytecodeApi.GeoIP
 		/// </returns>
 		public static GeoIPCountry Lookup(IPAddress ipAddress)
 		{
+			Check.ArgumentNull(ipAddress, nameof(ipAddress));
+
 			if (ipAddress.AddressFamily == AddressFamily.InterNetwork)
 			{
 				byte[] bytes = CSharp.Try(() => ipAddress.MapToIPv4().GetAddressBytes());

@@ -41,10 +41,7 @@ namespace BytecodeApi
 
 			try
 			{
-				return Enumerable
-					.Range(0, count)
-					.Select(i => Marshal.PtrToStringUni(Marshal.ReadIntPtr(argumentsPtr, i * IntPtr.Size)))
-					.ToArray();
+				return Create.Array(count, i => Marshal.PtrToStringUni(Marshal.ReadIntPtr(argumentsPtr, i * IntPtr.Size)));
 			}
 			finally
 			{

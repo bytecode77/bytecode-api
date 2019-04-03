@@ -196,10 +196,7 @@ namespace BytecodeApi.FileFormats.Coff
 				// Data Directories
 				if (reader.BaseStream.Length - reader.BaseStream.Position < OptionalHeader.NumberOfRvaAndSizes * 8) throw new PEImageParseException((int)reader.BaseStream.Position, "Data directories incomplete.");
 
-				OptionalHeader.DataDirectories = Enumerable
-					.Range(0, (int)OptionalHeader.NumberOfRvaAndSizes)
-					.Select(i => new ImageDataDirectory((ImageDataDirectoryName)i, reader.ReadUInt32(), reader.ReadUInt32()))
-					.ToArray();
+				OptionalHeader.DataDirectories = Create.Array((int)OptionalHeader.NumberOfRvaAndSizes, i => new ImageDataDirectory((ImageDataDirectoryName)i, reader.ReadUInt32(), reader.ReadUInt32()));
 
 				// Section Headers
 				if (reader.BaseStream.Length - reader.BaseStream.Position < CoffHeader.NumberOfSections * 40) throw new PEImageParseException((int)reader.BaseStream.Position, "Section headers incomplete.");
