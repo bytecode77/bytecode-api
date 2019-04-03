@@ -1,6 +1,7 @@
 using Build.GeoIP.Data;
 using BytecodeApi.Extensions;
 using BytecodeApi.FileFormats.Csv;
+using BytecodeApi.IO;
 using System;
 using System.IO;
 using System.Linq;
@@ -30,7 +31,7 @@ namespace Build.GeoIP
 
 			if (countries.Length > 256) throw new OverflowException("The limit of 256 countries has been exceeded.");
 
-			IPRange[] ipRanges = CsvFile.EnumerateFile(@"..\..\..\!Docs\GeoIP\GeoLite2-Country-Blocks-IPv4.csv", ",", true)
+			IPRange[] ranges = CsvFile.EnumerateFile(@"..\..\..\!Docs\GeoIP\GeoLite2-Country-Blocks-IPv4.csv", ",", true)
 				.Where(row => row[1].Value != "")
 				.Select(row =>
 				{
@@ -53,7 +54,7 @@ namespace Build.GeoIP
 				.ExceptNull()
 				.ToArray();
 
-			IPRange6[] ipRanges6 = CsvFile.EnumerateFile(@"..\..\..\!Docs\GeoIP\GeoLite2-Country-Blocks-IPv6.csv", ",", true)
+			IPRange6[] ranges6 = CsvFile.EnumerateFile(@"..\..\..\!Docs\GeoIP\GeoLite2-Country-Blocks-IPv6.csv", ",", true)
 				.Where(row => row[1].Value != "")
 				.Select(row =>
 				{
@@ -76,33 +77,37 @@ namespace Build.GeoIP
 				.ExceptNull()
 				.ToArray();
 
-			using (BinaryWriter file = new BinaryWriter(File.Create(@"..\..\..\!Docs\GeoIP\GeoIP.db"), Encoding.UTF8))
+			using (MemoryStream memoryStream = new MemoryStream())
 			{
-				file.Write((byte)countries.Length);
-				file.Write(ipRanges.Length);
-				file.Write(ipRanges6.Length);
+				using (BinaryWriter writer = new BinaryWriter(memoryStream, Encoding.UTF8))
+				{
+					writer.Write((byte)countries.Length);
+					writer.Write(ranges.Length);
+					writer.Write(ranges6.Length);
 
-				foreach (Country country in countries)
-				{
-					if (country.Flag.Length != 2 || country.Flag[0] > byte.MaxValue || country.Flag[1] > byte.MaxValue) throw new FormatException("Country flag must be composed of two ANSI characters.");
+					foreach (Country country in countries)
+					{
+						if (country.Flag.Length != 2 || country.Flag[0] > byte.MaxValue || country.Flag[1] > byte.MaxValue) throw new FormatException("Country flag must be composed of two ANSI characters.");
 
-					file.Write((byte)country.Flag[0]);
-					file.Write((byte)country.Flag[1]);
-					file.Write(country.Name);
+						writer.Write((byte)country.Flag[0]);
+						writer.Write((byte)country.Flag[1]);
+						writer.Write(country.Name);
+					}
+					foreach (IPRange range in ranges)
+					{
+						writer.Write(range.Country);
+						writer.Write(range.From);
+						writer.Write(range.To);
+					}
+					foreach (IPRange6 range in ranges6)
+					{
+						writer.Write(range.Country);
+						writer.Write(range.From);
+						writer.Write(range.To);
+					}
 				}
-				foreach (IPRange range in ipRanges)
-				{
-					file.Write(range.Country);
-					file.Write(range.From);
-					file.Write(range.To);
-				}
-				foreach (IPRange6 range in ipRanges6)
-				{
-					//IMPORTANT: Optimize byte[]'s with length prefix
-					file.Write(range.Country);
-					file.Write(range.From);
-					file.Write(range.To);
-				}
+
+				File.WriteAllBytes(@"..\..\..\!Docs\GeoIP\GeoIP.db", Compression.Compress(memoryStream.ToArray()));
 			}
 
 			bool GetCountryByID(int id, out byte countryID)
@@ -124,11 +129,11 @@ namespace Build.GeoIP
 		private static void ConvertCidrToRange(string cidr, out uint from, out uint to)
 		{
 			uint[] parts = cidr.Split('.', '/').Select(part => Convert.ToUInt32(part)).ToArray();
-			uint ipnum = parts[0] << 24 | parts[1] << 16 | parts[2] << 8 | parts[3];
+			uint ip = parts[0] << 24 | parts[1] << 16 | parts[2] << 8 | parts[3];
 			uint mask = uint.MaxValue << (32 - (int)parts[4]);
 
-			from = ipnum & mask;
-			to = ipnum | ~mask;
+			from = ip & mask;
+			to = ip | ~mask;
 		}
 		private static void ConvertCidr6ToRange(string cidr, out byte[] from, out byte[] to)
 		{

@@ -91,7 +91,7 @@ namespace BytecodeApi.Cryptography
 									EncodeIntegerBigEndian(paramsWriter, key.Exponent);
 
 									EncodeLength(bitStringWriter, (int)paramsStream.Length);
-									bitStringWriter.Write(paramsStream.ToArray());
+									bitStringWriter.Write(paramsStream.ToArray()); //REFACTOR: MemoryStream.WriteTo, ACO
 								}
 
 								EncodeLength(innerWriter, (int)bitStringStream.Length);
