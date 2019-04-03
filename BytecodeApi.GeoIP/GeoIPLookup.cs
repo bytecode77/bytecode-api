@@ -1,10 +1,10 @@
-﻿using BytecodeApi;
-using BytecodeApi.Extensions;
+﻿using BytecodeApi.Extensions;
 using BytecodeApi.GeoIP.Properties;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
 
 namespace BytecodeApi.GeoIP
 {
@@ -35,6 +35,7 @@ namespace BytecodeApi.GeoIP
 
 				if (bytes?.Length == 16)
 				{
+					//CURRENT: Performance
 					return Ranges6.FirstOrDefault(range => Enumerable.Range(0, 16).None(i => bytes[i] < range.From[i] || bytes[i] > range.To[i]))?.Country;
 				}
 			}
@@ -45,7 +46,7 @@ namespace BytecodeApi.GeoIP
 		{
 			if (!IsInitialized)
 			{
-				using (BinaryReader file = new BinaryReader(new MemoryStream(Resources.GeoIP)))
+				using (BinaryReader file = new BinaryReader(new MemoryStream(Resources.GeoIP), Encoding.UTF8))
 				{
 					Countries = new GeoIPCountry[file.ReadByte()];
 					Ranges = new GeoIPRange[file.ReadInt32()];
@@ -53,7 +54,7 @@ namespace BytecodeApi.GeoIP
 
 					for (int i = 0; i < Countries.Length; i++)
 					{
-						Countries[i] = new GeoIPCountry(file.ReadChars(2).AsString(), file.ReadString());
+						Countries[i] = new GeoIPCountry(new string(new[] { (char)file.ReadByte(), (char)file.ReadByte() }), file.ReadString());
 					}
 					for (int i = 0; i < Ranges.Length; i++)
 					{
