@@ -201,9 +201,8 @@ namespace BytecodeApi.FileFormats.Coff
 				// Section Headers
 				if (reader.BaseStream.Length - reader.BaseStream.Position < CoffHeader.NumberOfSections * 40) throw new PEImageParseException((int)reader.BaseStream.Position, "Section headers incomplete.");
 
-				Sections = Enumerable
-					.Range(0, CoffHeader.NumberOfSections)
-					.Select(i => new ImageSectionHeader
+				Sections = Create
+					.Enumerable(CoffHeader.NumberOfSections, i => new ImageSectionHeader
 					{
 						Name = reader.ReadBytes(8).TakeWhile(c => c != 0).ToArray().ToUTF8String(),
 						VirtualSize = reader.ReadUInt32(),

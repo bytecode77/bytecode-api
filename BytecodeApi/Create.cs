@@ -2,6 +2,7 @@
 using BytecodeApi.Mathematics;
 using BytecodeApi.Text;
 using System;
+using System.Collections.Generic;
 
 namespace BytecodeApi
 {
@@ -50,6 +51,20 @@ namespace BytecodeApi
 			T[] array = new T[length];
 			for (int i = 0; i < length; i++) array[i] = valueSelector(i);
 			return array;
+		}
+		/// <summary>
+		/// Creates an <see cref="IEnumerable{T}" /> of the specified type and returns values that are retrieved from <paramref name="valueSelector" />.
+		/// </summary>
+		/// <typeparam name="T">The type of the created <see cref="IEnumerable{T}" />.</typeparam>
+		/// <param name="count">The number of elements to return.</param>
+		/// <param name="valueSelector">A <see cref="Func{T, TResult}" /> to retrieve new values for the <see cref="IEnumerable{T}" /> based on the given index.</param>
+		/// <returns></returns>
+		public static IEnumerable<T> Enumerable<T>(int count, Func<int, T> valueSelector)
+		{
+			Check.ArgumentOutOfRangeEx.GreaterEqual0(count, nameof(count));
+			Check.ArgumentNull(valueSelector, nameof(valueSelector));
+
+			for (int i = 0; i < count; i++) yield return valueSelector(i);
 		}
 		/// <summary>
 		/// Generates a new <see cref="System.Guid" /> using the <see cref="GuidFormat.Default" /> format.
