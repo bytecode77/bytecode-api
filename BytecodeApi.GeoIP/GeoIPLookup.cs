@@ -10,10 +10,16 @@ using System.Text;
 
 namespace BytecodeApi.GeoIP
 {
+	/// <summary>
+	/// Class for GeoIP lookup of IPv4 and IPv6 addresses. Lookup operations are performed on a local database and do not require an online API. The database is part of BytecodeApi.GeoIP.dll.
+	/// </summary>
 	public static class GeoIPLookup
 	{
 		private static readonly GeoIPRange[] Ranges;
 		private static readonly GeoIPRange6[] Ranges6;
+		/// <summary>
+		/// Gets a collection of all <see cref="GeoIPCountry" /> objects.
+		/// </summary>
 		public static ReadOnlyCollection<GeoIPCountry> Countries { get; private set; }
 
 		static GeoIPLookup()
@@ -30,21 +36,11 @@ namespace BytecodeApi.GeoIP
 				}
 				for (int i = 0; i < Ranges.Length; i++)
 				{
-					byte country = reader.ReadByte();
-					byte flags = reader.ReadByte();
-					uint from = reader.ReadUInt32();
-					uint to = reader.ReadUInt32();
-
-					Ranges[i] = new GeoIPRange(countries[country], (flags & 1) == 1, (flags & 2) == 2, from, to);
+					Ranges[i] = new GeoIPRange(countries[reader.ReadByte()], reader.ReadUInt32(), reader.ReadUInt32());
 				}
 				for (int i = 0; i < Ranges6.Length; i++)
 				{
-					byte country = reader.ReadByte();
-					byte flags = reader.ReadByte();
-					byte[] from = reader.ReadBytes(16);
-					byte[] to = reader.ReadBytes(16);
-
-					Ranges6[i] = new GeoIPRange6(countries[country], (flags & 1) == 1, (flags & 2) == 2, from, to);
+					Ranges6[i] = new GeoIPRange6(countries[reader.ReadByte()], reader.ReadBytes(16), reader.ReadBytes(16));
 				}
 
 				Countries = countries.ToReadOnlyCollection();
@@ -53,7 +49,14 @@ namespace BytecodeApi.GeoIP
 			}
 		}
 
-		public static bool Lookup(IPAddress ipAddress, out GeoIPCountry country, out bool isAnonymousProxy, out bool isSatelliteProvider)
+		/// <summary>
+		/// Performs a GeoIP lookup on an IPv4 or IPv6 address and returns the <see cref="GeoIPCountry" /> object as the result. If the IP address lookup failed, <see langword="null" /> is returned.
+		/// </summary>
+		/// <param name="ipAddress">An <see cref="IPAddress" /> object to perform the lookup on.</param>
+		/// <returns>
+		/// The <see cref="GeoIPCountry" /> object as the result, or <see langword="null" />, if the IP address lookup failed.
+		/// </returns>
+		public static GeoIPCountry Lookup(IPAddress ipAddress)
 		{
 			if (ipAddress.AddressFamily == AddressFamily.InterNetwork)
 			{
@@ -67,10 +70,7 @@ namespace BytecodeApi.GeoIP
 					{
 						if (address >= range.From && address <= range.To)
 						{
-							country = range.Country;
-							isAnonymousProxy = range.IsAnonymousProxy;
-							isSatelliteProvider = range.IsSatelliteProvider;
-							return true;
+							return range.Country;
 						}
 					}
 				}
@@ -96,19 +96,13 @@ namespace BytecodeApi.GeoIP
 
 						if (found)
 						{
-							country = range.Country;
-							isAnonymousProxy = range.IsAnonymousProxy;
-							isSatelliteProvider = range.IsSatelliteProvider;
-							return true;
+							return range.Country;
 						}
 					}
 				}
 			}
 
-			isAnonymousProxy = false;
-			isSatelliteProvider = false;
-			country = null;
-			return false;
+			return null;
 		}
 	}
 }

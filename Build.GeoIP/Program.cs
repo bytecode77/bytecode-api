@@ -45,8 +45,6 @@ namespace Build.GeoIP
 						return new IPRange
 						{
 							Country = country,
-							IsAnonymousProxy = row[4].Int32Value.Value == 1,
-							IsSatelliteProvider = row[5].Int32Value.Value == 1,
 							From = from,
 							To = to
 						};
@@ -70,8 +68,6 @@ namespace Build.GeoIP
 						return new IPRange6
 						{
 							Country = country,
-							IsAnonymousProxy = row[4].Int32Value.Value == 1,
-							IsSatelliteProvider = row[5].Int32Value.Value == 1,
 							From = from,
 							To = to
 						};
@@ -108,14 +104,12 @@ namespace Build.GeoIP
 					foreach (IPRange range in ranges)
 					{
 						writer.Write(range.Country);
-						writer.Write((byte)((range.IsAnonymousProxy ? 1 : 0) | (range.IsSatelliteProvider ? 2 : 0)));
 						writer.Write(range.From);
 						writer.Write(range.To);
 					}
 					foreach (IPRange6 range in ranges6)
 					{
 						writer.Write(range.Country);
-						writer.Write((byte)((range.IsAnonymousProxy ? 1 : 0) | (range.IsSatelliteProvider ? 2 : 0)));
 						writer.Write(range.From);
 						writer.Write(range.To);
 					}

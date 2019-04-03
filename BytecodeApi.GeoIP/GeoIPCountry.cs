@@ -2,9 +2,20 @@
 
 namespace BytecodeApi.GeoIP
 {
+	/// <summary>
+	/// Represents a country with a name, an ISO code and related properties.
+	/// </summary>
 	public class GeoIPCountry : IEquatable<GeoIPCountry>
 	{
+		/// <summary>
+		/// Gets the name of the country.
+		/// <para>Example: United States</para>
+		/// </summary>
 		public string Name { get; private set; }
+		/// <summary>
+		/// Gets the continent name of the country.
+		/// <para>Example: North America</para>
+		/// </summary>
 		public string Continent { get; private set; }
 		/// <summary>
 		/// Gets the continent code of the country. This <see cref="string" /> is composed of two upper case characters.
@@ -21,7 +32,7 @@ namespace BytecodeApi.GeoIP
 		/// </summary>
 		public bool EuropeanUnion { get; private set; }
 
-		public GeoIPCountry(string name, string continent, string continentCode, string isoCode, bool europeanUnion)
+		internal GeoIPCountry(string name, string continent, string continentCode, string isoCode, bool europeanUnion)
 		{
 			Name = name;
 			Continent = continent;

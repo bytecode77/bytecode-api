@@ -43,7 +43,6 @@
     </Compile>
     <Compile Include="GeoIPLookup.cs" />
     <Compile Include="GeoIPCountry.cs" />
-    <Compile Include="GeoIPRangeBase.cs" />
     <Compile Include="GeoIPRange.cs" />
     <Compile Include="GeoIPRange6.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
