@@ -6,7 +6,6 @@ using System.Collections.Generic;
 
 namespace BytecodeApi
 {
-	//FEATURE: Create.Enumerable (similar to Create.Array)
 	/// <summary>
 	/// Provides support for creation and generation of generic objects.
 	/// </summary>

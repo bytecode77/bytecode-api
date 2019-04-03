@@ -91,11 +91,11 @@ namespace BytecodeApi.Cryptography
 									EncodeIntegerBigEndian(paramsWriter, key.Exponent);
 
 									EncodeLength(bitStringWriter, (int)paramsStream.Length);
-									bitStringWriter.Write(paramsStream.ToArray()); //REFACTOR: MemoryStream.WriteTo, ACO
+									paramsStream.WriteTo(bitStringStream);
 								}
 
 								EncodeLength(innerWriter, (int)bitStringStream.Length);
-								innerWriter.Write(bitStringStream.ToArray());
+								bitStringStream.WriteTo(innerStream);
 							}
 						}
 						else if (keyType == AsymmetricKeyType.Private)
@@ -116,7 +116,7 @@ namespace BytecodeApi.Cryptography
 						}
 
 						EncodeLength(writer, (int)innerStream.Length);
-						writer.Write(innerStream.ToArray());
+						innerStream.WriteTo(memoryStream);
 					}
 				}
 
