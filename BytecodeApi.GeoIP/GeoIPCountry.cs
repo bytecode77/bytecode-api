@@ -6,8 +6,19 @@ namespace BytecodeApi.GeoIP
 	{
 		public string Name { get; private set; }
 		public string Continent { get; private set; }
+		/// <summary>
+		/// Gets the continent code of the country. This <see cref="string" /> is composed of two upper case characters.
+		/// <para>Example: EU</para>
+		/// </summary>
 		public string ContinentCode { get; private set; }
+		/// <summary>
+		/// Gets the ISO code of the country. This <see cref="string" /> is composed of two upper case characters.
+		/// <para>Example: US</para>
+		/// </summary>
 		public string IsoCode { get; private set; }
+		/// <summary>
+		/// Gets a value indicating whether the country is in the european union.
+		/// </summary>
 		public bool EuropeanUnion { get; private set; }
 
 		public GeoIPCountry(string name, string continent, string continentCode, string isoCode, bool europeanUnion)

@@ -1,8 +1,7 @@
 ﻿namespace Build.GeoIP.Data
 {
-	public class IPRange
+	public sealed class IPRange : IPRangeBase
 	{
-		public byte Country;
 		public uint From;
 		public uint To;
 	}

@@ -30,11 +30,21 @@ namespace BytecodeApi.GeoIP
 				}
 				for (int i = 0; i < Ranges.Length; i++)
 				{
-					Ranges[i] = new GeoIPRange(countries[reader.ReadByte()], reader.ReadUInt32(), reader.ReadUInt32());
+					byte country = reader.ReadByte();
+					byte flags = reader.ReadByte();
+					uint from = reader.ReadUInt32();
+					uint to = reader.ReadUInt32();
+
+					Ranges[i] = new GeoIPRange(countries[country], (flags & 1) == 1, (flags & 2) == 2, from, to);
 				}
 				for (int i = 0; i < Ranges6.Length; i++)
 				{
-					Ranges6[i] = new GeoIPRange6(countries[reader.ReadByte()], reader.ReadBytes(16), reader.ReadBytes(16));
+					byte country = reader.ReadByte();
+					byte flags = reader.ReadByte();
+					byte[] from = reader.ReadBytes(16);
+					byte[] to = reader.ReadBytes(16);
+
+					Ranges6[i] = new GeoIPRange6(countries[country], (flags & 1) == 1, (flags & 2) == 2, from, to);
 				}
 
 				Countries = countries.ToReadOnlyCollection();
@@ -42,7 +52,8 @@ namespace BytecodeApi.GeoIP
 				string ReadTwoCharacterCode() => new[] { (char)reader.ReadByte(), (char)reader.ReadByte() }.AsString();
 			}
 		}
-		public static GeoIPCountry GetCountry(IPAddress ipAddress)
+
+		public static bool Lookup(IPAddress ipAddress, out GeoIPCountry country, out bool isAnonymousProxy, out bool isSatelliteProvider)
 		{
 			if (ipAddress.AddressFamily == AddressFamily.InterNetwork)
 			{
@@ -54,7 +65,13 @@ namespace BytecodeApi.GeoIP
 
 					foreach (GeoIPRange range in Ranges)
 					{
-						if (address >= range.From && address <= range.To) return range.Country;
+						if (address >= range.From && address <= range.To)
+						{
+							country = range.Country;
+							isAnonymousProxy = range.IsAnonymousProxy;
+							isSatelliteProvider = range.IsSatelliteProvider;
+							return true;
+						}
 					}
 				}
 			}
@@ -77,12 +94,21 @@ namespace BytecodeApi.GeoIP
 							};
 						}
 
-						if (found) return range.Country;
+						if (found)
+						{
+							country = range.Country;
+							isAnonymousProxy = range.IsAnonymousProxy;
+							isSatelliteProvider = range.IsSatelliteProvider;
+							return true;
+						}
 					}
 				}
 			}
 
-			return null;
+			isAnonymousProxy = false;
+			isSatelliteProvider = false;
+			country = null;
+			return false;
 		}
 	}
 }

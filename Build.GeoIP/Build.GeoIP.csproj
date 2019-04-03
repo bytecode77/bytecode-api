@@ -41,6 +41,7 @@
     <Compile Include="Data\IPRange.cs" />
     <Compile Include="Data\IPRange6.cs" />
     <Compile Include="Data\Country.cs" />
+    <Compile Include="Data\IPRangeBase.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>
   <ItemGroup>
