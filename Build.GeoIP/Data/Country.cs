@@ -3,7 +3,10 @@
 	public class Country
 	{
 		public int ID;
-		public string Flag;
 		public string Name;
+		public string Continent;
+		public string ContinentCode;
+		public string IsoCode;
+		public bool EuropeanUnion;
 	}
 }

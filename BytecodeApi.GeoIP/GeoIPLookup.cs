@@ -2,6 +2,7 @@
 using BytecodeApi.GeoIP.Properties;
 using BytecodeApi.IO;
 using System;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
@@ -11,33 +12,37 @@ namespace BytecodeApi.GeoIP
 {
 	public static class GeoIPLookup
 	{
-		private static readonly GeoIPCountry[] Countries;
 		private static readonly GeoIPRange[] Ranges;
 		private static readonly GeoIPRange6[] Ranges6;
+		public static ReadOnlyCollection<GeoIPCountry> Countries { get; private set; }
 
 		static GeoIPLookup()
 		{
 			using (BinaryReader reader = new BinaryReader(new MemoryStream(Compression.Decompress(Resources.GeoIP)), Encoding.UTF8))
 			{
-				Countries = new GeoIPCountry[reader.ReadByte()];
+				GeoIPCountry[] countries = new GeoIPCountry[reader.ReadByte()];
 				Ranges = new GeoIPRange[reader.ReadInt32()];
 				Ranges6 = new GeoIPRange6[reader.ReadInt32()];
 
-				for (int i = 0; i < Countries.Length; i++)
+				for (int i = 0; i < countries.Length; i++)
 				{
-					Countries[i] = new GeoIPCountry(new[] { (char)reader.ReadByte(), (char)reader.ReadByte() }.AsString(), reader.ReadString());
+					countries[i] = new GeoIPCountry(reader.ReadString(), reader.ReadString(), ReadTwoCharacterCode(), ReadTwoCharacterCode(), reader.ReadBoolean());
 				}
 				for (int i = 0; i < Ranges.Length; i++)
 				{
-					Ranges[i] = new GeoIPRange(Countries[reader.ReadByte()], reader.ReadUInt32(), reader.ReadUInt32());
+					Ranges[i] = new GeoIPRange(countries[reader.ReadByte()], reader.ReadUInt32(), reader.ReadUInt32());
 				}
 				for (int i = 0; i < Ranges6.Length; i++)
 				{
-					Ranges6[i] = new GeoIPRange6(Countries[reader.ReadByte()], reader.ReadBytes(16), reader.ReadBytes(16));
+					Ranges6[i] = new GeoIPRange6(countries[reader.ReadByte()], reader.ReadBytes(16), reader.ReadBytes(16));
 				}
+
+				Countries = countries.ToReadOnlyCollection();
+
+				string ReadTwoCharacterCode() => new[] { (char)reader.ReadByte(), (char)reader.ReadByte() }.AsString();
 			}
 		}
-		public static GeoIPCountry Lookup(IPAddress ipAddress)
+		public static GeoIPCountry GetCountry(IPAddress ipAddress)
 		{
 			if (ipAddress.AddressFamily == AddressFamily.InterNetwork)
 			{

@@ -16,14 +16,17 @@ namespace Build.GeoIP
 		{
 			Country[] countries = CsvFile
 				.EnumerateFile(@"..\..\..\!Docs\GeoIP\GeoLite2-Country-Locations-en.csv", ",", true)
-				.Where(row => row[4].Value != "" && row[5].Value != "")
+				.Where(row => row[5].Value != "")
 				.Select(row =>
 				{
 					return new Country
 					{
 						ID = Convert.ToInt32(row[0].Value),
-						Flag = row[4].Value.ToUpper(),
-						Name = row[5].Value
+						Name = row[5].Value,
+						Continent = row[3].Value,
+						ContinentCode = row[2].Value,
+						IsoCode = row[4].Value.ToUpper(),
+						EuropeanUnion = row[6].Int32Value.Value == 1
 					};
 				})
 				.OrderBy(country => country.Name, StringComparer.OrdinalIgnoreCase)
@@ -87,11 +90,16 @@ namespace Build.GeoIP
 
 					foreach (Country country in countries)
 					{
-						if (country.Flag.Length != 2 || country.Flag[0] > byte.MaxValue || country.Flag[1] > byte.MaxValue) throw new FormatException("Country flag must be composed of two ANSI characters.");
+						if (country.IsoCode.Length != 2 || country.IsoCode[0] > byte.MaxValue || country.IsoCode[1] > byte.MaxValue) throw new FormatException("Country ISO code must be composed of two ANSI characters.");
+						if (country.ContinentCode.Length != 2 || country.ContinentCode[0] > byte.MaxValue || country.ContinentCode[1] > byte.MaxValue) throw new FormatException("Country continent code must be composed of two ANSI characters.");
 
-						writer.Write((byte)country.Flag[0]);
-						writer.Write((byte)country.Flag[1]);
 						writer.Write(country.Name);
+						writer.Write(country.Continent);
+						writer.Write((byte)country.ContinentCode[0]);
+						writer.Write((byte)country.ContinentCode[1]);
+						writer.Write((byte)country.IsoCode[0]);
+						writer.Write((byte)country.IsoCode[1]);
+						writer.Write(country.EuropeanUnion);
 					}
 					foreach (IPRange range in ranges)
 					{
