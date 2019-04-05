@@ -78,7 +78,6 @@
     <Compile Include="Converters\ObjectIsNullToBooleanConverter.cs" />
     <Compile Include="Converters\ObjectIsNullToGridLengthConverter.cs" />
     <Compile Include="Converters\ObjectIsNullToVisibilityConverter.cs" />
-    <Compile Include="Converters\ObjectToHashConverter.cs" />
     <Compile Include="Converters\ObjectToImageSourceConverter.cs" />
     <Compile Include="Converters\PathToDirectoryNameConverter.cs" />
     <Compile Include="Converters\PathToFileNameConverter.cs" />
@@ -136,10 +135,6 @@
     <Compile Include="UITreeType.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BytecodeApi.Cryptography\BytecodeApi.Cryptography.csproj">
-      <Project>{19125b4e-9b75-49f4-a3c2-b6dfd51e2aea}</Project>
-      <Name>BytecodeApi.Cryptography</Name>
-    </ProjectReference>
     <ProjectReference Include="..\BytecodeApi\BytecodeApi.csproj">
       <Project>{ea00307e-ce27-4a53-b7db-052181e1c24c}</Project>
       <Name>BytecodeApi</Name>
