@@ -23,26 +23,22 @@ namespace Build.GeoIP
 			using (MemoryStream memoryStream = new MemoryStream(HttpClient.Default.GetBytes("https://geolite.maxmind.com/download/geoip/database/GeoLite2-Country-CSV.zip")))
 			using (ZipArchive archive = new ZipArchive(memoryStream, ZipArchiveMode.Read))
 			{
-				//CURRENT: dynamic version:
-				countryCsv = archive.GetEntry(@"GeoLite2-Country-CSV_20190402/GeoLite2-Country-Locations-en.csv").GetContent();
-				rangeCsv = archive.GetEntry(@"GeoLite2-Country-CSV_20190402/GeoLite2-Country-Blocks-IPv4.csv").GetContent();
-				range6Csv = archive.GetEntry(@"GeoLite2-Country-CSV_20190402/GeoLite2-Country-Blocks-IPv6.csv").GetContent();
+				countryCsv = archive.Entries.First(entry => entry.Name == "GeoLite2-Country-Locations-en.csv").GetContent();
+				rangeCsv = archive.Entries.First(entry => entry.Name == "GeoLite2-Country-Blocks-IPv4.csv").GetContent();
+				range6Csv = archive.Entries.First(entry => entry.Name == "GeoLite2-Country-Blocks-IPv6.csv").GetContent();
 			}
 
 			Country[] countries = CsvFile
 				.EnumerateBinary(countryCsv, ",", true, false, Encoding.UTF8)
 				.Where(row => row[5].Value != "")
-				.Select(row =>
+				.Select(row => new Country
 				{
-					return new Country
-					{
-						ID = Convert.ToInt32(row[0].Value),
-						Name = row[5].Value,
-						Continent = row[3].Value,
-						ContinentCode = row[2].Value.ToUpper(),
-						IsoCode = row[4].Value.ToUpper(),
-						EuropeanUnion = row[6].Int32Value.Value == 1
-					};
+					ID = Convert.ToInt32(row[0].Value),
+					Name = row[5].Value,
+					Continent = row[3].Value,
+					ContinentCode = row[2].Value.ToUpper(),
+					IsoCode = row[4].Value.ToUpper(),
+					EuropeanUnion = row[6].Int32Value.Value == 1
 				})
 				.OrderBy(country => country.Name, StringComparer.OrdinalIgnoreCase)
 				.ToArray();
