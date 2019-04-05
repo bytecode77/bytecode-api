@@ -1,6 +1,6 @@
 ﻿namespace Build.GeoIP.Data
 {
-	public class Country
+	public sealed class Country
 	{
 		public int ID;
 		public string Name;

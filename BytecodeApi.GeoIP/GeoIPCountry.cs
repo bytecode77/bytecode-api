@@ -5,7 +5,7 @@ namespace BytecodeApi.GeoIP
 	/// <summary>
 	/// Represents a country with a name, an ISO code and related properties.
 	/// </summary>
-	public class GeoIPCountry : IEquatable<GeoIPCountry>
+	public sealed class GeoIPCountry : IEquatable<GeoIPCountry>
 	{
 		/// <summary>
 		/// Gets the name of the country.

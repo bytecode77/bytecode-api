@@ -2,8 +2,10 @@ using Build.GeoIP.Data;
 using BytecodeApi.Extensions;
 using BytecodeApi.FileFormats.Csv;
 using BytecodeApi.IO;
+using BytecodeApi.IO.Http;
 using System;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -14,8 +16,21 @@ namespace Build.GeoIP
 	{
 		public static void Main(string[] args)
 		{
+			byte[] countryCsv;
+			byte[] rangeCsv;
+			byte[] range6Csv;
+
+			using (MemoryStream memoryStream = new MemoryStream(HttpClient.Default.GetBytes("https://geolite.maxmind.com/download/geoip/database/GeoLite2-Country-CSV.zip")))
+			using (ZipArchive archive = new ZipArchive(memoryStream, ZipArchiveMode.Read))
+			{
+				//CURRENT: dynamic version:
+				countryCsv = archive.GetEntry(@"GeoLite2-Country-CSV_20190402/GeoLite2-Country-Locations-en.csv").GetContent();
+				rangeCsv = archive.GetEntry(@"GeoLite2-Country-CSV_20190402/GeoLite2-Country-Blocks-IPv4.csv").GetContent();
+				range6Csv = archive.GetEntry(@"GeoLite2-Country-CSV_20190402/GeoLite2-Country-Blocks-IPv6.csv").GetContent();
+			}
+
 			Country[] countries = CsvFile
-				.EnumerateFile(@"..\..\..\!Docs\GeoIP\GeoLite2-Country-Locations-en.csv", ",", true)
+				.EnumerateBinary(countryCsv, ",", true, false, Encoding.UTF8)
 				.Where(row => row[5].Value != "")
 				.Select(row =>
 				{
@@ -34,7 +49,8 @@ namespace Build.GeoIP
 
 			if (countries.Length > 256) throw new OverflowException("The limit of 256 countries has been exceeded.");
 
-			IPRange[] ranges = CsvFile.EnumerateFile(@"..\..\..\!Docs\GeoIP\GeoLite2-Country-Blocks-IPv4.csv", ",", true)
+			IPRange[] ranges = CsvFile
+				.EnumerateBinary(rangeCsv, ",", true, false, Encoding.UTF8)
 				.Where(row => row[1].Value != "")
 				.Select(row =>
 				{
@@ -57,7 +73,8 @@ namespace Build.GeoIP
 				.ExceptNull()
 				.ToArray();
 
-			IPRange6[] ranges6 = CsvFile.EnumerateFile(@"..\..\..\!Docs\GeoIP\GeoLite2-Country-Blocks-IPv6.csv", ",", true)
+			IPRange6[] ranges6 = CsvFile
+				.EnumerateBinary(range6Csv, ",", true, false, Encoding.UTF8)
 				.Where(row => row[1].Value != "")
 				.Select(row =>
 				{
@@ -115,7 +132,7 @@ namespace Build.GeoIP
 					}
 				}
 
-				File.WriteAllBytes(@"..\..\..\!Docs\GeoIP\GeoIP.db", Compression.Compress(memoryStream.ToArray()));
+				File.WriteAllBytes(@"..\..\..\BytecodeApi.GeoIP\Resources\GeoIP.db", Compression.Compress(memoryStream.ToArray()));
 			}
 
 			bool GetCountryByID(int id, out byte countryID)
