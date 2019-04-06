@@ -399,7 +399,7 @@ namespace BytecodeApi.FileFormats.Coff
 					}
 					else
 					{
-						throw Throw.InvalidOperation("The optional header must be a " + nameof(ImageOptionalHeader32) + " or " + nameof(ImageOptionalHeader64) + " object.");
+						throw Throw.InvalidOperation("Optional header type not recognized.");
 					}
 
 					// Data Directories
