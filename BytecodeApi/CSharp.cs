@@ -72,7 +72,7 @@ namespace BytecodeApi
 		/// </returns>
 		public static T CastOrDefault<T>(object obj)
 		{
-			return obj is T castedObject ? castedObject : default(T);
+			return obj is T castedObject ? castedObject : default;
 		}
 		/// <summary>
 		/// Exchanges the references of two <see cref="object" /> instances.
@@ -151,7 +151,7 @@ namespace BytecodeApi
 		/// </returns>
 		public static T Try<T>(Func<T> func)
 		{
-			return Try(func, default(T));
+			return Try(func, default);
 		}
 		/// <summary>
 		/// Invokes a <see cref="Func{TResult}" /> and handles any exception. Returns the result of <paramref name="func" /> on successful execution and <paramref name="defaultValue" />, if an exception was thrown.
@@ -395,7 +395,7 @@ namespace BytecodeApi
 		{
 			if (obj is FrameworkElement frameworkElement && frameworkElement.DataContext is T dataContext1) return dataContext1;
 			else if (obj is FrameworkContentElement frameworkContentElement && frameworkContentElement.DataContext is T dataContext2) return dataContext2;
-			else return default(T);
+			else return default;
 		}
 	}
 }

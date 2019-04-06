@@ -60,7 +60,7 @@ namespace BytecodeApi
 		public void Invalidate()
 		{
 			HasValue = false;
-			Value = default(T);
+			Value = default;
 			LastAssignment = DateTime.MinValue;
 		}
 		/// <summary>
