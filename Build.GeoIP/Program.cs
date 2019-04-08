@@ -55,9 +55,9 @@ namespace Build.GeoIP
 				.Select(row =>
 				{
 					string isoCode = row[4].Value.ToUpper();
-					string continentCode = row[2].Value.ToUpper();
+					string continentIsoCode = row[2].Value.ToUpper();
 					if (isoCode.Length != 2 || isoCode[0] > byte.MaxValue || isoCode[1] > byte.MaxValue) throw new FormatException("Country ISO code must be composed of two ANSI characters.");
-					if (continentCode.Length != 2 || continentCode[0] > byte.MaxValue || continentCode[1] > byte.MaxValue) throw new FormatException("Country continent code must be composed of two ANSI characters.");
+					if (continentIsoCode.Length != 2 || continentIsoCode[0] > byte.MaxValue || continentIsoCode[1] > byte.MaxValue) throw new FormatException("Country continent code must be composed of two ANSI characters.");
 
 					return new Country
 					{
@@ -65,7 +65,7 @@ namespace Build.GeoIP
 						Name = row[5].Value,
 						IsoCode = isoCode,
 						Continent = row[3].Value,
-						ContinentCode = continentCode,
+						ContinentIsoCode = continentIsoCode,
 						EuropeanUnion = row[6].Int32Value.Value == 1
 					};
 				})
@@ -212,6 +212,10 @@ namespace Build.GeoIP
 					return new CityRange
 					{
 						CityIndex = GetCityIndex(row[1].Int32Value.Value),
+						PostalCode = row[6].Value,
+						Latitude = row[7].Value.ToSingleOrNull().Value,
+						Longitude = row[8].Value.ToSingleOrNull().Value,
+						AccuracyRadius = Convert.ToInt16(row[9].Int32Value.Value),
 						From = from,
 						To = to
 					};
@@ -228,6 +232,10 @@ namespace Build.GeoIP
 					return new CityRange6
 					{
 						CityIndex = GetCityIndex(row[1].Int32Value.Value),
+						PostalCode = row[6].Value,
+						Latitude = row[7].Value.ToSingleOrNull().Value,
+						Longitude = row[8].Value.ToSingleOrNull().Value,
+						AccuracyRadius = Convert.ToInt16(row[9].Int32Value.Value),
 						From = from,
 						To = to
 					};
@@ -261,8 +269,8 @@ namespace Build.GeoIP
 						writer.Write((byte)country.IsoCode[0]);
 						writer.Write((byte)country.IsoCode[1]);
 						writer.Write(country.Continent);
-						writer.Write((byte)country.ContinentCode[0]);
-						writer.Write((byte)country.ContinentCode[1]);
+						writer.Write((byte)country.ContinentIsoCode[0]);
+						writer.Write((byte)country.ContinentIsoCode[1]);
 						writer.Write(country.EuropeanUnion);
 					}
 					foreach (IPRange range in IPRanges)
@@ -346,12 +354,20 @@ namespace Build.GeoIP
 					foreach (CityRange range in CityRanges)
 					{
 						writer.Write(range.CityIndex);
+						writer.Write(range.PostalCode);
+						writer.Write(range.Latitude);
+						writer.Write(range.Longitude);
+						writer.Write(range.AccuracyRadius);
 						writer.Write(range.From);
 						writer.Write(range.To);
 					}
 					foreach (CityRange6 range in CityRanges6)
 					{
 						writer.Write(range.CityIndex);
+						writer.Write(range.PostalCode);
+						writer.Write(range.Latitude);
+						writer.Write(range.Longitude);
+						writer.Write(range.AccuracyRadius);
 						writer.Write(range.From);
 						writer.Write(range.To);
 					}

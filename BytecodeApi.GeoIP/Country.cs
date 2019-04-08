@@ -26,18 +26,18 @@ namespace BytecodeApi.GeoIP
 		/// Gets the continent code of the country. This <see cref="string" /> is composed of two upper case characters.
 		/// <para>Example: EU</para>
 		/// </summary>
-		public string ContinentCode { get; private set; }
+		public string ContinentIsoCode { get; private set; }
 		/// <summary>
 		/// Gets a value indicating whether the country is in the european union.
 		/// </summary>
 		public bool EuropeanUnion { get; private set; }
 
-		internal Country(string name, string isoCode, string continent, string continentCode, bool europeanUnion)
+		internal Country(string name, string isoCode, string continent, string continentIsoCode, bool europeanUnion)
 		{
 			Name = name;
 			IsoCode = isoCode;
 			Continent = continent;
-			ContinentCode = continentCode;
+			ContinentIsoCode = continentIsoCode;
 			EuropeanUnion = europeanUnion;
 		}
 

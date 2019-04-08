@@ -18,7 +18,7 @@ namespace BytecodeApi.Extensions
 		/// </returns>
 		public static bool ToBooleanOrDefault(this string str)
 		{
-			return str.ToBooleanOrDefault(default(bool));
+			return str.ToBooleanOrDefault(default);
 		}
 		/// <summary>
 		/// Tries to convert this <see cref="string" /> to an equivalent <see cref="bool" /> value or returns <paramref name="defaultValue" />, if conversion failed.
@@ -55,7 +55,7 @@ namespace BytecodeApi.Extensions
 		/// </returns>
 		public static byte ToByteOrDefault(this string str)
 		{
-			return str.ToByteOrDefault(default(byte));
+			return str.ToByteOrDefault(default);
 		}
 		/// <summary>
 		/// Tries to convert this <see cref="string" /> to an equivalent <see cref="byte" /> value or returns <paramref name="defaultValue" />, if conversion failed.
@@ -92,7 +92,7 @@ namespace BytecodeApi.Extensions
 		/// </returns>
 		public static sbyte ToSByteOrDefault(this string str)
 		{
-			return str.ToSByteOrDefault(default(sbyte));
+			return str.ToSByteOrDefault(default);
 		}
 		/// <summary>
 		/// Tries to convert this <see cref="string" /> to an equivalent <see cref="sbyte" /> value or returns <paramref name="defaultValue" />, if conversion failed.
@@ -129,7 +129,7 @@ namespace BytecodeApi.Extensions
 		/// </returns>
 		public static char ToCharOrDefault(this string str)
 		{
-			return str.ToCharOrDefault(default(char));
+			return str.ToCharOrDefault(default);
 		}
 		/// <summary>
 		/// Tries to convert this <see cref="string" /> to an equivalent <see cref="char" /> value or returns <paramref name="defaultValue" />, if conversion failed.
@@ -166,7 +166,7 @@ namespace BytecodeApi.Extensions
 		/// </returns>
 		public static decimal ToDecimalOrDefault(this string str)
 		{
-			return str.ToDecimalOrDefault(default(decimal));
+			return str.ToDecimalOrDefault(default);
 		}
 		/// <summary>
 		/// Tries to convert this <see cref="string" /> to an equivalent <see cref="decimal" /> value or returns <paramref name="defaultValue" />, if conversion failed.
@@ -191,7 +191,7 @@ namespace BytecodeApi.Extensions
 		/// </returns>
 		public static decimal? ToDecimalOrNull(this string str)
 		{
-			return decimal.TryParse(str, out decimal result) ? (decimal?)result : null;
+			return decimal.TryParse(str, NumberStyles.Float, CultureInfo.InvariantCulture, out decimal result) ? (decimal?)result : null;
 		}
 		/// <summary>
 		/// Tries to convert this <see cref="string" /> to an equivalent <see cref="double" /> value or returns 0.0 if conversion failed.
@@ -203,7 +203,7 @@ namespace BytecodeApi.Extensions
 		/// </returns>
 		public static double ToDoubleOrDefault(this string str)
 		{
-			return str.ToDoubleOrDefault(default(double));
+			return str.ToDoubleOrDefault(default);
 		}
 		/// <summary>
 		/// Tries to convert this <see cref="string" /> to an equivalent <see cref="double" /> value or returns <paramref name="defaultValue" />, if conversion failed.
@@ -228,7 +228,7 @@ namespace BytecodeApi.Extensions
 		/// </returns>
 		public static double? ToDoubleOrNull(this string str)
 		{
-			return double.TryParse(str, out double result) ? (double?)result : null;
+			return double.TryParse(str, NumberStyles.Float, CultureInfo.InvariantCulture, out double result) ? (double?)result : null;
 		}
 		/// <summary>
 		/// Tries to convert this <see cref="string" /> to an equivalent <see cref="float" /> value or returns 0.0f if conversion failed.
@@ -240,7 +240,7 @@ namespace BytecodeApi.Extensions
 		/// </returns>
 		public static float ToSingleOrDefault(this string str)
 		{
-			return str.ToSingleOrDefault(default(float));
+			return str.ToSingleOrDefault(default);
 		}
 		/// <summary>
 		/// Tries to convert this <see cref="string" /> to an equivalent <see cref="float" /> value or returns <paramref name="defaultValue" />, if conversion failed.
@@ -265,7 +265,7 @@ namespace BytecodeApi.Extensions
 		/// </returns>
 		public static float? ToSingleOrNull(this string str)
 		{
-			return float.TryParse(str, out float result) ? (float?)result : null;
+			return float.TryParse(str, NumberStyles.Float, CultureInfo.InvariantCulture, out float result) ? (float?)result : null;
 		}
 		/// <summary>
 		/// Tries to convert this <see cref="string" /> to an equivalent <see cref="int" /> value or returns 0 if conversion failed.
@@ -277,7 +277,7 @@ namespace BytecodeApi.Extensions
 		/// </returns>
 		public static int ToInt32OrDefault(this string str)
 		{
-			return str.ToInt32OrDefault(default(int));
+			return str.ToInt32OrDefault(default);
 		}
 		/// <summary>
 		/// Tries to convert this <see cref="string" /> to an equivalent <see cref="int" /> value or returns <paramref name="defaultValue" />, if conversion failed.
@@ -314,7 +314,7 @@ namespace BytecodeApi.Extensions
 		/// </returns>
 		public static uint ToUInt32OrDefault(this string str)
 		{
-			return str.ToUInt32OrDefault(default(uint));
+			return str.ToUInt32OrDefault(default);
 		}
 		/// <summary>
 		/// Tries to convert this <see cref="string" /> to an equivalent <see cref="uint" /> value or returns <paramref name="defaultValue" />, if conversion failed.
@@ -351,7 +351,7 @@ namespace BytecodeApi.Extensions
 		/// </returns>
 		public static long ToInt64OrDefault(this string str)
 		{
-			return str.ToInt64OrDefault(default(long));
+			return str.ToInt64OrDefault(default);
 		}
 		/// <summary>
 		/// Tries to convert this <see cref="string" /> to an equivalent <see cref="long" /> value or returns <paramref name="defaultValue" />, if conversion failed.
@@ -388,7 +388,7 @@ namespace BytecodeApi.Extensions
 		/// </returns>
 		public static ulong ToUInt64OrDefault(this string str)
 		{
-			return str.ToUInt64OrDefault(default(ulong));
+			return str.ToUInt64OrDefault(default);
 		}
 		/// <summary>
 		/// Tries to convert this <see cref="string" /> to an equivalent <see cref="ulong" /> value or returns <paramref name="defaultValue" />, if conversion failed.
@@ -425,7 +425,7 @@ namespace BytecodeApi.Extensions
 		/// </returns>
 		public static short ToInt16OrDefault(this string str)
 		{
-			return str.ToInt16OrDefault(default(short));
+			return str.ToInt16OrDefault(default);
 		}
 		/// <summary>
 		/// Tries to convert this <see cref="string" /> to an equivalent <see cref="short" /> value or returns <paramref name="defaultValue" />, if conversion failed.
@@ -462,7 +462,7 @@ namespace BytecodeApi.Extensions
 		/// </returns>
 		public static ushort ToUInt16OrDefault(this string str)
 		{
-			return str.ToUInt16OrDefault(default(ushort));
+			return str.ToUInt16OrDefault(default);
 		}
 		/// <summary>
 		/// Tries to convert this <see cref="string" /> to an equivalent <see cref="ushort" /> value or returns <paramref name="defaultValue" />, if conversion failed.

@@ -40,9 +40,9 @@ namespace UnitTest
 		public void BytecodeApi_GeoIP_DatabaseUpToDate()
 		{
 			// GeoLite2 database is updated on a monthly basis. If this test fails, Build.GeoIP needs to be run.
-			Assert.AreEqual("d1b05e69850da8c39d8287551f29755f", HttpClient.Default.GetString("https://geolite.maxmind.com/download/geoip/database/GeoLite2-Country-CSV.zip.md5"));
+			Assert.AreEqual("4650a9d82c6ad9804c17a66e8826a0a0", HttpClient.Default.GetString("https://geolite.maxmind.com/download/geoip/database/GeoLite2-Country-CSV.zip.md5"));
 			Assert.AreEqual("4dc33cbfab9b2c51d570691805cf7862", HttpClient.Default.GetString("https://geolite.maxmind.com/download/geoip/database/GeoLite2-ASN-CSV.zip.md5"));
-			Assert.AreEqual("d5ad69f4fe1ddf1dfd18929c6a1dc035", HttpClient.Default.GetString("https://geolite.maxmind.com/download/geoip/database/GeoLite2-ASN-CSV.zip"));
+			Assert.AreEqual("4dc33cbfab9b2c51d570691805cf7862", HttpClient.Default.GetString("https://geolite.maxmind.com/download/geoip/database/GeoLite2-ASN-CSV.zip.md5"));
 		}
 	}
 }

@@ -36,11 +36,11 @@ namespace BytecodeApi.GeoIP.City
 				}
 				for (int i = 0; i < Ranges.Length; i++)
 				{
-					Ranges[i] = new CityRange(cities[reader.ReadInt32()], reader.ReadUInt32(), reader.ReadUInt32());
+					Ranges[i] = new CityRange(cities[reader.ReadInt32()], reader.ReadString().ToNullIfEmpty(), reader.ReadSingle(), reader.ReadSingle(), reader.ReadInt16(), reader.ReadUInt32(), reader.ReadUInt32());
 				}
 				for (int i = 0; i < Ranges6.Length; i++)
 				{
-					Ranges6[i] = new CityRange6(cities[reader.ReadInt32()], reader.ReadBytes(16), reader.ReadBytes(16));
+					Ranges6[i] = new CityRange6(cities[reader.ReadInt32()], reader.ReadString().ToNullIfEmpty(), reader.ReadSingle(), reader.ReadSingle(), reader.ReadInt16(), reader.ReadBytes(16), reader.ReadBytes(16));
 				}
 
 				Cities = cities.ToReadOnlyCollection();
@@ -48,13 +48,13 @@ namespace BytecodeApi.GeoIP.City
 		}
 
 		/// <summary>
-		/// Performs a GeoIP city lookup on an IPv4 or IPv6 address and returns the <see cref="City" /> object as the result. If the IP address lookup failed, <see langword="null" /> is returned.
+		/// Performs a GeoIP city lookup on an IPv4 or IPv6 address and returns the <see cref="CityLookupResult" /> object as the result. If the IP address lookup failed, <see langword="null" /> is returned.
 		/// </summary>
 		/// <param name="ipAddress">An <see cref="IPAddress" /> object to perform the lookup on.</param>
 		/// <returns>
-		/// The <see cref="City" /> object as the result, or <see langword="null" />, if the IP address lookup failed.
+		/// The <see cref="CityLookupResult" /> object as the result, or <see langword="null" />, if the IP address lookup failed.
 		/// </returns>
-		public static City Lookup(IPAddress ipAddress)
+		public static CityLookupResult Lookup(IPAddress ipAddress)
 		{
 			Check.ArgumentNull(ipAddress, nameof(ipAddress));
 
@@ -64,7 +64,7 @@ namespace BytecodeApi.GeoIP.City
 				{
 					if (address >= range.From && address <= range.To)
 					{
-						return range.City;
+						return new CityLookupResult(range.City, range.PostalCode, range.Latitude, range.Longitude, range.AccuracyRadius);
 					}
 				}
 			}
@@ -83,7 +83,7 @@ namespace BytecodeApi.GeoIP.City
 						}
 					}
 
-					if (found) return range.City;
+					if (found) return new CityLookupResult(range.City, range.PostalCode, range.Latitude, range.Longitude, range.AccuracyRadius);
 				}
 			}
 
