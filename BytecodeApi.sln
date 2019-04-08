@@ -32,6 +32,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BytecodeApi.GeoIP", "Byteco
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest", "UnitTest\UnitTest.csproj", "{A3C1288D-B08D-40EC-AC60-3E70A34CB696}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BytecodeApi.GeoIP.ASN", "BytecodeApi.GeoIP.ASN\BytecodeApi.GeoIP.ASN.csproj", "{A36B92E7-6419-48FA-95D6-AC1B7855590D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -78,6 +80,10 @@ Global
 		{A3C1288D-B08D-40EC-AC60-3E70A34CB696}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A3C1288D-B08D-40EC-AC60-3E70A34CB696}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A3C1288D-B08D-40EC-AC60-3E70A34CB696}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A36B92E7-6419-48FA-95D6-AC1B7855590D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A36B92E7-6419-48FA-95D6-AC1B7855590D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A36B92E7-6419-48FA-95D6-AC1B7855590D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A36B92E7-6419-48FA-95D6-AC1B7855590D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

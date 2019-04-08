@@ -1,12 +1,12 @@
 ﻿namespace BytecodeApi.GeoIP
 {
-	internal sealed class GeoIPRange
+	internal sealed class IPRange
 	{
-		public readonly GeoIPCountry Country;
+		public readonly Country Country;
 		public readonly uint From;
 		public readonly uint To;
 
-		public GeoIPRange(GeoIPCountry country, uint from, uint to)
+		public IPRange(Country country, uint from, uint to)
 		{
 			Country = country;
 			From = from;

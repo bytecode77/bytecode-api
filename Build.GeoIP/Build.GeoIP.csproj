@@ -41,9 +41,12 @@
     <Reference Include="System.IO.Compression" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\AsnRange.cs" />
     <Compile Include="Data\IPRange.cs" />
+    <Compile Include="Data\AsnRange6.cs" />
     <Compile Include="Data\IPRange6.cs" />
     <Compile Include="Data\Country.cs" />
+    <Compile Include="Data\Asn.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>
   <ItemGroup>

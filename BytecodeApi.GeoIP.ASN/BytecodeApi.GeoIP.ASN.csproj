@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A3E69E94-20B1-4E18-B3E3-15E56A7F0288}</ProjectGuid>
+    <ProjectGuid>{A36B92E7-6419-48FA-95D6-AC1B7855590D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BytecodeApi.FileFormats</RootNamespace>
-    <AssemblyName>BytecodeApi.FileFormats</AssemblyName>
+    <RootNamespace>BytecodeApi.GeoIP.ASN</RootNamespace>
+    <AssemblyName>BytecodeApi.GeoIP.ASN</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -21,8 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\BytecodeApi.FileFormats.xml</DocumentationFile>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DocumentationFile>bin\Debug\BytecodeApi.GeoIP.ASN.xml</DocumentationFile>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -32,12 +31,10 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\BytecodeApi.FileFormats.xml</DocumentationFile>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DocumentationFile>bin\Release\BytecodeApi.GeoIP.ASN.xml</DocumentationFile>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
@@ -47,42 +44,25 @@
     <Compile Include="..\Global\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Coff\ImageCharacteristics.cs" />
-    <Compile Include="Coff\ImageCoffHeader.cs" />
-    <Compile Include="Coff\ImageDataDirectory.cs" />
-    <Compile Include="Coff\ImageDataDirectoryName.cs" />
-    <Compile Include="Coff\ImageDllCharacteristics.cs" />
-    <Compile Include="Coff\ImageDosHeader.cs" />
-    <Compile Include="Coff\ImageMachineType.cs" />
-    <Compile Include="Coff\ImageOptionalHeader.cs" />
-    <Compile Include="Coff\ImageOptionalHeader32.cs" />
-    <Compile Include="Coff\ImageOptionalHeader64.cs" />
-    <Compile Include="Coff\ImageSection.cs" />
-    <Compile Include="Coff\ImageSectionFlags.cs" />
-    <Compile Include="Coff\ImageSectionHeader.cs" />
-    <Compile Include="Coff\ImageSubsystem.cs" />
-    <Compile Include="Coff\PEImage.cs" />
-    <Compile Include="Coff\PEImageParseException.cs" />
-    <Compile Include="Csv\CsvCell.cs" />
-    <Compile Include="Csv\CsvFile.cs" />
-    <Compile Include="Csv\CsvRow.cs" />
-    <Compile Include="Csv\CsvRowCollection.cs" />
-    <Compile Include="Ini\IniFileFormattingOptions.cs" />
-    <Compile Include="Ini\IniPropertyDelimiter.cs" />
-    <Compile Include="Ini\IniDuplicatePropertyNameBehavior.cs" />
-    <Compile Include="Ini\IniDuplicateSectionNameBehavior.cs" />
-    <Compile Include="Ini\IniErrorLine.cs" />
-    <Compile Include="Ini\IniFile.cs" />
-    <Compile Include="Ini\IniFileParsingOptions.cs" />
-    <Compile Include="Ini\IniParsingException.cs" />
-    <Compile Include="Ini\IniProperty.cs" />
-    <Compile Include="Ini\IniPropertyCollection.cs" />
-    <Compile Include="Ini\IniSection.cs" />
-    <Compile Include="Ini\IniSectionCollection.cs" />
+    <Compile Include="Asn.cs" />
+    <Compile Include="AsnRange.cs" />
+    <Compile Include="AsnRange6.cs" />
+    <Compile Include="GeoIPAsnLookup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ResourceFile\ResourceEntry.cs" />
-    <Compile Include="ResourceFile\ResourceFileInfo.cs" />
-    <Compile Include="ResourceFile\ResourceType.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GeoIP.ASN.db" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BytecodeApi\BytecodeApi.csproj">

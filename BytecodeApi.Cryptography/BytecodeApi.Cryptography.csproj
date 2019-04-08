@@ -63,7 +63,6 @@
   <PropertyGroup>
     <PostBuildEvent>mkdir "$(SolutionDir)$Build" 2&gt;NUL
 xcopy /Y "$(TargetPath)" "$(SolutionDir)$Build" &gt; NUL
-xcopy /Y "$(TargetDir)$(TargetName).xml" "$(SolutionDir)$Build" &gt; NUL
-xcopy /Y "$(TargetDir)$(TargetName).pdb" "$(SolutionDir)$Build" &gt; NUL</PostBuildEvent>
+xcopy /Y "$(TargetDir)$(TargetName).xml" "$(SolutionDir)$Build" &gt; NUL</PostBuildEvent>
   </PropertyGroup>
 </Project>

@@ -5,7 +5,7 @@ namespace BytecodeApi.GeoIP
 	/// <summary>
 	/// Represents a country with a name, an ISO code and related properties.
 	/// </summary>
-	public sealed class GeoIPCountry : IEquatable<GeoIPCountry>
+	public sealed class Country : IEquatable<Country>
 	{
 		/// <summary>
 		/// Gets the name of the country.
@@ -32,7 +32,7 @@ namespace BytecodeApi.GeoIP
 		/// </summary>
 		public bool EuropeanUnion { get; private set; }
 
-		internal GeoIPCountry(string name, string continent, string continentCode, string isoCode, bool europeanUnion)
+		internal Country(string name, string continent, string continentCode, string isoCode, bool europeanUnion)
 		{
 			Name = name;
 			Continent = continent;
@@ -61,25 +61,25 @@ namespace BytecodeApi.GeoIP
 		/// </returns>
 		public override bool Equals(object obj)
 		{
-			return obj is GeoIPCountry country && Equals(country);
+			return obj is Country country && Equals(country);
 		}
 		/// <summary>
-		/// Determines whether this instance is equal to another <see cref="GeoIPCountry" />.
+		/// Determines whether this instance is equal to another <see cref="Country" />.
 		/// </summary>
-		/// <param name="other">The <see cref="GeoIPCountry" /> to compare to this instance.</param>
+		/// <param name="other">The <see cref="Country" /> to compare to this instance.</param>
 		/// <returns>
 		/// <see langword="true" />, if this instance is equal to the <paramref name="other" /> parameter;
 		/// otherwise, <see langword="false" />.
 		/// </returns>
-		public bool Equals(GeoIPCountry other)
+		public bool Equals(Country other)
 		{
 			return Name == other.Name;
 		}
 		/// <summary>
-		/// Returns a hash code for this <see cref="GeoIPCountry" />.
+		/// Returns a hash code for this <see cref="Country" />.
 		/// </summary>
 		/// <returns>
-		/// The hash code for this <see cref="GeoIPCountry" /> instance.
+		/// The hash code for this <see cref="Country" /> instance.
 		/// </returns>
 		public override int GetHashCode()
 		{
@@ -87,28 +87,28 @@ namespace BytecodeApi.GeoIP
 		}
 
 		/// <summary>
-		/// Compares two <see cref="GeoIPCountry" /> instances for equality.
+		/// Compares two <see cref="Country" /> instances for equality.
 		/// </summary>
-		/// <param name="a">The first <see cref="GeoIPCountry" /> to compare.</param>
-		/// <param name="b">The second <see cref="GeoIPCountry" /> to compare.</param>
+		/// <param name="a">The first <see cref="Country" /> to compare.</param>
+		/// <param name="b">The second <see cref="Country" /> to compare.</param>
 		/// <returns>
-		/// <see langword="true" />, if both <see cref="GeoIPCountry" /> are equal;
+		/// <see langword="true" />, if both <see cref="Country" /> are equal;
 		/// otherwise, <see langword="false" />.
 		/// </returns>
-		public static bool operator ==(GeoIPCountry a, GeoIPCountry b)
+		public static bool operator ==(Country a, Country b)
 		{
 			return Equals(a, b);
 		}
 		/// <summary>
-		/// Compares two <see cref="GeoIPCountry" /> instances for inequality.
+		/// Compares two <see cref="Country" /> instances for inequality.
 		/// </summary>
-		/// <param name="a">The first <see cref="GeoIPCountry" /> to compare.</param>
-		/// <param name="b">The second <see cref="GeoIPCountry" /> to compare.</param>
+		/// <param name="a">The first <see cref="Country" /> to compare.</param>
+		/// <param name="b">The second <see cref="Country" /> to compare.</param>
 		/// <returns>
-		/// <see langword="true" />, if both <see cref="GeoIPCountry" /> are not equal;
+		/// <see langword="true" />, if both <see cref="Country" /> are not equal;
 		/// otherwise, <see langword="false" />.
 		/// </returns>
-		public static bool operator !=(GeoIPCountry a, GeoIPCountry b)
+		public static bool operator !=(Country a, Country b)
 		{
 			return !(a == b);
 		}
