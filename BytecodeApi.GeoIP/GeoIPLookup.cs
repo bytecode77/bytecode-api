@@ -31,7 +31,7 @@ namespace BytecodeApi.GeoIP
 
 				for (int i = 0; i < countries.Length; i++)
 				{
-					countries[i] = new Country(reader.ReadString(), reader.ReadString(), ReadTwoCharacterCode(), ReadTwoCharacterCode(), reader.ReadBoolean());
+					countries[i] = new Country(reader.ReadString(), ReadTwoCharacterCode(), reader.ReadString(), ReadTwoCharacterCode(), reader.ReadBoolean());
 				}
 				for (int i = 0; i < Ranges.Length; i++)
 				{

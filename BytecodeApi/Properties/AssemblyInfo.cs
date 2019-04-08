@@ -10,6 +10,7 @@ using System.Windows.Markup;
 [assembly: InternalsVisibleTo("BytecodeApi.FileIcons")]
 [assembly: InternalsVisibleTo("BytecodeApi.GeoIP")]
 [assembly: InternalsVisibleTo("BytecodeApi.GeoIP.ASN")]
+[assembly: InternalsVisibleTo("BytecodeApi.GeoIP.City")]
 [assembly: InternalsVisibleTo("BytecodeApi.UI")]
 #if DEBUG
 [assembly: InternalsVisibleTo("ConsolePlayground")]

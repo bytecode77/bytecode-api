@@ -71,6 +71,10 @@
       <Project>{a36b92e7-6419-48fa-95d6-ac1b7855590d}</Project>
       <Name>BytecodeApi.GeoIP.ASN</Name>
     </ProjectReference>
+    <ProjectReference Include="..\BytecodeApi.GeoIP.City\BytecodeApi.GeoIP.City.csproj">
+      <Project>{e843216d-bd78-4fab-b2d1-5bb9920f0f5c}</Project>
+      <Name>BytecodeApi.GeoIP.City</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BytecodeApi.GeoIP\BytecodeApi.GeoIP.csproj">
       <Project>{18c47386-1d9f-41a8-a21d-e30037c1e04f}</Project>
       <Name>BytecodeApi.GeoIP</Name>

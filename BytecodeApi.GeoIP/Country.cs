@@ -13,6 +13,11 @@ namespace BytecodeApi.GeoIP
 		/// </summary>
 		public string Name { get; private set; }
 		/// <summary>
+		/// Gets the ISO code of the country. This <see cref="string" /> is composed of two upper case characters.
+		/// <para>Example: US</para>
+		/// </summary>
+		public string IsoCode { get; private set; }
+		/// <summary>
 		/// Gets the continent name of the country.
 		/// <para>Example: North America</para>
 		/// </summary>
@@ -23,21 +28,16 @@ namespace BytecodeApi.GeoIP
 		/// </summary>
 		public string ContinentCode { get; private set; }
 		/// <summary>
-		/// Gets the ISO code of the country. This <see cref="string" /> is composed of two upper case characters.
-		/// <para>Example: US</para>
-		/// </summary>
-		public string IsoCode { get; private set; }
-		/// <summary>
 		/// Gets a value indicating whether the country is in the european union.
 		/// </summary>
 		public bool EuropeanUnion { get; private set; }
 
-		internal Country(string name, string continent, string continentCode, string isoCode, bool europeanUnion)
+		internal Country(string name, string isoCode, string continent, string continentCode, bool europeanUnion)
 		{
 			Name = name;
+			IsoCode = isoCode;
 			Continent = continent;
 			ContinentCode = continentCode;
-			IsoCode = isoCode;
 			EuropeanUnion = europeanUnion;
 		}
 

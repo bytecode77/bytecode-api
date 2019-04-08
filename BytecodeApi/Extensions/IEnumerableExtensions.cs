@@ -505,7 +505,7 @@ namespace BytecodeApi.Extensions
 		/// <returns>
 		/// An <see cref="IEnumerable{T}" /> that contains elements from the input sequence that are not <see langword="null" />.
 		/// </returns>
-		public static IEnumerable<TSource> ExceptNull<TSource>(this IEnumerable<TSource> source)
+		public static IEnumerable<TSource> ExceptNull<TSource>(this IEnumerable<TSource> source) where TSource : class
 		{
 			Check.ArgumentNull(source, nameof(source));
 

@@ -2,7 +2,7 @@
 {
 	public sealed class IPRange
 	{
-		public byte Country;
+		public byte CountryIndex;
 		public uint From;
 		public uint To;
 	}
