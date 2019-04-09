@@ -67,16 +67,6 @@ namespace BytecodeApi
 				}
 			}
 		}
-		/// <summary>
-		/// Clears the singleton <see cref="object" /> dictionary. This is not typically used, except for cases where an application context is re-initialized.
-		/// </summary>
-		protected static void Clear()
-		{
-			lock (Singletons)
-			{
-				Singletons.Clear();
-			}
-		}
 
 		private static Type GetInheritedType()
 		{
