@@ -8,7 +8,7 @@ namespace BytecodeApi.UI
 	/// <summary>
 	/// Class for managing single instance UI applications. A second instance can detect an already running instance and optionally trigger the first instance to be notified.
 	/// </summary>
-	public class SingleInstanceManager : IDisposable
+	public class SingleInstance : IDisposable
 	{
 		private readonly Mutex Mutex;
 		private readonly uint ActivationMessage;
@@ -20,10 +20,10 @@ namespace BytecodeApi.UI
 		public event EventHandler Activated;
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="SingleInstanceManager" /> class and registers a <see cref="System.Threading.Mutex" /> as well as a WindowMessage using the specified identifier.
+		/// Initializes a new instance of the <see cref="SingleInstance" /> class and registers a <see cref="System.Threading.Mutex" /> as well as a WindowMessage using the specified identifier.
 		/// </summary>
 		/// <param name="mutexName">A <see cref="string" /> representing the name of the <see cref="System.Threading.Mutex" /> and the WindowMessage.</param>
-		public SingleInstanceManager(string mutexName)
+		public SingleInstance(string mutexName)
 		{
 			Check.ArgumentNull(mutexName, nameof(mutexName));
 			Check.ArgumentEx.StringNotEmpty(mutexName, nameof(mutexName));
@@ -32,7 +32,7 @@ namespace BytecodeApi.UI
 			ActivationMessage = Native.RegisterWindowMessage("ACTIVATE_SINGLE_INSTANCE_" + mutexName);
 		}
 		/// <summary>
-		/// Releases all resources used by the current instance of the <see cref="SingleInstanceManager" /> class.
+		/// Releases all resources used by the current instance of the <see cref="SingleInstance" /> class.
 		/// </summary>
 		public void Dispose()
 		{
