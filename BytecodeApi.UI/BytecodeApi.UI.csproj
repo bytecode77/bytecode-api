@@ -134,6 +134,7 @@
     </Compile>
     <Compile Include="SingleInstanceManager.cs" />
     <Compile Include="Extensions\DispatcherObjectExtensions.cs" />
+    <Compile Include="UIContext.cs" />
     <Compile Include="UITreeType.cs" />
   </ItemGroup>
   <ItemGroup>
