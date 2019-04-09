@@ -58,6 +58,7 @@
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="CachedProperty.cs" />
+    <Compile Include="SingletonBucketBase.cs" />
     <Compile Include="EnumEx.cs" />
     <Compile Include="Data\BlobTree.cs" />
     <Compile Include="Data\BlobTreeNodeCollection.cs" />

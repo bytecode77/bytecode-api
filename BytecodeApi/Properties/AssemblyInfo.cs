@@ -13,8 +13,8 @@ using System.Windows.Markup;
 [assembly: InternalsVisibleTo("BytecodeApi.GeoIP.City")]
 [assembly: InternalsVisibleTo("BytecodeApi.UI")]
 #if DEBUG
-[assembly: InternalsVisibleTo("ConsolePlayground")]
-[assembly: InternalsVisibleTo("WpfPlayground")]
+[assembly: InternalsVisibleTo("Playground.Console")]
+[assembly: InternalsVisibleTo("Playground.Wpf")]
 #endif
 
 [assembly: XmlnsDefinition("https://schemas.bytecode77.com/2019/xaml/api", "BytecodeApi")]
