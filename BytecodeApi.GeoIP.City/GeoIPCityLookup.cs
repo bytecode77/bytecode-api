@@ -10,7 +10,7 @@ namespace BytecodeApi.GeoIP.City
 {
 	/// <summary>
 	/// Class for GeoIP city lookup of IPv4 and IPv6 addresses. Lookup operations are performed on a local database and do not require an online API.
-	/// The database is part of BytecodeApi.GeoIP.dll and is a variant of GeoLite2 City (https://dev.maxmind.com/geoip/geoip2/geolite2).
+	/// The database is part of BytecodeApi.GeoIP.City.dll and is a variant of GeoLite2 City (https://dev.maxmind.com/geoip/geoip2/geolite2).
 	/// </summary>
 	public static class GeoIPCityLookup
 	{
