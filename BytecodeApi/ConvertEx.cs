@@ -325,7 +325,7 @@ namespace BytecodeApi
 		public static T ArrayToStructure<T>(byte[] array) where T : struct
 		{
 			Check.ArgumentNull(array, nameof(array));
-			Check.Argument(array.Length == Marshal.SizeOf(typeof(T)), nameof(array), "Array size must be equivalent to the size of the structure type.");
+			Check.Argument(array.Length == Marshal.SizeOf<T>(), nameof(array), "Array size must be equivalent to the size of the structure type.");
 
 			IntPtr ptr = IntPtr.Zero;
 
@@ -354,7 +354,7 @@ namespace BytecodeApi
 
 			try
 			{
-				byte[] buffer = new byte[Marshal.SizeOf(typeof(T))];
+				byte[] buffer = new byte[Marshal.SizeOf<T>()];
 				ptr = Marshal.AllocHGlobal(buffer.Length);
 				Marshal.StructureToPtr(structure, ptr, true);
 				Marshal.Copy(ptr, buffer, 0, buffer.Length);

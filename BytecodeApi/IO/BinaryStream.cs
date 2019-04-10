@@ -353,7 +353,7 @@ namespace BytecodeApi.IO
 			AssertCanRead();
 
 			T value = BaseStream.ReadStructure<T>();
-			BytesRead += Marshal.SizeOf(typeof(T));
+			BytesRead += Marshal.SizeOf<T>();
 			return value;
 		}
 		/// <summary>
@@ -578,7 +578,7 @@ namespace BytecodeApi.IO
 			AssertCanWrite();
 
 			BaseStream.WriteStructure(structure);
-			BytesWritten += Marshal.SizeOf(typeof(T));
+			BytesWritten += Marshal.SizeOf<T>();
 		}
 		/// <summary>
 		/// Clears all buffers for this stream and causes any buffered data to be written to the underlying <see cref="Stream" />.

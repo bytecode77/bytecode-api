@@ -179,7 +179,7 @@ namespace BytecodeApi.IO.SystemInfo
 					if (GetTable(tcpTable) == 0)
 					{
 						TTable table = Marshal.PtrToStructure<TTable>(tcpTable);
-						int rowSize = Marshal.SizeOf(typeof(TRow));
+						int rowSize = Marshal.SizeOf<TRow>();
 						uint entryCount = numEntriesField.GetValue<uint>(table);
 
 						TRow[] tableRows = new TRow[entryCount];

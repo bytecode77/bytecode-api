@@ -102,7 +102,7 @@ namespace BytecodeApi.FileFormats.Coff
 		/// </summary>
 		public ImageDataDirectory[] DataDirectories { get; set; }
 
-		internal ImageOptionalHeader()
+		private protected ImageOptionalHeader()
 		{
 		}
 

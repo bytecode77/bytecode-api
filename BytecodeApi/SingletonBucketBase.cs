@@ -7,7 +7,7 @@ using System.Linq;
 namespace BytecodeApi
 {
 	/// <summary>
-	/// Represents the base class for singleton buckets. Inherited classes can specify properties that use the <see cref="Get{T}" /> and <see cref="Set{T}(T)" /> methods. Each class that inherits <see cref="SingletonBucketBase" /> has its own scope for singleton objects.
+	/// Represents the base class for singleton buckets. Inherited classes can specify <see langword="static" /> properties that use the <see cref="Get{T}" /> and <see cref="Set{T}(T)" /> methods. Each class that inherits <see cref="SingletonBucketBase" /> has its own scope for singleton objects.
 	/// </summary>
 	public abstract class SingletonBucketBase
 	{
@@ -26,14 +26,7 @@ namespace BytecodeApi
 
 			lock (Singletons)
 			{
-				if (Singletons.ContainsKey(key))
-				{
-					return (T)Singletons[key];
-				}
-				else
-				{
-					throw Throw.InvalidOperation("Singleton was not set.");
-				}
+				return Singletons.ContainsKey(key) ? (T)Singletons[key] : throw Throw.InvalidOperation("Singleton was not set.");
 			}
 		}
 		/// <summary>

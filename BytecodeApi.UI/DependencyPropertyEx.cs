@@ -87,20 +87,11 @@ namespace BytecodeApi.UI
 				.GetFrames()
 				.FirstOrDefault(frame => frame.GetMethod().Name == ".cctor")
 				?.GetMethod()
-				.DeclaringType;
+				.DeclaringType ?? throw Throw.InvalidOperation("Could not determine owner type.");
 
-			if (ownerType == null)
-			{
-				throw Throw.InvalidOperation("Could not determine owner type.");
-			}
-			else
-			{
-				propertyType = ownerType
-					?.GetProperty(name, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
-					?.PropertyType;
-
-				if (propertyType == null) throw Throw.InvalidOperation("Could not determine property type.");
-			}
+			propertyType = ownerType
+				.GetProperty(name, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+				?.PropertyType ?? throw Throw.InvalidOperation("Could not determine property type.");
 		}
 	}
 }

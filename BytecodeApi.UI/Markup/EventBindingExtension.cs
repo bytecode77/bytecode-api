@@ -62,7 +62,7 @@ namespace BytecodeApi.UI.Markup
 		public override object ProvideValue(IServiceProvider serviceProvider)
 		{
 			if (serviceProvider.GetService(typeof(IProvideValueTarget)) is IProvideValueTarget targetProvider &&
-				targetProvider.TargetObject is FrameworkElement targetObject &&
+				targetProvider.TargetObject is FrameworkElement &&
 				targetProvider.TargetProperty is MemberInfo memberInfo)
 			{
 				Type eventHandlerType;

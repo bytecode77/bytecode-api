@@ -47,9 +47,7 @@ namespace BytecodeApi.FileFormats.ResourceFile
 			try
 			{
 				module = Native.LoadLibraryEx(Path, IntPtr.Zero, 2);
-				if (module == IntPtr.Zero) throw Throw.Win32();
-
-				return new ResourceEntry<byte[]>(type, name, GetData(module, type, name));
+				return module != IntPtr.Zero ? new ResourceEntry<byte[]>(type, name, GetData(module, type, name)) : throw Throw.Win32();
 			}
 			finally
 			{
@@ -106,9 +104,7 @@ namespace BytecodeApi.FileFormats.ResourceFile
 			try
 			{
 				module = Native.LoadLibraryEx(Path, IntPtr.Zero, 2);
-				if (module == IntPtr.Zero) throw Throw.Win32();
-
-				return new ResourceEntry<Icon>(ResourceType.GroupIcon, name, GetGroupIconData(module, name));
+				return module != IntPtr.Zero ? new ResourceEntry<Icon>(ResourceType.GroupIcon, name, GetGroupIconData(module, name)) : throw Throw.Win32();
 			}
 			finally
 			{
