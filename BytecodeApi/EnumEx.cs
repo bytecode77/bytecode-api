@@ -18,7 +18,7 @@ namespace BytecodeApi
 		/// <returns>
 		/// A new array of the values of the constants in the specified <see langword="enum" /> value, casted to <typeparamref name="T" />.
 		/// </returns>
-		public static T[] GetValues<T>() where T : struct
+		public static T[] GetValues<T>() where T : Enum
 		{
 			return Enum.GetValues(typeof(T)).ToArray<T>();
 		}
@@ -29,7 +29,7 @@ namespace BytecodeApi
 		/// <returns>
 		/// A new <see cref="Dictionary{TKey, TValue}" /> with all <see langword="enum" /> values and descriptions for the specified enum type.
 		/// </returns>
-		public static Dictionary<T, string> GetDescriptionLookup<T>() where T : struct
+		public static Dictionary<T, string> GetDescriptionLookup<T>() where T : Enum
 		{
 			return GetValues<T>().Distinct().ToDictionary(item => item, item => (item as Enum).GetDescription());
 		}
@@ -42,7 +42,7 @@ namespace BytecodeApi
 		/// The <see langword="enum" /> value, if found;
 		/// otherwise, <see langword="null" />.
 		/// </returns>
-		public static T? FindValueByDescription<T>(string description) where T : struct
+		public static T? FindValueByDescription<T>(string description) where T : struct, Enum
 		{
 			return Enum
 				.GetValues(typeof(T))

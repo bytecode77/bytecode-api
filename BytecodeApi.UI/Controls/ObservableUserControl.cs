@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
@@ -72,8 +73,8 @@ namespace BytecodeApi.UI.Controls
 			return Dispatcher.Invoke(func);
 		}
 		/// <summary>
-		/// Method that can be used by the <see langword="get" /> accessor of a property. Backing fields are automatically generated and stored in a <see langword="private" /> <see cref="Dictionary{TKey, TValue}" /> with default values set to <see langword="default" />(<typeparamref name="T" />).
-		/// <para>Example: public int X { get => Get(() => X); set => Set(() => X, value); }</para>
+		/// Method that can be used by the <see langword="get" /> accessor of a property. Backing fields are managed automatically.
+		/// <para>Example: <see langword="public" /> <see cref="int" /> Foo { <see langword="get" /> => Get(() => Foo); <see langword="set" /> => Set(() => Foo, <see langword="value" />); }</para>
 		/// </summary>
 		/// <typeparam name="T">The type of the property.</typeparam>
 		/// <param name="property">The strongly typed lambda expression of the property.</param>
@@ -87,8 +88,8 @@ namespace BytecodeApi.UI.Controls
 			return CSharp.CastOrDefault<T>(BackingFields.ValueOrDefault(property.GetMemberName()));
 		}
 		/// <summary>
-		/// Method that can be used by the <see langword="set" /> accessor of a property. Backing fields are automatically generated and stored in a <see langword="private" /> <see cref="Dictionary{TKey, TValue}" /> field with default values set to <see langword="default" />(<typeparamref name="T" />). This method raises the <see cref="PropertyChanging" /> event and the <see cref="PropertyChanged" /> event.
-		/// <para>Example: public int X { get => Get(() => X); set => Set(() => X, value); }</para>
+		/// Method that can be used by the <see langword="set" /> accessor of a property. Backing fields are managed automatically. This method raises the <see cref="PropertyChanging" /> event and the <see cref="PropertyChanged" /> event.
+		/// <para>Example: <see langword="public" /> <see cref="int" /> Foo { <see langword="get" /> => Get(() => Foo); <see langword="set" /> => Set(() => Foo, <see langword="value" />); }</para>
 		/// </summary>
 		/// <typeparam name="T">The type of the property.</typeparam>
 		/// <param name="property">The strongly typed lambda expression of the property.</param>
@@ -117,8 +118,8 @@ namespace BytecodeApi.UI.Controls
 		/// <summary>
 		/// Raises the <see cref="PropertyChanging" /> event on a property specified by a name.
 		/// </summary>
-		/// <param name="propertyName">A <see cref="string" /> specifying the name of the property</param>
-		protected void RaisePropertyChanging(string propertyName)
+		/// <param name="propertyName">A <see cref="string" /> specifying the name of the property. If <see langword="null" /> is provided, the <see cref="CallerMemberNameAttribute" /> is used to automatically get the property name./></param>
+		protected void RaisePropertyChanging([CallerMemberName] string propertyName = null)
 		{
 			Check.ArgumentNull(propertyName, nameof(propertyName));
 			Check.ArgumentEx.StringNotEmpty(propertyName, nameof(propertyName));
@@ -139,8 +140,8 @@ namespace BytecodeApi.UI.Controls
 		/// <summary>
 		/// Raises the <see cref="PropertyChanged" /> event on a property specified by a name.
 		/// </summary>
-		/// <param name="propertyName">A <see cref="string" /> specifying the name of the property</param>
-		protected void RaisePropertyChanged(string propertyName)
+		/// <param name="propertyName">A <see cref="string" /> specifying the name of the property. If <see langword="null" /> is provided, the <see cref="CallerMemberNameAttribute" /> is used to automatically get the property name./></param>
+		protected void RaisePropertyChanged([CallerMemberName] string propertyName = null)
 		{
 			Check.ArgumentNull(propertyName, nameof(propertyName));
 			Check.ArgumentEx.StringNotEmpty(propertyName, nameof(propertyName));
