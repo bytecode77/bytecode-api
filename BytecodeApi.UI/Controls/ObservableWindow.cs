@@ -4,7 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Windows;
+using System.Windows.Threading;
 
 namespace BytecodeApi.UI.Controls
 {
@@ -46,32 +49,117 @@ namespace BytecodeApi.UI.Controls
 			return DependencyObjectExtensions.GetValue<T>(this, dependencyProperty);
 		}
 		/// <summary>
-		/// Executes the specified <see cref="Action" /> synchronously on the thread the <see cref="System.Windows.Threading.Dispatcher" /> is associated with.
+		/// Executes the specified <see cref="Action" /> synchronously on the thread the <see cref="Dispatcher" /> is associated with.
 		/// </summary>
-		/// <param name="action">The <see cref="Action" /> to be invoked.</param>
-		public void Dispatch(Action action)
+		/// <param name="callback">A delegate to invoke through the dispatcher.</param>
+		public void Dispatch(Action callback)
 		{
-			Check.ArgumentNull(action, nameof(action));
+			Check.ArgumentNull(callback, nameof(callback));
 
-			Dispatcher.Invoke(action);
+			Dispatcher.Invoke(callback);
 		}
 		/// <summary>
-		/// Executes the specified <see cref="Func{TResult}" /> synchronously on the thread the <see cref="System.Windows.Threading.Dispatcher" /> is associated with.
+		/// Executes the specified <see cref="Action" /> synchronously at the specified priority on the thread the <see cref="Dispatcher" /> is associated with.
 		/// </summary>
-		/// <typeparam name="T">The return type of <paramref name="func" />.</typeparam>
-		/// <param name="func">The <see cref="Func{TResult}" /> to be invoked.</param>
+		/// <param name="callback">A delegate to invoke through the dispatcher.</param>
+		/// <param name="priority">The priority that determines in what order the specified callback is invoked relative to the other pending operations in the <see cref="Dispatcher" />.</param>
+		public void Dispatch(Action callback, DispatcherPriority priority)
+		{
+			Check.ArgumentNull(callback, nameof(callback));
+
+			Dispatcher.Invoke(callback, priority);
+		}
+		/// <summary>
+		/// Executes the specified <see cref="Action" /> synchronously at the specified priority on the thread the <see cref="Dispatcher" /> is associated with.
+		/// </summary>
+		/// <param name="callback">A delegate to invoke through the dispatcher.</param>
+		/// <param name="priority">The priority that determines in what order the specified callback is invoked relative to the other pending operations in the <see cref="Dispatcher" />.</param>
+		/// <param name="cancellationToken">An object that indicates whether to cancel the action.</param>
+		public void Dispatch(Action callback, DispatcherPriority priority, CancellationToken cancellationToken)
+		{
+			Check.ArgumentNull(callback, nameof(callback));
+
+			Dispatcher.Invoke(callback, priority, cancellationToken);
+		}
+		/// <summary>
+		/// Executes the specified <see cref="Action" /> synchronously at the specified priority on the thread the <see cref="Dispatcher" /> is associated with.
+		/// </summary>
+		/// <param name="callback">A delegate to invoke through the dispatcher.</param>
+		/// <param name="priority">The priority that determines in what order the specified callback is invoked relative to the other pending operations in the <see cref="Dispatcher" />.</param>
+		/// <param name="cancellationToken">An object that indicates whether to cancel the action.</param>
+		/// <param name="timeout">The minimum amount of time to wait for the operation to start.</param>
+		public void Dispatch(Action callback, DispatcherPriority priority, CancellationToken cancellationToken, TimeSpan timeout)
+		{
+			Check.ArgumentNull(callback, nameof(callback));
+
+			Dispatcher.Invoke(callback, priority, cancellationToken, timeout);
+		}
+		/// <summary>
+		/// Executes the specified <see cref="Func{TResult}" /> synchronously on the thread the <see cref="Dispatcher" /> is associated with.
+		/// </summary>
+		/// <typeparam name="T">The return type of <paramref name="callback" />.</typeparam>
+		/// <param name="callback">A delegate to invoke through the dispatcher.</param>
 		/// <returns>
-		/// The result of <paramref name="func" />.
+		/// The result of <paramref name="callback" />.
 		/// </returns>
-		public T Dispatch<T>(Func<T> func)
+		public T Dispatch<T>(Func<T> callback)
 		{
-			Check.ArgumentNull(func, nameof(func));
+			Check.ArgumentNull(callback, nameof(callback));
 
-			return Dispatcher.Invoke(func);
+			return Dispatcher.Invoke(callback);
 		}
 		/// <summary>
-		/// Method that can be used by the <see langword="get" /> accessor of a property. Backing fields are automatically generated and stored in a <see langword="private" /> <see cref="Dictionary{TKey, TValue}" /> with default values set to <see langword="default" />(<typeparamref name="T" />).
-		/// <para>Example: public int X { get => Get(() => X); set => Set(() => X, value); }</para>
+		/// Executes the specified <see cref="Func{TResult}" /> synchronously at the specified priority on the thread the <see cref="Dispatcher" /> is associated with.
+		/// </summary>
+		/// <typeparam name="T">The return type of <paramref name="callback" />.</typeparam>
+		/// <param name="callback">A delegate to invoke through the dispatcher.</param>
+		/// <param name="priority">The priority that determines in what order the specified callback is invoked relative to the other pending operations in the <see cref="Dispatcher" />.</param>
+		/// <returns>
+		/// The result of <paramref name="callback" />.
+		/// </returns>
+		public T Dispatch<T>(Func<T> callback, DispatcherPriority priority)
+		{
+			Check.ArgumentNull(callback, nameof(callback));
+
+			return Dispatcher.Invoke(callback, priority);
+		}
+		/// <summary>
+		/// Executes the specified <see cref="Func{TResult}" /> synchronously at the specified priority on the thread the <see cref="Dispatcher" /> is associated with.
+		/// </summary>
+		/// <typeparam name="T">The return type of <paramref name="callback" />.</typeparam>
+		/// <param name="callback">A delegate to invoke through the dispatcher.</param>
+		/// <param name="priority">The priority that determines in what order the specified callback is invoked relative to the other pending operations in the <see cref="Dispatcher" />.</param>
+		/// <param name="cancellationToken">An object that indicates whether to cancel the action.</param>
+		/// <returns>
+		/// The result of <paramref name="callback" />.
+		/// </returns>
+		public T Dispatch<T>(Func<T> callback, DispatcherPriority priority, CancellationToken cancellationToken)
+		{
+			Check.ArgumentNull(callback, nameof(callback));
+
+			return Dispatcher.Invoke(callback, priority, cancellationToken);
+		}
+		/// <summary>
+		/// Executes the specified <see cref="Func{TResult}" /> synchronously at the specified priority on the thread the <see cref="Dispatcher" /> is associated with.
+		/// </summary>
+		/// <typeparam name="T">The return type of <paramref name="callback" />.</typeparam>
+		/// <param name="callback">A delegate to invoke through the dispatcher.</param>
+		/// <param name="priority">The priority that determines in what order the specified callback is invoked relative to the other pending operations in the <see cref="Dispatcher" />.</param>
+		/// <param name="cancellationToken">An object that indicates whether to cancel the action.</param>
+		/// <param name="timeout">The minimum amount of time to wait for the operation to start.</param>
+		/// <returns>
+		/// The result of <paramref name="callback" />.
+		/// </returns>
+		public T Dispatch<T>(Func<T> callback, DispatcherPriority priority, CancellationToken cancellationToken, TimeSpan timeout)
+		{
+			Check.ArgumentNull(callback, nameof(callback));
+
+			return Dispatcher.Invoke(callback, priority, cancellationToken, timeout);
+		}
+
+		/// <summary>
+		/// Method that can be used by the <see langword="get" /> accessor of a property. Backing fields are managed automatically.
+		/// <para>Example: <see langword="public" /> <see cref="int" /> Foo { <see langword="get" /> => Get(() => Foo); <see langword="set" /> => Set(() => Foo, <see langword="value" />); }</para>
 		/// </summary>
 		/// <typeparam name="T">The type of the property.</typeparam>
 		/// <param name="property">The strongly typed lambda expression of the property.</param>
@@ -85,8 +173,8 @@ namespace BytecodeApi.UI.Controls
 			return CSharp.CastOrDefault<T>(BackingFields.ValueOrDefault(property.GetMemberName()));
 		}
 		/// <summary>
-		/// Method that can be used by the <see langword="set" /> accessor of a property. Backing fields are automatically generated and stored in a <see langword="private" /> <see cref="Dictionary{TKey, TValue}" /> field with default values set to <see langword="default" />(<typeparamref name="T" />). This method raises the <see cref="PropertyChanging" /> event and the <see cref="PropertyChanged" /> event.
-		/// <para>Example: public int X { get => Get(() => X); set => Set(() => X, value); }</para>
+		/// Method that can be used by the <see langword="set" /> accessor of a property. Backing fields are managed automatically. This method raises the <see cref="PropertyChanging" /> event and the <see cref="PropertyChanged" /> event.
+		/// <para>Example: <see langword="public" /> <see cref="int" /> Foo { <see langword="get" /> => Get(() => Foo); <see langword="set" /> => Set(() => Foo, <see langword="value" />); }</para>
 		/// </summary>
 		/// <typeparam name="T">The type of the property.</typeparam>
 		/// <param name="property">The strongly typed lambda expression of the property.</param>
@@ -115,8 +203,8 @@ namespace BytecodeApi.UI.Controls
 		/// <summary>
 		/// Raises the <see cref="PropertyChanging" /> event on a property specified by a name.
 		/// </summary>
-		/// <param name="propertyName">A <see cref="string" /> specifying the name of the property</param>
-		protected void RaisePropertyChanging(string propertyName)
+		/// <param name="propertyName">A <see cref="string" /> specifying the name of the property. If <see langword="null" /> is provided, the <see cref="CallerMemberNameAttribute" /> is used to automatically get the property name.</param>
+		protected void RaisePropertyChanging([CallerMemberName] string propertyName = null)
 		{
 			Check.ArgumentNull(propertyName, nameof(propertyName));
 			Check.ArgumentEx.StringNotEmpty(propertyName, nameof(propertyName));
@@ -137,8 +225,8 @@ namespace BytecodeApi.UI.Controls
 		/// <summary>
 		/// Raises the <see cref="PropertyChanged" /> event on a property specified by a name.
 		/// </summary>
-		/// <param name="propertyName">A <see cref="string" /> specifying the name of the property</param>
-		protected void RaisePropertyChanged(string propertyName)
+		/// <param name="propertyName">A <see cref="string" /> specifying the name of the property. If <see langword="null" /> is provided, the <see cref="CallerMemberNameAttribute" /> is used to automatically get the property name.</param>
+		protected void RaisePropertyChanged([CallerMemberName] string propertyName = null)
 		{
 			Check.ArgumentNull(propertyName, nameof(propertyName));
 			Check.ArgumentEx.StringNotEmpty(propertyName, nameof(propertyName));

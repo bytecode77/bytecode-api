@@ -40,7 +40,7 @@ namespace BytecodeApi.Extensions
 		/// </returns>
 		public static uint? ToNullIfDefault(this uint value)
 		{
-			return value == default(uint) ? (uint?)null : value;
+			return value == default ? (uint?)null : value;
 		}
 	}
 }

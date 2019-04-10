@@ -22,6 +22,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\BytecodeApi.Cryptography.xml</DocumentationFile>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -31,6 +32,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\BytecodeApi.Cryptography.xml</DocumentationFile>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -61,7 +63,6 @@
   <PropertyGroup>
     <PostBuildEvent>mkdir "$(SolutionDir)$Build" 2&gt;NUL
 xcopy /Y "$(TargetPath)" "$(SolutionDir)$Build" &gt; NUL
-xcopy /Y "$(TargetDir)$(TargetName).xml" "$(SolutionDir)$Build" &gt; NUL
-xcopy /Y "$(TargetDir)$(TargetName).pdb" "$(SolutionDir)$Build" &gt; NUL</PostBuildEvent>
+xcopy /Y "$(TargetDir)$(TargetName).xml" "$(SolutionDir)$Build" &gt; NUL</PostBuildEvent>
   </PropertyGroup>
 </Project>

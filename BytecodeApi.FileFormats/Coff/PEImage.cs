@@ -196,17 +196,13 @@ namespace BytecodeApi.FileFormats.Coff
 				// Data Directories
 				if (reader.BaseStream.Length - reader.BaseStream.Position < OptionalHeader.NumberOfRvaAndSizes * 8) throw new PEImageParseException((int)reader.BaseStream.Position, "Data directories incomplete.");
 
-				OptionalHeader.DataDirectories = Enumerable
-					.Range(0, (int)OptionalHeader.NumberOfRvaAndSizes)
-					.Select(i => new ImageDataDirectory((ImageDataDirectoryName)i, reader.ReadUInt32(), reader.ReadUInt32()))
-					.ToArray();
+				OptionalHeader.DataDirectories = Create.Array((int)OptionalHeader.NumberOfRvaAndSizes, i => new ImageDataDirectory((ImageDataDirectoryName)i, reader.ReadUInt32(), reader.ReadUInt32()));
 
 				// Section Headers
 				if (reader.BaseStream.Length - reader.BaseStream.Position < CoffHeader.NumberOfSections * 40) throw new PEImageParseException((int)reader.BaseStream.Position, "Section headers incomplete.");
 
-				Sections = Enumerable
-					.Range(0, CoffHeader.NumberOfSections)
-					.Select(i => new ImageSectionHeader
+				Sections = Create
+					.Enumerable(CoffHeader.NumberOfSections, i => new ImageSectionHeader
 					{
 						Name = reader.ReadBytes(8).TakeWhile(c => c != 0).ToArray().ToUTF8String(),
 						VirtualSize = reader.ReadUInt32(),
@@ -403,7 +399,7 @@ namespace BytecodeApi.FileFormats.Coff
 					}
 					else
 					{
-						throw Throw.InvalidOperation("The optional header must be a " + nameof(ImageOptionalHeader32) + " or " + nameof(ImageOptionalHeader64) + " object.");
+						throw Throw.InvalidOperation("Optional header type not recognized.");
 					}
 
 					// Data Directories

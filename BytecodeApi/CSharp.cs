@@ -6,12 +6,11 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
-using System.Windows;
 
 namespace BytecodeApi
 {
 	/// <summary>
-	/// Proides <see langword="static" /> methods and properties serving as a general object manipulation helper class.
+	/// Provides <see langword="static" /> methods and properties serving as a general object manipulation helper class.
 	/// </summary>
 	public static class CSharp
 	{
@@ -72,7 +71,7 @@ namespace BytecodeApi
 		/// </returns>
 		public static T CastOrDefault<T>(object obj)
 		{
-			return obj is T castedObject ? castedObject : default(T);
+			return obj is T castedObject ? castedObject : default;
 		}
 		/// <summary>
 		/// Exchanges the references of two <see cref="object" /> instances.
@@ -151,7 +150,7 @@ namespace BytecodeApi
 		/// </returns>
 		public static T Try<T>(Func<T> func)
 		{
-			return Try(func, default(T));
+			return Try(func, default);
 		}
 		/// <summary>
 		/// Invokes a <see cref="Func{TResult}" /> and handles any exception. Returns the result of <paramref name="func" /> on successful execution and <paramref name="defaultValue" />, if an exception was thrown.
@@ -379,23 +378,6 @@ namespace BytecodeApi
 		public static bool EqualsAll<T>(T obj, params T[] values)
 		{
 			return EqualsAll(obj, (IEnumerable<T>)values);
-		}
-
-		/// <summary>
-		/// Returns the DataContext property, if the specified <see cref="object" /> instance is either a <see cref="FrameworkElement" /> or a <see cref="FrameworkContentElement" />. If found and can be casted to the specified type, the DataContext is returned, otherwise, <see langword="default" />(<typeparamref name="T" />).
-		/// </summary>
-		/// <typeparam name="T">The return type to cast the DataContext property to.</typeparam>
-		/// <param name="obj">The <see cref="object" /> where the DataContext property looked for. This is typically a parameter from a WPF event handler.</param>
-		/// <returns>
-		/// <see cref="FrameworkElement.DataContext" />, if <paramref name="obj" /> is a <see cref="FrameworkElement" />;
-		/// <see cref="FrameworkContentElement.DataContext" />, if <paramref name="obj" /> instance is a <see cref="FrameworkContentElement" />;
-		/// otherwise, <see langword="default" />(<typeparamref name="T" />).
-		/// </returns>
-		public static T FindDataContext<T>(object obj)
-		{
-			if (obj is FrameworkElement frameworkElement && frameworkElement.DataContext is T dataContext1) return dataContext1;
-			else if (obj is FrameworkContentElement frameworkContentElement && frameworkContentElement.DataContext is T dataContext2) return dataContext2;
-			else return default(T);
 		}
 	}
 }

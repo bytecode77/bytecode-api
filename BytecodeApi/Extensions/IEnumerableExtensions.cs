@@ -120,7 +120,7 @@ namespace BytecodeApi.Extensions
 		{
 			Check.ArgumentNull(source, nameof(source));
 
-			TSource firstItem = default(TSource);
+			TSource firstItem = default;
 
 			foreach (TSource item in source)
 			{
@@ -270,7 +270,7 @@ namespace BytecodeApi.Extensions
 		/// </returns>
 		public static TValue ValueOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key)
 		{
-			return dictionary.ValueOrDefault(key, default(TValue));
+			return dictionary.ValueOrDefault(key, default);
 		}
 		/// <summary>
 		/// Gets the value associated with the specified key from this <see cref="IDictionary{TKey, TValue}" />, or returns a default value if it was not found.
@@ -505,7 +505,7 @@ namespace BytecodeApi.Extensions
 		/// <returns>
 		/// An <see cref="IEnumerable{T}" /> that contains elements from the input sequence that are not <see langword="null" />.
 		/// </returns>
-		public static IEnumerable<TSource> ExceptNull<TSource>(this IEnumerable<TSource> source)
+		public static IEnumerable<TSource> ExceptNull<TSource>(this IEnumerable<TSource> source) where TSource : class
 		{
 			Check.ArgumentNull(source, nameof(source));
 

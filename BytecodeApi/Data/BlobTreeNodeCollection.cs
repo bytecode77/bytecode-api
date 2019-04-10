@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BytecodeApi.Extensions;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,14 +30,20 @@ namespace BytecodeApi.Data
 			}
 		}
 		/// <summary>
+		/// Gets the <see cref="BlobTreeNode" /> with the specified case sensitive name and throws an exception, if it was not found.
+		/// </summary>
+		/// <param name="name">A <see cref="string" /> specifying the name of the <see cref="BlobTreeNode" />.</param>
+		public BlobTreeNode this[string name] => this[name, false];
+		/// <summary>
 		/// Gets the <see cref="BlobTreeNode" /> with the specified name and throws an exception, if it was not found.
 		/// </summary>
 		/// <param name="name">A <see cref="string" /> specifying the name of the <see cref="BlobTreeNode" />.</param>
-		public BlobTreeNode this[string name]
+		/// <param name="ignoreCase"><see langword="true" /> to ignore character casing during name comparison.</param>
+		public BlobTreeNode this[string name, bool ignoreCase]
 		{
 			get
 			{
-				BlobTreeNode node = Nodes.FirstOrDefault(n => n.Name == name);
+				BlobTreeNode node = Nodes.FirstOrDefault(n => n.Name.CompareTo(name, ignoreCase ? SpecialStringComparisons.IgnoreCase : SpecialStringComparisons.Default) == 0);
 				Check.KeyNotFoundException(node != null, "A node with the name '" + name + "' was not found.");
 				return node;
 			}

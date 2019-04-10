@@ -102,10 +102,7 @@ namespace BytecodeApi.FileFormats.Coff
 		/// </summary>
 		public ImageDataDirectory[] DataDirectories { get; set; }
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="ImageOptionalHeader" /> class.
-		/// </summary>
-		protected ImageOptionalHeader()
+		private protected ImageOptionalHeader()
 		{
 		}
 

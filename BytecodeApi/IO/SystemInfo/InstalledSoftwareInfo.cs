@@ -42,14 +42,8 @@ namespace BytecodeApi.IO.SystemInfo
 		/// </returns>
 		public static InstalledSoftwareInfo[] GetInstalledSoftware()
 		{
-			return Enumerable
-				.Range(0, 4)
-				.Select(i => new
-				{
-					LocalMachine = (i & 1) == 0,
-					Wow64 = (i & 2) == 0
-				})
-				.Select(key => ((key.LocalMachine ? Registry.LocalMachine : Registry.CurrentUser).OpenSubKey((@"Software\" + (key.Wow64 ? null : @"Wow6432Node\") + @"Microsoft\Windows\CurrentVersion\Uninstall"))))
+			return Create
+				.Enumerable(4, i => ((i & 1) == 0 ? Registry.LocalMachine : Registry.CurrentUser).OpenSubKey(@"Software\" + ((i & 2) == 0 ? null : @"Wow6432Node\") + @"Microsoft\Windows\CurrentVersion\Uninstall"))
 				.Where(key => key != null)
 				.ToList()
 				.SelectMany(key =>

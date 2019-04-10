@@ -4,7 +4,7 @@ using System.Linq;
 namespace BytecodeApi.Data
 {
 	/// <summary>
-	/// Represents a hierarchical collection of <see cref="BlobTreeNode" /> and <see cref="Blob" /> objects that represent a tree, such as a directory structure.
+	/// Represents a hierarchical collection of <see cref="Blob" /> objects that represent a tree, such as a directory structure.
 	/// </summary>
 	public class BlobTree
 	{
@@ -59,10 +59,10 @@ namespace BytecodeApi.Data
 
 			void CheckNames(BlobTreeNode node)
 			{
-				foreach (BlobTreeNode subNode in node.Nodes)
+				foreach (BlobTreeNode childNode in node.Nodes)
 				{
-					if (!Validate.FileName(subNode.Name)) throw Throw.InvalidOperation("Blob tree node with the name '" + subNode.Name + "' has illegal filename characters.");
-					CheckNames(subNode);
+					if (!Validate.FileName(childNode.Name)) throw Throw.InvalidOperation("Blob tree node with the name '" + childNode.Name + "' has illegal filename characters.");
+					CheckNames(childNode);
 				}
 
 				Blob blob = node.Blobs.FirstOrDefault(b => !Validate.FileName(b.Name));
@@ -71,7 +71,7 @@ namespace BytecodeApi.Data
 			void Save(BlobTreeNode node, string nodePath)
 			{
 				Directory.CreateDirectory(nodePath);
-				foreach (BlobTreeNode subNode in node.Nodes) Save(subNode, Path.Combine(nodePath, subNode.Name));
+				foreach (BlobTreeNode childNode in node.Nodes) Save(childNode, Path.Combine(nodePath, childNode.Name));
 				node.Blobs.SaveToDirectory(nodePath);
 			}
 		}

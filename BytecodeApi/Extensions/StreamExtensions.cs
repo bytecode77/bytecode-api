@@ -61,7 +61,7 @@ namespace BytecodeApi.Extensions
 		{
 			Check.ArgumentNull(stream, nameof(stream));
 
-			byte[] buffer = new byte[Marshal.SizeOf(typeof(T))];
+			byte[] buffer = new byte[Marshal.SizeOf<T>()];
 			stream.Read(buffer);
 			return ConvertEx.ArrayToStructure<T>(buffer);
 		}

@@ -1,6 +1,8 @@
 ﻿using BytecodeApi.Extensions;
 using BytecodeApi.Mathematics;
 using BytecodeApi.Text;
+using System;
+using System.Collections.Generic;
 
 namespace BytecodeApi
 {
@@ -9,6 +11,60 @@ namespace BytecodeApi
 	/// </summary>
 	public static class Create
 	{
+		/// <summary>
+		/// Creates an <see cref="System.Array" /> of the specified type and initialized each element with the specified value.
+		/// </summary>
+		/// <typeparam name="T">The type of the created <see cref="System.Array" />.</typeparam>
+		/// <param name="length">The number of elements of the <see cref="System.Array" />.</param>
+		/// <param name="value">The value that is assigned to each element of the <see cref="System.Array" />.</param>
+		/// <returns>
+		/// A new <see cref="System.Array" /> with the specified length, where each element is initialized with <paramref name="value" />.
+		/// </returns>
+		public static T[] Array<T>(int length, T value)
+		{
+			Check.ArgumentOutOfRangeEx.GreaterEqual0(length, nameof(length));
+
+			T[] array = new T[length];
+
+			if (value != null)
+			{
+				for (int i = 0; i < length; i++) array[i] = value;
+			}
+
+			return array;
+		}
+		/// <summary>
+		/// Creates an <see cref="System.Array" /> of the specified type and initialized each element with a value that is retrieved from <paramref name="valueSelector" />.
+		/// </summary>
+		/// <typeparam name="T">The type of the created <see cref="System.Array" />.</typeparam>
+		/// <param name="length">The number of elements of the <see cref="System.Array" />.</param>
+		/// <param name="valueSelector">A <see cref="Func{T, TResult}" /> to retrieve new values for the <see cref="System.Array" /> based on the given index.</param>
+		/// <returns>
+		/// A new <see cref="System.Array" /> with the specified length, where each element is initialized with a value that is retrieved from <paramref name="valueSelector" />.
+		/// </returns>
+		public static T[] Array<T>(int length, Func<int, T> valueSelector)
+		{
+			Check.ArgumentOutOfRangeEx.GreaterEqual0(length, nameof(length));
+			Check.ArgumentNull(valueSelector, nameof(valueSelector));
+
+			T[] array = new T[length];
+			for (int i = 0; i < length; i++) array[i] = valueSelector(i);
+			return array;
+		}
+		/// <summary>
+		/// Creates an <see cref="IEnumerable{T}" /> of the specified type and returns values that are retrieved from <paramref name="valueSelector" />.
+		/// </summary>
+		/// <typeparam name="T">The type of the created <see cref="IEnumerable{T}" />.</typeparam>
+		/// <param name="count">The number of elements to return.</param>
+		/// <param name="valueSelector">A <see cref="Func{T, TResult}" /> to retrieve new values for the <see cref="IEnumerable{T}" /> based on the given index.</param>
+		/// <returns></returns>
+		public static IEnumerable<T> Enumerable<T>(int count, Func<int, T> valueSelector)
+		{
+			Check.ArgumentOutOfRangeEx.GreaterEqual0(count, nameof(count));
+			Check.ArgumentNull(valueSelector, nameof(valueSelector));
+
+			for (int i = 0; i < count; i++) yield return valueSelector(i);
+		}
 		/// <summary>
 		/// Generates a new <see cref="System.Guid" /> using the <see cref="GuidFormat.Default" /> format.
 		/// </summary>

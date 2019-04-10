@@ -25,6 +25,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -35,6 +36,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -91,6 +93,18 @@
     <ProjectReference Include="..\BytecodeApi.FileIcons\BytecodeApi.FileIcons.csproj">
       <Project>{448b54de-d62e-44ce-9e25-862f1bd58101}</Project>
       <Name>BytecodeApi.FileIcons</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BytecodeApi.GeoIP.ASN\BytecodeApi.GeoIP.ASN.csproj">
+      <Project>{a36b92e7-6419-48fa-95d6-ac1b7855590d}</Project>
+      <Name>BytecodeApi.GeoIP.ASN</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BytecodeApi.GeoIP.City\BytecodeApi.GeoIP.City.csproj">
+      <Project>{e843216d-bd78-4fab-b2d1-5bb9920f0f5c}</Project>
+      <Name>BytecodeApi.GeoIP.City</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BytecodeApi.GeoIP\BytecodeApi.GeoIP.csproj">
+      <Project>{18c47386-1d9f-41a8-a21d-e30037c1e04f}</Project>
+      <Name>BytecodeApi.GeoIP</Name>
     </ProjectReference>
     <ProjectReference Include="..\BytecodeApi.UI\BytecodeApi.UI.csproj">
       <Project>{8f135820-20de-4950-aeb0-98cfe29f297a}</Project>

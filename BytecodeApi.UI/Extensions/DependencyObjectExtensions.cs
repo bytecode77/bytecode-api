@@ -82,14 +82,10 @@ namespace BytecodeApi.UI.Extensions
 			switch (treeType)
 			{
 				case UITreeType.Logical:
-					subChildren = LogicalTreeHelper
-						.GetChildren(dependencyObject)
-						.OfType<DependencyObject>();
+					subChildren = LogicalTreeHelper.GetChildren(dependencyObject).OfType<DependencyObject>();
 					break;
 				case UITreeType.Visual:
-					subChildren = Enumerable
-						.Range(0, VisualTreeHelper.GetChildrenCount(dependencyObject))
-						.Select(i => VisualTreeHelper.GetChild(dependencyObject, i));
+					subChildren = Create.Enumerable(VisualTreeHelper.GetChildrenCount(dependencyObject), i => VisualTreeHelper.GetChild(dependencyObject, i));
 					break;
 				default:
 					throw Throw.InvalidEnumArgument(nameof(treeType));

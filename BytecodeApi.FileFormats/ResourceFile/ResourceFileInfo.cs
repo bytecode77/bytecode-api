@@ -47,9 +47,7 @@ namespace BytecodeApi.FileFormats.ResourceFile
 			try
 			{
 				module = Native.LoadLibraryEx(Path, IntPtr.Zero, 2);
-				if (module == IntPtr.Zero) throw Throw.Win32();
-
-				return new ResourceEntry<byte[]>(type, name, GetData(module, type, name));
+				return module != IntPtr.Zero ? new ResourceEntry<byte[]>(type, name, GetData(module, type, name)) : throw Throw.Win32();
 			}
 			finally
 			{
@@ -106,9 +104,7 @@ namespace BytecodeApi.FileFormats.ResourceFile
 			try
 			{
 				module = Native.LoadLibraryEx(Path, IntPtr.Zero, 2);
-				if (module == IntPtr.Zero) throw Throw.Win32();
-
-				return new ResourceEntry<Icon>(ResourceType.GroupIcon, name, GetGroupIconData(module, name));
+				return module != IntPtr.Zero ? new ResourceEntry<Icon>(ResourceType.GroupIcon, name, GetGroupIconData(module, name)) : throw Throw.Win32();
 			}
 			finally
 			{
@@ -140,7 +136,7 @@ namespace BytecodeApi.FileFormats.ResourceFile
 			List<Native.IconDirEntry> iconEntry = new List<Native.IconDirEntry>();
 			List<byte[]> iconData = new List<byte[]>();
 
-			using (BinaryReader reader = new BinaryReader(new MemoryStream(icon.Save())))
+			using (BinaryReader reader = new BinaryReader(new MemoryStream(icon.ToArray())))
 			{
 				Marshal.Copy(reader.ReadBytes(sizeof(Native.IconDir)), 0, (IntPtr)(&iconDir), sizeof(Native.IconDir));
 

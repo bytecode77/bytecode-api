@@ -30,7 +30,7 @@ namespace BytecodeApi.Extensions
 		/// </returns>
 		public static DateTime? ToNullIfDefault(this DateTime dateTime)
 		{
-			return dateTime == default(DateTime) ? (DateTime?)null : dateTime;
+			return dateTime == default ? (DateTime?)null : dateTime;
 		}
 		/// <summary>
 		/// Returns a new <see cref="DateTime" /> that subtracts the specified number of years from this <see cref="DateTime" /> value.

@@ -9,13 +9,13 @@ namespace BytecodeApi.UI.Extensions
 	public static class ApplicationExtensions
 	{
 		/// <summary>
-		/// Searches for a user interface (UI) resource, such as a <see cref="Style" /> or <see cref="Brush" />, with the specified key, and throws an exception, if the requested resource is not found (see XAML Resources) or is not of the specified type.
+		/// Searches for a user interface (UI) resource, such as a <see cref="Style" /> or <see cref="Brush" />, with the specified key, and throws an exception, if the requested resource is not found (see XAML Resources).
 		/// </summary>
 		/// <typeparam name="T">The return type of the resource.</typeparam>
 		/// <param name="application">The <see cref="Application" /> to search in.</param>
 		/// <param name="key">The name of the resource to find.</param>
 		/// <returns>
-		/// The requested resource object. If the requested resource is not found or is not of the specified type, a <see cref="ResourceReferenceKeyNotFoundException" /> is thrown.
+		/// The requested resource object. If the requested resource is not found, a <see cref="ResourceReferenceKeyNotFoundException" /> is thrown.
 		/// </returns>
 		public static T FindResource<T>(this Application application, object key)
 		{
@@ -31,7 +31,7 @@ namespace BytecodeApi.UI.Extensions
 		/// <param name="application">The <see cref="Application" /> to search in.</param>
 		/// <param name="key">The name of the resource to find.</param>
 		/// <returns>
-		/// The found resource, or <see langword="null" />, if no resource with the provided key is found or it does not match the specified type.
+		/// The found resource, or <see langword="default" />(<typeparamref name="T" />), if no resource with the provided key is found or it does not match the specified type.
 		/// </returns>
 		public static T TryFindResource<T>(this Application application, object key)
 		{

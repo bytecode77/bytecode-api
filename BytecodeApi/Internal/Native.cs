@@ -486,7 +486,7 @@ namespace BytecodeApi
 
 			public MemoryStatusEx()
 			{
-				Length = (uint)Marshal.SizeOf(typeof(MemoryStatusEx));
+				Length = (uint)Marshal.SizeOf<MemoryStatusEx>();
 			}
 		}
 		[SecurityPermission(SecurityAction.LinkDemand, UnmanagedCode = true)]

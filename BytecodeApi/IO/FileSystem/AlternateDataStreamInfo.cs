@@ -30,11 +30,7 @@ namespace BytecodeApi.IO.FileSystem
 				{
 					using (SafeFileHandle file = Native.CreateFile(Path, 0x80000000, FileShare.Read, IntPtr.Zero, FileMode.Open, 0x2000000, IntPtr.Zero))
 					{
-						if (!file.IsInvalid && Native.GetFileType(file) != 1)
-						{
-							file.Dispose();
-							throw Throw.Win32(2);
-						}
+						if (!file.IsInvalid && Native.GetFileType(file) != 1) throw Throw.Win32(2);
 
 						Native.Win32StreamId streamId = new Native.Win32StreamId();
 						int streamHeaderSize = Marshal.SizeOf(streamId);

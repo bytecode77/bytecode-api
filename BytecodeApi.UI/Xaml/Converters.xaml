@@ -27,7 +27,6 @@
 	<converters:ObjectIsNullToBooleanConverter x:Key="ObjectIsNullToBooleanConverter" />
 	<converters:ObjectIsNullToGridLengthConverter x:Key="ObjectIsNullToGridLengthConverter" />
 	<converters:ObjectIsNullToVisibilityConverter x:Key="ObjectIsNullToVisibilityConverter" />
-	<converters:ObjectToHashStringConverter x:Key="ObjectToHashStringConverter" />
 	<converters:ObjectToImageSourceConverter x:Key="ObjectToImageSourceConverter" />
 	<converters:PathToDirectoryNameConverter x:Key="PathToDirectoryNameConverter" />
 	<converters:PathToFileNameConverter x:Key="PathToFileNameConverter" />

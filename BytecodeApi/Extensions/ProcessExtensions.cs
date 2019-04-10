@@ -84,7 +84,7 @@ namespace BytecodeApi.Extensions
 			{
 				Native.ProcessEntry processEntry = new Native.ProcessEntry
 				{
-					Size = (uint)Marshal.SizeOf(typeof(Native.ProcessEntry))
+					Size = (uint)Marshal.SizeOf<Native.ProcessEntry>()
 				};
 
 				using (Native.SafeSnapshotHandle snapshot = Native.CreateToolhelp32Snapshot(2, (uint)process.Id))

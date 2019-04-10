@@ -6,7 +6,7 @@ namespace BytecodeApi.Text
 {
 	/// <summary>
 	/// Class that generates a random text sequence that match the pattern of real language.
-	/// A <see cref="BytecodeApi.Text.SentenceGenerator" /> is used to generate the sentences that generated text are composed of.
+	/// A <see cref="Text.SentenceGenerator" /> is used to generate the sentences that generated text are composed of.
 	/// </summary>
 	public class TextGenerator : ILanguageStringGenerator
 	{

@@ -7,7 +7,6 @@ using System.Text;
 
 namespace BytecodeApi.FileFormats.Csv
 {
-	//FEATURE: Auto-detect delimiter in Enumerate[...] methods
 	/// <summary>
 	/// Represents a flat file database, typically a CSV file with lines separated by a separator.
 	/// </summary>
@@ -87,7 +86,6 @@ namespace BytecodeApi.FileFormats.Csv
 		{
 			Check.ArgumentNull(path, nameof(path));
 			Check.FileNotFound(path);
-			Check.ArgumentNull(delimiter, nameof(delimiter));
 			Check.ArgumentEx.StringNotEmpty(delimiter, nameof(delimiter));
 
 			using (FileStream file = File.OpenRead(path))
@@ -136,7 +134,6 @@ namespace BytecodeApi.FileFormats.Csv
 		public static CsvFile FromBinary(byte[] file, string delimiter, bool hasHeaderRow, bool ignoreEmptyLines, Encoding encoding)
 		{
 			Check.ArgumentNull(file, nameof(file));
-			Check.ArgumentNull(delimiter, nameof(delimiter));
 			Check.ArgumentEx.StringNotEmpty(delimiter, nameof(delimiter));
 
 			using (MemoryStream memoryStream = new MemoryStream(file))
@@ -201,14 +198,9 @@ namespace BytecodeApi.FileFormats.Csv
 		public static CsvFile FromStream(Stream stream, string delimiter, bool hasHeaderRow, bool ignoreEmptyLines, Encoding encoding, bool leaveOpen)
 		{
 			Check.ArgumentNull(stream, nameof(stream));
-			Check.ArgumentNull(delimiter, nameof(delimiter));
 			Check.ArgumentEx.StringNotEmpty(delimiter, nameof(delimiter));
 
-			if (delimiter == null)
-			{
-				delimiter = DetectDelimiter(stream, encoding);
-				if (delimiter == null) throw Throw.FileFormat("The delimiter could not be detected.");
-			}
+			AutoDetectDelimiter(stream, encoding, ref delimiter);
 
 			CsvFile csv = new CsvFile
 			{
@@ -252,7 +244,7 @@ namespace BytecodeApi.FileFormats.Csv
 		/// Returns an enumerable collection of <see cref="CsvRow" /> objects from the specified file. This method streams the file and does not load it into memory and is typically used for large files that are processed in a <see langword="foreach" /> loop.
 		/// </summary>
 		/// <param name="path">A <see cref="string" /> representing the path to a flat file database, such as a CSV file.</param>
-		/// <param name="delimiter">A <see cref="string" /> specifying the delimiter to be used during flat file parsing.</param>
+		/// <param name="delimiter">A <see cref="string" /> specifying the delimiter to be used during flat file parsing. If <see langword="null" /> is provided, the delimiter is automatically detected. If automatic detection fails, an exception is thrown.</param>
 		/// <param name="hasHeaderRow"><see langword="true" /> to treat the first row as a header row and load its contents into the <see cref="Headers" /> property.</param>
 		/// <returns>
 		/// An <see cref="IEnumerable{T}" /> with the <see cref="CsvRow" /> objects from the specified file.
@@ -265,7 +257,7 @@ namespace BytecodeApi.FileFormats.Csv
 		/// Returns an enumerable collection of <see cref="CsvRow" /> objects from the specified file. This method streams the file and does not load it into memory and is typically used for large files that are processed in a <see langword="foreach" /> loop.
 		/// </summary>
 		/// <param name="path">A <see cref="string" /> representing the path to a flat file database, such as a CSV file.</param>
-		/// <param name="delimiter">A <see cref="string" /> specifying the delimiter to be used during flat file parsing.</param>
+		/// <param name="delimiter">A <see cref="string" /> specifying the delimiter to be used during flat file parsing. If <see langword="null" /> is provided, the delimiter is automatically detected. If automatic detection fails, an exception is thrown.</param>
 		/// <param name="hasHeaderRow"><see langword="true" /> to treat the first row as a header row and load its contents into the <see cref="Headers" /> property.</param>
 		/// <param name="ignoreEmptyLines"><see langword="true" /> to ignore empty lines and lines where all columns are empty.</param>
 		/// <returns>
@@ -279,7 +271,7 @@ namespace BytecodeApi.FileFormats.Csv
 		/// Returns an enumerable collection of <see cref="CsvRow" /> objects from the specified file. This method streams the file and does not load it into memory and is typically used for large files that are processed in a <see langword="foreach" /> loop.
 		/// </summary>
 		/// <param name="path">A <see cref="string" /> representing the path to a flat file database, such as a CSV file.</param>
-		/// <param name="delimiter">A <see cref="string" /> specifying the delimiter to be used during flat file parsing.</param>
+		/// <param name="delimiter">A <see cref="string" /> specifying the delimiter to be used during flat file parsing. If <see langword="null" /> is provided, the delimiter is automatically detected. If automatic detection fails, an exception is thrown.</param>
 		/// <param name="hasHeaderRow"><see langword="true" /> to treat the first row as a header row and load its contents into the <see cref="Headers" /> property.</param>
 		/// <param name="ignoreEmptyLines"><see langword="true" /> to ignore empty lines and lines where all columns are empty.</param>
 		/// <param name="encoding">The encoding to use if encoding is not determined from the file. Specify <see langword="null" /> to detect encoding automatically or provide a value to explicitly parse with a specific <see cref="Encoding" />.</param>
@@ -290,7 +282,6 @@ namespace BytecodeApi.FileFormats.Csv
 		{
 			Check.ArgumentNull(path, nameof(path));
 			Check.FileNotFound(path);
-			Check.ArgumentNull(delimiter, nameof(delimiter));
 			Check.ArgumentEx.StringNotEmpty(delimiter, nameof(delimiter));
 
 			using (FileStream file = File.OpenRead(path))
@@ -305,7 +296,7 @@ namespace BytecodeApi.FileFormats.Csv
 		/// Returns an enumerable collection of <see cref="CsvRow" /> objects from the specified <see cref="byte" />[] that represents a flat file database. This method streams the file and does not load it into memory and is typically used for large files that are processed in a <see langword="foreach" /> loop.
 		/// </summary>
 		/// <param name="file">The <see cref="byte" />[] that represents a flat file database to read from.</param>
-		/// <param name="delimiter">A <see cref="string" /> specifying the delimiter to be used during flat file parsing.</param>
+		/// <param name="delimiter">A <see cref="string" /> specifying the delimiter to be used during flat file parsing. If <see langword="null" /> is provided, the delimiter is automatically detected. If automatic detection fails, an exception is thrown.</param>
 		/// <param name="hasHeaderRow"><see langword="true" /> to treat the first row as a header row and load its contents into the <see cref="Headers" /> property.</param>
 		/// <returns>
 		/// An <see cref="IEnumerable{T}" /> with the <see cref="CsvRow" /> objects from the specified file.
@@ -318,7 +309,7 @@ namespace BytecodeApi.FileFormats.Csv
 		/// Returns an enumerable collection of <see cref="CsvRow" /> objects from the specified <see cref="byte" />[] that represents a flat file database. This method streams the file and does not load it into memory and is typically used for large files that are processed in a <see langword="foreach" /> loop.
 		/// </summary>
 		/// <param name="file">The <see cref="byte" />[] that represents a flat file database to read from.</param>
-		/// <param name="delimiter">A <see cref="string" /> specifying the delimiter to be used during flat file parsing.</param>
+		/// <param name="delimiter">A <see cref="string" /> specifying the delimiter to be used during flat file parsing. If <see langword="null" /> is provided, the delimiter is automatically detected. If automatic detection fails, an exception is thrown.</param>
 		/// <param name="hasHeaderRow"><see langword="true" /> to treat the first row as a header row and load its contents into the <see cref="Headers" /> property.</param>
 		/// <param name="ignoreEmptyLines"><see langword="true" /> to ignore empty lines and lines where all columns are empty.</param>
 		/// <returns>
@@ -332,7 +323,7 @@ namespace BytecodeApi.FileFormats.Csv
 		/// Returns an enumerable collection of <see cref="CsvRow" /> objects from the specified <see cref="byte" />[] that represents a flat file database. This method streams the file and does not load it into memory and is typically used for large files that are processed in a <see langword="foreach" /> loop.
 		/// </summary>
 		/// <param name="file">The <see cref="byte" />[] that represents a flat file database to read from.</param>
-		/// <param name="delimiter">A <see cref="string" /> specifying the delimiter to be used during flat file parsing.</param>
+		/// <param name="delimiter">A <see cref="string" /> specifying the delimiter to be used during flat file parsing. If <see langword="null" /> is provided, the delimiter is automatically detected. If automatic detection fails, an exception is thrown.</param>
 		/// <param name="hasHeaderRow"><see langword="true" /> to treat the first row as a header row and load its contents into the <see cref="Headers" /> property.</param>
 		/// <param name="ignoreEmptyLines"><see langword="true" /> to ignore empty lines and lines where all columns are empty.</param>
 		/// <param name="encoding">The encoding to use if encoding is not determined from the file. Specify <see langword="null" /> to detect encoding automatically or provide a value to explicitly parse with a specific <see cref="Encoding" />.</param>
@@ -342,7 +333,6 @@ namespace BytecodeApi.FileFormats.Csv
 		public static IEnumerable<CsvRow> EnumerateBinary(byte[] file, string delimiter, bool hasHeaderRow, bool ignoreEmptyLines, Encoding encoding)
 		{
 			Check.ArgumentNull(file, nameof(file));
-			Check.ArgumentNull(delimiter, nameof(delimiter));
 			Check.ArgumentEx.StringNotEmpty(delimiter, nameof(delimiter));
 
 			using (MemoryStream memoryStream = new MemoryStream(file))
@@ -357,7 +347,7 @@ namespace BytecodeApi.FileFormats.Csv
 		/// Returns an enumerable collection of <see cref="CsvRow" /> objects from the specified <see cref="Stream" />. This method streams the file and does not load it into memory and is typically used for large files that are processed in a <see langword="foreach" /> loop.
 		/// </summary>
 		/// <param name="stream">The <see cref="Stream" /> from which to read the flat file database from.</param>
-		/// <param name="delimiter">A <see cref="string" /> specifying the delimiter to be used during flat file parsing.</param>
+		/// <param name="delimiter">A <see cref="string" /> specifying the delimiter to be used during flat file parsing. If <see langword="null" /> is provided, the delimiter is automatically detected. If automatic detection fails, an exception is thrown.</param>
 		/// <param name="hasHeaderRow"><see langword="true" /> to treat the first row as a header row and load its contents into the <see cref="Headers" /> property.</param>
 		/// <returns>
 		/// An <see cref="IEnumerable{T}" /> with the <see cref="CsvRow" /> objects from the specified file.
@@ -370,7 +360,7 @@ namespace BytecodeApi.FileFormats.Csv
 		/// Returns an enumerable collection of <see cref="CsvRow" /> objects from the specified <see cref="Stream" />. This method streams the file and does not load it into memory and is typically used for large files that are processed in a <see langword="foreach" /> loop.
 		/// </summary>
 		/// <param name="stream">The <see cref="Stream" /> from which to read the flat file database from.</param>
-		/// <param name="delimiter">A <see cref="string" /> specifying the delimiter to be used during flat file parsing.</param>
+		/// <param name="delimiter">A <see cref="string" /> specifying the delimiter to be used during flat file parsing. If <see langword="null" /> is provided, the delimiter is automatically detected. If automatic detection fails, an exception is thrown.</param>
 		/// <param name="hasHeaderRow"><see langword="true" /> to treat the first row as a header row and load its contents into the <see cref="Headers" /> property.</param>
 		/// <param name="ignoreEmptyLines"><see langword="true" /> to ignore empty lines and lines where all columns are empty.</param>
 		/// <returns>
@@ -384,7 +374,7 @@ namespace BytecodeApi.FileFormats.Csv
 		/// Returns an enumerable collection of <see cref="CsvRow" /> objects from the specified <see cref="Stream" />. This method streams the file and does not load it into memory and is typically used for large files that are processed in a <see langword="foreach" /> loop.
 		/// </summary>
 		/// <param name="stream">The <see cref="Stream" /> from which to read the flat file database from.</param>
-		/// <param name="delimiter">A <see cref="string" /> specifying the delimiter to be used during flat file parsing.</param>
+		/// <param name="delimiter">A <see cref="string" /> specifying the delimiter to be used during flat file parsing. If <see langword="null" /> is provided, the delimiter is automatically detected. If automatic detection fails, an exception is thrown.</param>
 		/// <param name="hasHeaderRow"><see langword="true" /> to treat the first row as a header row and load its contents into the <see cref="Headers" /> property.</param>
 		/// <param name="ignoreEmptyLines"><see langword="true" /> to ignore empty lines and lines where all columns are empty.</param>
 		/// <param name="encoding">The encoding to use if encoding is not determined from the file. Specify <see langword="null" /> to detect encoding automatically or provide a value to explicitly parse with a specific <see cref="Encoding" />.</param>
@@ -399,7 +389,7 @@ namespace BytecodeApi.FileFormats.Csv
 		/// Returns an enumerable collection of <see cref="CsvRow" /> objects from the specified <see cref="Stream" />. This method streams the file and does not load it into memory and is typically used for large files that are processed in a <see langword="foreach" /> loop.
 		/// </summary>
 		/// <param name="stream">The <see cref="Stream" /> from which to read the flat file database from.</param>
-		/// <param name="delimiter">A <see cref="string" /> specifying the delimiter to be used during flat file parsing.</param>
+		/// <param name="delimiter">A <see cref="string" /> specifying the delimiter to be used during flat file parsing. If <see langword="null" /> is provided, the delimiter is automatically detected. If automatic detection fails, an exception is thrown.</param>
 		/// <param name="hasHeaderRow"><see langword="true" /> to treat the first row as a header row and load its contents into the <see cref="Headers" /> property.</param>
 		/// <param name="ignoreEmptyLines"><see langword="true" /> to ignore empty lines and lines where all columns are empty.</param>
 		/// <param name="encoding">The encoding to use if encoding is not determined from the file. Specify <see langword="null" /> to detect encoding automatically or provide a value to explicitly parse with a specific <see cref="Encoding" />.</param>
@@ -410,8 +400,9 @@ namespace BytecodeApi.FileFormats.Csv
 		public static IEnumerable<CsvRow> EnumerateStream(Stream stream, string delimiter, bool hasHeaderRow, bool ignoreEmptyLines, Encoding encoding, bool leaveOpen)
 		{
 			Check.ArgumentNull(stream, nameof(stream));
-			Check.ArgumentNull(delimiter, nameof(delimiter));
 			Check.ArgumentEx.StringNotEmpty(delimiter, nameof(delimiter));
+
+			AutoDetectDelimiter(stream, encoding, ref delimiter);
 
 			using (TextFieldParser parser = CreateTextFieldParser(stream, delimiter, encoding, leaveOpen))
 			{
@@ -591,8 +582,16 @@ namespace BytecodeApi.FileFormats.Csv
 
 					foreach (CsvRow row in EnumerateStream(stream, delimiterTest, false, true, encoding, true).Take(maximumRowsToTest))
 					{
-						if (cellCount == -1) cellCount = row.Count;
-						else if (cellCount != row.Count) break;
+						if (cellCount == -1)
+						{
+							cellCount = row.Count;
+						}
+						else if (cellCount != row.Count)
+						{
+							cellCount = -1;
+							break;
+						}
+
 						rowCount++;
 					}
 
@@ -747,6 +746,29 @@ namespace BytecodeApi.FileFormats.Csv
 			else return Rows.All(row => row.Count == columnCount);
 		}
 		/// <summary>
+		/// Tries to find the column index of a specified case sensitive column header name. Returns -1, if the column header was not found.
+		/// </summary>
+		/// <param name="header">A <see cref="string" /> specifying the case sensitive name of the column header to search for.</param>
+		/// <returns>
+		/// The zero-based index of the column header, or -1, if the column header was not found.
+		/// </returns>
+		public int GetColumnIndex(string header)
+		{
+			return GetColumnIndex(header, false);
+		}
+		/// <summary>
+		/// Tries to find the column index of a specified case header name. Returns -1, if the column header was not found.
+		/// </summary>
+		/// <param name="header">A <see cref="string" /> specifying the case sensitive name of the column header to search for.</param>
+		/// <param name="ignoreCase"><see langword="true" /> to ignore character casing during column name comparison.</param>
+		/// <returns>
+		/// The zero-based index of the column header, or -1, if the column header was not found.
+		/// </returns>
+		public int GetColumnIndex(string header, bool ignoreCase)
+		{
+			return Headers?.IndexOf(h => h.CompareTo(header, ignoreCase ? SpecialStringComparisons.IgnoreCase : SpecialStringComparisons.Default) == 0) ?? -1;
+		}
+		/// <summary>
 		/// Writes the contents of this flat file database to a file. If <see cref="Headers" /> is not <see langword="null" />, the header row is included. The <see cref="Delimiter" /> property specifies the delimiter to use when writing.
 		/// </summary>
 		/// <param name="path">A <see cref="string" /> specifying the path of a file to which this flat file database is written to.</param>
@@ -873,6 +895,14 @@ namespace BytecodeApi.FileFormats.Csv
 				}
 
 				if (csvRow != null) yield return csvRow;
+			}
+		}
+		private static void AutoDetectDelimiter(Stream stream, Encoding encoding, ref string delimiter)
+		{
+			if (delimiter == null)
+			{
+				delimiter = DetectDelimiter(stream, encoding);
+				if (delimiter == null) throw Throw.FileFormat("The delimiter could not be detected.");
 			}
 		}
 	}

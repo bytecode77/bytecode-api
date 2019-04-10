@@ -50,7 +50,7 @@ namespace BytecodeApi.Threading
 		/// <summary>
 		/// Invokes an <see cref="Action" /> while the underlying value is locked. The parameter of <paramref name="action" /> is the underlying value.
 		/// </summary>
-		/// <param name="action">An <see cref="Action" /> to be invoked while the underlying value is locked</param>
+		/// <param name="action">An <see cref="Action" /> to be invoked while the underlying value is locked.</param>
 		public void Lock(Action<T> action)
 		{
 			Check.ArgumentNull(action, nameof(action));
@@ -100,7 +100,7 @@ namespace BytecodeApi.Threading
 		/// </returns>
 		public static implicit operator T(Atomic<T> value)
 		{
-			return value == null ? default(T) : value.Value;
+			return value == null ? default : value.Value;
 		}
 	}
 }

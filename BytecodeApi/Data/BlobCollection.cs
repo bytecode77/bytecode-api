@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BytecodeApi.Extensions;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -30,14 +31,20 @@ namespace BytecodeApi.Data
 			}
 		}
 		/// <summary>
+		/// Gets the <see cref="Blob" /> with the specified case sensitive name and throws an exception, if it was not found.
+		/// </summary>
+		/// <param name="name">A <see cref="string" /> specifying the name of the <see cref="Blob" />.</param>
+		public Blob this[string name] => this[name, false];
+		/// <summary>
 		/// Gets the <see cref="Blob" /> with the specified name and throws an exception, if it was not found.
 		/// </summary>
 		/// <param name="name">A <see cref="string" /> specifying the name of the <see cref="Blob" />.</param>
-		public Blob this[string name]
+		/// <param name="ignoreCase"><see langword="true" /> to ignore character casing during name comparison.</param>
+		public Blob this[string name, bool ignoreCase]
 		{
 			get
 			{
-				Blob blob = Blobs.FirstOrDefault(b => b.Name == name);
+				Blob blob = Blobs.FirstOrDefault(b => b.Name.CompareTo(name, ignoreCase ? SpecialStringComparisons.IgnoreCase : SpecialStringComparisons.Default) == 0);
 				Check.KeyNotFoundException(blob != null, "A blob with the name '" + name + "' was not found.");
 				return blob;
 			}
