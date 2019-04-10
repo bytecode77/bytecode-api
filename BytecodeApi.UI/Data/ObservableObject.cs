@@ -77,7 +77,7 @@ namespace BytecodeApi.UI.Data
 		/// <summary>
 		/// Raises the <see cref="PropertyChanging" /> event on a property specified by a name.
 		/// </summary>
-		/// <param name="propertyName">A <see cref="string" /> specifying the name of the property. If <see langword="null" /> is provided, the <see cref="CallerMemberNameAttribute" /> is used to automatically get the property name./></param>
+		/// <param name="propertyName">A <see cref="string" /> specifying the name of the property. If <see langword="null" /> is provided, the <see cref="CallerMemberNameAttribute" /> is used to automatically get the property name.</param>
 		protected void RaisePropertyChanging([CallerMemberName] string propertyName = null)
 		{
 			Check.ArgumentNull(propertyName, nameof(propertyName));
@@ -99,7 +99,7 @@ namespace BytecodeApi.UI.Data
 		/// <summary>
 		/// Raises the <see cref="PropertyChanged" /> event on a property specified by a name.
 		/// </summary>
-		/// <param name="propertyName">A <see cref="string" /> specifying the name of the property. If <see langword="null" /> is provided, the <see cref="CallerMemberNameAttribute" /> is used to automatically get the property name./></param>
+		/// <param name="propertyName">A <see cref="string" /> specifying the name of the property. If <see langword="null" /> is provided, the <see cref="CallerMemberNameAttribute" /> is used to automatically get the property name.</param>
 		protected void RaisePropertyChanged([CallerMemberName] string propertyName = null)
 		{
 			Check.ArgumentNull(propertyName, nameof(propertyName));

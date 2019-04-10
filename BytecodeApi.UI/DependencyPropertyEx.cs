@@ -13,6 +13,7 @@ namespace BytecodeApi.UI
 	{
 		/// <summary>
 		/// Registers a dependency property with the specified property name. Property and owner types are automatically detected.
+		/// <para>Example: <see langword="public" /> <see langword="static" /> <see langword="readonly" /> <see cref="DependencyProperty" /> FooProperty = <see cref="DependencyPropertyEx" />.Register(<see langword="nameof" />(Foo));</para>
 		/// </summary>
 		/// <param name="name">The name of the dependency property to register. The name must be unique within the registration namespace of the owner type.</param>
 		/// <returns>
@@ -24,6 +25,7 @@ namespace BytecodeApi.UI
 		}
 		/// <summary>
 		/// Registers a dependency property with the specified property name and property metadata. Property and owner types are automatically detected.
+		/// <para>Example: <see langword="public" /> <see langword="static" /> <see langword="readonly" /> <see cref="DependencyProperty" /> FooProperty = <see cref="DependencyPropertyEx" />.Register(<see langword="nameof" />(Foo), new <see cref="PropertyMetadata" />());</para>
 		/// </summary>
 		/// <param name="name">The name of the dependency property to register. The name must be unique within the registration namespace of the owner type.</param>
 		/// <param name="typeMetadata">Property metadata for the dependency property.</param>
@@ -36,6 +38,7 @@ namespace BytecodeApi.UI
 		}
 		/// <summary>
 		/// Registers a dependency property with the specified property name, property metadata, and a value validation callback for the property. Property and owner types are automatically detected.
+		/// <para>Example: <see langword="public" /> <see langword="static" /> <see langword="readonly" /> <see cref="DependencyProperty" /> FooProperty = <see cref="DependencyPropertyEx" />.Register(<see langword="nameof" />(Foo), new <see cref="PropertyMetadata" />(), new <see cref="ValidateValueCallback" />());</para>
 		/// </summary>
 		/// <param name="name">The name of the dependency property to register. The name must be unique within the registration namespace of the owner type.</param>
 		/// <param name="typeMetadata">Property metadata for the dependency property.</param>
@@ -53,6 +56,7 @@ namespace BytecodeApi.UI
 		}
 		/// <summary>
 		/// Registers a read-only dependency property, with the specified property name and property metadata. Property and owner types are automatically detected.
+		/// <para>Example: <see langword="public" /> <see langword="static" /> <see langword="readonly" /> <see cref="DependencyPropertyKey" /> FooKey = <see cref="DependencyPropertyEx" />.RegisterReadOnly(<see langword="nameof" />(Foo), new <see cref="PropertyMetadata" />());</para>
 		/// </summary>
 		/// <param name="name">The name of the dependency property to register. The name must be unique within the registration namespace of the owner type.</param>
 		/// <param name="typeMetadata">Property metadata for the dependency property.</param>
@@ -65,6 +69,7 @@ namespace BytecodeApi.UI
 		}
 		/// <summary>
 		/// Registers a read-only dependency property, with the specified property name, property metadata, and a validation callback. Property and owner types are automatically detected.
+		/// <para>Example: <see langword="public" /> <see langword="static" /> <see langword="readonly" /> <see cref="DependencyPropertyKey" /> FooKey = <see cref="DependencyPropertyEx" />.RegisterReadOnly(<see langword="nameof" />(Foo), new <see cref="PropertyMetadata" />(), new <see cref="ValidateValueCallback" />());</para>
 		/// </summary>
 		/// <param name="name">The name of the dependency property to register. The name must be unique within the registration namespace of the owner type.</param>
 		/// <param name="typeMetadata">Property metadata for the dependency property.</param>
