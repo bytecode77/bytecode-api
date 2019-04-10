@@ -20,30 +20,17 @@ namespace BytecodeApi.Threading
 		/// </returns>
 		public static Thread StartThread(Action action)
 		{
-			return StartThread(action, false);
+			return StartThread(action, null);
 		}
 		/// <summary>
 		/// Creates a new <see cref="Thread" /> with the STA apartment state and starts it. All <see cref="ThreadAbortException" /> exceptions are caught.
 		/// </summary>
 		/// <param name="action">The <see cref="Action" /> to be invoked from the new <see cref="Thread" />.</param>
-		/// <param name="ignoreExceptions"><see langword="true" /> to ignore all exceptions; <see langword="false" /> to just ignore <see cref="ThreadAbortException" /> exceptions.</param>
+		/// <param name="exceptionHandler">An <see cref="Action{T}" /> that is called by the exception handler. If <see langword="null" />, the exception is rethrown. Use <see langword="delegate" /> { } to swallow exceptions. The stack trace prior to thread creation will be appended.</param>
 		/// <returns>
 		/// The <see cref="Thread" /> this method creates.
 		/// </returns>
-		public static Thread StartThread(Action action, bool ignoreExceptions)
-		{
-			return StartThread(action, ignoreExceptions, null);
-		}
-		/// <summary>
-		/// Creates a new <see cref="Thread" /> with the STA apartment state and starts it. All <see cref="ThreadAbortException" /> exceptions are caught.
-		/// </summary>
-		/// <param name="action">The <see cref="Action" /> to be invoked from the new <see cref="Thread" />.</param>
-		/// <param name="ignoreExceptions"><see langword="true" /> to ignore all exceptions; <see langword="false" /> to just ignore <see cref="ThreadAbortException" /> exceptions.</param>
-		/// <param name="exceptionHandler">An <see cref="Action{T}" /> that is called by the exception handler. If <see langword="null" />, the exception is thrown. The stack trace prior to thread creation will be appended.</param>
-		/// <returns>
-		/// The <see cref="Thread" /> this method creates.
-		/// </returns>
-		public static Thread StartThread(Action action, bool ignoreExceptions, Action<Exception> exceptionHandler)
+		public static Thread StartThread(Action action, Action<Exception> exceptionHandler)
 		{
 			Check.ArgumentNull(action, nameof(action));
 
@@ -59,13 +46,18 @@ namespace BytecodeApi.Threading
 				}
 				catch (Exception ex)
 				{
-					if (!ignoreExceptions)
+					if (exceptionHandler == null)
+					{
+						throw;
+					}
+					else
 					{
 						ex.AppendStackTrace(stackTrace);
-						if (exceptionHandler == null) throw; else exceptionHandler(ex);
+						exceptionHandler(ex);
 					}
 				}
 			});
+
 			thread.SetApartmentState(ApartmentState.STA);
 			thread.Start();
 			return thread;
