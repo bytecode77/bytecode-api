@@ -32,6 +32,7 @@ namespace Playground.Wpf
 		public MainWindow()
 		{
 			InitializeComponent();
+			DataContext = this;
 		}
 	}
 }

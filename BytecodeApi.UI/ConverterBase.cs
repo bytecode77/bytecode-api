@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
+using System.Windows.Markup;
 
 namespace BytecodeApi.UI
 {
@@ -10,7 +11,7 @@ namespace BytecodeApi.UI
 	/// </summary>
 	/// <typeparam name="TValue">The type of the value to convert.</typeparam>
 	/// <typeparam name="TResult">The type of the conversion result.</typeparam>
-	public abstract class ConverterBase<TValue, TResult> : IValueConverter
+	public abstract class ConverterBase<TValue, TResult> : MarkupExtension, IValueConverter
 	{
 		/// <summary>
 		/// Converts a value.
@@ -31,6 +32,11 @@ namespace BytecodeApi.UI
 		{
 			return DependencyProperty.UnsetValue;
 		}
+
+		public override object ProvideValue(IServiceProvider serviceProvider)
+		{
+			return this;
+		}
 	}
 
 	/// <summary>
@@ -39,7 +45,7 @@ namespace BytecodeApi.UI
 	/// <typeparam name="TValue">The type of the value to convert.</typeparam>
 	/// <typeparam name="TParameter">The type of the parameter used for conversion.</typeparam>
 	/// <typeparam name="TResult">The type of the conversion result.</typeparam>
-	public abstract class ConverterBase<TValue, TParameter, TResult> : IValueConverter
+	public abstract class ConverterBase<TValue, TParameter, TResult> : MarkupExtension, IValueConverter
 	{
 		/// <summary>
 		/// Converts a value.
@@ -61,6 +67,11 @@ namespace BytecodeApi.UI
 		object IValueConverter.ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
 		{
 			return DependencyProperty.UnsetValue;
+		}
+
+		public override object ProvideValue(IServiceProvider serviceProvider)
+		{
+			return this;
 		}
 	}
 }
