@@ -7,6 +7,7 @@ namespace BytecodeApi.UI.Converters
 	/// <summary>
 	/// Represents the converter that converts an <see cref="IEnumerable{T}" /> of type <see cref="bool" /> or <see cref="bool" />? to a <see cref="bool" />? value representing an indeterminate indicator, using <see cref="IEnumerableExtensions.ToIndeterminate(IEnumerable{bool})" />.
 	/// </summary>
+	//CURRENT: !To be replaced by new converters
 	public sealed class BooleanCollectionToIndeterminateConverter : ConverterBase<IEnumerable, bool?>
 	{
 		/// <summary>

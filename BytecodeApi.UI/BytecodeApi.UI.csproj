@@ -54,6 +54,8 @@
     <Compile Include="Controls\WatermarkService.cs" />
     <Compile Include="Converters\ByteSizeDecimalConverter.cs" />
     <Compile Include="Converters\ByteSizeFormatConverter.cs" />
+    <Compile Include="Converters\IEnumerableAnyConverter.cs" />
+    <Compile Include="Converters\ImageSourceConverter.cs" />
     <Compile Include="Converters\IEnumerableConverterResult.cs" />
     <Compile Include="Converters\IEnumerableConverter.cs" />
     <Compile Include="Converters\TimeSpanHumanReadableConverter.cs" />
@@ -76,9 +78,6 @@
     <Compile Include="DelegateCommand.cs" />
     <Compile Include="ConverterBase.cs" />
     <Compile Include="ConverterBaseExtended.cs" />
-    <Compile Include="Converters\_old\IEnumerableHasElementsToVisibilityConverter.cs" />
-    <Compile Include="Converters\_old\IEnumerableHasElementsToBooleanConverter.cs" />
-    <Compile Include="Converters\_old\ObjectToImageSourceConverter.cs" />
     <Compile Include="Converters\_old\StringConcatConverter.cs" />
     <Compile Include="Dialogs\FileDialogs.cs" />
     <Compile Include="Dialogs\IconPickerDialog.cs" />

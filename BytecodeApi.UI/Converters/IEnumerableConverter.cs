@@ -1,5 +1,6 @@
 ﻿using BytecodeApi.Extensions;
 using System.Collections;
+using System.Linq;
 
 namespace BytecodeApi.UI.Converters
 {
@@ -23,6 +24,8 @@ namespace BytecodeApi.UI.Converters
 				switch (ResultType)
 				{
 					case IEnumerableConverterResult.Count: return value.Count();
+					case IEnumerableConverterResult.JoinStrings: return value.Cast<object>().AsString();
+					case IEnumerableConverterResult.AsMultilineString: return value.Cast<object>().Select(itm => itm?.ToString()).AsMultilineString();
 					default: throw Throw.InvalidEnumArgument(nameof(ResultType));
 				}
 			}

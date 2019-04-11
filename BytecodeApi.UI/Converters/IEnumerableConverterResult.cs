@@ -2,6 +2,9 @@
 {
 	public enum IEnumerableConverterResult
 	{
-		Count
+		Count,
+		JoinStrings,
+		AsMultilineString
+		//CURRENT: Additional properties
 	}
 }

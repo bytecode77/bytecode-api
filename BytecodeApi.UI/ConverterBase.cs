@@ -13,6 +13,8 @@ namespace BytecodeApi.UI
 	/// <typeparam name="TResult">The type of the conversion result.</typeparam>
 	public abstract class ConverterBase<TValue, TResult> : MarkupExtension, IValueConverter
 	{
+		public IValueConverter Then { get; set; }
+
 		/// <summary>
 		/// Converts a value.
 		/// </summary>
@@ -24,7 +26,8 @@ namespace BytecodeApi.UI
 
 		object IValueConverter.Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			return Convert(CSharp.CastOrDefault<TValue>(value));
+			TResult result = Convert(CSharp.CastOrDefault<TValue>(value));
+			return Then == null ? result : Then.Convert(result, targetType, parameter, culture);
 		}
 		object IValueConverter.ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
 		{
@@ -45,6 +48,8 @@ namespace BytecodeApi.UI
 	/// <typeparam name="TResult">The type of the conversion result.</typeparam>
 	public abstract class ConverterBase<TValue, TParameter, TResult> : MarkupExtension, IValueConverter
 	{
+		public IValueConverter Then { get; set; }
+
 		/// <summary>
 		/// Converts a value.
 		/// </summary>
@@ -57,7 +62,8 @@ namespace BytecodeApi.UI
 
 		object IValueConverter.Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			return Convert(CSharp.CastOrDefault<TValue>(value), CSharp.CastOrDefault<TParameter>(parameter));
+			TResult result = Convert(CSharp.CastOrDefault<TValue>(value), CSharp.CastOrDefault<TParameter>(parameter));
+			return Then == null ? result : Then.Convert(result, targetType, parameter, culture);
 		}
 		object IValueConverter.ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
 		{

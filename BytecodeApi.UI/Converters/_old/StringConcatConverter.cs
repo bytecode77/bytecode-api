@@ -3,6 +3,7 @@
 	/// <summary>
 	/// Represents the converter that concatenates two <see cref="string" /> values. Both values can be provided using any data type. <see langword="null" /> values are treated as <see cref="string.Empty" />.
 	/// </summary>
+	//CURRENT: !To be replaced by new converters
 	public sealed class StringConcatConverter : ConverterBase<object, object, string>
 	{
 		/// <summary>
