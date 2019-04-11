@@ -11,6 +11,27 @@ namespace BytecodeApi.Extensions
 	/// </summary>
 	public static class IEnumerableExtensions
 	{
+		public static bool Any(this IEnumerable source)
+		{
+			Check.ArgumentNull(source, nameof(source));
+
+			if (source is ICollection collection)
+			{
+				return collection.Count > 0;
+			}
+			else
+			{
+				bool any = false;
+				IEnumerator enumerator = source.GetEnumerator();
+
+				CSharp.Using(enumerator, () =>
+				{
+					any = enumerator.MoveNext();
+				});
+
+				return any;
+			}
+		}
 		/// <summary>
 		/// Determines whether a sequence contains no elements.
 		/// </summary>
@@ -24,7 +45,7 @@ namespace BytecodeApi.Extensions
 		{
 			Check.ArgumentNull(source, nameof(source));
 
-			return !source.Any();
+			return Enumerable.Any(source);
 		}
 		/// <summary>
 		/// Determines whether a sequence that satisfies a specified condition contains no elements.
@@ -42,6 +63,12 @@ namespace BytecodeApi.Extensions
 			Check.ArgumentNull(predicate, nameof(predicate));
 
 			return !source.Any(predicate);
+		}
+		public static bool None(this IEnumerable source)
+		{
+			Check.ArgumentNull(source, nameof(source));
+
+			return !source.Any();
 		}
 		/// <summary>
 		/// Returns the number of elements in a sequence.
