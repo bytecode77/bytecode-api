@@ -2,17 +2,38 @@
 
 namespace BytecodeApi.UI.Converters
 {
+	/// <summary>
+	/// Represents the converter that converts <see cref="string" /> values based on <see cref="string" /> emptiness. The <see cref="Convert(string)" /> method returns an <see cref="object" /> based on the specified <see cref="StringEmptyConverterMethod" /> and <see cref="BooleanConverterMethod" /> parameters.
+	/// </summary>
 	public sealed class StringEmptyConverter : ConverterBase<string, object>
 	{
+		/// <summary>
+		/// Specifies the method that is used to check the <see cref="string" /> value for emptiness.
+		/// </summary>
 		public StringEmptyConverterMethod Method { get; set; }
-		public BooleanConverterResult ResultType { get; set; }
+		/// <summary>
+		/// Specifies how the <see cref="bool" /> result is converted before the <see cref="Convert(string)" /> method returns.
+		/// </summary>
+		public BooleanConverterMethod Result { get; set; }
 
-		public StringEmptyConverter(StringEmptyConverterMethod method, BooleanConverterResult resultType)
+		/// <summary>
+		/// Initializes a new instance of the <see cref="StringEmptyConverter" /> class with the specified conversion method and result transformation.
+		/// </summary>
+		/// <param name="method">The method that is used to check the <see cref="string" /> value for emptiness.</param>
+		/// <param name="result">Specifies how the <see cref="bool" /> result is converted before the <see cref="Convert(string)" /> method returns.</param>
+		public StringEmptyConverter(StringEmptyConverterMethod method, BooleanConverterMethod result)
 		{
 			Method = method;
-			ResultType = resultType;
+			Result = result;
 		}
 
+		/// <summary>
+		/// Converts the <see cref="string" /> value based on <see cref="string" /> emptiness and the specified <see cref="StringEmptyConverterMethod" /> and <see cref="BooleanConverterMethod" /> parameters.
+		/// </summary>
+		/// <param name="value">The <see cref="string" /> value to convert.</param>
+		/// <returns>
+		/// An <see cref="object" /> with the result of the conversion.
+		/// </returns>
 		public override object Convert(string value)
 		{
 			bool result;
@@ -21,10 +42,10 @@ namespace BytecodeApi.UI.Converters
 			{
 				case StringEmptyConverterMethod.NotNullOrEmpty: result = !value.IsNullOrEmpty(); break;
 				case StringEmptyConverterMethod.NotNullOrWhiteSpace: result = !value.IsNullOrWhiteSpace(); break;
-				default: throw Throw.InvalidEnumArgument(nameof(ResultType));
+				default: throw Throw.InvalidEnumArgument(nameof(Result));
 			}
 
-			return new BooleanConverter(ResultType).Convert(result);
+			return new BooleanConverter(Result).Convert(result);
 		}
 	}
 }

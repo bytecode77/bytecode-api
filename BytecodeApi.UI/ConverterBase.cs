@@ -13,7 +13,14 @@ namespace BytecodeApi.UI
 	/// <typeparam name="TResult">The type of the conversion result.</typeparam>
 	public abstract class ConverterBase<TValue, TResult> : MarkupExtension, IValueConverter
 	{
+		/// <summary>
+		/// Specifies a converter that is used to convert the result of this converter. This can be used to apply multiple conversions on a value.
+		/// </summary>
 		public IValueConverter Then { get; set; }
+		/// <summary>
+		/// If <see cref="Then" /> is not <see langword="null" />, specifies a converter parameter that is used to convert the result of this converter.
+		/// </summary>
+		public object ThenParameter { get; set; }
 
 		/// <summary>
 		/// Converts a value.
@@ -27,13 +34,20 @@ namespace BytecodeApi.UI
 		object IValueConverter.Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
 			TResult result = Convert(CSharp.CastOrDefault<TValue>(value));
-			return Then == null ? result : Then.Convert(result, targetType, parameter, culture);
+			return Then == null ? result : Then.Convert(result, targetType, ThenParameter, culture);
 		}
 		object IValueConverter.ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
 		{
 			return DependencyProperty.UnsetValue;
 		}
 
+		/// <summary>
+		/// Returns this instance of <see cref="IValueConverter" />.
+		/// </summary>
+		/// <param name="serviceProvider">Object that can provide services for the markup extension.</param>
+		/// <returns>
+		/// This instance of <see cref="IValueConverter" />.
+		/// </returns>
 		public override object ProvideValue(IServiceProvider serviceProvider)
 		{
 			return this;
@@ -48,7 +62,14 @@ namespace BytecodeApi.UI
 	/// <typeparam name="TResult">The type of the conversion result.</typeparam>
 	public abstract class ConverterBase<TValue, TParameter, TResult> : MarkupExtension, IValueConverter
 	{
+		/// <summary>
+		/// Specifies a converter that is used to convert the result of this converter. This can be used to apply multiple conversions on a value.
+		/// </summary>
 		public IValueConverter Then { get; set; }
+		/// <summary>
+		/// If <see cref="Then" /> is not <see langword="null" />, specifies a converter parameter that is used to convert the result of this converter.
+		/// </summary>
+		public object ThenParameter { get; set; }
 
 		/// <summary>
 		/// Converts a value.
@@ -63,13 +84,20 @@ namespace BytecodeApi.UI
 		object IValueConverter.Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
 			TResult result = Convert(CSharp.CastOrDefault<TValue>(value), CSharp.CastOrDefault<TParameter>(parameter));
-			return Then == null ? result : Then.Convert(result, targetType, parameter, culture);
+			return Then == null ? result : Then.Convert(result, targetType, ThenParameter, culture);
 		}
 		object IValueConverter.ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
 		{
 			return DependencyProperty.UnsetValue;
 		}
 
+		/// <summary>
+		/// Returns this instance of <see cref="IValueConverter" />.
+		/// </summary>
+		/// <param name="serviceProvider">Object that can provide services for the markup extension.</param>
+		/// <returns>
+		/// This instance of <see cref="IValueConverter" />.
+		/// </returns>
 		public override object ProvideValue(IServiceProvider serviceProvider)
 		{
 			return this;

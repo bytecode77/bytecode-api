@@ -1,18 +1,36 @@
 ﻿using BytecodeApi.Extensions;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace BytecodeApi.UI.Converters
 {
+	/// <summary>
+	/// Represents the converter that converts <see cref="IEnumerable" /> values. The <see cref="Convert(IEnumerable)" /> method returns an <see cref="object" /> based on the specified <see cref="IEnumerableConverterMethod" /> parameter.
+	/// </summary>
 	public sealed class IEnumerableConverter : ConverterBase<IEnumerable, object>
 	{
-		public IEnumerableConverterResult ResultType { get; set; }
+		/// <summary>
+		/// Specifies the method that is used to convert the <see cref="IEnumerable" /> value.
+		/// </summary>
+		public IEnumerableConverterMethod Method { get; set; }
 
-		public IEnumerableConverter(IEnumerableConverterResult resultType)
+		/// <summary>
+		/// Initializes a new instance of the <see cref="IEnumerableConverter" /> class with the specified conversion method.
+		/// </summary>
+		/// <param name="method">The method that is used to convert the <see cref="IEnumerable" /> value.</param>
+		public IEnumerableConverter(IEnumerableConverterMethod method)
 		{
-			ResultType = resultType;
+			Method = method;
 		}
 
+		/// <summary>
+		/// Converts the <see cref="IEnumerable" /> value based the specified <see cref="IEnumerableConverterMethod" /> parameter.
+		/// </summary>
+		/// <param name="value">The <see cref="IEnumerable" /> value to convert.</param>
+		/// <returns>
+		/// An <see cref="object" /> with the result of the conversion.
+		/// </returns>
 		public override object Convert(IEnumerable value)
 		{
 			if (value == null)
@@ -21,12 +39,17 @@ namespace BytecodeApi.UI.Converters
 			}
 			else
 			{
-				switch (ResultType)
+				switch (Method)
 				{
-					case IEnumerableConverterResult.Count: return value.Count();
-					case IEnumerableConverterResult.JoinStrings: return value.Cast<object>().AsString();
-					case IEnumerableConverterResult.AsMultilineString: return value.Cast<object>().Select(itm => itm?.ToString()).AsMultilineString();
-					default: throw Throw.InvalidEnumArgument(nameof(ResultType));
+					case IEnumerableConverterMethod.Count: return value.Count();
+					case IEnumerableConverterMethod.JoinStrings: return value.Cast<object>().AsString();
+					case IEnumerableConverterMethod.JoinStringsComma: return value.Cast<object>().Select(itm => itm?.ToString()).AsString(", ");
+					case IEnumerableConverterMethod.AsMultilineString: return value.Cast<object>().Select(itm => itm?.ToString()).AsMultilineString();
+					case IEnumerableConverterMethod.BooleansToIndeterminate:
+						if (value is IEnumerable<bool> booleanCollection) return booleanCollection.ToIndeterminate();
+						else if (value is IEnumerable<bool?> nullableBooleanCollection) return nullableBooleanCollection.ToIndeterminate();
+						else throw Throw.UnsupportedType(nameof(value));
+					default: throw Throw.InvalidEnumArgument(nameof(Method));
 				}
 			}
 		}

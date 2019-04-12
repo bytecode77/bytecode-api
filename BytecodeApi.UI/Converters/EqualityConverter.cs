@@ -2,17 +2,39 @@
 
 namespace BytecodeApi.UI.Converters
 {
+	/// <summary>
+	/// Represents the converter that converts objects or <see cref="IComparable" /> values based on equality to the specified parameter. The <see cref="Convert(object, object)" /> method returns an <see cref="object" /> based on the specified <see cref="EqualityConverterMethod" /> and <see cref="BooleanConverterMethod" /> parameters.
+	/// </summary>
 	public sealed class EqualityConverter : ConverterBase<object, object, object>
 	{
+		/// <summary>
+		/// Specifies the method that is used to compare the value and parameter.
+		/// </summary>
 		public EqualityConverterMethod Method { get; set; }
-		public BooleanConverterResult ResultType { get; set; }
+		/// <summary>
+		/// Specifies how the <see cref="bool" /> result is converted before the <see cref="Convert(object, object)" /> method returns.
+		/// </summary>
+		public BooleanConverterMethod Result { get; set; }
 
-		public EqualityConverter(EqualityConverterMethod method, BooleanConverterResult resultType)
+		/// <summary>
+		/// Initializes a new instance of the <see cref="EqualityConverter" /> class with the specified conversion method and result transformation.
+		/// </summary>
+		/// <param name="method">The method that is used to compare the value and parameter.</param>
+		/// <param name="result">Specifies how the <see cref="bool" /> result is converted before the <see cref="Convert(object, object)" /> method returns.</param>
+		public EqualityConverter(EqualityConverterMethod method, BooleanConverterMethod result)
 		{
 			Method = method;
-			ResultType = resultType;
+			Result = result;
 		}
 
+		/// <summary>
+		/// Converts the <see cref="object" /> or <see cref="IComparable" /> value based on equality to the specified parameter and the specified <see cref="EqualityConverterMethod" /> and <see cref="BooleanConverterMethod" /> parameters.
+		/// </summary>
+		/// <param name="value">The <see cref="object" /> to convert.</param>
+		/// <param name="parameter">A parameter <see cref="object" /> to be compared to <paramref name="value" />.</param>
+		/// <returns>
+		/// An <see cref="object" /> with the result of the conversion.
+		/// </returns>
 		public override object Convert(object value, object parameter)
 		{
 			bool result;
@@ -37,7 +59,7 @@ namespace BytecodeApi.UI.Converters
 						case EqualityConverterMethod.LessEqual: result = comparison <= 0; break;
 						case EqualityConverterMethod.Greater: result = comparison > 0; break;
 						case EqualityConverterMethod.GreaterEqual: result = comparison >= 0; break;
-						default: throw Throw.InvalidEnumArgument(nameof(ResultType));
+						default: throw Throw.InvalidEnumArgument(nameof(Result));
 					}
 				}
 				else
@@ -46,7 +68,7 @@ namespace BytecodeApi.UI.Converters
 				}
 			}
 
-			return new BooleanConverter(ResultType).Convert(result);
+			return new BooleanConverter(Result).Convert(result);
 		}
 	}
 }

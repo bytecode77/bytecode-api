@@ -11,6 +11,14 @@ namespace BytecodeApi.Extensions
 	/// </summary>
 	public static class IEnumerableExtensions
 	{
+		/// <summary>
+		/// Determines whether a sequence contains any elements.
+		/// </summary>
+		/// <param name="source">The <see cref="IEnumerable" /> to check for emptiness.</param>
+		/// <returns>
+		/// <see langword="true" />, if the source sequence contains any elements;
+		/// otherwise, <see langword="false" />.
+		/// </returns>
 		public static bool Any(this IEnumerable source)
 		{
 			Check.ArgumentNull(source, nameof(source));
@@ -64,6 +72,14 @@ namespace BytecodeApi.Extensions
 
 			return !source.Any(predicate);
 		}
+		/// <summary>
+		/// Determines whether a sequence contains no elements.
+		/// </summary>
+		/// <param name="source">The <see cref="IEnumerable" /> to check for emptiness.</param>
+		/// <returns>
+		/// <see langword="true" />, if the source sequence is empty;
+		/// otherwise, <see langword="false" />.
+		/// </returns>
 		public static bool None(this IEnumerable source)
 		{
 			Check.ArgumentNull(source, nameof(source));
