@@ -40,7 +40,7 @@ namespace BytecodeApi.UI.Converters
 				switch (Method)
 				{
 					case EnumConverterMethod.String: return value.ToString();
-					case EnumConverterMethod.Description: return value.GetDescription(); //CURRENT: DescriptionOrString, do not automatically "coelesce"
+					case EnumConverterMethod.Description: return value.GetDescription(); //IMPORTANT: DescriptionOrString, do not automatically "coelesce"
 					case EnumConverterMethod.Value: return System.Convert.ToInt32(value);
 					default: throw Throw.InvalidEnumArgument(nameof(Method));
 				}

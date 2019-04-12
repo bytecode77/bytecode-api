@@ -1,7 +1,7 @@
 ﻿namespace BytecodeApi.UI.Converters
 {
 	/// <summary>
-	/// Represents the converter that converts objects based on whether the value is <see langword="null" /> or not. The <see cref="Convert(object)" /> method returns an <see cref="object" /> based on the specified <see cref="BooleanConverterMethod" /> parameter.
+	/// Represents the converter that converts objects based on whether the value is <see langword="null" />. The <see cref="Convert(object)" /> method returns an <see cref="object" /> based on the specified <see cref="BooleanConverterMethod" /> parameter.
 	/// </summary>
 	public sealed class NullConverter : ConverterBase<object, object>
 	{
@@ -20,7 +20,7 @@
 		}
 
 		/// <summary>
-		/// Converts the <see cref="object" /> value based on whether the value is <see langword="null" /> or not and the specified <see cref="BooleanConverterMethod" /> parameter.
+		/// Converts the <see cref="object" /> value based on whether the value is <see langword="null" /> and the specified <see cref="BooleanConverterMethod" /> parameter.
 		/// </summary>
 		/// <param name="value">The <see cref="object" /> value to convert.</param>
 		/// <returns>

@@ -30,6 +30,6 @@ namespace BytecodeApi.UI.Converters
 		/// The value must be a collection of <see cref="bool" /> or <see cref="bool" />? values.
 		/// </summary>
 		BooleansToIndeterminate
-		//CURRENT: Additional methods
+		//IMPORTANT: Additional methods
 	}
 }

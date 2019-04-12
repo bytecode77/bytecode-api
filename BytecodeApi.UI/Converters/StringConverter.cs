@@ -1,4 +1,5 @@
 ﻿using BytecodeApi.Extensions;
+using BytecodeApi.Text;
 using System;
 
 namespace BytecodeApi.UI.Converters
@@ -55,6 +56,7 @@ namespace BytecodeApi.UI.Converters
 				case StringConverterMethod.Contains: return value?.Contains(parameter?.ToString()) == true;
 				case StringConverterMethod.ContainsIgnoreCase: return value?.Contains(parameter?.ToString(), SpecialStringComparisons.IgnoreCase) == true;
 				case StringConverterMethod.ReplaceLineBreaks: return value?.ReplaceLineBreaks(parameter?.ToString());
+				case StringConverterMethod.TrimText: return value == null ? null : Wording.TrimText(value, (int)parameter);
 				default: throw Throw.InvalidEnumArgument(nameof(Method));
 			}
 		}

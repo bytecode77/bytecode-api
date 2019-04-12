@@ -33,7 +33,7 @@ namespace BytecodeApi.IO.Http
 		/// </summary>
 		public static readonly RemoteCertificateValidationCallback AlwaysValidCertificateValidationCallback = delegate { return true; };
 		/// <summary>
-		/// Gets or sets <see cref="bool" /> value indicating whether to use a <see cref="CookieContainer" /> or not. Changing the value will not empty the <see cref="CookieContainer" />, until <see cref="ClearCookies" /> is called.
+		/// Gets or sets <see cref="bool" /> value indicating whether to use a <see cref="CookieContainer" />. Changing the value will not empty the <see cref="CookieContainer" />, until <see cref="ClearCookies" /> is called.
 		/// </summary>
 		public bool UseCookies { get; set; }
 		/// <summary>
