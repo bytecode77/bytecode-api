@@ -30,8 +30,20 @@
 		/// <para>value % parameter</para>
 		/// </summary>
 		Modulo,
+		/// <summary>
+		/// Performs a binary and operation on the value and parameter:
+		/// <para>value &amp; parameter</para>
+		/// </summary>
 		And,
+		/// <summary>
+		/// Performs a binary or operation on the value and parameter:
+		/// <para>value | parameter</para>
+		/// </summary>
 		Or,
+		/// <summary>
+		/// Performs a binary xor operation on the value and parameter:
+		/// <para>value ^ parameter</para>
+		/// </summary>
 		Xor
 		//CURRENT: ~ << >>
 	}

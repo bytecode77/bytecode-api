@@ -12,7 +12,7 @@ namespace BytecodeApi.UI.Converters
 		/// </summary>
 		Default,
 		/// <summary>
-		/// Returns <see langword="false" />, if the <see cref="bool" />? value is <see langword="true" />; otherwise, <see langword="false" />.
+		/// Returns <see langword="true" />, if the <see cref="bool" />? value is <see langword="false" /> or <see langword="null" />; otherwise, <see langword="false" />.
 		/// </summary>
 		Inverse,
 		/// <summary>
