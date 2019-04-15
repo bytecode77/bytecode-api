@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace BytecodeApi.Data
 {
-	//FEATURE: FindBlob(string path), RemoveBlob(string path), RemoveNode(string path)
+	//FEATURE: FindBlob(string path), RemoveBlob(string path)
 	/// <summary>
 	/// Represents a tree node within a <see cref="BlobTree" />.
 	/// </summary>

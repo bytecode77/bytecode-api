@@ -44,9 +44,8 @@ namespace BytecodeApi.Data
 		{
 			get
 			{
-				Blob blob = Blobs.FirstOrDefault(b => b.Name.CompareTo(name, ignoreCase ? SpecialStringComparisons.IgnoreCase : SpecialStringComparisons.Default) == 0);
-				Check.KeyNotFoundException(blob != null, "A blob with the name '" + name + "' was not found.");
-				return blob;
+				Check.KeyNotFoundException(HasBlob(name, ignoreCase), "A blob with the name '" + name + "' was not found.");
+				return Blobs.First(b => b.Name.CompareTo(name, ignoreCase ? SpecialStringComparisons.IgnoreCase : SpecialStringComparisons.Default) == 0);
 			}
 		}
 		/// <summary>
@@ -127,6 +126,32 @@ namespace BytecodeApi.Data
 		}
 
 		/// <summary>
+		/// Determines whether a <see cref="Blob" /> with the specified name exists in this collection.
+		/// </summary>
+		/// <param name="name">The name of the <see cref="Blob" /> to check.</param>
+		/// <returns>
+		/// <see langword="true" />, if the <see cref="Blob" /> with the specified name exists;
+		/// otherwise, <see langword="false" />.
+		/// </returns>
+		public bool HasBlob(string name)
+		{
+			return HasBlob(name, false);
+		}
+		/// <summary>
+		/// Determines whether a <see cref="Blob" /> with the specified name exists in this collection.
+		/// </summary>
+		/// <param name="name">The name of the <see cref="Blob" /> to check.</param>
+		/// <param name="ignoreCase"><see langword="true" /> to ignore character casing during comparison.</param>
+		/// <returns>
+		/// <see langword="true" />, if the <see cref="Blob" /> with the specified name exists;
+		/// otherwise, <see langword="false" />.
+		/// </returns>
+		public bool HasBlob(string name, bool ignoreCase)
+		{
+			return Blobs.Any(blob => blob.Name.CompareTo(name, ignoreCase ? SpecialStringComparisons.IgnoreCase : SpecialStringComparisons.Default) == 0);
+		}
+
+		/// <summary>
 		/// Adds a <see cref="Blob" /> to the end of the <see cref="BlobCollection" />.
 		/// </summary>
 		/// <param name="item">The <see cref="Blob" /> to be added to the end of the <see cref="BlobCollection" />.</param>
@@ -181,10 +206,10 @@ namespace BytecodeApi.Data
 		}
 
 		/// <summary>
-		/// Returns an enumerator that iterates through the collection.
+		/// Returns an enumerator that iterates through the <see cref="BlobCollection" />.
 		/// </summary>
 		/// <returns>
-		/// An enumerator that can be used to iterate through the collection.
+		/// An enumerator that can be used to iterate through the <see cref="BlobCollection" />.
 		/// </returns>
 		public IEnumerator<Blob> GetEnumerator()
 		{

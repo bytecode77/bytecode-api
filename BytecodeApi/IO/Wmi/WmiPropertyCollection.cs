@@ -84,10 +84,10 @@ namespace BytecodeApi.IO.Wmi
 		}
 
 		/// <summary>
-		/// Returns an enumerator that iterates through the collection.
+		/// Returns an enumerator that iterates through the <see cref="WmiPropertyCollection" />.
 		/// </summary>
 		/// <returns>
-		/// An enumerator that can be used to iterate through the collection.
+		/// An enumerator that can be used to iterate through the <see cref="WmiPropertyCollection" />.
 		/// </returns>
 		public IEnumerator<WmiProperty> GetEnumerator()
 		{

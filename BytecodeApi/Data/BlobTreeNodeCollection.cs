@@ -43,9 +43,8 @@ namespace BytecodeApi.Data
 		{
 			get
 			{
-				BlobTreeNode node = Nodes.FirstOrDefault(n => n.Name.CompareTo(name, ignoreCase ? SpecialStringComparisons.IgnoreCase : SpecialStringComparisons.Default) == 0);
-				Check.KeyNotFoundException(node != null, "A node with the name '" + name + "' was not found.");
-				return node;
+				Check.KeyNotFoundException(HasNode(name, ignoreCase), "A node with the name '" + name + "' was not found.");
+				return Nodes.First(n => n.Name.CompareTo(name, ignoreCase ? SpecialStringComparisons.IgnoreCase : SpecialStringComparisons.Default) == 0);
 			}
 		}
 		/// <summary>
@@ -71,6 +70,32 @@ namespace BytecodeApi.Data
 		public BlobTreeNodeCollection(IEnumerable<BlobTreeNode> nodes) : this()
 		{
 			Nodes.AddRange(nodes);
+		}
+
+		/// <summary>
+		/// Determines whether a <see cref="BlobTreeNode" /> with the specified name exists in this collection.
+		/// </summary>
+		/// <param name="name">The name of the <see cref="BlobTreeNode" /> to check.</param>
+		/// <returns>
+		/// <see langword="true" />, if the <see cref="BlobTreeNode" /> with the specified name exists;
+		/// otherwise, <see langword="false" />.
+		/// </returns>
+		public bool HasNode(string name)
+		{
+			return HasNode(name, false);
+		}
+		/// <summary>
+		/// Determines whether a <see cref="BlobTreeNode" /> with the specified name exists in this collection.
+		/// </summary>
+		/// <param name="name">The name of the <see cref="BlobTreeNode" /> to check.</param>
+		/// <param name="ignoreCase"><see langword="true" /> to ignore character casing during comparison.</param>
+		/// <returns>
+		/// <see langword="true" />, if the <see cref="BlobTreeNode" /> with the specified name exists;
+		/// otherwise, <see langword="false" />.
+		/// </returns>
+		public bool HasNode(string name, bool ignoreCase)
+		{
+			return Nodes.Any(node => node.Name.CompareTo(name, ignoreCase ? SpecialStringComparisons.IgnoreCase : SpecialStringComparisons.Default) == 0);
 		}
 
 		/// <summary>
@@ -128,10 +153,10 @@ namespace BytecodeApi.Data
 		}
 
 		/// <summary>
-		/// Returns an enumerator that iterates through the collection.
+		/// Returns an enumerator that iterates through the <see cref="BlobTreeNodeCollection" />.
 		/// </summary>
 		/// <returns>
-		/// An enumerator that can be used to iterate through the collection.
+		/// An enumerator that can be used to iterate through the <see cref="BlobTreeNodeCollection" />.
 		/// </returns>
 		public IEnumerator<BlobTreeNode> GetEnumerator()
 		{
