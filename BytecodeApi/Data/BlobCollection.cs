@@ -109,6 +109,24 @@ namespace BytecodeApi.Data
 		}
 
 		/// <summary>
+		/// Writes the contents of all <see cref="Blob" /> objects to the specified directory, where <see cref="Blob.Name" /> is used as the filename and <see cref="Blob.Content" /> is written to the file. Existing files are overwritten.
+		/// </summary>
+		/// <param name="path">A <see cref="string" /> specifying the path to a directory to which this <see cref="BlobCollection" /> is written to.</param>
+		public void SaveToDirectory(string path)
+		{
+			Check.ArgumentNull(path, nameof(path));
+			Check.DirectoryNotFound(path);
+
+			Blob illegalBlob = Blobs.FirstOrDefault(blob => !Validate.FileName(blob.Name));
+			if (illegalBlob != null) throw CreateIllegalFilenameException(illegalBlob);
+
+			foreach (Blob blob in Blobs)
+			{
+				File.WriteAllBytes(Path.Combine(path, blob.Name), blob.Content);
+			}
+		}
+
+		/// <summary>
 		/// Adds a <see cref="Blob" /> to the end of the <see cref="BlobCollection" />.
 		/// </summary>
 		/// <param name="item">The <see cref="Blob" /> to be added to the end of the <see cref="BlobCollection" />.</param>
@@ -160,24 +178,6 @@ namespace BytecodeApi.Data
 			Check.IndexOutOfRange(arrayIndex, array.Length - Count + 1);
 
 			Blobs.CopyTo(array, arrayIndex);
-		}
-
-		/// <summary>
-		/// Writes the contents of all <see cref="Blob" /> objects to the specified directory, where <see cref="Blob.Name" /> is used as the filename and <see cref="Blob.Content" /> is written to the file. Existing files are overwritten.
-		/// </summary>
-		/// <param name="path">A <see cref="string" /> specifying the path to a directory to which this <see cref="BlobCollection" /> is written to.</param>
-		public void SaveToDirectory(string path)
-		{
-			Check.ArgumentNull(path, nameof(path));
-			Check.DirectoryNotFound(path);
-
-			Blob illegalBlob = Blobs.FirstOrDefault(blob => !Validate.FileName(blob.Name));
-			if (illegalBlob != null) throw CreateIllegalFilenameException(illegalBlob);
-
-			foreach (Blob blob in Blobs)
-			{
-				File.WriteAllBytes(Path.Combine(path, blob.Name), blob.Content);
-			}
 		}
 
 		/// <summary>

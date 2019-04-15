@@ -95,6 +95,7 @@
     <Compile Include="Extensions\DependencyObjectExtensions.cs" />
     <Compile Include="Extensions\ControlExtensions.cs" />
     <Compile Include="Extensions\VisibilityExtensions.cs" />
+    <Compile Include="HotKeyEventArgs.cs" />
     <Compile Include="Markup\BooleanExtension.cs" />
     <Compile Include="Markup\ByteExtension.cs" />
     <Compile Include="Markup\CharExtension.cs" />
@@ -126,6 +127,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="HotKey.cs" />
     <Compile Include="SingleInstance.cs" />
     <Compile Include="Extensions\DispatcherObjectExtensions.cs" />
     <Compile Include="UIContext.cs" />
