@@ -17,6 +17,7 @@ namespace BytecodeApi.UI.Controls
 	public class ObservableWindow : Window, INotifyPropertyChanged, INotifyPropertyChanging
 	{
 		private readonly Dictionary<string, object> BackingFields;
+		private bool IsLoadedOnce;
 		/// <summary>
 		/// Occurs when a property value is changing and is typically used by a <see cref="DependencyObject" />.
 		/// </summary>
@@ -25,6 +26,10 @@ namespace BytecodeApi.UI.Controls
 		/// Occurs when a property value has changed and is typically used by a <see cref="DependencyObject" />.
 		/// </summary>
 		public event PropertyChangedEventHandler PropertyChanged;
+		/// <summary>
+		/// Occurs when the element is laid out, rendered, and ready for interaction. This event is fired only once.
+		/// </summary>
+		public event RoutedEventHandler LoadedOnce;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="ObservableWindow" /> class.
@@ -32,6 +37,15 @@ namespace BytecodeApi.UI.Controls
 		public ObservableWindow()
 		{
 			BackingFields = new Dictionary<string, object>();
+			Loaded += ObservableWindow_Loaded;
+		}
+		private void ObservableWindow_Loaded(object sender, RoutedEventArgs e)
+		{
+			if (!IsLoadedOnce)
+			{
+				IsLoadedOnce = true;
+				LoadedOnce?.Invoke(sender, e);
+			}
 		}
 
 		/// <summary>
