@@ -14,6 +14,21 @@ namespace BytecodeApi
 		private static readonly Dictionary<Tuple<Type, Type>, object> Singletons = new Dictionary<Tuple<Type, Type>, object>();
 
 		/// <summary>
+		/// Gets a value indicating whether the singleton <see cref="object" /> of the specified type exists.
+		/// </summary>
+		/// <typeparam name="T">The type that identifies the class of the singleton <see cref="object" />.</typeparam>
+		/// <returns>
+		/// <see langword="true" />, if the singleton <see cref="object" /> of the specified type exists;
+		/// otherwise, <see langword="false" />.
+		/// </returns>
+		protected static bool Exists<T>()
+		{
+			lock (Singletons)
+			{
+				return Singletons.ContainsKey(GetKey<T>());
+			}
+		}
+		/// <summary>
 		/// Gets the singleton <see cref="object" /> of the specified type. If not found, an exception is thrown.
 		/// </summary>
 		/// <typeparam name="T">The type that identifies the class of the singleton <see cref="object" />.</typeparam>
@@ -33,7 +48,7 @@ namespace BytecodeApi
 		/// </returns>
 		protected static T Get<T>(bool create)
 		{
-			Tuple<Type, Type> key = Tuple.Create(GetInheritedType(), typeof(T));
+			Tuple<Type, Type> key = GetKey<T>();
 
 			lock (Singletons)
 			{
@@ -69,7 +84,7 @@ namespace BytecodeApi
 		/// <param name="overwrite"><see langword="true" /> to allow the singleton <see cref="object" /> to be mutable; <see langword="false" /> to throw an exception, if the singleton <see cref="object" /> was already set.</param>
 		protected static void Set<T>(T obj, bool overwrite)
 		{
-			Tuple<Type, Type> key = Tuple.Create(GetInheritedType(), typeof(T));
+			Tuple<Type, Type> key = GetKey<T>();
 
 			lock (Singletons)
 			{
@@ -84,13 +99,17 @@ namespace BytecodeApi
 			}
 		}
 
-		private static Type GetInheritedType()
+		private static Tuple<Type, Type> GetKey<T>()
 		{
-			return new StackTrace()
-				.GetFrames()
-				.FirstOrDefault(frame => typeof(SingletonBucketBase).IsAssignableFrom(frame.GetMethod().DeclaringType, true))
-				?.GetMethod()
-				.DeclaringType ?? throw Throw.InvalidOperation("Could not determine class type.");
+			return Tuple.Create
+			(
+				new StackTrace()
+					.GetFrames()
+					.FirstOrDefault(frame => typeof(SingletonBucketBase).IsAssignableFrom(frame.GetMethod().DeclaringType, true))
+					?.GetMethod()
+					.DeclaringType ?? throw Throw.InvalidOperation("Could not determine class type."),
+				typeof(T)
+			);
 		}
 	}
 }
