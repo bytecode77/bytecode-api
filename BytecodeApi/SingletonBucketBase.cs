@@ -22,11 +22,34 @@ namespace BytecodeApi
 		/// </returns>
 		protected static T Get<T>()
 		{
+			return Get<T>(false);
+		}
+		/// <summary>
+		/// Gets the singleton <see cref="object" /> of the specified type. If not found, an exception is thrown. <paramref name="create" /> can be set to <see langword="true" /> to create an instance, if it does not yet exist.
+		/// </summary>
+		/// <typeparam name="T">The type that identifies the class of the singleton <see cref="object" />.</typeparam>
+		/// <returns>
+		/// The singleton <see cref="object" /> of the specified type. If not found and <paramref name="create" /> is <see langword="false" />, an exception is thrown.
+		/// </returns>
+		protected static T Get<T>(bool create)
+		{
 			Tuple<Type, Type> key = Tuple.Create(GetInheritedType(), typeof(T));
 
 			lock (Singletons)
 			{
-				return Singletons.ContainsKey(key) ? (T)Singletons[key] : throw Throw.InvalidOperation("Singleton was not set.");
+				if (Singletons.ContainsKey(key))
+				{
+					return (T)Singletons[key];
+				}
+				else if (create)
+				{
+					Singletons[key] = Activator.CreateInstance<T>();
+					return (T)Singletons[key];
+				}
+				else
+				{
+					throw Throw.InvalidOperation("Singleton was not set.");
+				}
 			}
 		}
 		/// <summary>
