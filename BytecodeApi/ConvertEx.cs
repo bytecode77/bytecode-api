@@ -365,7 +365,6 @@ namespace BytecodeApi
 				if (ptr != IntPtr.Zero) Marshal.FreeHGlobal(ptr);
 			}
 		}
-
 		/// <summary>
 		/// Converts a <see cref="byte" />[] to an <see cref="Icon" />. The <paramref name="array" /> object should represent the binary of a valid icon file.
 		/// </summary>

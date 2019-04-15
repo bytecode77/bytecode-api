@@ -52,6 +52,7 @@
     <Compile Include="Controls\TreeViewItemService.cs" />
     <Compile Include="Controls\WatermarkAdorner.cs" />
     <Compile Include="Controls\WatermarkService.cs" />
+    <Compile Include="Converters\RangeConverter.cs" />
     <Compile Include="Converters\MathConverterMethod.cs" />
     <Compile Include="Converters\MathConverter.cs" />
     <Compile Include="Converters\IfConverter.cs" />

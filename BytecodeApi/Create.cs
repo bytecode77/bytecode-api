@@ -25,8 +25,7 @@ namespace BytecodeApi
 			Check.ArgumentOutOfRangeEx.GreaterEqual0(length, nameof(length));
 
 			T[] array = new T[length];
-
-			if (value != null)
+			if (!Equals(value, default(T)))
 			{
 				for (int i = 0; i < length; i++) array[i] = value;
 			}

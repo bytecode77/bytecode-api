@@ -1,6 +1,7 @@
 ﻿using BytecodeApi;
 using BytecodeApi.Extensions;
 using BytecodeApi.IO;
+using BytecodeApi.Threading;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,6 +15,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Xml;
 using System.Xml.Linq;
+using static System.Console;
 
 namespace Playground.Console
 {
@@ -25,6 +27,13 @@ namespace Playground.Console
 		[STAThread]
 		public static void Main(string[] args)
 		{
+			Stopwatch stopwatch = ThreadFactory.StartStopwatch();
+
+
+
+			stopwatch.Stop();
+			WriteLine("Time elapsed: " + stopwatch.ElapsedMilliseconds);
+			ReadKey();
 		}
 	}
 }

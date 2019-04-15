@@ -15,6 +15,7 @@
 			public const string OffsetAndLengthOutOfBounds = "Offset and length were out of bounds.";
 			public const string ArrayElementsRequired = "Array must have elements.";
 			public const string ArrayValuesNotNull = "Array must not contain null values.";
+			public const string ArrayValuesNotStringEmpty = "Array must not contain empty strings.";
 		}
 		public static class ArgumentOutOfRange
 		{

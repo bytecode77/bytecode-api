@@ -269,7 +269,7 @@ namespace BytecodeApi.FileFormats.Coff
 			Check.ArgumentNull(DosStub, nameof(DosStub));
 			Check.ArgumentNull(CoffHeader, nameof(CoffHeader));
 			Check.ArgumentNull(OptionalHeader, nameof(OptionalHeader));
-			Check.ArgumentEx.ArrayValuesNotNull(OptionalHeader.DataDirectories, nameof(Sections) + "." + nameof(ImageOptionalHeader.DataDirectories));
+			Check.ArgumentEx.ArrayValuesNotNull(OptionalHeader.DataDirectories, nameof(OptionalHeader) + "." + nameof(ImageOptionalHeader.DataDirectories));
 			Check.ArgumentNull(Sections, nameof(Sections));
 			Check.ArgumentEx.ArrayValuesNotNull(Sections, nameof(Sections));
 			Check.ArgumentEx.ArrayValuesNotNull(Sections.Select(section => section.Header), nameof(Sections) + "." + nameof(ImageSection.Header));

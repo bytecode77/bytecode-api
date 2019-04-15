@@ -589,6 +589,7 @@ namespace BytecodeApi.Extensions
 			if (oldValues != null)
 			{
 				Check.ArgumentEx.ArrayValuesNotNull(oldValues, nameof(oldValues));
+				Check.ArgumentEx.ArrayValuesNotStringEmpty(oldValues, nameof(oldValues));
 
 				foreach (string oldValue in oldValues) str = str.Replace(oldValue, newValue);
 			}
@@ -623,7 +624,7 @@ namespace BytecodeApi.Extensions
 		{
 			Check.ArgumentNull(str, nameof(str));
 
-			return str.Replace("\r\n", newValue).Replace("\n", newValue);
+			return str.ReplaceMultiple(newValue, "\r\n", "\n");
 		}
 		/// <summary>
 		/// Exchanges all occurrences of <paramref name="a" /> with <paramref name="b" /> and vice versa in this <see cref="string" />.
@@ -736,7 +737,7 @@ namespace BytecodeApi.Extensions
 		{
 			if (!allowNatural && comparison.HasFlag(SpecialStringComparisons.Natural))
 			{
-				throw Throw.InvalidOperation("Natural string comparison can only be used on whole strings.");
+				throw Throw.InvalidOperation("Natural string comparison cannot be used in this context.");
 			}
 			else if (str != null)
 			{
