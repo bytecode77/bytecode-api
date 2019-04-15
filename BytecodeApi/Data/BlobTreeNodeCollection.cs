@@ -97,6 +97,16 @@ namespace BytecodeApi.Data
 		{
 			return Nodes.Any(node => node.Name.CompareTo(name, ignoreCase ? SpecialStringComparisons.IgnoreCase : SpecialStringComparisons.Default) == 0);
 		}
+		/// <summary>
+		/// Computes the size, in bytes, of all <see cref="Blob" /> objects within this <see cref="BlobTreeNodeCollection" /> recursively.
+		/// </summary>
+		/// <returns>
+		/// The size, in bytes, of all <see cref="Blob" /> objects within this <see cref="BlobTreeNodeCollection" /> recursively.
+		/// </returns>
+		public long ComputeSize()
+		{
+			return Nodes.Sum(node => node.ComputeSize());
+		}
 
 		/// <summary>
 		/// Adds a <see cref="BlobTreeNode" /> to the end of the <see cref="BlobTreeNodeCollection" />.

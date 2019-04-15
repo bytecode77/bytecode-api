@@ -108,24 +108,6 @@ namespace BytecodeApi.Data
 		}
 
 		/// <summary>
-		/// Writes the contents of all <see cref="Blob" /> objects to the specified directory, where <see cref="Blob.Name" /> is used as the filename and <see cref="Blob.Content" /> is written to the file. Existing files are overwritten.
-		/// </summary>
-		/// <param name="path">A <see cref="string" /> specifying the path to a directory to which this <see cref="BlobCollection" /> is written to.</param>
-		public void SaveToDirectory(string path)
-		{
-			Check.ArgumentNull(path, nameof(path));
-			Check.DirectoryNotFound(path);
-
-			Blob illegalBlob = Blobs.FirstOrDefault(blob => !Validate.FileName(blob.Name));
-			if (illegalBlob != null) throw CreateIllegalFilenameException(illegalBlob);
-
-			foreach (Blob blob in Blobs)
-			{
-				File.WriteAllBytes(Path.Combine(path, blob.Name), blob.Content);
-			}
-		}
-
-		/// <summary>
 		/// Determines whether a <see cref="Blob" /> with the specified name exists in this collection.
 		/// </summary>
 		/// <param name="name">The name of the <see cref="Blob" /> to check.</param>
@@ -149,6 +131,33 @@ namespace BytecodeApi.Data
 		public bool HasBlob(string name, bool ignoreCase)
 		{
 			return Blobs.Any(blob => blob.Name.CompareTo(name, ignoreCase ? SpecialStringComparisons.IgnoreCase : SpecialStringComparisons.Default) == 0);
+		}
+		/// <summary>
+		/// Computes the size, in bytes, of all <see cref="Blob" /> objects within this <see cref="BlobCollection" />.
+		/// </summary>
+		/// <returns>
+		/// The size, in bytes, of all <see cref="Blob" /> objects within this <see cref="BlobCollection" />.
+		/// </returns>
+		public long ComputeSize()
+		{
+			return Blobs.Sum(blob => blob.Content?.Length ?? 0);
+		}
+		/// <summary>
+		/// Writes the contents of all <see cref="Blob" /> objects to the specified directory, where <see cref="Blob.Name" /> is used as the filename and <see cref="Blob.Content" /> is written to the file. Existing files are overwritten.
+		/// </summary>
+		/// <param name="path">A <see cref="string" /> specifying the path to a directory to which this <see cref="BlobCollection" /> is written to.</param>
+		public void SaveToDirectory(string path)
+		{
+			Check.ArgumentNull(path, nameof(path));
+			Check.DirectoryNotFound(path);
+
+			Blob illegalBlob = Blobs.FirstOrDefault(blob => !Validate.FileName(blob.Name));
+			if (illegalBlob != null) throw CreateIllegalFilenameException(illegalBlob);
+
+			foreach (Blob blob in Blobs)
+			{
+				File.WriteAllBytes(Path.Combine(path, blob.Name), blob.Content);
+			}
 		}
 
 		/// <summary>
