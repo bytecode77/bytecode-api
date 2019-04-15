@@ -9,71 +9,10 @@ using System.Windows.Media.Imaging;
 namespace BytecodeApi.Extensions
 {
 	/// <summary>
-	/// Provides a set of <see langword="static" /> methods for interaction with image objects, such as <see cref="Image" /> and <see cref="Icon" />.
+	/// Provides a set of <see langword="static" /> methods for interaction with <see cref="Image" /> objects.
 	/// </summary>
 	public static class ImageExtensions
 	{
-		/// <summary>
-		/// Extracts a specific frame from this <see cref="Icon" /> and returns a new <see cref="Bitmap" /> with the frame that fits the specified resolution best.
-		/// </summary>
-		/// <param name="icon">The <see cref="Icon" /> to extract the frae from.</param>
-		/// <param name="width">The width of the frame.</param>
-		/// <param name="height">The height of the frame.</param>
-		/// <returns>
-		/// The <see cref="Bitmap" /> this method creates.
-		/// </returns>
-		public static Bitmap GetBitmap(this Icon icon, int width, int height)
-		{
-			return icon.GetBitmap(new Size(width, height));
-		}
-		/// <summary>
-		/// Extracts a specific frame from this <see cref="Icon" /> and returns a new <see cref="Bitmap" /> with the frame that fits the specified resolution best.
-		/// </summary>
-		/// <param name="icon">The <see cref="Icon" /> to extract the frae from.</param>
-		/// <param name="size">The size of the frame.</param>
-		/// <returns>
-		/// The <see cref="Bitmap" /> this method creates.
-		/// </returns>
-		public static Bitmap GetBitmap(this Icon icon, Size size)
-		{
-			Check.ArgumentNull(icon, nameof(icon));
-
-			return new Icon(icon, size).ToBitmap();
-		}
-
-		/// <summary>
-		/// Saves this <see cref="Icon" /> to the specified file.
-		/// </summary>
-		/// <param name="icon">The <see cref="Icon" /> to save.</param>
-		/// <param name="path">A <see cref="string" /> that contains the name of the file to which to save this <see cref="Icon" />.</param>
-		public static void Save(this Icon icon, string path)
-		{
-			Check.ArgumentNull(icon, nameof(icon));
-			Check.ArgumentNull(path, nameof(path));
-
-			using (FileStream file = File.Create(path))
-			{
-				icon.Save(file);
-			}
-		}
-		/// <summary>
-		/// Converts this <see cref="Icon" /> to its <see cref="byte" />[] representation.
-		/// </summary>
-		/// <param name="icon">The <see cref="Icon" /> to save.</param>
-		/// <returns>
-		/// A new <see cref="byte" />[] representing this <see cref="Icon" />.
-		/// </returns>
-		public static byte[] ToArray(this Icon icon)
-		{
-			Check.ArgumentNull(icon, nameof(icon));
-
-			using (MemoryStream memoryStream = new MemoryStream())
-			{
-				icon.Save(memoryStream);
-				return memoryStream.ToArray();
-			}
-		}
-
 		/// <summary>
 		/// Converts this <see cref="Image" /> in the specified format to its <see cref="byte" />[] representation.
 		/// </summary>
@@ -111,39 +50,6 @@ namespace BytecodeApi.Extensions
 			using (MemoryStream memoryStream = new MemoryStream())
 			{
 				image.Save(memoryStream, encoder, encoderParams);
-				return memoryStream.ToArray();
-			}
-		}
-
-		/// <summary>
-		/// Encodes a bitmap image and saves the encoded image to a file.
-		/// </summary>
-		/// <param name="bitmapEncoder">The <see cref="BitmapEncoder" /> to be used.</param>
-		/// <param name="path">A <see cref="string" /> that contains the name of the file to which to save this bitmap image.</param>
-		public static void Save(this BitmapEncoder bitmapEncoder, string path)
-		{
-			Check.ArgumentNull(bitmapEncoder, nameof(bitmapEncoder));
-			Check.ArgumentNull(path, nameof(path));
-
-			using (FileStream file = File.Create(path))
-			{
-				bitmapEncoder.Save(file);
-			}
-		}
-		/// <summary>
-		/// Encodes a bitmap image and returns a new <see cref="byte" />[] representing the encoded image.
-		/// </summary>
-		/// <param name="bitmapEncoder">The <see cref="BitmapEncoder" /> to be used.</param>
-		/// <returns>
-		/// A new <see cref="byte" />[] representing the encoded image.
-		/// </returns>
-		public static byte[] ToArray(this BitmapEncoder bitmapEncoder)
-		{
-			Check.ArgumentNull(bitmapEncoder, nameof(bitmapEncoder));
-
-			using (MemoryStream memoryStream = new MemoryStream())
-			{
-				bitmapEncoder.Save(memoryStream);
 				return memoryStream.ToArray();
 			}
 		}
@@ -253,19 +159,6 @@ namespace BytecodeApi.Extensions
 			{
 				Native.DeleteObject(hBitmap);
 			}
-		}
-		/// <summary>
-		/// Returns a managed <see cref="BitmapSource" />, based on the provided <see cref="Icon" />.
-		/// </summary>
-		/// <param name="icon">The <see cref="Icon" /> to convert.</param>
-		/// <returns>
-		/// The created <see cref="BitmapSource" />.
-		/// </returns>
-		public static BitmapSource ToBitmapSource(this Icon icon)
-		{
-			Check.ArgumentNull(icon, nameof(icon));
-
-			return icon.ToBitmap().ToBitmapSource();
 		}
 	}
 }
