@@ -10,6 +10,7 @@ using System.Drawing;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net.NetworkInformation;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Threading;
@@ -24,6 +25,38 @@ namespace BytecodeApi
 	public static class ApplicationBase
 	{
 		private static readonly Dictionary<string, object> Properties = new Dictionary<string, object>();
+		/// <summary>
+		/// Gets the path for the executable file that started the application, not including the executable name.
+		/// </summary>
+		public static string Path => GetProperty
+		(
+			() => Path,
+			() => System.Windows.Forms.Application.StartupPath
+		);
+		/// <summary>
+		/// Gets the path for the executable file that started the application, including the executable name.
+		/// </summary>
+		public static string FileName => GetProperty
+		(
+			() => FileName,
+			() => System.Windows.Forms.Application.ExecutablePath
+		);
+		/// <summary>
+		/// Gets the <see cref="System.Version" /> of the entry assembly.
+		/// </summary>
+		public static Version Version => GetProperty
+		(
+			() => Version,
+			() => Assembly.GetEntryAssembly().GetName().Version
+		);
+		/// <summary>
+		/// Gets a <see cref="bool" /> value indicating whether <see cref="Debugger.IsAttached" /> was <see langword="true" /> the first time this property is retrieved, or if this executable is located in a directory named like "\bin\Debug", "\bin\x86\Debug", or "\bin\x64\Debug".
+		/// </summary>
+		public static bool DebugMode => GetProperty
+		(
+			() => DebugMode,
+			() => Debugger.IsAttached || new[] { @"\bin\Debug", @"\bin\x86\Debug", @"\bin\x64\Debug" }.Any(path => Path.Contains(path, SpecialStringComparisons.IgnoreCase))
+		);
 
 		/// <summary>
 		/// Parses commandline arguments from a <see cref="string" /> and returns the equivalent <see cref="string" />[] with split commandline arguments.
@@ -93,7 +126,7 @@ namespace BytecodeApi
 			{
 				try
 				{
-					System.Diagnostics.Process.Start(new ProcessStartInfo(Process.ExecutablePath, commandLine) { Verb = "runas" });
+					System.Diagnostics.Process.Start(new ProcessStartInfo(FileName, commandLine) { Verb = "runas" });
 					shutdownCallback?.Invoke();
 					return true;
 				}
@@ -115,6 +148,209 @@ namespace BytecodeApi
 			}
 		}
 
+		/// <summary>
+		/// Provides information about the current process.
+		/// </summary>
+		public static class Process
+		{
+			/// <summary>
+			/// Gets the ProcessID of the current <see cref="Process" />.
+			/// </summary>
+			public static int Id => GetProperty
+			(
+				() => Id,
+				() =>
+				{
+					using (System.Diagnostics.Process process = System.Diagnostics.Process.GetCurrentProcess())
+					{
+						return process.Id;
+					}
+				}
+			);
+			/// <summary>
+			/// Gets the SessionID of the current <see cref="Process" />.
+			/// </summary>
+			public static int SessionId => GetProperty
+			(
+				() => SessionId,
+				() =>
+				{
+					using (System.Diagnostics.Process process = System.Diagnostics.Process.GetCurrentProcess())
+					{
+						return process.SessionId;
+					}
+				}
+			);
+			/// <summary>
+			/// Gets the mandatory integrity level for the current <see cref="Process" />, or <see langword="null" />, if it could not be determined.
+			/// </summary>
+			public static ProcessIntegrityLevel? IntegrityLevel => GetProperty
+			(
+				() => IntegrityLevel,
+				() =>
+				{
+					using (System.Diagnostics.Process process = System.Diagnostics.Process.GetCurrentProcess())
+					{
+						return process.GetIntegrityLevel();
+					}
+				}
+			);
+			/// <summary>
+			/// Gets a <see cref="bool" /> value indicating whether the current <see cref="Process" /> is elevated or not.
+			/// </summary>
+			public static bool IsElevated => GetProperty
+			(
+				() => IsElevated,
+				() =>
+				{
+					using (WindowsIdentity windowsIdentity = WindowsIdentity.GetCurrent())
+					{
+						return new WindowsPrincipal(windowsIdentity).IsInRole(WindowsBuiltInRole.Administrator);
+					}
+				}
+			);
+			/// <summary>
+			/// Gets the <see cref="ElevationType" /> for the current <see cref="Process" />, or <see langword="null" />, if it could not be determined.
+			/// </summary>
+			public static ElevationType? ElevationType => GetProperty
+			(
+				() => ElevationType,
+				() =>
+				{
+					IntPtr token;
+					using (System.Diagnostics.Process process = System.Diagnostics.Process.GetCurrentProcess())
+					{
+						token = process.OpenToken(8);
+					}
+
+					if (token != IntPtr.Zero)
+					{
+						try
+						{
+							IntPtr elevationTypePtr = Marshal.AllocHGlobal(4);
+
+							try
+							{
+								if (Native.GetTokenInformation(token, 18, elevationTypePtr, 4, out int returnLength) && returnLength == 4)
+								{
+									return (ElevationType)Marshal.ReadInt32(elevationTypePtr);
+								}
+							}
+							finally
+							{
+								Marshal.FreeHGlobal(elevationTypePtr);
+							}
+						}
+						finally
+						{
+							Native.CloseHandle(token);
+						}
+					}
+
+					return null;
+				}
+			);
+			/// <summary>
+			/// Gets the amount of private memory, in bytes, allocated for the current <see cref="Process" />.
+			/// </summary>
+			public static long Memory
+			{
+				get
+				{
+					using (System.Diagnostics.Process process = System.Diagnostics.Process.GetCurrentProcess())
+					{
+						return process.PrivateMemorySize64;
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// Provides information about the current logon session and related information.
+		/// </summary>
+		public static class Session
+		{
+			private static bool? _IsWorkstationLocked;
+			/// <summary>
+			/// Gets the name of the current <see cref="WindowsIdentity" />, including the domain or workstation name.
+			/// </summary>
+			public static string CurrentUser => GetProperty
+			(
+				() => CurrentUser,
+				() => WindowsIdentity.GetCurrent().Name
+			);
+			/// <summary>
+			/// Gets the name of the current <see cref="WindowsIdentity" />, not including the domain or workstation name.
+			/// </summary>
+			public static string CurrentUserShort => CurrentUser?.SubstringFrom(@"\", true);
+			/// <summary>
+			/// Gets the domain in which the local computer is registered, or <see langword="null" />, if the user is not member of a domain.
+			/// </summary>
+			public static string DomainName => GetProperty
+			(
+				() => DomainName,
+				() => IPGlobalProperties.GetIPGlobalProperties().DomainName.ToNullIfEmpty()
+			);
+			/// <summary>
+			/// Gets the workgroup in which the local computer is registered, or <see langword="null" />, if the user is not member of a workgroup.
+			/// </summary>
+			public static string Workgroup => GetProperty
+			(
+				() => Workgroup,
+				() => new WmiNamespace("CIMV2", false, false)
+					.GetClass("Win32_ComputerSystem", false)
+					.GetObjects("Workgroup")
+					.First()
+					.Properties["Workgroup"]
+					.GetValue<string>()
+					?.Trim()
+					.ToNullIfEmpty()
+			);
+			/// <summary>
+			/// Gets a <see cref="bool" /> value indicating whether the workstation is locked. If the workstation was locked the first time this property was called, <see langword="false" /> is returned.
+			/// </summary>
+			public static bool IsWorkstationLocked
+			{
+				get
+				{
+					if (_IsWorkstationLocked == null)
+					{
+						_IsWorkstationLocked = false;
+
+						SystemEvents.SessionSwitch += delegate (object sender, SessionSwitchEventArgs e)
+						{
+							if (e.Reason == SessionSwitchReason.SessionLock) _IsWorkstationLocked = true;
+							else if (e.Reason == SessionSwitchReason.SessionUnlock) _IsWorkstationLocked = false;
+						};
+					}
+
+					return _IsWorkstationLocked == true;
+				}
+			}
+			/// <summary>
+			/// Gets the screen DPI. A value of 96.0 corresponds to 100% font scaling.
+			/// </summary>
+			public static SizeF DesktopDpi => GetProperty
+			(
+				() => DesktopDpi,
+				() =>
+				{
+					IntPtr desktop = IntPtr.Zero;
+
+					try
+					{
+						desktop = Native.GetDC(IntPtr.Zero);
+						using (Graphics graphics = Graphics.FromHdc(desktop))
+						{
+							return new SizeF(graphics.DpiX, graphics.DpiY);
+						}
+					}
+					finally
+					{
+						if (desktop != IntPtr.Zero) Native.ReleaseDC(IntPtr.Zero, desktop);
+					}
+				}
+			);
+		}
 		/// <summary>
 		/// Provides information about the installed operating system.
 		/// </summary>
@@ -296,233 +532,6 @@ namespace BytecodeApi
 					.Properties["Name"]
 					.GetValue<string>()
 					.Trim()
-			);
-		}
-		/// <summary>
-		/// Provides information about the current process.
-		/// </summary>
-		public static class Process
-		{
-			/// <summary>
-			/// Gets the ProcessID of the current <see cref="Process" />.
-			/// </summary>
-			public static int Id => GetProperty
-			(
-				() => Id,
-				() =>
-				{
-					using (System.Diagnostics.Process process = System.Diagnostics.Process.GetCurrentProcess())
-					{
-						return process.Id;
-					}
-				}
-			);
-			/// <summary>
-			/// Gets the SessionID of the current <see cref="Process" />.
-			/// </summary>
-			public static int SessionId => GetProperty
-			(
-				() => SessionId,
-				() =>
-				{
-					using (System.Diagnostics.Process process = System.Diagnostics.Process.GetCurrentProcess())
-					{
-						return process.SessionId;
-					}
-				}
-			);
-			/// <summary>
-			/// Gets the mandatory integrity level for the current <see cref="Process" />, or <see langword="null" />, if it could not be determined.
-			/// </summary>
-			public static ProcessIntegrityLevel? IntegrityLevel => GetProperty
-			(
-				() => IntegrityLevel,
-				() =>
-				{
-					using (System.Diagnostics.Process process = System.Diagnostics.Process.GetCurrentProcess())
-					{
-						return process.GetIntegrityLevel();
-					}
-				}
-			);
-			/// <summary>
-			/// Gets a <see cref="bool" /> value indicating whether the current <see cref="Process" /> is elevated or not.
-			/// </summary>
-			public static bool IsElevated => GetProperty
-			(
-				() => IsElevated,
-				() =>
-				{
-					using (WindowsIdentity windowsIdentity = WindowsIdentity.GetCurrent())
-					{
-						return new WindowsPrincipal(windowsIdentity).IsInRole(WindowsBuiltInRole.Administrator);
-					}
-				}
-			);
-			/// <summary>
-			/// Gets the <see cref="ElevationType" /> for the current <see cref="Process" />, or <see langword="null" />, if it could not be determined.
-			/// </summary>
-			public static ElevationType? ElevationType => GetProperty
-			(
-				() => ElevationType,
-				() =>
-				{
-					IntPtr token;
-					using (System.Diagnostics.Process process = System.Diagnostics.Process.GetCurrentProcess())
-					{
-						token = process.OpenToken(8);
-					}
-
-					if (token != IntPtr.Zero)
-					{
-						try
-						{
-							IntPtr elevationTypePtr = Marshal.AllocHGlobal(4);
-
-							try
-							{
-								if (Native.GetTokenInformation(token, 18, elevationTypePtr, 4, out int returnLength) && returnLength == 4)
-								{
-									return (ElevationType)Marshal.ReadInt32(elevationTypePtr);
-								}
-							}
-							finally
-							{
-								Marshal.FreeHGlobal(elevationTypePtr);
-							}
-						}
-						finally
-						{
-							Native.CloseHandle(token);
-						}
-					}
-
-					return null;
-				}
-			);
-			/// <summary>
-			/// Gets the path for the executable file that started the application, not including the executable name.
-			/// </summary>
-			public static string StartupPath => GetProperty
-			(
-				() => StartupPath,
-				() => System.Windows.Forms.Application.StartupPath
-			);
-			/// <summary>
-			/// Gets the path for the executable file that started the application, including the executable name.
-			/// </summary>
-			public static string ExecutablePath => GetProperty
-			(
-				() => ExecutablePath,
-				() => System.Windows.Forms.Application.ExecutablePath
-			);
-			/// <summary>
-			/// Gets the amount of private memory, in bytes, allocated for the current <see cref="Process" />.
-			/// </summary>
-			public static long Memory
-			{
-				get
-				{
-					using (System.Diagnostics.Process process = System.Diagnostics.Process.GetCurrentProcess())
-					{
-						return process.PrivateMemorySize64;
-					}
-				}
-			}
-			/// <summary>
-			/// Gets a <see cref="bool" /> value indicating whether <see cref="Debugger.IsAttached" /> was <see langword="true" /> the first time this property is retrieved, or if this executable is located in a directory named like "\bin\Debug", "\bin\x86\Debug", or "\bin\x64\Debug".
-			/// </summary>
-			public static bool DebugMode => GetProperty
-			(
-				() => DebugMode,
-				() => Debugger.IsAttached || new[] { @"\bin\Debug", @"\bin\x86\Debug", @"\bin\x64\Debug" }.Any(path => StartupPath.Contains(path, SpecialStringComparisons.IgnoreCase))
-			);
-		}
-		/// <summary>
-		/// Provides information about the current logon session and related information.
-		/// </summary>
-		public static class Session
-		{
-			private static bool? _IsWorkstationLocked;
-			/// <summary>
-			/// Gets the name of the current <see cref="WindowsIdentity" />, including the domain or workstation name.
-			/// </summary>
-			public static string CurrentUser => GetProperty
-			(
-				() => CurrentUser,
-				() => WindowsIdentity.GetCurrent().Name
-			);
-			/// <summary>
-			/// Gets the name of the current <see cref="WindowsIdentity" />, not including the domain or workstation name.
-			/// </summary>
-			public static string CurrentUserShort => CurrentUser?.SubstringFrom(@"\", true);
-			/// <summary>
-			/// Gets the domain in which the local computer is registered, or <see langword="null" />, if the user is not member of a domain.
-			/// </summary>
-			public static string DomainName => GetProperty
-			(
-				() => DomainName,
-				() => IPGlobalProperties.GetIPGlobalProperties().DomainName.ToNullIfEmpty()
-			);
-			/// <summary>
-			/// Gets the workgroup in which the local computer is registered, or <see langword="null" />, if the user is not member of a workgroup.
-			/// </summary>
-			public static string Workgroup => GetProperty
-			(
-				() => Workgroup,
-				() => new WmiNamespace("CIMV2", false, false)
-					.GetClass("Win32_ComputerSystem", false)
-					.GetObjects("Workgroup")
-					.First()
-					.Properties["Workgroup"]
-					.GetValue<string>()
-					?.Trim()
-					.ToNullIfEmpty()
-			);
-			/// <summary>
-			/// Gets a <see cref="bool" /> value indicating whether the workstation is locked. If the workstation was locked the first time this property was called, <see langword="false" /> is returned.
-			/// </summary>
-			public static bool IsWorkstationLocked
-			{
-				get
-				{
-					if (_IsWorkstationLocked == null)
-					{
-						_IsWorkstationLocked = false;
-
-						SystemEvents.SessionSwitch += delegate (object sender, SessionSwitchEventArgs e)
-						{
-							if (e.Reason == SessionSwitchReason.SessionLock) _IsWorkstationLocked = true;
-							else if (e.Reason == SessionSwitchReason.SessionUnlock) _IsWorkstationLocked = false;
-						};
-					}
-
-					return _IsWorkstationLocked == true;
-				}
-			}
-			/// <summary>
-			/// Gets the screen DPI. A value of 96.0 corresponds to 100% font scaling.
-			/// </summary>
-			public static SizeF DesktopDpi => GetProperty
-			(
-				() => DesktopDpi,
-				() =>
-				{
-					IntPtr desktop = IntPtr.Zero;
-
-					try
-					{
-						desktop = Native.GetDC(IntPtr.Zero);
-						using (Graphics graphics = Graphics.FromHdc(desktop))
-						{
-							return new SizeF(graphics.DpiX, graphics.DpiY);
-						}
-					}
-					finally
-					{
-						if (desktop != IntPtr.Zero) Native.ReleaseDC(IntPtr.Zero, desktop);
-					}
-				}
 			);
 		}
 	}
