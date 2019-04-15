@@ -73,6 +73,36 @@ namespace BytecodeApi
 			}
 			while (condition());
 		}
+		/// <summary>
+		/// Restarts the current <see cref="Process" /> with elevated privileges. Returns <see langword="null" />, if the process is already elevated; <see langword="false" />, if elevation failed; <see langword="true" /> if the restart was successful.
+		/// </summary>
+		/// <param name="commandLine">A <see cref="string" /> specifying the commandline for the new <see cref="Process" />.</param>
+		/// <param name="shutdownCallback">A callback that is invoked after the new <see cref="Process" /> was successfully started with elevated privileges. Depending on application type, this is typically <see cref="Environment.Exit(int)" /> or <see cref="Application.Shutdown()" />.</param>
+		/// <returns>
+		/// <see langword="null" />, if the process is already elevated;
+		/// <see langword="false" />, if elevation failed;
+		/// <see langword="true" /> if the restart was successful.
+		/// </returns>
+		public static bool? RestartElevated(string commandLine, Action shutdownCallback)
+		{
+			if (Process.IsElevated)
+			{
+				return null;
+			}
+			else
+			{
+				try
+				{
+					System.Diagnostics.Process.Start(new ProcessStartInfo(Process.ExecutablePath, commandLine) { Verb = "runas" });
+					shutdownCallback?.Invoke();
+					return true;
+				}
+				catch
+				{
+					return false;
+				}
+			}
+		}
 
 		private static T GetProperty<T>(Expression<Func<T>> property, Func<T> getter)
 		{
@@ -458,14 +488,15 @@ namespace BytecodeApi
 				{
 					if (_IsWorkstationLocked == null)
 					{
+						_IsWorkstationLocked = false;
+
 						SystemEvents.SessionSwitch += delegate (object sender, SessionSwitchEventArgs e)
 						{
 							if (e.Reason == SessionSwitchReason.SessionLock) _IsWorkstationLocked = true;
 							else if (e.Reason == SessionSwitchReason.SessionUnlock) _IsWorkstationLocked = false;
 						};
-
-						_IsWorkstationLocked = false;
 					}
+
 					return _IsWorkstationLocked == true;
 				}
 			}
