@@ -90,6 +90,11 @@ namespace BytecodeApi
 			{
 				if (parameter.Any(itm => itm == null)) throw new ArgumentException(ExceptionMessages.Argument.ArrayValuesNotNull, parameterName);
 			}
+			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			public static void ArrayValuesNotStringEmpty(IEnumerable<string> parameter, string parameterName)
+			{
+				if (parameter.Any(itm => itm == "")) throw new ArgumentException(ExceptionMessages.Argument.ArrayValuesNotStringEmpty, parameterName);
+			}
 		}
 		[DebuggerStepThrough]
 		public static class ArgumentOutOfRangeEx

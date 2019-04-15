@@ -110,10 +110,10 @@ namespace BytecodeApi.FileFormats.Csv
 		}
 
 		/// <summary>
-		/// Returns an enumerator that iterates through the collection.
+		/// Returns an enumerator that iterates through the <see cref="CsvRow" /> cell collection.
 		/// </summary>
 		/// <returns>
-		/// An enumerator that can be used to iterate through the collection.
+		/// An enumerator that can be used to iterate through the <see cref="CsvRow" /> cell collection.
 		/// </returns>
 		public IEnumerator<CsvCell> GetEnumerator()
 		{

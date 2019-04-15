@@ -45,6 +45,5 @@
 		/// <para>value ^ parameter</para>
 		/// </summary>
 		Xor
-		//CURRENT: ~ << >>
 	}
 }

@@ -36,7 +36,7 @@ namespace BytecodeApi.UI
 		/// </summary>
 		public void Dispose()
 		{
-			Mutex?.Dispose();
+			Mutex.Dispose();
 			HwndSource?.Dispose();
 		}
 
@@ -48,9 +48,19 @@ namespace BytecodeApi.UI
 		{
 			Check.ArgumentNull(window, nameof(window));
 
+			RegisterMainWindow(new WindowInteropHelper(window).EnsureHandle());
+		}
+		/// <summary>
+		/// Registers a window handle (HWND) that identifies as the main application window and creates a WndProc message pump.
+		/// </summary>
+		/// <param name="handle">A <see cref="IntPtr" /> representing window handle (HWND).</param>
+		public void RegisterMainWindow(IntPtr handle)
+		{
+			Check.Argument(handle != IntPtr.Zero && handle != (IntPtr)(-1), nameof(handle), "Invalid handle.");
+
 			if (HwndSource == null)
 			{
-				HwndSource = HwndSource.FromHwnd(new WindowInteropHelper(window).EnsureHandle());
+				HwndSource = HwndSource.FromHwnd(handle);
 				HwndSource.AddHook(WndProc);
 			}
 			else

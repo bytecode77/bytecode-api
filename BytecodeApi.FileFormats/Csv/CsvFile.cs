@@ -467,6 +467,7 @@ namespace BytecodeApi.FileFormats.Csv
 			Check.ArgumentNull(delimitersToTest, nameof(delimitersToTest));
 			Check.ArgumentEx.ArrayElementsRequired(delimitersToTest, nameof(delimitersToTest));
 			Check.ArgumentEx.ArrayValuesNotNull(delimitersToTest, nameof(delimitersToTest));
+			Check.ArgumentEx.ArrayValuesNotStringEmpty(delimitersToTest, nameof(delimitersToTest));
 
 			using (FileStream file = File.OpenRead(path))
 			{
@@ -518,6 +519,7 @@ namespace BytecodeApi.FileFormats.Csv
 			Check.ArgumentNull(delimitersToTest, nameof(delimitersToTest));
 			Check.ArgumentEx.ArrayElementsRequired(delimitersToTest, nameof(delimitersToTest));
 			Check.ArgumentEx.ArrayValuesNotNull(delimitersToTest, nameof(delimitersToTest));
+			Check.ArgumentEx.ArrayValuesNotStringEmpty(delimitersToTest, nameof(delimitersToTest));
 
 			using (MemoryStream memoryStream = new MemoryStream(file))
 			{
@@ -569,6 +571,7 @@ namespace BytecodeApi.FileFormats.Csv
 			Check.ArgumentNull(delimitersToTest, nameof(delimitersToTest));
 			Check.ArgumentEx.ArrayElementsRequired(delimitersToTest, nameof(delimitersToTest));
 			Check.ArgumentEx.ArrayValuesNotNull(delimitersToTest, nameof(delimitersToTest));
+			Check.ArgumentEx.ArrayValuesNotStringEmpty(delimitersToTest, nameof(delimitersToTest));
 
 			long position = stream.Position;
 

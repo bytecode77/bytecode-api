@@ -1,9 +1,10 @@
 ﻿using BytecodeApi.Extensions;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace BytecodeApi.Data
 {
-	//FEATURE: FindBlob(string path), RemoveBlob(string path)
+	//FEATURE: FindBlob(string path)
 	/// <summary>
 	/// Represents a tree node within a <see cref="BlobTree" />.
 	/// </summary>
@@ -87,6 +88,16 @@ namespace BytecodeApi.Data
 			}
 
 			return node;
+		}
+		/// <summary>
+		/// Computes the size, in bytes, of all <see cref="Blob" /> objects within this <see cref="BlobTreeNode" /> recursively.
+		/// </summary>
+		/// <returns>
+		/// The size, in bytes, of all <see cref="Blob" /> objects within this <see cref="BlobTreeNode" /> recursively.
+		/// </returns>
+		public long ComputeSize()
+		{
+			return Nodes.Sum(node => node.ComputeSize()) + Blobs.ComputeSize();
 		}
 
 		/// <summary>

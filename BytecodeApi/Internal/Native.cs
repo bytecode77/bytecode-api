@@ -7,6 +7,8 @@ using System.Runtime.InteropServices.ComTypes;
 using System.Security;
 using System.Security.Permissions;
 using System.Text;
+using System.Windows.Forms;
+using System.Windows.Input;
 using FileTime = System.Runtime.InteropServices.ComTypes.FILETIME;
 using StatStg = System.Runtime.InteropServices.ComTypes.STATSTG;
 
@@ -118,6 +120,10 @@ namespace BytecodeApi
 		public static extern bool DestroyIcon(IntPtr icon);
 		[DllImport("user32.dll", CharSet = CharSet.Auto)]
 		public static extern int SystemParametersInfo(int action, int param, string paramString, int winIni);
+		[DllImport("user32.dll", SetLastError = true)]
+		public static extern bool RegisterHotKey(IntPtr handle, int id, ModifierKeys modifierKeys, Keys key);
+		[DllImport("user32.dll", SetLastError = true)]
+		public static extern bool UnregisterHotKey(IntPtr handle, int id);
 		[DllImport("user32.dll", SetLastError = true)]
 		public static extern IntPtr SetWindowsHookEx(int hookId, HookProc callback, IntPtr module, int threadId);
 		[DllImport("user32.dll", SetLastError = true)]

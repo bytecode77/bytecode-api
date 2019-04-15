@@ -207,10 +207,10 @@ namespace BytecodeApi.FileFormats.Ini
 		}
 
 		/// <summary>
-		/// Returns an enumerator that iterates through the collection.
+		/// Returns an enumerator that iterates through the <see cref="IniPropertyCollection" />.
 		/// </summary>
 		/// <returns>
-		/// An enumerator that can be used to iterate through the collection.
+		/// An enumerator that can be used to iterate through the <see cref="IniPropertyCollection" />.
 		/// </returns>
 		public IEnumerator<IniProperty> GetEnumerator()
 		{
