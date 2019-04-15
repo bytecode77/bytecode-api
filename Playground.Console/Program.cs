@@ -29,11 +29,21 @@ namespace Playground.Console
 		{
 			Stopwatch stopwatch = ThreadFactory.StartStopwatch();
 
-
+			Test1();
 
 			stopwatch.Stop();
 			WriteLine("Time elapsed: " + stopwatch.ElapsedMilliseconds);
 			ReadKey();
+		}
+
+		public static void Test1()
+		{
+		}
+		public static void Test2()
+		{
+		}
+		public static void Test3()
+		{
 		}
 	}
 }
