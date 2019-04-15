@@ -52,44 +52,38 @@
     <Compile Include="Controls\TreeViewItemService.cs" />
     <Compile Include="Controls\WatermarkAdorner.cs" />
     <Compile Include="Controls\WatermarkService.cs" />
-    <Compile Include="Converters\BooleanCollectionToIndeterminateConverter.cs" />
+    <Compile Include="Converters\RangeConverter.cs" />
+    <Compile Include="Converters\MathConverterMethod.cs" />
+    <Compile Include="Converters\MathConverter.cs" />
+    <Compile Include="Converters\IfConverter.cs" />
+    <Compile Include="Converters\ByteSizeDecimalConverter.cs" />
+    <Compile Include="Converters\ByteSizeFormatConverter.cs" />
+    <Compile Include="Converters\IEnumerableAnyConverter.cs" />
+    <Compile Include="Converters\ImageSourceConverter.cs" />
+    <Compile Include="Converters\IEnumerableConverterMethod.cs" />
+    <Compile Include="Converters\IEnumerableConverter.cs" />
+    <Compile Include="Converters\CoalesceConverter.cs" />
+    <Compile Include="Converters\StringConverterMethod.cs" />
+    <Compile Include="Converters\StringConverter.cs" />
+    <Compile Include="Converters\TimeSpanHumanReadableConverter.cs" />
+    <Compile Include="Converters\TimeSpanConverterMethod.cs" />
+    <Compile Include="Converters\TimeSpanConverter.cs" />
+    <Compile Include="Converters\DateTimeConverter.cs" />
+    <Compile Include="Converters\DateTimeConverterMethod.cs" />
+    <Compile Include="Converters\PathConverterMethod.cs" />
+    <Compile Include="Converters\PathConverter.cs" />
+    <Compile Include="Converters\EnumConverterMethod.cs" />
+    <Compile Include="Converters\EnumConverter.cs" />
+    <Compile Include="Converters\EqualityConverter.cs" />
+    <Compile Include="Converters\NullConverter.cs" />
+    <Compile Include="Converters\EqualityConverterMethod.cs" />
+    <Compile Include="Converters\StringEmptyConverterMethod.cs" />
+    <Compile Include="Converters\StringEmptyConverter.cs" />
+    <Compile Include="Converters\BooleanConverterMethod.cs" />
+    <Compile Include="Converters\BooleanConverter.cs" />
     <Compile Include="DelegateCommand.cs" />
     <Compile Include="ConverterBase.cs" />
     <Compile Include="ConverterBaseExtended.cs" />
-    <Compile Include="Converters\BooleanToGridLengthConverter.cs" />
-    <Compile Include="Converters\BooleanToInverseConverter.cs" />
-    <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
-    <Compile Include="Converters\IEnumerableToCountConverter.cs" />
-    <Compile Include="Converters\IEnumerableHasElementsToVisibilityConverter.cs" />
-    <Compile Include="Converters\IEnumerableHasElementsToBooleanConverter.cs" />
-    <Compile Include="Converters\EnumDescriptionToStringConverter.cs" />
-    <Compile Include="Converters\LongToByteSizeStringConverter.cs" />
-    <Compile Include="Converters\DateTimeToStringConverter.cs" />
-    <Compile Include="Converters\IComparableGreaterEqualToBooleanConverter.cs" />
-    <Compile Include="Converters\IComparableGreaterEqualToVisibilityConverter.cs" />
-    <Compile Include="Converters\IComparableGreaterToBooleanConverter.cs" />
-    <Compile Include="Converters\IComparableGreaterToVisibilityConverter.cs" />
-    <Compile Include="Converters\IComparableLessEqualToBooleanConverter.cs" />
-    <Compile Include="Converters\IComparableLessEqualToVisibilityConverter.cs" />
-    <Compile Include="Converters\IComparableLessToBooleanConverter.cs" />
-    <Compile Include="Converters\IComparableLessToVisibilityConverter.cs" />
-    <Compile Include="Converters\ObjectEqualsNotToBooleanConverter.cs" />
-    <Compile Include="Converters\ObjectEqualsNotToVisibilityConverter.cs" />
-    <Compile Include="Converters\ObjectEqualsToBooleanConverter.cs" />
-    <Compile Include="Converters\ObjectEqualsToVisibilityConverter.cs" />
-    <Compile Include="Converters\ObjectIsNullToBooleanConverter.cs" />
-    <Compile Include="Converters\ObjectIsNullToGridLengthConverter.cs" />
-    <Compile Include="Converters\ObjectIsNullToVisibilityConverter.cs" />
-    <Compile Include="Converters\ObjectToImageSourceConverter.cs" />
-    <Compile Include="Converters\PathToDirectoryNameConverter.cs" />
-    <Compile Include="Converters\PathToFileNameConverter.cs" />
-    <Compile Include="Converters\StringConcatConverter.cs" />
-    <Compile Include="Converters\StringIsNullOrWhiteSpaceToVisibilityConverter.cs" />
-    <Compile Include="Converters\StringIsNullOrWhiteSpaceToBooleanConverter.cs" />
-    <Compile Include="Converters\StringIsNullOrEmptyToBooleanConverter.cs" />
-    <Compile Include="Converters\StringIsNullOrEmptyToVisibilityConverter.cs" />
-    <Compile Include="Converters\TimeSpanToHumanReadableStringConverter.cs" />
-    <Compile Include="Converters\TimeSpanToStringConverter.cs" />
     <Compile Include="Dialogs\FileDialogs.cs" />
     <Compile Include="Dialogs\IconPickerDialog.cs" />
     <Compile Include="Dialogs\MessageBoxes.cs" />
@@ -101,6 +95,7 @@
     <Compile Include="Extensions\DependencyObjectExtensions.cs" />
     <Compile Include="Extensions\ControlExtensions.cs" />
     <Compile Include="Extensions\VisibilityExtensions.cs" />
+    <Compile Include="HotKeyEventArgs.cs" />
     <Compile Include="Markup\BooleanExtension.cs" />
     <Compile Include="Markup\ByteExtension.cs" />
     <Compile Include="Markup\CharExtension.cs" />
@@ -132,6 +127,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="HotKey.cs" />
     <Compile Include="SingleInstance.cs" />
     <Compile Include="Extensions\DispatcherObjectExtensions.cs" />
     <Compile Include="UIContext.cs" />
@@ -142,12 +138,6 @@
       <Project>{ea00307e-ce27-4a53-b7db-052181e1c24c}</Project>
       <Name>BytecodeApi</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="Xaml\Converters.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

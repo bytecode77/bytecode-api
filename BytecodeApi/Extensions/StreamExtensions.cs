@@ -63,7 +63,7 @@ namespace BytecodeApi.Extensions
 
 			byte[] buffer = new byte[Marshal.SizeOf<T>()];
 			stream.Read(buffer);
-			return ConvertEx.ArrayToStructure<T>(buffer);
+			return ConvertEx.ToStructure<T>(buffer);
 		}
 		/// <summary>
 		/// Writes a structure of the specified type to the stream.
@@ -75,7 +75,7 @@ namespace BytecodeApi.Extensions
 		{
 			Check.ArgumentNull(stream, nameof(stream));
 
-			stream.Write(ConvertEx.StructureToArray(structure));
+			stream.Write(ConvertEx.FromStructure(structure));
 		}
 		/// <summary>
 		/// Searches this <see cref="Stream" /> for the first occurrence of <paramref name="sequence" />. If not found, returns -1.

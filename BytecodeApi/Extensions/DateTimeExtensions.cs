@@ -229,7 +229,7 @@ namespace BytecodeApi.Extensions
 		/// </returns>
 		public static int CompareTo(this DateTime dateTime, DateTime value, DateTimePart part)
 		{
-			return dateTime.Strip(part).CompareTo(value.Strip(part));
+			return dateTime.GetPart(part).CompareTo(value.GetPart(part));
 		}
 		/// <summary>
 		/// Returns a new <see cref="DateTime" /> that represents a fraction of this <see cref="DateTime" /> value specified by the <paramref name="part" /> parameter.
@@ -239,7 +239,7 @@ namespace BytecodeApi.Extensions
 		/// <returns>
 		/// A new <see cref="DateTime" /> that represents a fraction of this <see cref="DateTime" /> value specified by the <paramref name="part" /> parameter.
 		/// </returns>
-		public static DateTime Strip(this DateTime dateTime, DateTimePart part)
+		public static DateTime GetPart(this DateTime dateTime, DateTimePart part)
 		{
 			switch (part)
 			{

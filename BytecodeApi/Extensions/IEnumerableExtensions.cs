@@ -12,6 +12,35 @@ namespace BytecodeApi.Extensions
 	public static class IEnumerableExtensions
 	{
 		/// <summary>
+		/// Determines whether a sequence contains any elements.
+		/// </summary>
+		/// <param name="source">The <see cref="IEnumerable" /> to check for emptiness.</param>
+		/// <returns>
+		/// <see langword="true" />, if the source sequence contains any elements;
+		/// otherwise, <see langword="false" />.
+		/// </returns>
+		public static bool Any(this IEnumerable source)
+		{
+			Check.ArgumentNull(source, nameof(source));
+
+			if (source is ICollection collection)
+			{
+				return collection.Count > 0;
+			}
+			else
+			{
+				bool any = false;
+				IEnumerator enumerator = source.GetEnumerator();
+
+				CSharp.Using(enumerator, () =>
+				{
+					any = enumerator.MoveNext();
+				});
+
+				return any;
+			}
+		}
+		/// <summary>
 		/// Determines whether a sequence contains no elements.
 		/// </summary>
 		/// <typeparam name="TSource">The type of the elements of <paramref name="source" />.</typeparam>
@@ -24,7 +53,7 @@ namespace BytecodeApi.Extensions
 		{
 			Check.ArgumentNull(source, nameof(source));
 
-			return !source.Any();
+			return Enumerable.Any(source);
 		}
 		/// <summary>
 		/// Determines whether a sequence that satisfies a specified condition contains no elements.
@@ -42,6 +71,20 @@ namespace BytecodeApi.Extensions
 			Check.ArgumentNull(predicate, nameof(predicate));
 
 			return !source.Any(predicate);
+		}
+		/// <summary>
+		/// Determines whether a sequence contains no elements.
+		/// </summary>
+		/// <param name="source">The <see cref="IEnumerable" /> to check for emptiness.</param>
+		/// <returns>
+		/// <see langword="true" />, if the source sequence is empty;
+		/// otherwise, <see langword="false" />.
+		/// </returns>
+		public static bool None(this IEnumerable source)
+		{
+			Check.ArgumentNull(source, nameof(source));
+
+			return !source.Any();
 		}
 		/// <summary>
 		/// Returns the number of elements in a sequence.

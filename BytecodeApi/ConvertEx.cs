@@ -322,7 +322,7 @@ namespace BytecodeApi
 		/// <returns>
 		/// The structure of type <typeparamref name="T" /> this method creates.
 		/// </returns>
-		public static T ArrayToStructure<T>(byte[] array) where T : struct
+		public static T ToStructure<T>(byte[] array) where T : struct
 		{
 			Check.ArgumentNull(array, nameof(array));
 			Check.Argument(array.Length == Marshal.SizeOf<T>(), nameof(array), "Array size must be equivalent to the size of the structure type.");
@@ -348,7 +348,7 @@ namespace BytecodeApi
 		/// <returns>
 		/// An equivalent <see cref="byte" />[] representation of <paramref name="structure" /> with the size of <see cref="Marshal" />.SizeOf(<see langword="typeof" />(<typeparamref name="T" />)).
 		/// </returns>
-		public static byte[] StructureToArray<T>(T structure) where T : struct
+		public static byte[] FromStructure<T>(T structure) where T : struct
 		{
 			IntPtr ptr = IntPtr.Zero;
 
@@ -365,7 +365,6 @@ namespace BytecodeApi
 				if (ptr != IntPtr.Zero) Marshal.FreeHGlobal(ptr);
 			}
 		}
-
 		/// <summary>
 		/// Converts a <see cref="byte" />[] to an <see cref="Icon" />. The <paramref name="array" /> object should represent the binary of a valid icon file.
 		/// </summary>

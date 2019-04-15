@@ -5,16 +5,24 @@ In addition, specific classes implement more complex logic for both general app
 development as well as for WPF apps.
 
 Especially, boilerplate code that is known to be part of any Core DLL in a C#
-project is likely to be already implemented here. In fact, I use this library in
-any of my own projects.
+project is likely to be already here. In fact, I use this library in many of my
+own projects. For this reason, each class and method has been reviewed numerous
+times.
 
-Documentation can be taken for granted! All classes and members have XML tags.
+BytecodeApi is highly consistent, particularly in terms of structure, naming
+conventions, patterns, etc. The entire code style resembles the patterns used in
+the .NET Framework itself. You will find it intuitive to understand.
+
+Documentation can be taken for granted! <b>All</b> classes and members have XML
+tags. The [online documentation](https://docs.bytecode77.com/bytecode-api/)
+makes it easy to find the class or method you are looking for.
 
 ## Examples
 
 Following examples are a very brief overview over what features you can come to
 expect. However, the entire framework covers a lot more. Please review the
-online documentation to get a complete overview.
+[online documentation](https://docs.bytecode77.com/bytecode-api/) to get a
+complete overview.
 
 ### Example: Advanced conversion
 
@@ -174,12 +182,12 @@ public class MyViewModel : ObservableObject
 ## Online Documentation
 
 BytecodeApi is fully documented using XML tags. The
-[Online Documentation](https://docs.bytecode77.com/bytecode-api/) is an
+[online documentation](https://docs.bytecode77.com/bytecode-api/) is an
 up-to-date reference.
 
 ## Downloads
 
-[![](https://bytecode77.com/images/shared/fileicons/zip.png) BytecodeApi 1.1.0 Binaries.zip](https://bytecode77.com/downloads/framework/bytecode-api/BytecodeApi%201.1.0%20Binaries.zip)
+[![](https://bytecode77.com/images/shared/fileicons/zip.png) BytecodeApi 1.2.0 Binaries.zip](https://bytecode77.com/downloads/framework/bytecode-api/BytecodeApi%201.2.0%20Binaries.zip)
 
 ## Project Page
 

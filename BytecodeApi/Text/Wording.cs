@@ -11,6 +11,10 @@ namespace BytecodeApi.Text
 	/// </summary>
 	public static class Wording
 	{
+		internal const int DefaultFormatTimeSpanStringMaxElements = 2;
+		internal const string DefaultFormatTimeSpanStringSeparator = ", ";
+		internal const int DefaultFormatByteSizeStringDecimalPlaces = 2;
+
 		/// <summary>
 		/// Trims the specified <see cref="string" /> by the specified length. If the <see cref="string" /> is longer than the value of <paramref name="length" />, it will be truncated by a leading "..." to match the <paramref name="length" /> parameter, including the length of the "..." appendix (3 characters).
 		/// </summary>
@@ -72,7 +76,7 @@ namespace BytecodeApi.Text
 		/// </returns>
 		public static string FormatByteSizeString(long size)
 		{
-			return FormatByteSizeString(size, 2);
+			return FormatByteSizeString(size, DefaultFormatByteSizeStringDecimalPlaces);
 		}
 		/// <summary>
 		/// Formats a <see cref="long" /> value representing a byte size with the specified number of decimal places.
@@ -150,7 +154,7 @@ namespace BytecodeApi.Text
 		/// </returns>
 		public static string FormatTimeSpanString(TimeSpan timeSpan)
 		{
-			return FormatTimeSpanString(timeSpan, 2);
+			return FormatTimeSpanString(timeSpan, DefaultFormatTimeSpanStringMaxElements);
 		}
 		/// <summary>
 		/// Converts the value of the specified <see cref="TimeSpan" /> to a human readable <see cref="string" /> representation by displaying a specified number of most significant elements of either days, hours, minutes or seconds that are greater than zero, separated by a comma.
@@ -163,7 +167,7 @@ namespace BytecodeApi.Text
 		/// </returns>
 		public static string FormatTimeSpanString(TimeSpan timeSpan, int maxElements)
 		{
-			return FormatTimeSpanString(timeSpan, maxElements, ", ");
+			return FormatTimeSpanString(timeSpan, maxElements, DefaultFormatTimeSpanStringSeparator);
 		}
 		/// <summary>
 		/// Converts the value of the specified <see cref="TimeSpan" /> to a human readable <see cref="string" /> representation by displaying a specified number of most significant elements of either days, hours, minutes or seconds that are greater than zero, separated by the specified separator.

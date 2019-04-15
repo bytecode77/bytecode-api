@@ -66,7 +66,7 @@ namespace BytecodeApi.FileIcons
 		{
 			get
 			{
-				if (_Icon16 == null) _Icon16 = Icon.GetBitmap(16, 16);
+				if (_Icon16 == null) _Icon16 = new Icon(Icon, new Size(16, 16)).ToBitmap();
 				return _Icon16;
 			}
 		}
@@ -77,7 +77,7 @@ namespace BytecodeApi.FileIcons
 		{
 			get
 			{
-				if (_Icon32 == null) _Icon32 = Icon.GetBitmap(32, 32);
+				if (_Icon32 == null) _Icon32 = new Icon(Icon, new Size(32, 32)).ToBitmap();
 				return _Icon32;
 			}
 		}
@@ -88,7 +88,7 @@ namespace BytecodeApi.FileIcons
 		{
 			get
 			{
-				if (_Icon48 == null) _Icon48 = Icon.GetBitmap(48, 48);
+				if (_Icon48 == null) _Icon48 = new Icon(Icon, new Size(48, 48)).ToBitmap();
 				return _Icon48;
 			}
 		}

@@ -24,9 +24,8 @@ namespace BytecodeApi.UI
 
 		object IValueConverter.ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			Check.InvalidCast(value == null || value is TBackValue, nameof(value));
-
-			return ConvertBack(CSharp.CastOrDefault<TBackValue>(value));
+			TBackResult result = ConvertBack(CSharp.CastOrDefault<TBackValue>(value));
+			return Then == null ? result : Then.Convert(result, targetType, parameter, culture);
 		}
 	}
 
@@ -52,10 +51,8 @@ namespace BytecodeApi.UI
 
 		object IValueConverter.ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			Check.InvalidCast(value == null || value is TBackValue, nameof(value));
-			Check.InvalidCast(parameter == null || parameter is TParameter, nameof(parameter));
-
-			return ConvertBack(CSharp.CastOrDefault<TBackValue>(value), CSharp.CastOrDefault<TParameter>(parameter));
+			TBackResult result = ConvertBack(CSharp.CastOrDefault<TBackValue>(value), CSharp.CastOrDefault<TParameter>(parameter));
+			return Then == null ? result : Then.Convert(result, targetType, parameter, culture);
 		}
 	}
 }

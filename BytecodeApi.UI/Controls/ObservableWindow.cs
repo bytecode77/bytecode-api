@@ -17,6 +17,7 @@ namespace BytecodeApi.UI.Controls
 	public class ObservableWindow : Window, INotifyPropertyChanged, INotifyPropertyChanging
 	{
 		private readonly Dictionary<string, object> BackingFields;
+		private bool IsLoadedOnce;
 		/// <summary>
 		/// Occurs when a property value is changing and is typically used by a <see cref="DependencyObject" />.
 		/// </summary>
@@ -25,6 +26,10 @@ namespace BytecodeApi.UI.Controls
 		/// Occurs when a property value has changed and is typically used by a <see cref="DependencyObject" />.
 		/// </summary>
 		public event PropertyChangedEventHandler PropertyChanged;
+		/// <summary>
+		/// Occurs when the element is laid out, rendered, and ready for interaction. This event is fired only once.
+		/// </summary>
+		public event RoutedEventHandler LoadedOnce;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="ObservableWindow" /> class.
@@ -32,21 +37,46 @@ namespace BytecodeApi.UI.Controls
 		public ObservableWindow()
 		{
 			BackingFields = new Dictionary<string, object>();
+			Loaded += ObservableWindow_Loaded;
+		}
+		private void ObservableWindow_Loaded(object sender, RoutedEventArgs e)
+		{
+			if (!IsLoadedOnce)
+			{
+				IsLoadedOnce = true;
+				LoadedOnce?.Invoke(sender, e);
+			}
 		}
 
 		/// <summary>
 		/// Returns the current effective value of a <see cref="DependencyProperty" /> on this instance of a <see cref="Window" />.
+		/// The name of the dependency property must be related to the name of the property. Example: "Foo" and "FooProperty".
+		/// <para>Example: <see langword="public" /> <see cref="int" /> Foo { <see langword="get" /> => GetValue(() => Foo); <see langword="set" /> => SetValue(() => Foo, <see langword="value" />); }</para>
 		/// </summary>
-		/// <typeparam name="T">The return type of the <see cref="DependencyProperty" />.</typeparam>
-		/// <param name="dependencyProperty">The <see cref="DependencyProperty" /> identifier of the property to retrieve the value for.</param>
+		/// <typeparam name="T">The type of the <see cref="DependencyProperty" />.</typeparam>
+		/// <param name="dependencyProperty">The strongly typed lambda expression of the dependency property.</param>
 		/// <returns>
-		/// The effective value of <paramref name="dependencyProperty" /> on this instance of a <see cref="Window" />.
+		/// The current effective value of a <see cref="DependencyProperty" /> on this instance of a <see cref="Window" />.
 		/// </returns>
-		public T GetValue<T>(DependencyProperty dependencyProperty)
+		public T GetValue<T>(Expression<Func<T>> dependencyProperty)
 		{
 			Check.ArgumentNull(dependencyProperty, nameof(dependencyProperty));
 
-			return DependencyObjectExtensions.GetValue<T>(this, dependencyProperty);
+			return (T)GetValue(this.GetDependencyProperty(dependencyProperty));
+		}
+		/// <summary>
+		/// Sets the local value of a dependency property, specified by its dependency property identifier.
+		/// The name of the dependency property must be related to the name of the property. Example: "Foo" and "FooProperty".
+		/// <para>Example: <see langword="public" /> <see cref="int" /> Foo { <see langword="get" /> => GetValue(() => Foo); <see langword="set" /> => SetValue(() => Foo, <see langword="value" />); }</para>
+		/// </summary>
+		/// <typeparam name="T">The type of the <see cref="DependencyProperty" />.</typeparam>
+		/// <param name="dependencyProperty">The strongly typed lambda expression of the dependency property.</param>
+		/// <param name="value">The new local value.</param>
+		public void SetValue<T>(Expression<Func<T>> dependencyProperty, T value)
+		{
+			Check.ArgumentNull(dependencyProperty, nameof(dependencyProperty));
+
+			SetValue(this.GetDependencyProperty(dependencyProperty), value);
 		}
 		/// <summary>
 		/// Executes the specified <see cref="Action" /> synchronously on the thread the <see cref="Dispatcher" /> is associated with.

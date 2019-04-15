@@ -7,10 +7,5 @@
 	xmlns:ui="https://schemas.bytecode77.com/2019/xaml/presentation"
 	StartupUri="MainWindow.xaml">
 	<Application.Resources>
-		<ResourceDictionary>
-			<ResourceDictionary.MergedDictionaries>
-				<ResourceDictionary Source="/BytecodeApi.UI;component/Xaml/Converters.xaml" />
-			</ResourceDictionary.MergedDictionaries>
-		</ResourceDictionary>
 	</Application.Resources>
 </Application>

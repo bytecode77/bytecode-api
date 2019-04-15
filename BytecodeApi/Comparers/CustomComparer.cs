@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace BytecodeApi.Comparers
 {
 	/// <summary>
-	/// Represents a custom comparison operation that uses an <see cref="EqualityComparer{TCompareType}" />.
+	/// Represents a custom comparison operation that uses an <see cref="EqualityComparer{T}" />.
 	/// </summary>
 	/// <typeparam name="TSource">The type of the source element to compare.</typeparam>
 	/// <typeparam name="TCompareType">The type of the element to compare to source.</typeparam>
