@@ -130,7 +130,7 @@ namespace BytecodeApi.Extensions
 		/// </returns>
 		public static bool Compare(this byte[] array, byte[] otherArray)
 		{
-			if (array == otherArray || array == null && otherArray == null)
+			if (array == otherArray)
 			{
 				return true;
 			}
