@@ -43,9 +43,13 @@ namespace BytecodeApi.UI.Converters
 				case StringConverterMethod.TrimEnd: return value?.TrimEnd();
 				case StringConverterMethod.TrimEndString: return value?.TrimEndString(parameter?.ToString());
 				case StringConverterMethod.TrimEndStringIgnoreCase: return value?.TrimEndString(parameter?.ToString(), true);
-				case StringConverterMethod.ToUpper: return value?.ToUpper();
 				case StringConverterMethod.ToLower: return value?.ToLower();
+				case StringConverterMethod.ToUpper: return value?.ToUpper();
 				case StringConverterMethod.ToCamelCase: return value?.ChangeCasing(StringCasing.CamelCase);
+				case StringConverterMethod.ToLowerSnakeCase: return value?.ChangeCasing(StringCasing.LowerSnakeCase);
+				case StringConverterMethod.ToUpperSnakeCase: return value?.ChangeCasing(StringCasing.UpperSnakeCase);
+				case StringConverterMethod.ToLowerKebabCase: return value?.ChangeCasing(StringCasing.LowerKebabCase);
+				case StringConverterMethod.ToUpperKebabCase: return value?.ChangeCasing(StringCasing.UpperKebabCase);
 				case StringConverterMethod.Substring: return value?.Substring((int)parameter);
 				case StringConverterMethod.Left: return value?.Left((int)parameter);
 				case StringConverterMethod.Right: return value?.Right((int)parameter);

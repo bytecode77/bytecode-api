@@ -38,17 +38,33 @@
 		/// </summary>
 		TrimEndStringIgnoreCase,
 		/// <summary>
-		/// Returns the <see cref="string" /> value in its uppercase representation.
-		/// </summary>
-		ToUpper,
-		/// <summary>
 		/// Returns the <see cref="string" /> value in its lowercase representation.
 		/// </summary>
 		ToLower,
 		/// <summary>
-		/// Returns the <see cref="string" /> value in its camelcase representation using the <see cref="StringCasing.CamelCase" /> method.
+		/// Returns the <see cref="string" /> value in its uppercase representation.
+		/// </summary>
+		ToUpper,
+		/// <summary>
+		/// Returns the <see cref="string" /> value in its camel case representation using the <see cref="StringCasing.CamelCase" /> method.
 		/// </summary>
 		ToCamelCase,
+		/// <summary>
+		/// Returns the <see cref="string" /> value in its lower snake case representation using the <see cref="StringCasing.LowerSnakeCase" /> method.
+		/// </summary>
+		ToLowerSnakeCase,
+		/// <summary>
+		/// Returns the <see cref="string" /> value in its upper snake case representation using the <see cref="StringCasing.UpperSnakeCase" /> method.
+		/// </summary>
+		ToUpperSnakeCase,
+		/// <summary>
+		/// Returns the <see cref="string" /> value in its lower kebab case representation using the <see cref="StringCasing.LowerKebabCase" /> method.
+		/// </summary>
+		ToLowerKebabCase,
+		/// <summary>
+		/// Returns the <see cref="string" /> value in its upper kebab case representation using the <see cref="StringCasing.UpperKebabCase" /> method.
+		/// </summary>
+		ToUpperKebabCase,
 		/// <summary>
 		/// Returns a substring from the <see cref="string" /> value. The substring starts at a specified character position in the parameter and continues to the end of the string.
 		/// </summary>

@@ -720,13 +720,53 @@ namespace BytecodeApi.Extensions
 					case StringCasing.Upper:
 						return str.ToUpper();
 					case StringCasing.CamelCase:
-						char[] newString = str.ToCharArray();
-						newString[0] = newString[0].ToUpper();
-						for (int i = 1; i < str.Length; i++)
 						{
-							newString[i] = newString[i - 1].IsWhiteSpace() || newString[i - 1].IsPunctuation() ? newString[i].ToUpper() : newString[i].ToLower();
+							char[] newString = str.ToCharArray();
+							newString[0] = newString[0].ToUpper();
+							for (int i = 1; i < str.Length; i++)
+							{
+								newString[i] = newString[i - 1].IsWhiteSpace() || newString[i - 1].IsPunctuation() ? newString[i].ToUpper() : newString[i].ToLower();
+							}
+							return newString.AsString();
 						}
-						return newString.AsString();
+					case StringCasing.LowerSnakeCase:
+					case StringCasing.UpperSnakeCase:
+					case StringCasing.LowerKebabCase:
+					case StringCasing.UpperKebabCase:
+						{
+							StringBuilder stringBuilder = new StringBuilder(str.Length);
+
+							char separator = casing == StringCasing.LowerSnakeCase || casing == StringCasing.UpperSnakeCase ? '_' : '-';
+							int position = 0;
+							bool skip = false;
+
+							while (position != -1 && position < str.Length)
+							{
+								int index = -1;
+								for (int i = position; i < str.Length; i++)
+								{
+									if (skip ^ (str[i].IsWhiteSpace() || str[i].IsPunctuation()))
+									{
+										index = i;
+										break;
+									}
+								}
+
+								if (!skip)
+								{
+									if (index == -1) stringBuilder.Append(str.Substring(position));
+									else stringBuilder.Append(str.Substring(position, index - position)).Append(separator);
+									position = index;
+								}
+
+								skip = !skip;
+								position = index;
+							}
+
+							return stringBuilder
+								.ToString()
+								.ChangeCasing(casing == StringCasing.LowerSnakeCase || casing == StringCasing.LowerKebabCase ? StringCasing.Lower : StringCasing.Upper);
+						}
 					default:
 						throw Throw.InvalidEnumArgument(nameof(casing));
 				}

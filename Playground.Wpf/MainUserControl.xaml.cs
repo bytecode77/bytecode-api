@@ -55,6 +55,7 @@ namespace Playground.Wpf
 		public MainUserControl()
 		{
 			InitializeComponent();
+			DataContext = this;
 		}
 	}
 }

@@ -4,6 +4,7 @@ using System.Text;
 
 namespace BytecodeApi.IO.FileSystem
 {
+	//FEATURE: MakeRelative, MakeAbsolute
 	/// <summary>
 	/// Provides <see langword="static" /> methods that extend the <see cref="Path" /> class.
 	/// </summary>
