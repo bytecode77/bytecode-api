@@ -38,12 +38,8 @@
 		/// </summary>
 		ChangeExtension,
 		/// <summary>
-		/// If the file or directory exists, returns the name of the specified path with character casing according to the original path; otherwise, the original value.
+		/// Returns the path <see cref="string" /> value of an existing file or directory in its original representation with fixed character casing. If it does not exist, the original <see cref="string" /> value is returned.
 		/// </summary>
-		CaseSensitiveName,
-		/// <summary>
-		/// If the file or directory exists, returns the full path of the specified path with character casing according to the original path; otherwise, the original value.
-		/// </summary>
-		CaseSensitiveFullName
+		OriginalPath,
 	}
 }

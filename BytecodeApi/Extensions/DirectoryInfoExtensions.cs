@@ -22,36 +22,6 @@ namespace BytecodeApi.Extensions
 			FileSystem.DeleteDirectory(directory.FullName, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin, UICancelOption.ThrowException);
 		}
 		/// <summary>
-		/// Gets the name of this directory with character casing according to the original and existing directory.
-		/// </summary>
-		/// <param name="directory">The <see cref="DirectoryInfo" /> to process.</param>
-		/// <returns>
-		/// A <see cref="string" /> that contains the actual name of this directory.
-		/// </returns>
-		public static string GetCaseSensitiveName(this DirectoryInfo directory)
-		{
-			Check.ArgumentNull(directory, nameof(directory));
-			Check.DirectoryNotFound(directory.FullName);
-
-			DirectoryInfo parentDirectory = directory.Parent;
-			return parentDirectory == null ? directory.FullName : parentDirectory.GetDirectories(directory.Name).First().Name;
-		}
-		/// <summary>
-		/// Gets the full path of this directory with character casing according to the original and existing directory.
-		/// </summary>
-		/// <param name="directory">The <see cref="DirectoryInfo" /> to process.</param>
-		/// <returns>
-		/// A <see cref="string" /> that contains the actual full path of this directory.
-		/// </returns>
-		public static string GetCaseSensitiveFullName(this DirectoryInfo directory)
-		{
-			Check.ArgumentNull(directory, nameof(directory));
-			Check.DirectoryNotFound(directory.FullName);
-
-			DirectoryInfo parentDirectory = directory.Parent;
-			return parentDirectory == null ? directory.Name.ToUpper() : Path.Combine(parentDirectory.GetCaseSensitiveFullName(), directory.GetCaseSensitiveName());
-		}
-		/// <summary>
 		/// Gets the UNC path of this directory. If the path cannot be converted to a UNC path, the original path is returned.
 		/// </summary>
 		/// <param name="directory">The <see cref="DirectoryInfo" /> to process.</param>
@@ -68,11 +38,11 @@ namespace BytecodeApi.Extensions
 
 			if (path.Length > 2 && path[1] == ':' && path[0].ToUpper() >= 'A' && path[0].ToUpper() <= 'Z')
 			{
-				StringBuilder stringBuilder = new StringBuilder(512);
-				int length = stringBuilder.Capacity;
-				if (Native.WNetGetConnection(path.Left(2), stringBuilder, ref length) == 0)
+				StringBuilder result = new StringBuilder(512);
+				int length = result.Capacity;
+				if (Native.WNetGetConnection(path.Left(2), result, ref length) == 0)
 				{
-					return Path.Combine(stringBuilder.ToString().TrimEnd(), path.Substring(Path.GetPathRoot(path).Length));
+					return Path.Combine(result.ToString().TrimEnd(), path.Substring(Path.GetPathRoot(path).Length));
 				}
 			}
 

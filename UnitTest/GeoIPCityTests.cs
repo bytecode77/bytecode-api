@@ -10,16 +10,16 @@ namespace UnitTest
 		[TestMethod]
 		public void BytecodeApi_GeoIP_City_GeoIPCityLookup_Lookup_IPv4()
 		{
-			Assert.AreEqual("", GeoIPCityLookup.Lookup(IPAddress.Parse("123.45.67.89"))?.City.Name);
-			Assert.AreEqual("", GeoIPCityLookup.Lookup(IPAddress.Parse("56.78.90.123"))?.City.Name);
-			Assert.AreEqual("", GeoIPCityLookup.Lookup(IPAddress.Parse("78.30.58.111"))?.City.Name);
-			Assert.AreEqual("", GeoIPCityLookup.Lookup(IPAddress.Parse("23.9.50.250"))?.City.Name);
-			Assert.AreEqual("", GeoIPCityLookup.Lookup(IPAddress.Parse("12.31.222.56"))?.City.Name);
+			Assert.IsNull(GeoIPCityLookup.Lookup(IPAddress.Parse("123.45.67.89"))?.City.Name);
+			Assert.IsNull(GeoIPCityLookup.Lookup(IPAddress.Parse("56.78.90.123"))?.City.Name);
+			Assert.IsNull(GeoIPCityLookup.Lookup(IPAddress.Parse("78.30.58.111"))?.City.Name);
+			Assert.IsNull(GeoIPCityLookup.Lookup(IPAddress.Parse("23.9.50.250"))?.City.Name);
+			Assert.IsNull(GeoIPCityLookup.Lookup(IPAddress.Parse("12.31.222.56"))?.City.Name);
 			Assert.AreEqual("Mianyang", GeoIPCityLookup.Lookup(IPAddress.Parse("139.205.190.243"))?.City.Name);
-			Assert.AreEqual("", GeoIPCityLookup.Lookup(IPAddress.Parse("170.23.68.67"))?.City.Name);
+			Assert.IsNull(GeoIPCityLookup.Lookup(IPAddress.Parse("170.23.68.67"))?.City.Name);
 			Assert.AreEqual("Seattle", GeoIPCityLookup.Lookup(IPAddress.Parse("17.25.79.120"))?.City.Name);
-			Assert.AreEqual("", GeoIPCityLookup.Lookup(IPAddress.Parse("60.89.183.10"))?.City.Name);
-			Assert.AreEqual("", GeoIPCityLookup.Lookup(IPAddress.Parse("190.97.231.17"))?.City.Name);
+			Assert.IsNull(GeoIPCityLookup.Lookup(IPAddress.Parse("60.89.183.10"))?.City.Name);
+			Assert.IsNull(GeoIPCityLookup.Lookup(IPAddress.Parse("190.97.231.17"))?.City.Name);
 		}
 		[TestMethod]
 		public void BytecodeApi_GeoIP_City_GeoIPCityLookup_Lookup_IPv6()

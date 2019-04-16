@@ -41,35 +41,21 @@ using System.Text;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using static System.Console;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
-namespace Playground.Console
+namespace Playground.Wpf
 {
 	/// <summary>
 	/// Playground project for development and case testing of class libraries.
 	/// </summary>
-	public static class Program
+	public partial class MainUserControl
 	{
-		[STAThread]
-		public static void Main(string[] args)
+		public MainUserControl()
 		{
-			Stopwatch stopwatch = ThreadFactory.StartStopwatch();
-
-			Test1();
-
-			stopwatch.Stop();
-			WriteLine("Time elapsed: " + stopwatch.ElapsedMilliseconds);
-			ReadKey();
-		}
-
-		public static void Test1()
-		{
-		}
-		public static void Test2()
-		{
-		}
-		public static void Test3()
-		{
+			InitializeComponent();
+			DataContext = this;
 		}
 	}
 }

@@ -21,34 +21,6 @@ namespace BytecodeApi.IO.FileSystem
 			new DirectoryInfo(path).SendToRecycleBin();
 		}
 		/// <summary>
-		/// Gets the name of this directory with character casing according to the original and existing directory.
-		/// </summary>
-		/// <param name="path">A <see cref="string" /> representing the path to a directory.</param>
-		/// <returns>
-		/// A <see cref="string" /> that contains the actual name of this directory.
-		/// </returns>
-		public static string GetCaseSensitiveName(string path)
-		{
-			Check.ArgumentNull(path, nameof(path));
-			Check.DirectoryNotFound(path);
-
-			return new DirectoryInfo(path).GetCaseSensitiveName();
-		}
-		/// <summary>
-		/// Gets the full path of this directory with character casing according to the original and existing directory.
-		/// </summary>
-		/// <param name="path">A <see cref="string" /> representing the path to a directory.</param>
-		/// <returns>
-		/// A <see cref="string" /> that contains the actual full path of this directory.
-		/// </returns>
-		public static string GetCaseSensitiveFullName(string path)
-		{
-			Check.ArgumentNull(path, nameof(path));
-			Check.DirectoryNotFound(path);
-
-			return new DirectoryInfo(path).GetCaseSensitiveFullName();
-		}
-		/// <summary>
 		/// Gets the UNC path of this directory. If the path cannot be converted to a UNC path, the original path is returned.
 		/// </summary>
 		/// <param name="path">A <see cref="string" /> representing the path to a directory.</param>

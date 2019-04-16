@@ -56,6 +56,10 @@ namespace BytecodeApi
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool DeleteFile(string name);
 		[DllImport("kernel32.dll")]
+		public static extern int GetShortPathName(string path, StringBuilder buffer, int bufferLength);
+		[DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+		public static extern int GetLongPathName(string path, StringBuilder buffer, int bufferLength);
+		[DllImport("kernel32.dll")]
 		public static extern IntPtr BeginUpdateResource(string fileName, [MarshalAs(UnmanagedType.Bool)] bool deleteExistingResources);
 		[DllImport("kernel32.dll")]
 		public static extern bool EndUpdateResource(IntPtr update, bool discard);

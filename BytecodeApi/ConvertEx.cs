@@ -43,7 +43,7 @@ namespace BytecodeApi
 			return array.Select(hex => hex.ToString(upperCase ? "X2" : "x2")).AsString();
 		}
 		/// <summary>
-		/// Converts a hexadecimal <see cref="string" /> to its equivalent <see cref="byte" />[] representation. Only hexadecimal digits (upper and lower case) are allowed. <paramref name="str" /> must have an even number of digits.
+		/// Converts a hexadecimal <see cref="string" /> to its equivalent <see cref="byte" />[] representation. Only hexadecimal digits (upper and lowercase) are allowed. <paramref name="str" /> must have an even number of digits.
 		/// </summary>
 		/// <param name="str">A hexadecimal <see cref="string" /> to convert to a <see cref="byte" />[].</param>
 		/// <returns>

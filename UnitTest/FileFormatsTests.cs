@@ -12,10 +12,11 @@ namespace UnitTest
 		[TestMethod]
 		public void BytecodeApi_FileFormats_Coff()
 		{
-			byte[] file = File.ReadAllBytes(@"C:\Windows\splwow64.exe");
+			byte[] file = File.ReadAllBytes(@"C:\Windows\explorer.exe");
 			PEImage image = PEImage.FromBinary(file);
+			byte[] binary = image.ToBinary();
 
-			Assert.IsTrue(image.ToBinary().Compare(file));
+			Assert.IsTrue(binary.Compare(file));
 		}
 	}
 }

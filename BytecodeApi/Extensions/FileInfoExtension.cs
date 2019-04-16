@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -175,34 +174,6 @@ namespace BytecodeApi.Extensions
 			{
 				if (fileInfo.Icon != IntPtr.Zero) Native.DestroyIcon(fileInfo.Icon);
 			}
-		}
-		/// <summary>
-		/// Gets the name of this file with character casing according to the original and existing file.
-		/// </summary>
-		/// <param name="file">The <see cref="FileInfo" /> to process.</param>
-		/// <returns>
-		/// A <see cref="string" /> that contains the actual name of this file.
-		/// </returns>
-		public static string GetCaseSensitiveName(this FileInfo file)
-		{
-			Check.ArgumentNull(file, nameof(file));
-			Check.FileNotFound(file.FullName);
-
-			return file.Directory.GetFiles(file.Name).First().Name;
-		}
-		/// <summary>
-		/// Gets the full path of this file with character casing according to the original and existing file.
-		/// </summary>
-		/// <param name="file">The <see cref="FileInfo" /> to process.</param>
-		/// <returns>
-		/// A <see cref="string" /> that contains the actual full path of this file.
-		/// </returns>
-		public static string GetCaseSensitiveFullName(this FileInfo file)
-		{
-			Check.ArgumentNull(file, nameof(file));
-			Check.FileNotFound(file.FullName);
-
-			return Path.Combine(file.Directory.GetCaseSensitiveFullName(), file.GetCaseSensitiveName());
 		}
 		/// <summary>
 		/// Compares the contents of two files. Returns <see langword="true" />, if both files are of equal size and equal binary content.

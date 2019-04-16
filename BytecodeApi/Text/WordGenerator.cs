@@ -42,10 +42,10 @@ namespace BytecodeApi.Text
 		}
 
 		/// <summary>
-		/// Generates a random word in CamelCase character casing using the specified parameters of this <see cref="WordGenerator" /> instance.
+		/// Generates a random word in camel case character casing using the specified parameters of this <see cref="WordGenerator" /> instance.
 		/// </summary>
 		/// <returns>
-		/// A new <see cref="string" /> with a dynamically generated word in CamelCase character casing.
+		/// A new <see cref="string" /> with a dynamically generated word in camel case character casing.
 		/// </returns>
 		public string Generate()
 		{

@@ -11,6 +11,12 @@
 		public BooleanConverterMethod Result { get; set; }
 
 		/// <summary>
+		/// Initializes a new instance of the <see cref="NullConverter" /> class.
+		/// </summary>
+		public NullConverter() : this(BooleanConverterMethod.Default)
+		{
+		}
+		/// <summary>
 		/// Initializes a new instance of the <see cref="NullConverter" /> class with the specified result transformation.
 		/// </summary>
 		/// <param name="result">Specifies how the <see cref="bool" /> result is converted before the <see cref="Convert(object)" /> method returns.</param>

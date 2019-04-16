@@ -50,34 +50,6 @@ namespace BytecodeApi.IO.FileSystem
 			return new FileInfo(path).GetIcon(large);
 		}
 		/// <summary>
-		/// Gets the name of the specified file with character casing according to the original and existing file.
-		/// </summary>
-		/// <param name="path">A <see cref="string" /> representing the path to a file.</param>
-		/// <returns>
-		/// A <see cref="string" /> that contains the actual name of the specified file.
-		/// </returns>
-		public static string GetCaseSensitiveName(string path)
-		{
-			Check.ArgumentNull(path, nameof(path));
-			Check.FileNotFound(path);
-
-			return new FileInfo(path).GetCaseSensitiveName();
-		}
-		/// <summary>
-		/// Gets the full path of the specified file with character casing according to the original and existing file.
-		/// </summary>
-		/// <param name="path">A <see cref="string" /> representing the path to a file.</param>
-		/// <returns>
-		/// A <see cref="string" /> that contains the actual full path of the specified file.
-		/// </returns>
-		public static string GetCaseSensitiveFullName(string path)
-		{
-			Check.ArgumentNull(path, nameof(path));
-			Check.FileNotFound(path);
-
-			return new FileInfo(path).GetCaseSensitiveFullName();
-		}
-		/// <summary>
 		/// Shows the properties dialog for the specified file.
 		/// </summary>
 		/// <param name="path">A <see cref="string" /> representing the path to a file.</param>
