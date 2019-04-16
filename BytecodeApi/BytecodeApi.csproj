@@ -60,6 +60,7 @@
     <Compile Include="CachedProperty.cs" />
     <Compile Include="Extensions\IconExtensions.cs" />
     <Compile Include="Extensions\BitmapEncoderExtensions.cs" />
+    <Compile Include="IO\FileSystem\PathEx.cs" />
     <Compile Include="SingletonBucketBase.cs" />
     <Compile Include="EnumEx.cs" />
     <Compile Include="Data\BlobTree.cs" />

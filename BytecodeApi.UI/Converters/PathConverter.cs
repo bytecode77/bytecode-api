@@ -48,14 +48,7 @@ namespace BytecodeApi.UI.Converters
 					case PathConverterMethod.Root: return Path.GetPathRoot(value);
 					case PathConverterMethod.Combine: return Path.Combine(value, parameter);
 					case PathConverterMethod.ChangeExtension: return Path.ChangeExtension(value, parameter);
-					case PathConverterMethod.CaseSensitiveName:
-						if (File.Exists(value)) return FileEx.GetCaseSensitiveName(value);
-						else if (Directory.Exists(value)) return DirectoryEx.GetCaseSensitiveName(value);
-						else return value;
-					case PathConverterMethod.CaseSensitiveFullName:
-						if (File.Exists(value)) return FileEx.GetCaseSensitiveFullName(value);
-						else if (Directory.Exists(value)) return DirectoryEx.GetCaseSensitiveFullName(value);
-						else return value;
+					case PathConverterMethod.OriginalPath: return PathEx.GetOriginalPath(value);
 					default: throw Throw.InvalidEnumArgument(nameof(Method));
 				}
 			}

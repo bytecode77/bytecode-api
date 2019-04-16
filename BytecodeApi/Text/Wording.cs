@@ -216,7 +216,7 @@ namespace BytecodeApi.Text
 			Check.ArgumentNull(text, nameof(text));
 			Check.ArgumentOutOfRangeEx.Greater0(width, nameof(width));
 
-			StringBuilder result = new StringBuilder();
+			StringBuilder stringBuilder = new StringBuilder();
 
 			int index = 0;
 			int column = 0;
@@ -260,22 +260,22 @@ namespace BytecodeApi.Text
 					{
 						if (column > 0)
 						{
-							result.AppendLine();
+							stringBuilder.AppendLine();
 							column = 0;
 						}
 					}
 					else if (column > 0)
 					{
-						result.Append(" ");
+						stringBuilder.Append(" ");
 						column++;
 					}
 
-					result.Append(word);
+					stringBuilder.Append(word);
 					column += word.Length;
 				}
 			}
 
-			return result.ToString();
+			return stringBuilder.ToString();
 		}
 		/// <summary>
 		/// Creates a binary view for the specified <see cref="byte" />[].

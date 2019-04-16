@@ -56,7 +56,9 @@ namespace BytecodeApi
 		/// <typeparam name="T">The type of the created <see cref="IEnumerable{T}" />.</typeparam>
 		/// <param name="count">The number of elements to return.</param>
 		/// <param name="valueSelector">A <see cref="Func{T, TResult}" /> to retrieve new values for the <see cref="IEnumerable{T}" /> based on the given index.</param>
-		/// <returns></returns>
+		/// <returns>
+		/// A new <see cref="IEnumerable{T}" /> with the specified number of elements, where each element is initialized with a value that is retrieved from <paramref name="valueSelector" />.
+		/// </returns>
 		public static IEnumerable<T> Enumerable<T>(int count, Func<int, T> valueSelector)
 		{
 			Check.ArgumentOutOfRangeEx.GreaterEqual0(count, nameof(count));
