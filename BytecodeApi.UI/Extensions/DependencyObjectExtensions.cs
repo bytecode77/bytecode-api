@@ -134,13 +134,21 @@ namespace BytecodeApi.UI.Extensions
 		{
 			string propertyName = dependencyProperty.GetMemberName() + "Property";
 
-			if (dependencyObject.GetType().GetField(propertyName) is FieldInfo field)
+			Type type = dependencyObject.GetType();
+			FieldInfo field = type.GetField(propertyName);
+
+			for (; field == null && type != typeof(DependencyObject); field = type.GetField(propertyName))
 			{
-				return field.GetValue(dependencyObject) is DependencyProperty property ? property : throw CreateNotFoundException();
+				type = type.BaseType;
+			}
+
+			if (field == null)
+			{
+				throw CreateNotFoundException();
 			}
 			else
 			{
-				throw CreateNotFoundException();
+				return field.GetValue(dependencyObject) is DependencyProperty property ? property : throw CreateNotFoundException();
 			}
 
 			Exception CreateNotFoundException()
