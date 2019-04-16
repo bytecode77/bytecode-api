@@ -17,6 +17,13 @@ namespace BytecodeApi.UI.Converters
 		public BooleanConverterMethod Result { get; set; }
 
 		/// <summary>
+		/// Initializes a new instance of the <see cref="EqualityConverter" /> class with the specified conversion method.
+		/// </summary>
+		/// <param name="method">The method that is used to compare the value and parameter.</param>
+		public EqualityConverter(EqualityConverterMethod method) : this(method, BooleanConverterMethod.Default)
+		{
+		}
+		/// <summary>
 		/// Initializes a new instance of the <see cref="EqualityConverter" /> class with the specified conversion method and result transformation.
 		/// </summary>
 		/// <param name="method">The method that is used to compare the value and parameter.</param>

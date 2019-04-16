@@ -34,10 +34,20 @@ namespace BytecodeApi.UI.Converters
 		/// </summary>
 		/// <param name="min">The minimum value of the range.</param>
 		/// <param name="max">The maximum value of the range.</param>
-		public RangeConverter(IComparable min, IComparable max)
+		public RangeConverter(IComparable min, IComparable max) : this(min, max, BooleanConverterMethod.Default)
+		{
+		}
+		/// <summary>
+		/// Initializes a new instance of the <see cref="RangeConverter" /> class with the specified range and result transformation. By default, <paramref name="min" /> and <paramref name="max" /> are inclusive.
+		/// </summary>
+		/// <param name="min">The minimum value of the range.</param>
+		/// <param name="max">The maximum value of the range.</param>
+		/// <param name="result">Specifies how the <see cref="bool" /> result is converted before the <see cref="Convert(IComparable)" /> method returns.</param>
+		public RangeConverter(IComparable min, IComparable max, BooleanConverterMethod result)
 		{
 			Min = min;
 			Max = max;
+			Result = result;
 		}
 
 		/// <summary>

@@ -17,6 +17,13 @@ namespace BytecodeApi.UI.Converters
 		public BooleanConverterMethod Result { get; set; }
 
 		/// <summary>
+		/// Initializes a new instance of the <see cref="StringEmptyConverter" /> class with the specified conversion method.
+		/// </summary>
+		/// <param name="method">The method that is used to check the <see cref="string" /> value for emptiness.</param>
+		public StringEmptyConverter(StringEmptyConverterMethod method) : this(method, BooleanConverterMethod.Default)
+		{
+		}
+		/// <summary>
 		/// Initializes a new instance of the <see cref="StringEmptyConverter" /> class with the specified conversion method and result transformation.
 		/// </summary>
 		/// <param name="method">The method that is used to check the <see cref="string" /> value for emptiness.</param>
