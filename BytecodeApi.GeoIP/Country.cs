@@ -73,7 +73,7 @@ namespace BytecodeApi.GeoIP
 		/// </returns>
 		public bool Equals(Country other)
 		{
-			return Name == other.Name;
+			return other != null && Name == other.Name;
 		}
 		/// <summary>
 		/// Returns a hash code for this <see cref="Country" />.

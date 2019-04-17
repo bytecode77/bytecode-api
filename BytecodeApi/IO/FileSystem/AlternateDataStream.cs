@@ -3,7 +3,7 @@
 	/// <summary>
 	/// Represents an alternate data stream entry of a file or directory.
 	/// </summary>
-	public class AlternateDataStream
+	public sealed class AlternateDataStream
 	{
 		/// <summary>
 		/// Gets the name of the alternate data stream without the leading colon.

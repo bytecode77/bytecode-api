@@ -83,7 +83,7 @@ namespace BytecodeApi.GeoIP.City
 		/// </returns>
 		public bool Equals(City other)
 		{
-			return Name == other.Name && Subdivision1Name == other.Subdivision1Name && Subdivision2Name == other.Subdivision2Name && TimeZone == other.TimeZone;
+			return other != null && Name == other.Name && Subdivision1Name == other.Subdivision1Name && Subdivision2Name == other.Subdivision2Name && TimeZone == other.TimeZone;
 		}
 		/// <summary>
 		/// Returns a hash code for this <see cref="City" />.
@@ -93,7 +93,7 @@ namespace BytecodeApi.GeoIP.City
 		/// </returns>
 		public override int GetHashCode()
 		{
-			return Name.GetHashCode() ^ (Subdivision1Name?.GetHashCode() ?? 0) ^ (Subdivision2Name?.GetHashCode() ?? 0) ^ (TimeZone?.GetHashCode() ?? 0);
+			return (Country?.GetHashCode() ?? 0) ^ (Name?.GetHashCode() ?? 0) ^ (Subdivision1Name?.GetHashCode() ?? 0) ^ (Subdivision2Name?.GetHashCode() ?? 0) ^ (TimeZone?.GetHashCode() ?? 0);
 		}
 
 		/// <summary>
