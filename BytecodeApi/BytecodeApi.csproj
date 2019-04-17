@@ -58,6 +58,7 @@
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="CachedProperty.cs" />
+    <Compile Include="Comparers\DelegateComparer.cs" />
     <Compile Include="Comparers\SpecialStringComparer.cs" />
     <Compile Include="Extensions\IconExtensions.cs" />
     <Compile Include="Extensions\BitmapEncoderExtensions.cs" />
@@ -111,7 +112,6 @@
     <Compile Include="Threading\ThreadFactory.cs" />
     <Compile Include="Validate.cs" />
     <Compile Include="Comparers\AlwaysEqualComparer.cs" />
-    <Compile Include="Comparers\CustomComparer.cs" />
     <Compile Include="Comparers\IEnumerableCountComparer.cs" />
     <Compile Include="Comparers\StringLengthTrimmedComparer.cs" />
     <Compile Include="Comparers\StringLengthComparer.cs" />
