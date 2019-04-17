@@ -81,11 +81,12 @@ namespace BytecodeApi.IO
 		/// </returns>
 		public int Read(byte[] buffer, int index, int count)
 		{
-			AssertCanRead();
 			Check.ArgumentNull(buffer, nameof(buffer));
 			Check.ArgumentOutOfRangeEx.GreaterEqual0(index, nameof(index));
 			Check.ArgumentOutOfRangeEx.GreaterEqual0(count, nameof(count));
 			Check.ArgumentEx.OffsetAndLengthOutOfBounds(index, count, buffer.Length);
+
+			AssertCanRead();
 
 			int read = Reader.Read(buffer, index, count);
 			BytesRead += read;
@@ -102,11 +103,12 @@ namespace BytecodeApi.IO
 		/// </returns>
 		public int Read(char[] buffer, int index, int count)
 		{
-			AssertCanRead();
 			Check.ArgumentNull(buffer, nameof(buffer));
 			Check.ArgumentOutOfRangeEx.GreaterEqual0(index, nameof(index));
 			Check.ArgumentOutOfRangeEx.GreaterEqual0(count, nameof(count));
 			Check.ArgumentEx.OffsetAndLengthOutOfBounds(index, count, buffer.Length);
+
+			AssertCanRead();
 
 			int read = Reader.Read(buffer, index, count);
 			BytesRead += Encoding.GetByteCount(buffer, index, count);
@@ -318,8 +320,9 @@ namespace BytecodeApi.IO
 		/// </returns>
 		public byte[] ReadBytes(int count)
 		{
-			AssertCanRead();
 			Check.ArgumentOutOfRangeEx.GreaterEqual0(count, nameof(count));
+
+			AssertCanRead();
 
 			byte[] value = Reader.ReadBytes(count);
 			BytesRead += count;
@@ -334,8 +337,9 @@ namespace BytecodeApi.IO
 		/// </returns>
 		public char[] ReadChars(int count)
 		{
-			AssertCanRead();
 			Check.ArgumentOutOfRangeEx.GreaterEqual0(count, nameof(count));
+
+			AssertCanRead();
 
 			char[] value = Reader.ReadChars(count);
 			BytesRead += Encoding.GetByteCount(value);
@@ -364,11 +368,12 @@ namespace BytecodeApi.IO
 		/// <param name="count">The number of bytes to write.</param>
 		public void Write(byte[] buffer, int index, int count)
 		{
-			AssertCanWrite();
 			Check.ArgumentNull(buffer, nameof(buffer));
 			Check.ArgumentOutOfRangeEx.GreaterEqual0(index, nameof(index));
 			Check.ArgumentOutOfRangeEx.GreaterEqual0(count, nameof(count));
 			Check.ArgumentEx.OffsetAndLengthOutOfBounds(index, count, buffer.Length);
+
+			AssertCanWrite();
 
 			Writer.Write(buffer, index, count);
 			BytesWritten += count;
@@ -381,11 +386,12 @@ namespace BytecodeApi.IO
 		/// <param name="count">The number of characters to write.</param>
 		public void Write(char[] buffer, int index, int count)
 		{
-			AssertCanWrite();
 			Check.ArgumentNull(buffer, nameof(buffer));
 			Check.ArgumentOutOfRangeEx.GreaterEqual0(index, nameof(index));
 			Check.ArgumentOutOfRangeEx.GreaterEqual0(count, nameof(count));
 			Check.ArgumentEx.OffsetAndLengthOutOfBounds(index, count, buffer.Length);
+
+			AssertCanWrite();
 
 			Writer.Write(buffer, index, count);
 			BytesWritten += Encoding.GetByteCount(buffer, index, count);
@@ -550,8 +556,9 @@ namespace BytecodeApi.IO
 		/// <param name="buffer">The <see cref="byte" />[] containing the data to write.</param>
 		public void Write(byte[] buffer)
 		{
-			AssertCanWrite();
 			Check.ArgumentNull(buffer, nameof(buffer));
+
+			AssertCanWrite();
 
 			Writer.Write(buffer);
 			BytesWritten += buffer.Length;
@@ -562,8 +569,9 @@ namespace BytecodeApi.IO
 		/// <param name="chars">The <see cref="char" />[] containing the data to write.</param>
 		public void Write(char[] chars)
 		{
-			AssertCanWrite();
 			Check.ArgumentNull(chars, nameof(chars));
+
+			AssertCanWrite();
 
 			Writer.Write(chars);
 			BytesWritten += Encoding.GetByteCount(chars);

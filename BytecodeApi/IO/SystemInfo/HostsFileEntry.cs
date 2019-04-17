@@ -8,7 +8,7 @@ namespace BytecodeApi.IO.SystemInfo
 	/// <summary>
 	/// Represents a hosts file entry from the Windows hosts file in %SYSTEMROOT%\drivers\etc\hosts.
 	/// </summary>
-	public class HostsFileEntry
+	public sealed class HostsFileEntry
 	{
 		/// <summary>
 		/// Gets or sets the IP address of the hosts file entry.

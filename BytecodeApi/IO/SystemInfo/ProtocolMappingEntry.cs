@@ -10,7 +10,7 @@ namespace BytecodeApi.IO.SystemInfo
 	/// <summary>
 	/// Provides a snapshot from the services file in %systemroot%\drivers\etc\services.
 	/// </summary>
-	public class ProtocolMappingEntry
+	public sealed class ProtocolMappingEntry
 	{
 		private static readonly Regex ServicesFileRegex = new Regex(@"(.*) +([0-9]+)\/(tcp|udp)", RegexOptions.IgnoreCase);
 		/// <summary>

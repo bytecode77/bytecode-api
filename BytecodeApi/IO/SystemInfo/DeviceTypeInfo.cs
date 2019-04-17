@@ -7,7 +7,7 @@ namespace BytecodeApi.IO.SystemInfo
 	/// <summary>
 	/// Represents a device type, containing an array of <see cref="DeviceInfo" />, retrieved by <see cref="DeviceManager" />.
 	/// </summary>
-	public class DeviceTypeInfo
+	public sealed class DeviceTypeInfo
 	{
 		/// <summary>
 		/// Gets the class GUID of this device type.

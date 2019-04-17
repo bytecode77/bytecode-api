@@ -8,7 +8,7 @@ namespace BytecodeApi.Data
 	/// <summary>
 	/// Represents a tree node within a <see cref="BlobTree" />.
 	/// </summary>
-	public class BlobTreeNode
+	public sealed class BlobTreeNode
 	{
 		/// <summary>
 		/// Gets or sets the name of the <see cref="BlobTreeNode" />.

@@ -12,7 +12,7 @@ namespace BytecodeApi.IO.SystemInfo
 	/// <summary>
 	/// Provides information from the TCPView table for both TCP and UDP protocols in both IPv4 and IPv6.
 	/// </summary>
-	public class TcpViewEntry
+	public sealed class TcpViewEntry
 	{
 		private static ProtocolMappingEntry[] ProtocolMap;
 		/// <summary>

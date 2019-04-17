@@ -3,7 +3,7 @@ namespace BytecodeApi.FileFormats.Coff
 	/// <summary>
 	/// Represents a section of a PE image file, containing the header and a <see cref="byte" />[] representing the contents of the section.
 	/// </summary>
-	public class ImageSection
+	public sealed class ImageSection
 	{
 		/// <summary>
 		/// Gets or sets the section header.

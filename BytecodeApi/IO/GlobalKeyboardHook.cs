@@ -8,7 +8,7 @@ namespace BytecodeApi.IO
 	/// <summary>
 	/// Provides support for global keystrokes capturing.
 	/// </summary>
-	public class GlobalKeyboardHook : IDisposable
+	public sealed class GlobalKeyboardHook : IDisposable
 	{
 		private IntPtr User32Library;
 		private IntPtr Hook;
