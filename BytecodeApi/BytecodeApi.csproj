@@ -58,6 +58,7 @@
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="CachedProperty.cs" />
+    <Compile Include="Comparers\SpecialStringComparer.cs" />
     <Compile Include="Extensions\IconExtensions.cs" />
     <Compile Include="Extensions\BitmapEncoderExtensions.cs" />
     <Compile Include="IO\FileSystem\PathEx.cs" />
