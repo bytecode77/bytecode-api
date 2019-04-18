@@ -1,6 +1,5 @@
 ﻿using BytecodeApi.Extensions;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace BytecodeApi.Data
 {
@@ -97,7 +96,7 @@ namespace BytecodeApi.Data
 		/// </returns>
 		public long ComputeSize()
 		{
-			return Nodes.Sum(node => node.ComputeSize()) + Blobs.ComputeSize();
+			return Nodes.ComputeSize() + Blobs.ComputeSize();
 		}
 
 		/// <summary>

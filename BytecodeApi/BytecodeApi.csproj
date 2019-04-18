@@ -72,7 +72,7 @@
     <Compile Include="Extensions\ColorExtensions.cs" />
     <Compile Include="Internal\ExceptionMessages.cs" />
     <Compile Include="Internal\GeoIPHelper.cs" />
-    <Compile Include="IO\BlobArchive.cs" />
+    <Compile Include="IO\ZipCompression.cs" />
     <Compile Include="IO\FileSystem\AlternateDataStreamAttributes.cs" />
     <Compile Include="IO\FileSystem\AlternateDataStreamType.cs" />
     <Compile Include="IO\FileSystem\AlternateDataStreamInfo.cs" />

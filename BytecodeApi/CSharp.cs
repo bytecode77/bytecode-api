@@ -234,9 +234,9 @@ namespace BytecodeApi
 				action();
 				return true;
 			}
-			catch (Exception ex)
+			catch
 			{
-				return throws ? throw ex : false;
+				if (throws) throw; else return false;
 			}
 		}
 		/// <summary>
@@ -285,9 +285,9 @@ namespace BytecodeApi
 			{
 				return func();
 			}
-			catch (Exception ex)
+			catch
 			{
-				return throws ? throw ex : defaultValue;
+				if (throws) throw; else return defaultValue;
 			}
 		}
 		/// <summary>
@@ -300,7 +300,7 @@ namespace BytecodeApi
 			Retry(action, attempts, TimeSpan.Zero);
 		}
 		/// <summary>
-		/// Attempts to invoke an <see cref="Action" /> up to a defined number of times until <paramref name="action" /> successfully returned without throwing an exception. If <paramref name="action" /> throws an exception on the last time, the exception is rethrown. Between each call of <paramref name="action" /> that throws an exception, a delay of <paramref name="delay" /> is waited.
+		/// Attempts to invoke an <see cref="Action" /> up to a defined number of times until <paramref name="action" /> successfully returned without throwing an exception. If <paramref name="action" /> throws an exception on the last time, the exception is rethrown. Between each call of <paramref name="action" /> that throws an exception, a delay is waited.
 		/// </summary>
 		/// <param name="action">The <see cref="Action" /> to be invoked.</param>
 		/// <param name="attempts">A <see cref="int" /> value indicating how many times <paramref name="action" /> is attempted before the final exception is rethrown.</param>
@@ -339,7 +339,7 @@ namespace BytecodeApi
 			return Retry(func, attempts, TimeSpan.Zero);
 		}
 		/// <summary>
-		/// Attempts to invoke a <see cref="Func{TResult}" /> up to a defined number of times until <paramref name="func" /> successfully returns a value without throwing an exception. If <paramref name="func" /> throws an exception on the last time, the exception is rethrown. Between each call of <paramref name="func" /> that throws an exception, a delay of <paramref name="delay" /> is waited.
+		/// Attempts to invoke a <see cref="Func{TResult}" /> up to a defined number of times until <paramref name="func" /> successfully returns a value without throwing an exception. If <paramref name="func" /> throws an exception on the last time, the exception is rethrown. Between each call of <paramref name="func" /> that throws an exception, a delay is waited.
 		/// </summary>
 		/// <typeparam name="T">The return type of <paramref name="func" />.</typeparam>
 		/// <param name="func">The <see cref="Func{TResult}" /> to be invoked.</param>
@@ -368,7 +368,20 @@ namespace BytecodeApi
 			}
 		}
 		/// <summary>
-		/// Invokes a <see cref="Func{TResult}" /> until the result of <paramref name="func" /> is <see langword="true" /> or <paramref name="timeout" /> has been reached. Between each call of <paramref name="func" /> that returns <see langword="false" />, a delay of <paramref name="delay" /> is waited. If <paramref name="func" /> does not return <see langword="true" /> in this timeframe, <see langword="false" /> is returned, otherwuse <see langword="true" />.
+		/// Invokes a <see cref="Func{TResult}" /> until the result of <paramref name="func" /> is <see langword="true" /> or <paramref name="timeout" /> has been reached. If <paramref name="func" /> does not return <see langword="true" /> in this timeframe, <see langword="false" /> is returned, otherwise <see langword="true" />.
+		/// </summary>
+		/// <param name="func">The <see cref="Func{TResult}" /> to be tested.</param>
+		/// <param name="timeout">A <see cref="TimeSpan" /> value representing the total time for <paramref name="func" /> to be tested.</param>
+		/// <returns>
+		/// <see langword="true" />, if <paramref name="func" /> returned <see langword="true" /> in the specified <paramref name="timeout" />;
+		/// otherwise, <see langword="false" />.
+		/// </returns>
+		public static bool Timeout(Func<bool> func, TimeSpan timeout)
+		{
+			return Timeout(func, timeout, TimeSpan.Zero);
+		}
+		/// <summary>
+		/// Invokes a <see cref="Func{TResult}" /> until the result of <paramref name="func" /> is <see langword="true" /> or <paramref name="timeout" /> has been reached. If <paramref name="func" /> does not return <see langword="true" /> in this timeframe, <see langword="false" /> is returned, otherwise <see langword="true" />. Between each call of <paramref name="func" /> that returns <see langword="false" />, a delay is waited.
 		/// </summary>
 		/// <param name="func">The <see cref="Func{TResult}" /> to be tested.</param>
 		/// <param name="timeout">A <see cref="TimeSpan" /> value representing the total time for <paramref name="func" /> to be tested.</param>
