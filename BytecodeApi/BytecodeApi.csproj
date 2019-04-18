@@ -110,6 +110,7 @@
     <Compile Include="IO\SystemInfo\ProtocolMappingEntry.cs" />
     <Compile Include="IO\SystemInfo\TcpViewEntry.cs" />
     <Compile Include="Threading\ThreadFactory.cs" />
+    <Compile Include="ConvertObjectFlags.cs" />
     <Compile Include="Validate.cs" />
     <Compile Include="Comparers\AlwaysEqualComparer.cs" />
     <Compile Include="Comparers\IEnumerableCountComparer.cs" />

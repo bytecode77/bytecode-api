@@ -66,22 +66,13 @@ namespace BytecodeApi.IO
 						if ((isCapslock ^ isShift) && key.IsLetter()) key = key.ToUpper();
 
 						KeyPressEventArgs e = new KeyPressEventArgs(key);
-						OnKeyboardPressed(e);
+						KeyboardPressed?.Invoke(this, e);
 						handled |= e.Handled;
 					}
 				}
 			}
 
 			return handled ? (IntPtr)1 : Native.CallNextHookEx(IntPtr.Zero, code, wParam, lParam);
-		}
-
-		/// <summary>
-		/// Raises the <see cref="KeyboardPressed" /> event.
-		/// </summary>
-		/// <param name="e">The event data for the <see cref="KeyboardPressed" /> event.</param>
-		protected void OnKeyboardPressed(KeyPressEventArgs e)
-		{
-			KeyboardPressed?.Invoke(this, e);
 		}
 	}
 }

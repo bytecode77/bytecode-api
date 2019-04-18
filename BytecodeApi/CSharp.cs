@@ -2,9 +2,9 @@
 using BytecodeApi.Threading;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 
 namespace BytecodeApi
@@ -14,53 +14,6 @@ namespace BytecodeApi
 	/// </summary>
 	public static class CSharp
 	{
-		/// <summary>
-		/// Represents a <see cref="ReadOnlyDictionary{TKey, TValue}" /> with all C# built-in types. The key contains the class name of the type. The value contains the equivalent <see cref="Type" /> representation of the type.
-		/// <para>This <see cref="ReadOnlyDictionary{TKey, TValue}" /> contains following keys: Void, Boolean, Byte, SByte, Char, Decimal, Double, Single, Int32, UInt32, Int64, UInt64, Object, Int16, UInt16, String</para>
-		/// </summary>
-		public static readonly ReadOnlyDictionary<string, Type> BuiltInTypes = new Dictionary<string, Type>
-		{
-			["Void"] = typeof(void),
-			["Boolean"] = typeof(bool),
-			["Byte"] = typeof(byte),
-			["SByte"] = typeof(sbyte),
-			["Char"] = typeof(char),
-			["Decimal"] = typeof(decimal),
-			["Double"] = typeof(double),
-			["Single"] = typeof(float),
-			["Int32"] = typeof(int),
-			["UInt32"] = typeof(uint),
-			["Int64"] = typeof(long),
-			["UInt64"] = typeof(ulong),
-			["Object"] = typeof(object),
-			["Int16"] = typeof(short),
-			["UInt16"] = typeof(ushort),
-			["String"] = typeof(string)
-		}.ToReadOnlyDictionary();
-		/// <summary>
-		/// Represents a <see cref="ReadOnlyDictionary{TKey, TValue}" /> with all C# built-in types. The key contains the class name of the type. The value contains the equivalent <see cref="string" /> representation of the type name (e.g. "Int32" and "int").
-		/// <para>This <see cref="ReadOnlyDictionary{TKey, TValue}" /> contains following keys: Void, Boolean, Byte, SByte, Char, Decimal, Double, Single, Int32, UInt32, Int64, UInt64, Object, Int16, UInt16, String</para>
-		/// </summary>
-		public static readonly ReadOnlyDictionary<string, string> BuiltInTypeNames = new Dictionary<string, string>
-		{
-			["Void"] = "void",
-			["Boolean"] = "bool",
-			["Byte"] = "byte",
-			["SByte"] = "sbyte",
-			["Char"] = "char",
-			["Decimal"] = "decimal",
-			["Double"] = "double",
-			["Single"] = "float",
-			["Int32"] = "int",
-			["UInt32"] = "uint",
-			["Int64"] = "long",
-			["UInt64"] = "ulong",
-			["Object"] = "object",
-			["Int16"] = "short",
-			["UInt16"] = "ushort",
-			["String"] = "string"
-		}.ToReadOnlyDictionary();
-
 		/// <summary>
 		/// Returns the converted version of <paramref name="obj" />, if it is of the specified type; otherwise, returns <see langword="default" />(<typeparamref name="T" />).
 		/// </summary>
@@ -101,6 +54,153 @@ namespace BytecodeApi
 			finally
 			{
 				if (obj is IDisposable disposable) disposable.Dispose();
+			}
+		}
+		/// <summary>
+		/// Copies the contents of properties and fields of an <see cref="object" /> to another <see cref="object" /> of a different <see cref="Type" /> by comparing property and field names. A new instance of <typeparamref name="TDest" /> is created.
+		/// <para>Values are only copied, if the property or field is of equivalent type. This includes conversion between mixed <see cref="Nullable" /> values (e.g. <see cref="int" /> and <see cref="int" />?), and between <see cref="Enum" /> and numeric values. Differing types are attempted to convert (e.g. <see cref="int" /> and <see cref="long" />). If conversion fails, the default value of the destination type is used.</para>
+		/// </summary>
+		/// <typeparam name="TDest">The type of the <see cref="object" /> to copy the contents to.</typeparam>
+		/// <param name="obj">The <see cref="object" /> to copy the contents from.</param>
+		/// <returns>
+		/// The new instance of <typeparamref name="TDest" /> this method creates, with properties and fields copied from <paramref name="obj" />.
+		/// </returns>
+		public static TDest ConvertObject<TDest>(object obj) where TDest : class
+		{
+			return ConvertObject<TDest>(obj, ConvertObjectFlags.Default);
+		}
+		/// <summary>
+		/// Copies the contents of properties and fields of an <see cref="object" /> to another <see cref="object" /> of a different <see cref="Type" /> by comparing property and field names. A new instance of <typeparamref name="TDest" /> is created.
+		/// <para>Values are only copied, if the property or field is of equivalent type. This includes conversion between mixed <see cref="Nullable" /> values (e.g. <see cref="int" /> and <see cref="int" />?), and between <see cref="Enum" /> and numeric values. Differing types are attempted to convert (e.g. <see cref="int" /> and <see cref="long" />). If conversion fails, the default value of the destination type is used.</para>
+		/// </summary>
+		/// <typeparam name="TDest">The type of the <see cref="object" /> to copy the contents to.</typeparam>
+		/// <param name="obj">The <see cref="object" /> to copy the contents from.</param>
+		/// <param name="flags">The <see cref="ConvertObjectFlags" /> flags that specify comparison and copy behavior.</param>
+		/// <returns>
+		/// The new instance of <typeparamref name="TDest" /> this method creates, with properties and fields copied from <paramref name="obj" />.
+		/// </returns>
+		public static TDest ConvertObject<TDest>(object obj, ConvertObjectFlags flags) where TDest : class
+		{
+			Check.ArgumentNull(obj, nameof(obj));
+
+			TDest dest = Activator.CreateInstance<TDest>();
+			ConvertObject(obj, dest, flags);
+			return dest;
+		}
+		/// <summary>
+		/// Copies the contents of properties and fields of an <see cref="object" /> to another <see cref="object" /> of a different <see cref="Type" /> by comparing property and field names.
+		/// <para>Values are only copied, if the property or field is of equivalent type. This includes conversion between mixed <see cref="Nullable" /> values (e.g. <see cref="int" /> and <see cref="int" />?), and between <see cref="Enum" /> and numeric values. Differing types are attempted to convert (e.g. <see cref="int" /> and <see cref="long" />). If conversion fails, the default value of the destination type is used.</para>
+		/// </summary>
+		/// <typeparam name="TDest">The type of the <see cref="object" /> to copy the contents to.</typeparam>
+		/// <param name="obj">The <see cref="object" /> to copy the contents from.</param>
+		/// <param name="dest">The <see cref="object" /> to copy the contents to.</param>
+		public static void ConvertObject<TDest>(object obj, TDest dest) where TDest : class
+		{
+			ConvertObject(obj, dest, ConvertObjectFlags.Default);
+		}
+		/// <summary>
+		/// Copies the contents of properties and fields of an <see cref="object" /> to another <see cref="object" /> of a different <see cref="Type" /> by comparing property and field names.
+		/// <para>Values are only copied, if the property or field is of equivalent type. This includes conversion between mixed <see cref="Nullable" /> values (e.g. <see cref="int" /> and <see cref="int" />?), and between <see cref="Enum" /> and numeric values. Differing types are attempted to convert (e.g. <see cref="int" /> and <see cref="long" />). If conversion fails, the default value of the destination type is used.</para>
+		/// </summary>
+		/// <typeparam name="TDest">The type of the <see cref="object" /> to copy the contents to.</typeparam>
+		/// <param name="obj">The <see cref="object" /> to copy the contents from.</param>
+		/// <param name="dest">The <see cref="object" /> to copy the contents to.</param>
+		/// <param name="flags">The <see cref="ConvertObjectFlags" /> flags that specify comparison and copy behavior.</param>
+		public static void ConvertObject<TDest>(object obj, TDest dest, ConvertObjectFlags flags) where TDest : class
+		{
+			Check.ArgumentNull(obj, nameof(obj));
+			Check.ArgumentNull(dest, nameof(dest));
+
+			BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public;
+			if (flags.HasFlag(ConvertObjectFlags.IgnoreCase)) bindingFlags |= BindingFlags.IgnoreCase;
+			if (flags.HasFlag(ConvertObjectFlags.NonPublic)) bindingFlags |= BindingFlags.NonPublic;
+			if (flags.HasFlag(ConvertObjectFlags.Static)) bindingFlags |= BindingFlags.Static;
+
+			if (!flags.HasFlag(ConvertObjectFlags.IgnoreProperties))
+			{
+				foreach (PropertyInfo sourceProperty in obj.GetType().GetProperties(bindingFlags))
+				{
+					if (dest.GetType().GetProperty(sourceProperty.Name, bindingFlags) is PropertyInfo destProperty)
+					{
+						Process
+						(
+							sourceProperty.PropertyType,
+							destProperty.PropertyType,
+							() => sourceProperty.GetValue(obj),
+							value => destProperty.SetValue(dest, value)
+						);
+					}
+
+					if (flags.HasFlag(ConvertObjectFlags.PropertiesToFields) && dest.GetType().GetField(sourceProperty.Name, bindingFlags) is FieldInfo destField)
+					{
+						Process
+						(
+							sourceProperty.PropertyType,
+							destField.FieldType,
+							() => sourceProperty.GetValue(obj),
+							value => destField.SetValue(dest, value)
+						);
+					}
+				}
+			}
+
+			if (!flags.HasFlag(ConvertObjectFlags.IgnoreFields))
+			{
+				foreach (FieldInfo sourceField in obj.GetType().GetFields(bindingFlags))
+				{
+					if (dest.GetType().GetField(sourceField.Name, bindingFlags) is FieldInfo destField)
+					{
+						Process
+						(
+							sourceField.FieldType,
+							destField.FieldType,
+							() => sourceField.GetValue(obj),
+							value => destField.SetValue(dest, value)
+						);
+					}
+
+					if (flags.HasFlag(ConvertObjectFlags.FieldsToProperties) && dest.GetType().GetProperty(sourceField.Name, bindingFlags) is PropertyInfo destProperty)
+					{
+						Process
+						(
+							sourceField.FieldType,
+							destProperty.PropertyType,
+							() => sourceField.GetValue(obj),
+							value => destProperty.SetValue(dest, value)
+						);
+					}
+				}
+			}
+
+			void Process(Type sourceType, Type destType, Func<object> getValue, Action<object> setValue)
+			{
+				GetEffectiveType(ref sourceType);
+				GetEffectiveType(ref destType);
+				bool changed = false;
+
+				if (sourceType == destType)
+				{
+					setValue(getValue());
+					changed = true;
+				}
+				else
+				{
+					try
+					{
+						setValue(Convert.ChangeType(getValue(), destType));
+						changed = true;
+					}
+					catch
+					{
+					}
+				}
+
+				if (!changed) setValue(null);
+			}
+			void GetEffectiveType(ref Type type)
+			{
+				if (Nullable.GetUnderlyingType(type) is Type nullable) type = nullable;
+				if (type.IsEnum) type = type.GetEnumUnderlyingType();
 			}
 		}
 
