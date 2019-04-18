@@ -1,11 +1,11 @@
 ﻿using BytecodeApi.Data;
 using BytecodeApi.Extensions;
+using System;
 using System.IO;
 using System.IO.Compression;
 
 namespace BytecodeApi.IO
 {
-	//FEATURE: Decompress to BlobTree
 	/// <summary>
 	/// Class to create and decompress ZIP archive files from <see cref="Blob" /> objects.
 	/// </summary>
@@ -152,6 +152,82 @@ namespace BytecodeApi.IO
 					}
 				}
 			}
+		}
+		/// <summary>
+		/// Creates a <see cref="BlobTree" /> from the ZIP archive read from the specified file.
+		/// </summary>
+		/// <param name="path">A <see cref="string" /> representing the path to a ZIP file.</param>
+		/// <returns>
+		/// The <see cref="BlobTree" /> this method creates.
+		/// </returns>
+		public static BlobTree Decompress(string path)
+		{
+			Check.ArgumentNull(path, nameof(path));
+			Check.FileNotFound(path);
+
+			using (FileStream file = File.OpenRead(path))
+			{
+				return Decompress(file);
+			}
+		}
+		/// <summary>
+		/// Creates a <see cref="BlobTree" /> from the ZIP archive in the specified <see cref="byte" />[].
+		/// </summary>
+		/// <param name="file">A <see cref="byte" />[] that represents a ZIP archive.</param>
+		/// <returns>
+		/// The <see cref="BlobTree" /> this method creates.
+		/// </returns>
+		public static BlobTree Decompress(byte[] file)
+		{
+			Check.ArgumentNull(file, nameof(file));
+
+			using (MemoryStream memoryStream = new MemoryStream(file))
+			{
+				return Decompress(memoryStream);
+			}
+		}
+		/// <summary>
+		/// Creates a <see cref="BlobTree" /> from the ZIP archive read from the specified <see cref="Stream" />.
+		/// </summary>
+		/// <param name="stream">The <see cref="Stream" /> from which to read the ZIP archive from.</param>
+		/// <returns>
+		/// The <see cref="BlobTree" /> this method creates.
+		/// </returns>
+		public static BlobTree Decompress(Stream stream)
+		{
+			return Decompress(stream, false);
+		}
+		/// <summary>
+		/// Creates a <see cref="BlobTree" /> from the ZIP archive read from the specified <see cref="Stream" />.
+		/// </summary>
+		/// <param name="stream">The <see cref="Stream" /> from which to read the ZIP archive from.</param>
+		/// <param name="leaveOpen">A <see cref="bool" /> value indicating whether to leave <paramref name="stream" /> open.</param>
+		/// <returns>
+		/// The <see cref="BlobTree" /> this method creates.
+		/// </returns>
+		public static BlobTree Decompress(Stream stream, bool leaveOpen)
+		{
+			Check.ArgumentNull(stream, nameof(stream));
+
+			BlobTree tree = new BlobTree();
+
+			using (ZipArchive archive = new ZipArchive(stream, ZipArchiveMode.Read, leaveOpen))
+			{
+				foreach (ZipArchiveEntry entry in archive.Entries)
+				{
+					BlobTreeNode node = tree.Root;
+
+					foreach (string path in entry.FullName.TrimEndString(entry.Name, true, true).TrimEnd('\\').Split(new[] { '\\' }, StringSplitOptions.RemoveEmptyEntries))
+					{
+						if (!node.Nodes.HasNode(path, true)) node.Nodes.Add(new BlobTreeNode(path));
+						node = node.Nodes[path, true];
+					}
+
+					node.Blobs.Add(new Blob(entry.Name, entry.GetContent()));
+				}
+			}
+
+			return tree;
 		}
 	}
 }
