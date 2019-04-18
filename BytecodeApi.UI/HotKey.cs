@@ -10,8 +10,8 @@ namespace BytecodeApi.UI
 	/// </summary>
 	public class HotKey : IDisposable
 	{
-		private readonly IntPtr Handle;
 		private readonly int HotKeyId;
+		private IntPtr Handle;
 		/// <summary>
 		/// Get the key associated with this hotkey.
 		/// </summary>
@@ -26,56 +26,66 @@ namespace BytecodeApi.UI
 		public event EventHandler<HotKeyEventArgs> Pressed;
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="HotKey" /> class with the specified hotkey a window handle.
+		/// Initializes a new instance of the <see cref="HotKey" /> class with the specified key and modifier.
 		/// </summary>
 		/// <param name="key">The key associated with this hotkey.</param>
 		/// <param name="modifiers">The modifier keys associated with this hotkey.</param>
-		/// <param name="handle">A <see cref="IntPtr" /> representing window handle (HWND).</param>
-		public HotKey(Key key, ModifierKeys modifiers, IntPtr handle)
+		public HotKey(Key key, ModifierKeys modifiers)
 		{
 			Check.Argument(key != Key.None, nameof(modifiers), "Key not defined.");
 			Check.Argument(modifiers != ModifierKeys.None, nameof(modifiers), "Modifier keys not defined.");
-			Check.Argument(handle != IntPtr.Zero && handle != (IntPtr)(-1), nameof(handle), "Invalid handle.");
 
 			Key = key;
 			Modifiers = modifiers;
 			HotKeyId = GetHashCode();
-			Handle = handle;
-
-			if (!Native.RegisterHotKey(Handle, HotKeyId, Modifiers, (System.Windows.Forms.Keys)KeyInterop.VirtualKeyFromKey(Key))) throw Throw.Win32("Hotkey already in use.");
-			ComponentDispatcher.ThreadPreprocessMessage += ComponentDispatcher_ThreadPreprocessMessage;
 		}
 		/// <summary>
 		/// Releases all resources used by the current instance of the <see cref="HotKey" /> class.
 		/// </summary>
 		public void Dispose()
 		{
-			ComponentDispatcher.ThreadPreprocessMessage -= ComponentDispatcher_ThreadPreprocessMessage;
-			Native.UnregisterHotKey(Handle, HotKeyId);
+			if (Handle != IntPtr.Zero)
+			{
+				ComponentDispatcher.ThreadPreprocessMessage -= ComponentDispatcher_ThreadPreprocessMessage;
+				Native.UnregisterHotKey(Handle, HotKeyId);
+				Handle = IntPtr.Zero;
+			}
 		}
+
 		/// <summary>
-		/// Creates a <see cref="HotKey" /> from the specified hotkey and a <see cref="Window" />.
+		/// Registers a <see cref="Window" /> object that identifies as the main application window.
 		/// </summary>
-		/// <param name="key">The key associated with this hotkey.</param>
-		/// <param name="modifiers">The modifier keys associated with this hotkey.</param>
-		/// <param name="window">The <see cref="Window" /> object this hotkey is created for.</param>
-		/// <returns>
-		/// The <see cref="HotKey" /> this method creates.
-		/// </returns>
-		public static HotKey Create(Key key, ModifierKeys modifiers, Window window)
+		/// <param name="window">The <see cref="Window" /> object identifying as the main application window.</param>
+		public void RegisterWindow(Window window)
 		{
-			Check.Argument(key != Key.None, nameof(modifiers), "Key not defined.");
-			Check.Argument(modifiers != ModifierKeys.None, nameof(modifiers), "Modifier keys not defined.");
 			Check.ArgumentNull(window, nameof(window));
 
-			return new HotKey(key, modifiers, new WindowInteropHelper(window).EnsureHandle());
+			RegisterWindow(new WindowInteropHelper(window).EnsureHandle());
 		}
+		/// <summary>
+		/// Registers a window handle (HWND) that identifies as the main application window.
+		/// </summary>
+		/// <param name="handle">A <see cref="IntPtr" /> representing window handle (HWND).</param>
+		public void RegisterWindow(IntPtr handle)
+		{
+			Check.Argument(handle != IntPtr.Zero && handle != (IntPtr)(-1), nameof(handle), "Invalid handle.");
 
+			if (Handle == IntPtr.Zero)
+			{
+				Handle = handle;
+				if (!Native.RegisterHotKey(Handle, HotKeyId, Modifiers, (System.Windows.Forms.Keys)KeyInterop.VirtualKeyFromKey(Key))) throw Throw.Win32("Hotkey already in use.");
+				ComponentDispatcher.ThreadPreprocessMessage += ComponentDispatcher_ThreadPreprocessMessage;
+			}
+			else
+			{
+				throw Throw.InvalidOperation("Window was already registered.");
+			}
+		}
 		private void ComponentDispatcher_ThreadPreprocessMessage(ref MSG msg, ref bool handled)
 		{
 			if (!handled && msg.message == 0x312 && (int)msg.wParam == HotKeyId)
 			{
-				OnPressed();
+				OnPressed(new HotKeyEventArgs(Key, Modifiers));
 				handled = true;
 			}
 		}
@@ -83,9 +93,10 @@ namespace BytecodeApi.UI
 		/// <summary>
 		/// Raises the <see cref="Pressed" /> event.
 		/// </summary>
-		protected void OnPressed()
+		/// <param name="e">The event data for the <see cref="Pressed" /> event.</param>
+		protected void OnPressed(HotKeyEventArgs e)
 		{
-			Pressed?.Invoke(this, new HotKeyEventArgs(Key, Modifiers));
+			Pressed?.Invoke(this, e);
 		}
 	}
 }

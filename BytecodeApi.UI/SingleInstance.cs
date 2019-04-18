@@ -5,14 +5,15 @@ using System.Windows.Interop;
 
 namespace BytecodeApi.UI
 {
+	//IMPORTANT: Utilize HwndBroadclass class (double implementation)
 	/// <summary>
 	/// Class for managing single instance UI applications. A second instance can detect an already running instance and optionally trigger the first instance to be notified.
 	/// </summary>
 	public class SingleInstance : IDisposable
 	{
 		private readonly Mutex Mutex;
-		private readonly uint ActivationMessage;
-		private bool ActivationSent;
+		private readonly uint WindowMessage;
+		private int SendCount;
 		private HwndSource HwndSource;
 		/// <summary>
 		/// Occurs when <see cref="SendActivationMessage" /> is called by another running instance.
@@ -29,7 +30,7 @@ namespace BytecodeApi.UI
 			Check.ArgumentEx.StringNotEmpty(mutexName, nameof(mutexName));
 
 			Mutex = new Mutex(false, mutexName);
-			ActivationMessage = Native.RegisterWindowMessage("ACTIVATE_SINGLE_INSTANCE_" + mutexName);
+			WindowMessage = Native.RegisterWindowMessage("ACTIVATE_SINGLE_INSTANCE_" + mutexName);
 		}
 		/// <summary>
 		/// Releases all resources used by the current instance of the <see cref="SingleInstance" /> class.
@@ -41,20 +42,20 @@ namespace BytecodeApi.UI
 		}
 
 		/// <summary>
-		/// Registers a <see cref="Window" /> object that identifies as the main application window and creates a WndProc message pump.
+		/// Registers a <see cref="Window" /> object that identifies as the main application window.
 		/// </summary>
 		/// <param name="window">The <see cref="Window" /> object identifying as the main application window.</param>
-		public void RegisterMainWindow(Window window)
+		public void RegisterWindow(Window window)
 		{
 			Check.ArgumentNull(window, nameof(window));
 
-			RegisterMainWindow(new WindowInteropHelper(window).EnsureHandle());
+			RegisterWindow(new WindowInteropHelper(window).EnsureHandle());
 		}
 		/// <summary>
-		/// Registers a window handle (HWND) that identifies as the main application window and creates a WndProc message pump.
+		/// Registers a window handle (HWND) that identifies as the main application window.
 		/// </summary>
 		/// <param name="handle">A <see cref="IntPtr" /> representing window handle (HWND).</param>
-		public void RegisterMainWindow(IntPtr handle)
+		public void RegisterWindow(IntPtr handle)
 		{
 			Check.Argument(handle != IntPtr.Zero && handle != (IntPtr)(-1), nameof(handle), "Invalid handle.");
 
@@ -84,16 +85,17 @@ namespace BytecodeApi.UI
 		/// </summary>
 		public void SendActivationMessage()
 		{
-			ActivationSent = true;
-			Native.SendNotifyMessage((IntPtr)(-1), ActivationMessage, 0, 0);
+			SendCount++;
+			Native.SendNotifyMessage((IntPtr)(-1), WindowMessage, 0, 0);
 		}
 		private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
 		{
-			if (msg == ActivationMessage)
+			if (msg == WindowMessage && SendCount-- <= 0)
 			{
-				if (ActivationSent) ActivationSent = false;
-				else OnActivated(EventArgs.Empty);
+				SendCount = 0;
+				OnActivated(EventArgs.Empty);
 			}
+
 			return IntPtr.Zero;
 		}
 
