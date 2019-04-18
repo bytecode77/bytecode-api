@@ -89,6 +89,24 @@ namespace BytecodeApi.Data
 			return node;
 		}
 		/// <summary>
+		/// Creates a new one-dimensional <see cref="BlobCollection" /> containing all <see cref="Blob" /> objects including all child nodes recursively.
+		/// </summary>
+		/// <returns>
+		/// The <see cref="BlobCollection" /> this method creates.
+		/// </returns>
+		public BlobCollection Flatten()
+		{
+			BlobCollection blobs = new BlobCollection();
+			AddNode(this);
+			return blobs;
+
+			void AddNode(BlobTreeNode node)
+			{
+				foreach (BlobTreeNode childNode in node.Nodes) AddNode(childNode);
+				blobs.AddRange(node.Blobs);
+			}
+		}
+		/// <summary>
 		/// Computes the size, in bytes, of all <see cref="Blob" /> objects within this <see cref="BlobTreeNode" /> recursively.
 		/// </summary>
 		/// <returns>
