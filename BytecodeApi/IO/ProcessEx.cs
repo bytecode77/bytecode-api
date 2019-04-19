@@ -43,16 +43,16 @@ namespace BytecodeApi.IO
 				.ToArray();
 		}
 		/// <summary>
-		/// Creates a <see cref="Process" /> with the specified arguments and the specified <see cref="ProcessIntegrityLevel" />. If process creation fails, a <see cref="Win32Exception" /> is thrown. This is typically used to create processes with lower integrity.
+		/// Creates a <see cref="Process" /> with the specified commandline and the specified <see cref="ProcessIntegrityLevel" />. If process creation fails, a <see cref="Win32Exception" /> is thrown. This is typically used to create processes with lower integrity.
 		/// </summary>
-		/// <param name="arguments">A <see cref="string" /> specifying the arguments to create the <see cref="Process" /> with.</param>
+		/// <param name="commandLine">A <see cref="string" /> specifying the commandline to create the <see cref="Process" /> with.</param>
 		/// <param name="integrityLevel">The <see cref="ProcessIntegrityLevel" /> to create the <see cref="Process" /> with. This is usually lower than the <see cref="ProcessIntegrityLevel" /> of the current <see cref="Process" />.</param>
 		/// <returns>
 		/// The <see cref="Process" /> this method creates.
 		/// </returns>
-		public static Process StartWithIntegrity(string arguments, ProcessIntegrityLevel integrityLevel)
+		public static Process StartWithIntegrity(string commandLine, ProcessIntegrityLevel integrityLevel)
 		{
-			Check.ArgumentNull(arguments, nameof(arguments));
+			Check.ArgumentNull(commandLine, nameof(commandLine));
 
 			IntPtr token = IntPtr.Zero;
 			IntPtr newToken = IntPtr.Zero;
@@ -85,7 +85,7 @@ namespace BytecodeApi.IO
 							if (Native.SetTokenInformation(newToken, 25, tokenInfoPtr, tokenInfo + Native.GetLengthSid(integritySid)))
 							{
 								startupInfo.StructSize = Marshal.SizeOf(startupInfo);
-								if (Native.CreateProcessAsUser(newToken, null, arguments, IntPtr.Zero, IntPtr.Zero, false, 0, IntPtr.Zero, null, ref startupInfo, out processInformation))
+								if (Native.CreateProcessAsUser(newToken, null, commandLine, IntPtr.Zero, IntPtr.Zero, false, 0, IntPtr.Zero, null, ref startupInfo, out processInformation))
 								{
 									return Process.GetProcessById(processInformation.ProcessId);
 								}
@@ -147,29 +147,21 @@ namespace BytecodeApi.IO
 			else invoke();
 		}
 		/// <summary>
-		/// Detects one or multiple process analysers, such as sandboxes, virtual environments, or specific debuggers or profilers.
+		/// Detects process analysers, such as sandboxes, virtual environments, or specific debuggers or profilers.
 		/// </summary>
-		/// <param name="processAnalysers">The <see cref="ProcessAnalyser" /> to test.</param>
+		/// <param name="processAnalyser">The <see cref="ProcessAnalyser" /> to test.</param>
 		/// <returns>
 		/// <see langword="true" />, if the specified process analyser has been detected;
 		/// otherwise, <see langword="false" />.
 		/// </returns>
-		public static bool DetectProcessAnalyser(ProcessAnalyser processAnalysers)
+		public static bool DetectProcessAnalyser(ProcessAnalyser processAnalyser)
 		{
 			//FEATURE: Sandboxes, virtual machines, CheatEngine (https://www.aspfree.com/c/a/braindump/virtualization-and-sandbox-detection/)		
-			if (processAnalysers == ProcessAnalyser.Sandboxie)
+			if (processAnalyser == ProcessAnalyser.Sandboxie)
 			{
 				return Native.GetModuleHandle("SbieDll") != IntPtr.Zero;
 			}
-			else if (processAnalysers == ProcessAnalyser.Wireshark)
-			{
-				return Process.GetProcessesByName("Wireshark").Any() || Process.GetProcesses().Any(process => CSharp.Try(() => process?.MainWindowTitle).CompareTo("The Wireshark Network Analyzer", SpecialStringComparisons.NullAndEmptyEqual | SpecialStringComparisons.IgnoreCase) == 0);
-			}
-			else if (processAnalysers == ProcessAnalyser.ProcessMonitor)
-			{
-				return Process.GetProcesses().Any(process => CSharp.Try(() => process?.MainWindowTitle).Contains("Process Monitor -", SpecialStringComparisons.IgnoreCase));
-			}
-			else if (processAnalysers == ProcessAnalyser.Emulator)
+			else if (processAnalyser == ProcessAnalyser.Emulator)
 			{
 				int start = Environment.TickCount;
 				Stopwatch stopwatch = ThreadFactory.StartStopwatch();
@@ -177,9 +169,17 @@ namespace BytecodeApi.IO
 				int stop = Environment.TickCount;
 				return stop - start < 450 || stopwatch.Elapsed < TimeSpan.FromMilliseconds(450);
 			}
+			else if (processAnalyser == ProcessAnalyser.Wireshark)
+			{
+				return Process.GetProcessesByName("Wireshark").Any() || Process.GetProcesses().Any(process => CSharp.Try(() => process?.MainWindowTitle).CompareTo("The Wireshark Network Analyzer", SpecialStringComparisons.NullAndEmptyEqual | SpecialStringComparisons.IgnoreCase) == 0);
+			}
+			else if (processAnalyser == ProcessAnalyser.ProcessMonitor)
+			{
+				return Process.GetProcesses().Any(process => CSharp.Try(() => process?.MainWindowTitle).Contains("Process Monitor -", SpecialStringComparisons.IgnoreCase));
+			}
 			else
 			{
-				throw Throw.InvalidEnumArgument(nameof(processAnalysers));
+				throw Throw.InvalidEnumArgument(nameof(processAnalyser));
 			}
 		}
 		/// <summary>
