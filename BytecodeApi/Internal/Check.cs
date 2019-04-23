@@ -95,6 +95,11 @@ namespace BytecodeApi
 			{
 				if (parameter.Any(itm => itm == "")) throw new ArgumentException(ExceptionMessages.Argument.ArrayValuesNotStringEmpty, parameterName);
 			}
+			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			public static void Handle(IntPtr handle, string parameterName)
+			{
+				if (handle == IntPtr.Zero || handle == (IntPtr)(-1)) throw new ArgumentException(ExceptionMessages.Argument.InvalidHandle, parameterName);
+			}
 		}
 		[DebuggerStepThrough]
 		public static class ArgumentOutOfRangeEx

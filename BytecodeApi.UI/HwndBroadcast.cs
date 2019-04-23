@@ -26,7 +26,7 @@ namespace BytecodeApi.UI
 			Check.ArgumentNull(name, nameof(name));
 			Check.ArgumentEx.StringNotEmpty(name, nameof(name));
 
-			WindowMessage = Native.RegisterWindowMessage("SEND_HWND_BROADCAST_" + name);
+			WindowMessage = Native.RegisterWindowMessage("BAPI_HWND_BROADCAST_" + name);
 		}
 		/// <summary>
 		/// Releases all resources used by the current instance of the <see cref="HwndBroadcast" /> class.
@@ -52,7 +52,7 @@ namespace BytecodeApi.UI
 		/// <param name="handle">A <see cref="IntPtr" /> representing window handle (HWND).</param>
 		public void RegisterWindow(IntPtr handle)
 		{
-			Check.Argument(handle != IntPtr.Zero && handle != (IntPtr)(-1), nameof(handle), "Invalid handle.");
+			Check.ArgumentEx.Handle(handle, nameof(handle));
 
 			if (HwndSource == null)
 			{

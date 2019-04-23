@@ -68,7 +68,7 @@ namespace BytecodeApi.UI
 		/// <param name="handle">A <see cref="IntPtr" /> representing window handle (HWND).</param>
 		public void RegisterWindow(IntPtr handle)
 		{
-			Check.Argument(handle != IntPtr.Zero && handle != (IntPtr)(-1), nameof(handle), "Invalid handle.");
+			Check.ArgumentEx.Handle(handle, nameof(handle));
 
 			if (Handle == IntPtr.Zero)
 			{
