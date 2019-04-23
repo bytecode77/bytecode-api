@@ -171,7 +171,7 @@ namespace BytecodeApi.IO
 			}
 			else if (processAnalyser == ProcessAnalyser.Wireshark)
 			{
-				return Process.GetProcessesByName("Wireshark").Any() || Process.GetProcesses().Any(process => CSharp.Try(() => process?.MainWindowTitle).CompareTo("The Wireshark Network Analyzer", SpecialStringComparisons.NullAndEmptyEqual | SpecialStringComparisons.IgnoreCase) == 0);
+				return Process.GetProcessesByName("Wireshark").Any() || Process.GetProcesses().Any(process => CSharp.Try(() => process?.MainWindowTitle).Equals("The Wireshark Network Analyzer", SpecialStringComparisons.NullAndEmptyEqual | SpecialStringComparisons.IgnoreCase));
 			}
 			else if (processAnalyser == ProcessAnalyser.ProcessMonitor)
 			{

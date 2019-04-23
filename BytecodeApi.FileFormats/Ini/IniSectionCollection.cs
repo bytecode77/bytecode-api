@@ -40,7 +40,7 @@ namespace BytecodeApi.FileFormats.Ini
 			{
 				Check.ArgumentNull(name, nameof(name));
 				Check.KeyNotFoundException(HasSection(name, ignoreCase), "The section '" + name + "' was not found.");
-				return Sections.First(section => section.Name.CompareTo(name, ignoreCase ? SpecialStringComparisons.IgnoreCase : SpecialStringComparisons.Default) == 0);
+				return Sections.First(section => section.Name.Equals(name, ignoreCase ? SpecialStringComparisons.IgnoreCase : SpecialStringComparisons.Default));
 			}
 		}
 		/// <summary>
@@ -83,7 +83,7 @@ namespace BytecodeApi.FileFormats.Ini
 		/// </returns>
 		public bool HasSection(string name, bool ignoreCase)
 		{
-			return Sections.Any(section => section.Name.CompareTo(name, ignoreCase ? SpecialStringComparisons.IgnoreCase : SpecialStringComparisons.Default) == 0);
+			return Sections.Any(section => section.Name.Equals(name, ignoreCase ? SpecialStringComparisons.IgnoreCase : SpecialStringComparisons.Default));
 		}
 		/// <summary>
 		/// Processes all duplicate sections within this collection according to the specified behavior.
@@ -113,7 +113,7 @@ namespace BytecodeApi.FileFormats.Ini
 				case IniDuplicateSectionNameBehavior.Ignore:
 					for (int i = 1; i < Count; i++)
 					{
-						if (Sections.Take(i).Any(section => section.Name.CompareTo(Sections[i].Name, ignoreCase ? SpecialStringComparisons.IgnoreCase : SpecialStringComparisons.Default) == 0))
+						if (Sections.Take(i).Any(section => section.Name.Equals(Sections[i].Name, ignoreCase ? SpecialStringComparisons.IgnoreCase : SpecialStringComparisons.Default)))
 						{
 							removedSections.Add(Sections[i]);
 						}
@@ -122,7 +122,7 @@ namespace BytecodeApi.FileFormats.Ini
 				case IniDuplicateSectionNameBehavior.Merge:
 					for (int i = 1; i < Count; i++)
 					{
-						IniSection firstSection = Sections.Take(i).FirstOrDefault(section => section.Name.CompareTo(Sections[i].Name, ignoreCase ? SpecialStringComparisons.IgnoreCase : SpecialStringComparisons.Default) == 0);
+						IniSection firstSection = Sections.Take(i).FirstOrDefault(section => section.Name.Equals(Sections[i].Name, ignoreCase ? SpecialStringComparisons.IgnoreCase : SpecialStringComparisons.Default));
 						if (firstSection != null)
 						{
 							firstSection.Properties.AddRange(Sections[i].Properties);

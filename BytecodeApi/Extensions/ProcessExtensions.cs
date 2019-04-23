@@ -234,7 +234,7 @@ namespace BytecodeApi.Extensions
 			Check.ArgumentNull(dllPath, nameof(dllPath));
 			Check.FileNotFound(dllPath);
 
-			if (CSharp.Try(() => process.Modules.Cast<ProcessModule>().Any(module => module.FileName.CompareTo(dllPath, SpecialStringComparisons.IgnoreCase) == 0)))
+			if (CSharp.Try(() => process.Modules.Cast<ProcessModule>().Any(module => module.FileName.Equals(dllPath, SpecialStringComparisons.IgnoreCase))))
 			{
 				return ProcessLoadLibraryResult.AlreadyLoaded;
 			}
