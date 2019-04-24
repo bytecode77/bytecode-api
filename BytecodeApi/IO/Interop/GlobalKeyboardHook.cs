@@ -3,7 +3,7 @@ using System;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
-namespace BytecodeApi.IO
+namespace BytecodeApi.IO.Interop
 {
 	/// <summary>
 	/// Provides support for global keystrokes capturing.

@@ -223,18 +223,18 @@ namespace BytecodeApi.Extensions
 		/// Injects a DLL into this <see cref="Process" /> using the WriteProcessMemory / CreateRemoteThread technique. If <see cref="ProcessLoadLibraryResult.Success" /> is returned, the DLL has been successfully loaded by this <see cref="Process" />.
 		/// </summary>
 		/// <param name="process">The <see cref="Process" /> to be injected.</param>
-		/// <param name="dllPath">A <see cref="string" /> specifying the path of the DLL file to inject into this <see cref="Process" />.</param>
+		/// <param name="dllName">A <see cref="string" /> specifying the path of the DLL file to inject into this <see cref="Process" />.</param>
 		/// <returns>
 		/// <see cref="ProcessLoadLibraryResult.Success" />, if DLL injection succeeded;
 		/// otherwise, a <see cref="ProcessLoadLibraryResult" /> value that indicates the error reason.
 		/// </returns>
-		public static ProcessLoadLibraryResult LoadLibrary(this Process process, string dllPath)
+		public static ProcessLoadLibraryResult LoadLibrary(this Process process, string dllName)
 		{
 			Check.ArgumentNull(process, nameof(process));
-			Check.ArgumentNull(dllPath, nameof(dllPath));
-			Check.FileNotFound(dllPath);
+			Check.ArgumentNull(dllName, nameof(dllName));
+			Check.FileNotFound(dllName);
 
-			if (CSharp.Try(() => process.Modules.Cast<ProcessModule>().Any(module => module.FileName.Equals(dllPath, SpecialStringComparisons.IgnoreCase))))
+			if (CSharp.Try(() => process.Modules.Cast<ProcessModule>().Any(module => module.FileName.Equals(dllName, SpecialStringComparisons.IgnoreCase))))
 			{
 				return ProcessLoadLibraryResult.AlreadyLoaded;
 			}
@@ -243,9 +243,9 @@ namespace BytecodeApi.Extensions
 				IntPtr processHandle = Native.OpenProcess(1082, false, process.Id);
 				if (processHandle == IntPtr.Zero) return ProcessLoadLibraryResult.OpenProcessFailed;
 				IntPtr loadLibraryAddress = Native.GetProcAddress(Native.GetModuleHandle("kernel32.dll"), "LoadLibraryW");
-				IntPtr allocatedMemoryAddress = Native.VirtualAllocEx(processHandle, IntPtr.Zero, (uint)dllPath.Length * 2 + 1, 0x3000, 4);
+				IntPtr allocatedMemoryAddress = Native.VirtualAllocEx(processHandle, IntPtr.Zero, (uint)dllName.Length * 2 + 1, 0x3000, 4);
 				if (allocatedMemoryAddress == IntPtr.Zero) return ProcessLoadLibraryResult.VirtualAllocFailed;
-				if (!Native.WriteProcessMemory(processHandle, allocatedMemoryAddress, dllPath.ToUnicodeBytes(), (uint)dllPath.Length * 2 + 1, out _)) return ProcessLoadLibraryResult.WriteProcessMemoryFailed;
+				if (!Native.WriteProcessMemory(processHandle, allocatedMemoryAddress, dllName.ToUnicodeBytes(), (uint)dllName.Length * 2 + 1, out _)) return ProcessLoadLibraryResult.WriteProcessMemoryFailed;
 				return Native.CreateRemoteThread(processHandle, IntPtr.Zero, 0, loadLibraryAddress, allocatedMemoryAddress, 0, IntPtr.Zero) == IntPtr.Zero ? ProcessLoadLibraryResult.CreateRemoteThreadFailed : ProcessLoadLibraryResult.Success;
 			}
 		}

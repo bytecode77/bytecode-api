@@ -63,6 +63,8 @@
     <Compile Include="Extensions\Collections\BitArrayExtensions.cs" />
     <Compile Include="Extensions\IconExtensions.cs" />
     <Compile Include="Extensions\BitmapEncoderExtensions.cs" />
+    <Compile Include="IO\Interop\DynamicLibraryFunction.cs" />
+    <Compile Include="IO\Interop\DynamicLibrary.cs" />
     <Compile Include="IO\FileSystem\PathEx.cs" />
     <Compile Include="SingletonBucketBase.cs" />
     <Compile Include="EnumEx.cs" />
@@ -167,9 +169,9 @@
     <Compile Include="Extensions\WebRequestExtensions.cs" />
     <Compile Include="Extensions\XmlExtensions.cs" />
     <Compile Include="IO\SystemInfo\FileExtensionInfo.cs" />
-    <Compile Include="IO\GlobalKeyboardHook.cs" />
+    <Compile Include="IO\Interop\GlobalKeyboardHook.cs" />
     <Compile Include="Internal\Native.cs" />
-    <Compile Include="IO\OutlookDataObject.cs" />
+    <Compile Include="IO\Interop\OutlookDataObject.cs" />
     <Compile Include="Data\Blob.cs" />
     <Compile Include="IO\Http\HttpClient.cs" />
     <Compile Include="IO\Http\PostValue.cs" />
