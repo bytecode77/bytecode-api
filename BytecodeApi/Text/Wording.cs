@@ -206,7 +206,7 @@ namespace BytecodeApi.Text
 		/// Wraps the specified text by splitting it up by whitespace characters and wrapping it by a specified maximum column width. This is typically used for console windows or in conjunction with monospace fonts.
 		/// </summary>
 		/// <param name="text">A <see cref="string" /> specifying the text to wrap.</param>
-		/// <param name="width">A <see cref="int" /> specifying the maximum number of characters per line.</param>
+		/// <param name="width">A <see cref="int" /> value specifying the maximum number of characters per line.</param>
 		/// <param name="overflow"><see langword="true" /> to allow words that are longer than <paramref name="width" /> to overflow; <see langword="false" /> to split up long words.</param>
 		/// <returns>
 		/// A multiline <see cref="string" /> with the wrapped text. Each line does not exceed an amount of characters equal to <paramref name="width" />, unless <paramref name="overflow" /> is set t <see langword="true" />.

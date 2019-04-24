@@ -114,7 +114,7 @@ namespace BytecodeApi
 		/// <returns>
 		/// <see langword="null" />, if the process is already elevated;
 		/// <see langword="false" />, if elevation failed;
-		/// <see langword="true" /> if the restart was successful.
+		/// <see langword="true" />, if the restart was successful.
 		/// </returns>
 		public static bool? RestartElevated(string commandLine, Action shutdownCallback)
 		{

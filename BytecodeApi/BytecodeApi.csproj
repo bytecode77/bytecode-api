@@ -66,6 +66,7 @@
     <Compile Include="IO\Interop\DynamicLibraryFunction.cs" />
     <Compile Include="IO\Interop\DynamicLibrary.cs" />
     <Compile Include="IO\FileSystem\PathEx.cs" />
+    <Compile Include="Mathematics\ByteSize.cs" />
     <Compile Include="SingletonBucketBase.cs" />
     <Compile Include="EnumEx.cs" />
     <Compile Include="Data\BlobTree.cs" />

@@ -17,7 +17,7 @@ namespace BytecodeApi.IO.Http
 		public string Value { get; set; }
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="PostValue" /> struct with the specified key and value.
+		/// Initializes a new instance of the <see cref="PostValue" /> structure with the specified key and value.
 		/// </summary>
 		/// <param name="key">A <see cref="string" /> specifying the key of the HTTP POST value.</param>
 		/// <param name="value">A <see cref="string" /> specifying the value of the HTTP POST value.</param>

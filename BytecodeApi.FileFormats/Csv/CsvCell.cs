@@ -30,7 +30,7 @@ namespace BytecodeApi.FileFormats.Csv
 		}
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="CsvCell" /> struct with the specified value.
+		/// Initializes a new instance of the <see cref="CsvCell" /> structure with the specified value.
 		/// </summary>
 		/// <param name="value">The <see cref="string" /> value of this cell.</param>
 		public CsvCell(string value)

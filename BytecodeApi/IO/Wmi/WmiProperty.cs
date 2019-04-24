@@ -17,7 +17,7 @@ namespace BytecodeApi.IO.Wmi
 		public object Value { get; private set; }
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="WmiProperty" /> struct with the specified name and value.
+		/// Initializes a new instance of the <see cref="WmiProperty" /> structure with the specified name and value.
 		/// </summary>
 		/// <param name="name">The name of the <see cref="WmiProperty" />.</param>
 		/// <param name="value">The value of the <see cref="WmiProperty" />.</param>

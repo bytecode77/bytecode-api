@@ -368,7 +368,7 @@ namespace BytecodeApi
 			}
 		}
 		/// <summary>
-		/// Invokes a <see cref="Func{TResult}" /> until the result of <paramref name="func" /> is <see langword="true" /> or <paramref name="timeout" /> has been reached. If <paramref name="func" /> does not return <see langword="true" /> in this timeframe, <see langword="false" /> is returned, otherwise <see langword="true" />.
+		/// Invokes a <see cref="Func{TResult}" /> until the result of <paramref name="func" /> is <see langword="true" /> or <paramref name="timeout" /> has been reached. If <paramref name="func" /> does not return <see langword="true" /> in this timeframe, <see langword="false" /> is returned, otherwise, <see langword="true" />.
 		/// </summary>
 		/// <param name="func">The <see cref="Func{TResult}" /> to be tested.</param>
 		/// <param name="timeout">A <see cref="TimeSpan" /> value representing the total time for <paramref name="func" /> to be tested.</param>
@@ -381,7 +381,7 @@ namespace BytecodeApi
 			return Timeout(func, timeout, TimeSpan.Zero);
 		}
 		/// <summary>
-		/// Invokes a <see cref="Func{TResult}" /> until the result of <paramref name="func" /> is <see langword="true" /> or <paramref name="timeout" /> has been reached. If <paramref name="func" /> does not return <see langword="true" /> in this timeframe, <see langword="false" /> is returned, otherwise <see langword="true" />. Between each call of <paramref name="func" /> that returns <see langword="false" />, a delay is waited.
+		/// Invokes a <see cref="Func{TResult}" /> until the result of <paramref name="func" /> is <see langword="true" /> or <paramref name="timeout" /> has been reached. If <paramref name="func" /> does not return <see langword="true" /> in this timeframe, <see langword="false" /> is returned, otherwise, <see langword="true" />. Between each call of <paramref name="func" /> that returns <see langword="false" />, a delay is waited.
 		/// </summary>
 		/// <param name="func">The <see cref="Func{TResult}" /> to be tested.</param>
 		/// <param name="timeout">A <see cref="TimeSpan" /> value representing the total time for <paramref name="func" /> to be tested.</param>
