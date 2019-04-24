@@ -60,6 +60,7 @@
     <Compile Include="CachedProperty.cs" />
     <Compile Include="Comparers\DelegateComparer.cs" />
     <Compile Include="Comparers\SpecialStringComparer.cs" />
+    <Compile Include="Extensions\Collections\BitArrayExtensions.cs" />
     <Compile Include="Extensions\IconExtensions.cs" />
     <Compile Include="Extensions\BitmapEncoderExtensions.cs" />
     <Compile Include="IO\FileSystem\PathEx.cs" />

@@ -13,6 +13,7 @@ namespace BytecodeApi.Mathematics
 	public static class MathEx
 	{
 		internal static readonly Random _Random = new Random();
+		internal static readonly RandomNumberGenerator _RandomNumberGenerator = RandomNumberGenerator.Create();
 		/// <summary>
 		/// Represents a singleton <see cref="System.Random" /> object. This field is read-only.
 		/// </summary>
@@ -223,6 +224,19 @@ namespace BytecodeApi.Mathematics
 				throw Throw.InvalidEnumArgument(nameof(sourceType));
 			}
 		}
+
+		/// <summary>
+		/// Returns an integer that indicates the sign of a <see cref="TimeSpan" /> value.
+		/// </summary>
+		/// <param name="value"><see cref="TimeSpan" /> value.</param>
+		/// <returns>
+		/// A number that indicates the sign of <paramref name="value" />.
+		/// If <paramref name="value" /> is less than zero, -1 is returned; If <paramref name="value" /> is greater zero, 1 is returned; otherwise, 0 is returned.
+		/// </returns>
+		public static int Sign(TimeSpan value)
+		{
+			return Math.Sign(value.Ticks);
+		}
 		/// <summary>
 		/// Returns the smaller of two <see cref="DateTime" /> objects.
 		/// </summary>
@@ -301,6 +315,7 @@ namespace BytecodeApi.Mathematics
 			else if (b == null) return a;
 			else return a.CompareTo(b) > 0 ? a : b;
 		}
+
 		/// <summary>
 		/// Returns a <see cref="byte" /> value that represents <paramref name="value" /> and is limited by the specified inclusive boundaries. The result is greater than or equal to <paramref name="min" /> and less than or equal to <paramref name="max" />.
 		/// </summary>
@@ -654,6 +669,7 @@ namespace BytecodeApi.Mathematics
 			int result = returnMin + (value - valueMin) * (returnMax - returnMin) / (valueMax - valueMin);
 			return mapToValueRange ? Map(result, valueMin, valueMax) : result;
 		}
+
 		/// <summary>
 		/// Computes the greatest common divisor of two <see cref="int" /> values.
 		/// </summary>
@@ -779,49 +795,6 @@ namespace BytecodeApi.Mathematics
 			return values.Aggregate(LeastCommonMultiple);
 		}
 		/// <summary>
-		/// Computes the Fibonacci value at position <paramref name="n" />.
-		/// </summary>
-		/// <param name="n">A <see cref="int" /> value specifying the position of the Fibonacci value.</param>
-		/// <returns>
-		/// The Fibonacci value at position <paramref name="n" />.
-		/// </returns>
-		public static long Fibonacci(int n)
-		{
-			Check.ArgumentOutOfRangeEx.GreaterEqual0(n, nameof(n));
-
-			long a = 0;
-			long b = 1;
-			for (int i = 0; i < n; i++)
-			{
-				long swap = a;
-				a = b;
-				b = swap + b;
-			}
-			return a;
-		}
-		/// <summary>
-		/// Returns an enumerable of Fibonacci values that yields <paramref name="n" /> elements.
-		/// </summary>
-		/// <param name="n">A <see cref="int" /> value specifying the number of Fibonacci values to compute.</param>
-		/// <returns>
-		/// An enumerable of Fibonacci values that yields <paramref name="n" /> elements.
-		/// </returns>
-		public static IEnumerable<long> EnumerateFibonacci(int n)
-		{
-			Check.ArgumentOutOfRangeEx.GreaterEqual0(n, nameof(n));
-
-			long a = 0;
-			long b = 1;
-
-			for (int i = 0; i < n; i++)
-			{
-				yield return a;
-				long swap = a;
-				a = b;
-				b = swap + b;
-			}
-		}
-		/// <summary>
 		/// Determines whether <paramref name="n" /> is a prime number.
 		/// </summary>
 		/// <param name="n">A <see cref="int" /> value specifying the number to test.</param>
@@ -936,6 +909,49 @@ namespace BytecodeApi.Mathematics
 			}
 
 			return result.ToArray();
+		}
+		/// <summary>
+		/// Computes the Fibonacci value at position <paramref name="n" />.
+		/// </summary>
+		/// <param name="n">A <see cref="int" /> value specifying the position of the Fibonacci value.</param>
+		/// <returns>
+		/// The Fibonacci value at position <paramref name="n" />.
+		/// </returns>
+		public static long Fibonacci(int n)
+		{
+			Check.ArgumentOutOfRangeEx.GreaterEqual0(n, nameof(n));
+
+			long a = 0;
+			long b = 1;
+			for (int i = 0; i < n; i++)
+			{
+				long swap = a;
+				a = b;
+				b = swap + b;
+			}
+			return a;
+		}
+		/// <summary>
+		/// Returns an enumerable of Fibonacci values that yields <paramref name="n" /> elements.
+		/// </summary>
+		/// <param name="n">A <see cref="int" /> value specifying the number of Fibonacci values to compute.</param>
+		/// <returns>
+		/// An enumerable of Fibonacci values that yields <paramref name="n" /> elements.
+		/// </returns>
+		public static IEnumerable<long> EnumerateFibonacci(int n)
+		{
+			Check.ArgumentOutOfRangeEx.GreaterEqual0(n, nameof(n));
+
+			long a = 0;
+			long b = 1;
+
+			for (int i = 0; i < n; i++)
+			{
+				yield return a;
+				long swap = a;
+				a = b;
+				b = swap + b;
+			}
 		}
 	}
 }

@@ -10,6 +10,98 @@ namespace BytecodeApi.Extensions
 	public static class ByteArrayExtensions
 	{
 		/// <summary>
+		/// Compares the content of this <see cref="byte" />[] agains another <see cref="byte" />[]. Returns <see langword="true" />, if both arrays contain the exact same set of data. If <paramref name="array" /> and <paramref name="otherArray" /> are both <see langword="null" />, <see langword="true" /> is returned.
+		/// </summary>
+		/// <param name="array">A <see cref="byte" />[] to compare to <paramref name="otherArray" />.</param>
+		/// <param name="otherArray">A <see cref="byte" />[] to compare to <paramref name="array" />.</param>
+		/// <returns>
+		/// <see langword="true" />, if both arrays contain the exact same set of data or if <paramref name="array" /> and <paramref name="otherArray" /> are both <see langword="null" />;
+		/// otherwise <see langword="false" />.
+		/// </returns>
+		public static bool Compare(this byte[] array, byte[] otherArray)
+		{
+			if (array == otherArray)
+			{
+				return true;
+			}
+			else if (array?.Length == otherArray?.Length)
+			{
+				for (int i = 0; i < array.Length; i++)
+				{
+					if (array[i] != otherArray[i]) return false;
+				}
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		/// <summary>
+		/// Copies a specified number of bytes from this <see cref="byte" />[] and returns a new array representing a fraction of the original <see cref="byte" />[].
+		/// </summary>
+		/// <param name="array">The <see cref="byte" />[] to take the subset of bytes from.</param>
+		/// <param name="index">A <see cref="int" /> value specifying the offset from which to start copying bytes.</param>
+		/// <param name="count">A <see cref="int" /> value specifying the number of bytes to copy.</param>
+		/// <returns>
+		/// A new <see cref="byte" />[] representing a fraction of the original <see cref="byte" />[].
+		/// </returns>
+		public static byte[] GetBytes(this byte[] array, int index, int count)
+		{
+			Check.ArgumentNull(array, nameof(array));
+			Check.ArgumentOutOfRangeEx.GreaterEqual0(index, nameof(index));
+			Check.ArgumentOutOfRangeEx.GreaterEqual0(count, nameof(count));
+			Check.ArgumentEx.OffsetAndLengthOutOfBounds(index, count, array.Length);
+
+			byte[] result = new byte[count];
+			Buffer.BlockCopy(array, index, result, 0, count);
+			return result;
+		}
+		/// <summary>
+		/// Searches this <see cref="byte" />[] for the first occurrence of <paramref name="sequence" />. If not found, returns -1.
+		/// </summary>
+		/// <param name="array">The <see cref="byte" />[] to be searched.</param>
+		/// <param name="sequence">The <see cref="byte" />[] to search for.</param>
+		/// <returns>
+		/// The index of the first occurrence of <paramref name="sequence" /> and -1, if not found.
+		/// </returns>
+		public static int FindSequence(this byte[] array, byte[] sequence)
+		{
+			return array.FindSequence(sequence, 0);
+		}
+		/// <summary>
+		/// Searches this <see cref="byte" />[] for the first occurrence of <paramref name="sequence" /> starting from <paramref name="startIndex" />. If not found, returns -1.
+		/// </summary>
+		/// <param name="array">The <see cref="byte" />[] to be searched.</param>
+		/// <param name="sequence">The <see cref="byte" />[] to search for.</param>
+		/// <param name="startIndex">The zero-based starting position to start searching from.</param>
+		/// <returns>
+		/// The index of the first occurrence of <paramref name="sequence" /> and -1, if not found.
+		/// </returns>
+		public static int FindSequence(this byte[] array, byte[] sequence, int startIndex)
+		{
+			Check.ArgumentNull(array, nameof(array));
+			Check.ArgumentNull(sequence, nameof(sequence));
+			Check.ArgumentEx.ArrayElementsRequired(sequence, nameof(sequence));
+			Check.ArgumentEx.OffsetAndLengthOutOfBounds(startIndex, 0, array.Length);
+
+			for (int i = startIndex; i < array.Length - sequence.Length + 1; i++)
+			{
+				bool found = true;
+				for (int j = 0; j < sequence.Length; j++)
+				{
+					if (array[i + j] != sequence[j])
+					{
+						found = false;
+						break;
+					}
+				}
+				if (found) return i;
+			}
+
+			return -1;
+		}
+		/// <summary>
 		/// Decodes all the bytes in this <see cref="byte" />[] into a <see cref="string" /> using the <see cref="Encoding.Default" /> encoding.
 		/// </summary>
 		/// <param name="array">The <see cref="byte" />[] containing the sequence of bytes to decode.</param>
@@ -98,98 +190,6 @@ namespace BytecodeApi.Extensions
 			}
 
 			return result;
-		}
-		/// <summary>
-		/// Copies a specified number of bytes from this <see cref="byte" />[] and returns a new array representing a fraction of the original <see cref="byte" />[].
-		/// </summary>
-		/// <param name="array">The <see cref="byte" />[] to take the subset of bytes from.</param>
-		/// <param name="offset">A <see cref="int" /> value specifying the offset from which to start copying bytes.</param>
-		/// <param name="count">A <see cref="int" /> value specifying the number of bytes to copy.</param>
-		/// <returns>
-		/// A new <see cref="byte" />[] representing a fraction of the original <see cref="byte" />[].
-		/// </returns>
-		public static byte[] GetBytes(this byte[] array, int offset, int count)
-		{
-			Check.ArgumentNull(array, nameof(array));
-			Check.ArgumentOutOfRangeEx.GreaterEqual0(offset, nameof(offset));
-			Check.ArgumentOutOfRangeEx.GreaterEqual0(count, nameof(count));
-			Check.ArgumentEx.OffsetAndLengthOutOfBounds(offset, count, array.Length);
-
-			byte[] result = new byte[count];
-			Buffer.BlockCopy(array, offset, result, 0, count);
-			return result;
-		}
-		/// <summary>
-		/// Compares the content of this <see cref="byte" />[] agains another <see cref="byte" />[]. Returns <see langword="true" />, if both arrays contain the exact same set of data. If <paramref name="array" /> and <paramref name="otherArray" /> are both <see langword="null" />, <see langword="true" /> is returned.
-		/// </summary>
-		/// <param name="array">A <see cref="byte" />[] to compare to <paramref name="otherArray" />.</param>
-		/// <param name="otherArray">A <see cref="byte" />[] to compare to <paramref name="array" />.</param>
-		/// <returns>
-		/// <see langword="true" />, if both arrays contain the exact same set of data or if <paramref name="array" /> and <paramref name="otherArray" /> are both <see langword="null" />;
-		/// otherwise <see langword="false" />.
-		/// </returns>
-		public static bool Compare(this byte[] array, byte[] otherArray)
-		{
-			if (array == otherArray)
-			{
-				return true;
-			}
-			else if (array?.Length == otherArray?.Length)
-			{
-				for (int i = 0; i < array.Length; i++)
-				{
-					if (array[i] != otherArray[i]) return false;
-				}
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-		}
-		/// <summary>
-		/// Searches this <see cref="byte" />[] for the first occurrence of <paramref name="sequence" />. If not found, returns -1.
-		/// </summary>
-		/// <param name="array">The <see cref="byte" />[] to be searched.</param>
-		/// <param name="sequence">The <see cref="byte" />[] to search for.</param>
-		/// <returns>
-		/// The index of the first occurrence of <paramref name="sequence" /> and -1, if not found.
-		/// </returns>
-		public static int FindSequence(this byte[] array, byte[] sequence)
-		{
-			return array.FindSequence(sequence, 0);
-		}
-		/// <summary>
-		/// Searches this <see cref="byte" />[] for the first occurrence of <paramref name="sequence" /> starting from <paramref name="startIndex" />. If not found, returns -1.
-		/// </summary>
-		/// <param name="array">The <see cref="byte" />[] to be searched.</param>
-		/// <param name="sequence">The <see cref="byte" />[] to search for.</param>
-		/// <param name="startIndex">The zero-based starting position to start searching from.</param>
-		/// <returns>
-		/// The index of the first occurrence of <paramref name="sequence" /> and -1, if not found.
-		/// </returns>
-		public static int FindSequence(this byte[] array, byte[] sequence, int startIndex)
-		{
-			Check.ArgumentNull(array, nameof(array));
-			Check.ArgumentNull(sequence, nameof(sequence));
-			Check.ArgumentEx.ArrayElementsRequired(sequence, nameof(sequence));
-			Check.ArgumentEx.OffsetAndLengthOutOfBounds(startIndex, 0, array.Length);
-
-			for (int i = startIndex; i < array.Length - sequence.Length + 1; i++)
-			{
-				bool found = true;
-				for (int j = 0; j < sequence.Length; j++)
-				{
-					if (array[i + j] != sequence[j])
-					{
-						found = false;
-						break;
-					}
-				}
-				if (found) return i;
-			}
-
-			return -1;
 		}
 	}
 }

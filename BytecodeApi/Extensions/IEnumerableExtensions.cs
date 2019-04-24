@@ -738,7 +738,7 @@ namespace BytecodeApi.Extensions
 			return source.OrderByDescending(itm => itm, comparer);
 		}
 		/// <summary>
-		/// Randomized the order of the elements of a sequence.
+		/// Randomizes the order of the elements of a sequence.
 		/// </summary>
 		/// <typeparam name="TSource">The type of the elements of <paramref name="source" />.</typeparam>
 		/// <param name="source">A sequence of values to sort.</param>
