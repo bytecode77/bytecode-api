@@ -7,7 +7,7 @@ using System.Windows.Markup;
 namespace BytecodeApi.UI
 {
 	/// <summary>
-	/// Represents the base class that wraps the <see cref="IValueConverter" /> and provides a simplified wrapper method for Convert. ConvertBack always returns <see cref="DependencyProperty.UnsetValue" />.
+	/// Represents the base class that wraps the <see cref="IValueConverter" /> and provides a simplified wrapper method for Convert. ConvertBack always returns <see cref="DependencyProperty.UnsetValue" />. This is an abstract class.
 	/// </summary>
 	/// <typeparam name="TValue">The type of the value to convert.</typeparam>
 	/// <typeparam name="TResult">The type of the conversion result.</typeparam>
@@ -55,7 +55,7 @@ namespace BytecodeApi.UI
 	}
 
 	/// <summary>
-	/// Represents the base class that wraps the <see cref="IValueConverter" /> and provides a simplified wrapper method for Convert. ConvertBack always returns <see cref="DependencyProperty.UnsetValue" />.
+	/// Represents the base class that wraps the <see cref="IValueConverter" /> and provides a simplified wrapper method for Convert. ConvertBack always returns <see cref="DependencyProperty.UnsetValue" />. This is an abstract class.
 	/// </summary>
 	/// <typeparam name="TValue">The type of the value to convert.</typeparam>
 	/// <typeparam name="TParameter">The type of the parameter used for conversion.</typeparam>

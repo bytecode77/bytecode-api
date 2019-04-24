@@ -1,13 +1,16 @@
-﻿using System.Reflection;
+﻿using BytecodeApi.Extensions;
+using System.IO;
+using System.Linq;
+using System.Reflection;
 
 namespace BytecodeApi.IO.Interop
 {
 	/// <summary>
 	/// Represents the function of a native DLL file that does not return a value.
 	/// </summary>
-	public class DynamicLibraryFunction
+	public sealed class DynamicLibraryFunction
 	{
-		private MethodInfo Method;
+		private readonly MethodInfo Method;
 		/// <summary>
 		/// Gets the <see cref="DynamicLibrary" /> that was used to create this <see cref="DynamicLibraryFunction" />.
 		/// </summary>
@@ -29,7 +32,20 @@ namespace BytecodeApi.IO.Interop
 		/// <param name="parameters">A collection of parameters. The number of parameters must match the number of parameter types upon creation.</param>
 		public void Call(params object[] parameters)
 		{
+			Check.TargetParameterCount(parameters.Length == Method.GetParameters().Length);
+
 			Method.Invoke(null, parameters);
+		}
+
+		/// <summary>
+		/// Returns a <see cref="string" /> that represents this instance.
+		/// </summary>
+		/// <returns>
+		/// A <see cref="string" /> that represents this instance.
+		/// </returns>
+		public override string ToString()
+		{
+			return "[" + Path.GetFileName(Library.DllName) + ", " + Name + ", Parameters: " + Method.GetParameters().Select(parameter => parameter.ParameterType.ToCSharpName(TypeNaming.CSharp)).AsString(", ") + "]";
 		}
 	}
 
@@ -37,9 +53,9 @@ namespace BytecodeApi.IO.Interop
 	/// Represents the function of a native DLL file that returns a value of the specified type.
 	/// </summary>
 	/// <typeparam name="T">The function's return type.</typeparam>
-	public class DynamicLibraryFunction<T>
+	public sealed class DynamicLibraryFunction<T>
 	{
-		private MethodInfo Method;
+		private readonly MethodInfo Method;
 		/// <summary>
 		/// Gets the <see cref="DynamicLibrary" /> that was used to create this <see cref="DynamicLibraryFunction{T}" />.
 		/// </summary>
@@ -64,7 +80,20 @@ namespace BytecodeApi.IO.Interop
 		/// </returns>
 		public T Call(params object[] parameters)
 		{
+			Check.TargetParameterCount(parameters.Length == Method.GetParameters().Length);
+
 			return (T)Method.Invoke(null, parameters);
+		}
+
+		/// <summary>
+		/// Returns a <see cref="string" /> that represents this instance.
+		/// </summary>
+		/// <returns>
+		/// A <see cref="string" /> that represents this instance.
+		/// </returns>
+		public override string ToString()
+		{
+			return "[" + Path.GetFileName(Library.DllName) + ", " + Name + ", Parameters: " + Method.GetParameters().Select(parameter => parameter.ParameterType.ToCSharpName(TypeNaming.CSharp)).AsString(", ") + "]";
 		}
 	}
 }

@@ -10,7 +10,7 @@ namespace BytecodeApi.IO.Interop
 	/// <summary>
 	/// Represents a native DLL file with functions that can be dynamically generated and called.
 	/// </summary>
-	public class DynamicLibrary
+	public sealed class DynamicLibrary
 	{
 		/// <summary>
 		/// Gets the name of the DLL that is supplied in the constructor of <see cref="DynamicLibrary" />.
@@ -23,6 +23,9 @@ namespace BytecodeApi.IO.Interop
 		/// <param name="dllName">A <see cref="string" /> specifying the path of the DLL file to use.</param>
 		public DynamicLibrary(string dllName)
 		{
+			Check.ArgumentNull(dllName, nameof(dllName));
+			Check.FileNotFound(dllName);
+
 			DllName = dllName;
 		}
 
@@ -38,6 +41,10 @@ namespace BytecodeApi.IO.Interop
 		/// </returns>
 		public DynamicLibraryFunction GetFunction(string name, CallingConvention callingConvention, CharSet charSet, params Type[] parameterTypes)
 		{
+			Check.ArgumentNull(name, nameof(name));
+			Check.ArgumentEx.StringNotEmpty(name, nameof(name));
+			Check.ArgumentNull(parameterTypes, nameof(parameterTypes));
+
 			return new DynamicLibraryFunction(this, CreateFunctionMethod(name, callingConvention, charSet, typeof(void), parameterTypes));
 		}
 		/// <summary>
@@ -53,15 +60,17 @@ namespace BytecodeApi.IO.Interop
 		/// </returns>
 		public DynamicLibraryFunction<TReturn> GetFunction<TReturn>(string name, CallingConvention callingConvention, CharSet charSet, params Type[] parameterTypes)
 		{
+			Check.ArgumentNull(name, nameof(name));
+			Check.ArgumentEx.StringNotEmpty(name, nameof(name));
+			Check.ArgumentNull(parameterTypes, nameof(parameterTypes));
+
 			return new DynamicLibraryFunction<TReturn>(this, CreateFunctionMethod(name, callingConvention, charSet, typeof(TReturn), parameterTypes));
 		}
-
 		private MethodInfo CreateFunctionMethod(string name, CallingConvention callingConvention, CharSet charSet, Type returnType, Type[] parameterTypes)
 		{
 			string assemblyName = Path.GetFileNameWithoutExtension(DllName).ChangeCasing(StringCasing.CamelCase);
 
-			TypeBuilder typeBuilder = AppDomain
-				.CurrentDomain
+			TypeBuilder typeBuilder = AppDomain.CurrentDomain
 				.DefineDynamicAssembly(new AssemblyName(assemblyName + "DynamicLibrary"), AssemblyBuilderAccess.Run)
 				.DefineDynamicModule(assemblyName + "Module", false)
 				.DefineType(assemblyName + "Imports", TypeAttributes.Class | TypeAttributes.Public);
@@ -71,6 +80,17 @@ namespace BytecodeApi.IO.Interop
 				.SetCustomAttribute(new CustomAttributeBuilder(typeof(DllImportAttribute).GetConstructor(SingletonCollection.Array(typeof(string))), SingletonCollection.Array(DllName)));
 
 			return typeBuilder.CreateType().GetMethod(name, BindingFlags.Static | BindingFlags.Public);
+		}
+
+		/// <summary>
+		/// Returns a <see cref="string" /> that represents this instance.
+		/// </summary>
+		/// <returns>
+		/// A <see cref="string" /> that represents this instance.
+		/// </returns>
+		public override string ToString()
+		{
+			return "[" + Path.GetFileName(DllName) + "]";
 		}
 	}
 }

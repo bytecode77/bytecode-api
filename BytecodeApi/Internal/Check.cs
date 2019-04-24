@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 
 namespace BytecodeApi
@@ -65,6 +66,11 @@ namespace BytecodeApi
 		public static void DirectoryNotFound(string path)
 		{
 			if (!Directory.Exists(path)) throw new DirectoryNotFoundException(string.Format(CultureInfo.InvariantCulture, ExceptionMessages.DirectoryNotFound, path));
+		}
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void TargetParameterCount(bool condition)
+		{
+			if (!condition) throw new TargetParameterCountException();
 		}
 
 		[DebuggerStepThrough]
