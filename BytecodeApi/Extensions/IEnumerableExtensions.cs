@@ -599,7 +599,7 @@ namespace BytecodeApi.Extensions
 		{
 			Check.ArgumentNull(first, nameof(first));
 
-			return first.Concat(Singleton.List(second));
+			return first.Concat(SingletonCollection.List(second));
 		}
 		/// <summary>
 		/// Produces the set union of a sequence and one element.
@@ -628,7 +628,7 @@ namespace BytecodeApi.Extensions
 		{
 			Check.ArgumentNull(first, nameof(first));
 
-			return first.Union(Singleton.List(second), comparer);
+			return first.Union(SingletonCollection.List(second), comparer);
 		}
 		/// <summary>
 		/// Produces the set difference of a sequence and one element.
@@ -657,7 +657,7 @@ namespace BytecodeApi.Extensions
 		{
 			Check.ArgumentNull(first, nameof(first));
 
-			return first.Except(Singleton.List(second), comparer);
+			return first.Except(SingletonCollection.List(second), comparer);
 		}
 		/// <summary>
 		/// Splits up a sequence into chunks with the specified size. Each chunk is an <see cref="IEnumerable{T}" />, containing a maximum number of elements according to <paramref name="chunkSize" />. The last chunk may contain less elements than specified <paramref name="chunkSize" />.

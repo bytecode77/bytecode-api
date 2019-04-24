@@ -140,7 +140,7 @@ namespace BytecodeApi.IO
 			Action invoke;
 
 			if (parameters.Length == 0) invoke = () => method.Invoke();
-			else if (parameters.Length == 1 && parameters.First().ParameterType == typeof(string[])) invoke = () => method.Invoke(null, Singleton.Array(args ?? new string[0]));
+			else if (parameters.Length == 1 && parameters.First().ParameterType == typeof(string[])) invoke = () => method.Invoke(null, SingletonCollection.Array(args ?? new string[0]));
 			else throw Throw.InvalidOperation("Executable does not contain a static 'main' method suitable for an entry point.");
 
 			if (thread) ThreadFactory.StartThread(invoke);

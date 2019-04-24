@@ -6,7 +6,7 @@ namespace BytecodeApi
 	/// <summary>
 	/// Provides a set of <see langword="static" /> methods for creation of collection types containing one item.
 	/// </summary>
-	public static class Singleton
+	public static class SingletonCollection
 	{
 		/// <summary>
 		/// Creates an <see cref="System.Array" /> with <paramref name="obj" /> as the single element.

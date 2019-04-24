@@ -127,7 +127,7 @@ namespace BytecodeApi.Extensions
 
 			return new WmiNamespace("CIMV2", false, false)
 				.GetClass("Win32_Process", false)
-				.GetObjects(Singleton.Array("CommandLine"), "ProcessId = " + process.Id)
+				.GetObjects(SingletonCollection.Array("CommandLine"), "ProcessId = " + process.Id)
 				.First()
 				.Properties["CommandLine"]
 				.GetValue<string>();
