@@ -5,7 +5,7 @@ using System.Windows.Data;
 namespace BytecodeApi.UI
 {
 	/// <summary>
-	/// Represents the base class that wraps the <see cref="IValueConverter" /> and provides simplified wrapper methods for Convert and ConvertBack.
+	/// Represents the base class that wraps the <see cref="IValueConverter" /> and provides simplified wrapper methods for Convert and ConvertBack. This is an abstract class.
 	/// </summary>
 	/// <typeparam name="TValue">The type of the value to convert.</typeparam>
 	/// <typeparam name="TResult">The type of the conversion result.</typeparam>
@@ -30,7 +30,7 @@ namespace BytecodeApi.UI
 	}
 
 	/// <summary>
-	/// Represents the base class that wraps the <see cref="IValueConverter" /> and provides simplified wrapper methods for Convert and ConvertBack.
+	/// Represents the base class that wraps the <see cref="IValueConverter" /> and provides simplified wrapper methods for Convert and ConvertBack. This is an abstract class.
 	/// </summary>
 	/// <typeparam name="TValue">The type of the value to convert.</typeparam>
 	/// <typeparam name="TParameter">The type of the parameter used for conversion.</typeparam>

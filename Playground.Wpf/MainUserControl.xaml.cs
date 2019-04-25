@@ -1,4 +1,4 @@
-﻿using BytecodeApi;
+using BytecodeApi;
 using BytecodeApi.Comparers;
 using BytecodeApi.Cryptography;
 using BytecodeApi.Data;
@@ -15,6 +15,7 @@ using BytecodeApi.GeoIP.City;
 using BytecodeApi.IO;
 using BytecodeApi.IO.FileSystem;
 using BytecodeApi.IO.Http;
+using BytecodeApi.IO.Interop;
 using BytecodeApi.IO.SystemInfo;
 using BytecodeApi.IO.Wmi;
 using BytecodeApi.Mathematics;

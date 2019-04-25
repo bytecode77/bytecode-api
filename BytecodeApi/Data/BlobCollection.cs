@@ -45,7 +45,7 @@ namespace BytecodeApi.Data
 			get
 			{
 				Check.KeyNotFoundException(HasBlob(name, ignoreCase), "A blob with the name '" + name + "' was not found.");
-				return Blobs.First(b => b.Name.CompareTo(name, ignoreCase ? SpecialStringComparisons.IgnoreCase : SpecialStringComparisons.Default) == 0);
+				return Blobs.First(b => b.Name.Equals(name, ignoreCase ? SpecialStringComparisons.IgnoreCase : SpecialStringComparisons.Default));
 			}
 		}
 		/// <summary>
@@ -130,7 +130,7 @@ namespace BytecodeApi.Data
 		/// </returns>
 		public bool HasBlob(string name, bool ignoreCase)
 		{
-			return Blobs.Any(blob => blob.Name.CompareTo(name, ignoreCase ? SpecialStringComparisons.IgnoreCase : SpecialStringComparisons.Default) == 0);
+			return Blobs.Any(blob => blob.Name.Equals(name, ignoreCase ? SpecialStringComparisons.IgnoreCase : SpecialStringComparisons.Default));
 		}
 		/// <summary>
 		/// Computes the size, in bytes, of all <see cref="Blob" /> objects within this <see cref="BlobCollection" />.

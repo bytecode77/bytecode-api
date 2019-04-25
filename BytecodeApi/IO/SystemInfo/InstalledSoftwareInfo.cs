@@ -8,7 +8,7 @@ namespace BytecodeApi.IO.SystemInfo
 	/// <summary>
 	/// Provides information about installed software on this computer.
 	/// </summary>
-	public class InstalledSoftwareInfo
+	public sealed class InstalledSoftwareInfo
 	{
 		/// <summary>
 		/// Gets the name of the software, or <see langword="null" />, if it cannot be retrieved.

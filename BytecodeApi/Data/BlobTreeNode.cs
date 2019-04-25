@@ -1,6 +1,5 @@
 ﻿using BytecodeApi.Extensions;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace BytecodeApi.Data
 {
@@ -8,7 +7,7 @@ namespace BytecodeApi.Data
 	/// <summary>
 	/// Represents a tree node within a <see cref="BlobTree" />.
 	/// </summary>
-	public class BlobTreeNode
+	public sealed class BlobTreeNode
 	{
 		/// <summary>
 		/// Gets or sets the name of the <see cref="BlobTreeNode" />.
@@ -90,6 +89,24 @@ namespace BytecodeApi.Data
 			return node;
 		}
 		/// <summary>
+		/// Creates a new one-dimensional <see cref="BlobCollection" /> containing all <see cref="Blob" /> objects including all child nodes recursively.
+		/// </summary>
+		/// <returns>
+		/// The <see cref="BlobCollection" /> this method creates.
+		/// </returns>
+		public BlobCollection Flatten()
+		{
+			BlobCollection blobs = new BlobCollection();
+			AddNode(this);
+			return blobs;
+
+			void AddNode(BlobTreeNode node)
+			{
+				foreach (BlobTreeNode childNode in node.Nodes) AddNode(childNode);
+				blobs.AddRange(node.Blobs);
+			}
+		}
+		/// <summary>
 		/// Computes the size, in bytes, of all <see cref="Blob" /> objects within this <see cref="BlobTreeNode" /> recursively.
 		/// </summary>
 		/// <returns>
@@ -97,7 +114,7 @@ namespace BytecodeApi.Data
 		/// </returns>
 		public long ComputeSize()
 		{
-			return Nodes.Sum(node => node.ComputeSize()) + Blobs.ComputeSize();
+			return Nodes.ComputeSize() + Blobs.ComputeSize();
 		}
 
 		/// <summary>

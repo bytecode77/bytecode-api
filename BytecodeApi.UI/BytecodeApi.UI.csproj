@@ -52,12 +52,11 @@
     <Compile Include="Controls\TreeViewItemService.cs" />
     <Compile Include="Controls\WatermarkAdorner.cs" />
     <Compile Include="Controls\WatermarkService.cs" />
+    <Compile Include="Converters\ByteSizeConverter.cs" />
     <Compile Include="Converters\RangeConverter.cs" />
     <Compile Include="Converters\MathConverterMethod.cs" />
     <Compile Include="Converters\MathConverter.cs" />
     <Compile Include="Converters\IfConverter.cs" />
-    <Compile Include="Converters\ByteSizeDecimalConverter.cs" />
-    <Compile Include="Converters\ByteSizeFormatConverter.cs" />
     <Compile Include="Converters\IEnumerableAnyConverter.cs" />
     <Compile Include="Converters\ImageSourceConverter.cs" />
     <Compile Include="Converters\IEnumerableConverterMethod.cs" />
@@ -96,6 +95,7 @@
     <Compile Include="Extensions\ControlExtensions.cs" />
     <Compile Include="Extensions\VisibilityExtensions.cs" />
     <Compile Include="HotKeyEventArgs.cs" />
+    <Compile Include="HwndBroadcast.cs" />
     <Compile Include="Markup\BooleanExtension.cs" />
     <Compile Include="Markup\ByteExtension.cs" />
     <Compile Include="Markup\CharExtension.cs" />
@@ -108,6 +108,8 @@
     <Compile Include="Markup\Int32Extension.cs" />
     <Compile Include="Markup\Int64Extension.cs" />
     <Compile Include="Markup\SByteExtension.cs" />
+    <Compile Include="Markup\TypeExtensionMethod.cs" />
+    <Compile Include="Markup\TypeExtension.cs" />
     <Compile Include="Markup\SingleExtension.cs" />
     <Compile Include="Markup\StringExtension.cs" />
     <Compile Include="Markup\UInt16Extension.cs" />

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
 
@@ -11,6 +12,26 @@ namespace BytecodeApi.Extensions
 	/// </summary>
 	public static class ReflectionExtensions
 	{
+		private static readonly ReadOnlyDictionary<string, string> TypeNames = new Dictionary<string, string>
+		{
+			["Void"] = "void",
+			["Boolean"] = "bool",
+			["Byte"] = "byte",
+			["SByte"] = "sbyte",
+			["Char"] = "char",
+			["Decimal"] = "decimal",
+			["Double"] = "double",
+			["Single"] = "float",
+			["Int32"] = "int",
+			["UInt32"] = "uint",
+			["Int64"] = "long",
+			["UInt64"] = "ulong",
+			["Object"] = "object",
+			["Int16"] = "short",
+			["UInt16"] = "ushort",
+			["String"] = "string"
+		}.ToReadOnlyDictionary();
+
 		/// <summary>
 		/// Returns the value of a field supported by a given <see cref="object" />.
 		/// </summary>
@@ -152,10 +173,7 @@ namespace BytecodeApi.Extensions
 				name = namingConvention == TypeNaming.FullName ? type.GetNestedFullName() : type.GetNestedName();
 			}
 
-			if (namingConvention == TypeNaming.CSharp)
-			{
-				name = CSharp.BuiltInTypeNames.ValueOrDefault(name, name);
-			}
+			if (namingConvention == TypeNaming.CSharp) name = TypeNames.ValueOrDefault(name, name);
 
 			if (type.IsGenericType)
 			{

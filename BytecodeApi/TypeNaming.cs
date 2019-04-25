@@ -1,7 +1,9 @@
-﻿namespace BytecodeApi
+﻿using System;
+
+namespace BytecodeApi
 {
 	/// <summary>
-	/// Specifies the naming convention of a <see langword="type" />.
+	/// Specifies the naming convention of a <see cref="Type" />.
 	/// </summary>
 	public enum TypeNaming
 	{

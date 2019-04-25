@@ -1,7 +1,7 @@
-using BytecodeApi.Extensions;
+using BytecodeApi.Data;
+using BytecodeApi.IO;
 using BytecodeApi.IO.Http;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
 
 namespace Build.GeoIP
@@ -21,43 +21,39 @@ namespace Build.GeoIP
 		{
 			CsvData csvData = new CsvData();
 
-			using (MemoryStream memoryStream = new MemoryStream(HttpClient.Default.GetBytes("https://geolite.maxmind.com/download/geoip/database/GeoLite2-Country-CSV.zip")))
-			using (ZipArchive archive = new ZipArchive(memoryStream, ZipArchiveMode.Read))
-			{
-				csvData.Country = archive.Entries.First(entry => entry.Name == "GeoLite2-Country-Locations-en.csv").GetContent();
-				csvData.Range = archive.Entries.First(entry => entry.Name == "GeoLite2-Country-Blocks-IPv4.csv").GetContent();
-				csvData.Range6 = archive.Entries.First(entry => entry.Name == "GeoLite2-Country-Blocks-IPv6.csv").GetContent();
-			}
+			BlobTree countryBlob = ZipCompression.Decompress(HttpClient.Default.GetBytes("https://geolite.maxmind.com/download/geoip/database/GeoLite2-Country-CSV.zip"));
+			BlobTree asnBlob = ZipCompression.Decompress(HttpClient.Default.GetBytes("https://geolite.maxmind.com/download/geoip/database/GeoLite2-ASN-CSV.zip"));
+			BlobTree cityBlob = ZipCompression.Decompress(HttpClient.Default.GetBytes("https://geolite.maxmind.com/download/geoip/database/GeoLite2-City-CSV.zip"));
 
-			using (MemoryStream memoryStream = new MemoryStream(HttpClient.Default.GetBytes("https://geolite.maxmind.com/download/geoip/database/GeoLite2-ASN-CSV.zip")))
-			using (ZipArchive archive = new ZipArchive(memoryStream, ZipArchiveMode.Read))
-			{
-				csvData.Asn = archive.Entries.First(entry => entry.Name == "GeoLite2-ASN-Blocks-IPv4.csv").GetContent();
-				csvData.Asn6 = archive.Entries.First(entry => entry.Name == "GeoLite2-ASN-Blocks-IPv6.csv").GetContent();
-			}
-
-			using (MemoryStream memoryStream = new MemoryStream(HttpClient.Default.GetBytes("https://geolite.maxmind.com/download/geoip/database/GeoLite2-City-CSV.zip")))
-			using (ZipArchive archive = new ZipArchive(memoryStream, ZipArchiveMode.Read))
-			{
-				csvData.City = archive.Entries.First(entry => entry.Name == "GeoLite2-City-Locations-en.csv").GetContent();
-				csvData.CityRange = archive.Entries.First(entry => entry.Name == "GeoLite2-City-Blocks-IPv4.csv").GetContent();
-				csvData.CityRange6 = archive.Entries.First(entry => entry.Name == "GeoLite2-City-Blocks-IPv6.csv").GetContent();
-			}
+			csvData.Country = FindBlob(countryBlob, "GeoLite2-Country-Locations-en.csv");
+			csvData.Range = FindBlob(countryBlob, "GeoLite2-Country-Blocks-IPv4.csv");
+			csvData.Range6 = FindBlob(countryBlob, "GeoLite2-Country-Blocks-IPv6.csv");
+			csvData.Asn = FindBlob(asnBlob, "GeoLite2-ASN-Blocks-IPv4.csv");
+			csvData.Asn6 = FindBlob(asnBlob, "GeoLite2-ASN-Blocks-IPv6.csv");
+			csvData.City = FindBlob(cityBlob, "GeoLite2-City-Locations-en.csv");
+			csvData.CityRange = FindBlob(cityBlob, "GeoLite2-City-Blocks-IPv4.csv");
+			csvData.CityRange6 = FindBlob(cityBlob, "GeoLite2-City-Blocks-IPv6.csv");
 
 			return csvData;
+
+			byte[] FindBlob(BlobTree blobs, string name)
+			{
+				return blobs.Root.Nodes.First().Blobs[name].Content;
+			}
 		}
 		public static CsvData ImportFromFiles()
 		{
+			const string path = @"A:\Downloads";
 			CsvData csvData = new CsvData();
 
-			csvData.Country = File.ReadAllBytes(@"A:\Downloads\GeoLite2-Country-CSV\GeoLite2-Country-Locations-en.csv");
-			csvData.Range = File.ReadAllBytes(@"A:\Downloads\GeoLite2-Country-CSV\GeoLite2-Country-Blocks-IPv4.csv");
-			csvData.Range6 = File.ReadAllBytes(@"A:\Downloads\GeoLite2-Country-CSV\GeoLite2-Country-Blocks-IPv6.csv");
-			csvData.Asn = File.ReadAllBytes(@"A:\Downloads\GeoLite2-ASN-CSV\GeoLite2-ASN-Blocks-IPv4.csv");
-			csvData.Asn6 = File.ReadAllBytes(@"A:\Downloads\GeoLite2-ASN-CSV\GeoLite2-ASN-Blocks-IPv6.csv");
-			csvData.City = File.ReadAllBytes(@"A:\Downloads\GeoLite2-City-CSV\GeoLite2-City-Locations-en.csv");
-			csvData.CityRange = File.ReadAllBytes(@"A:\Downloads\GeoLite2-City-CSV\GeoLite2-City-Blocks-IPv4.csv");
-			csvData.CityRange6 = File.ReadAllBytes(@"A:\Downloads\GeoLite2-City-CSV\GeoLite2-City-Blocks-IPv6.csv");
+			csvData.Country = File.ReadAllBytes(Path.Combine(path, @"GeoLite2-Country-CSV\GeoLite2-Country-Locations-en.csv"));
+			csvData.Range = File.ReadAllBytes(Path.Combine(path, @"GeoLite2-Country-CSV\GeoLite2-Country-Blocks-IPv4.csv"));
+			csvData.Range6 = File.ReadAllBytes(Path.Combine(path, @"GeoLite2-Country-CSV\GeoLite2-Country-Blocks-IPv6.csv"));
+			csvData.Asn = File.ReadAllBytes(Path.Combine(path, @"GeoLite2-ASN-CSV\GeoLite2-ASN-Blocks-IPv4.csv"));
+			csvData.Asn6 = File.ReadAllBytes(Path.Combine(path, @"GeoLite2-ASN-CSV\GeoLite2-ASN-Blocks-IPv6.csv"));
+			csvData.City = File.ReadAllBytes(Path.Combine(path, @"GeoLite2-City-CSV\GeoLite2-City-Locations-en.csv"));
+			csvData.CityRange = File.ReadAllBytes(Path.Combine(path, @"GeoLite2-City-CSV\GeoLite2-City-Blocks-IPv4.csv"));
+			csvData.CityRange6 = File.ReadAllBytes(Path.Combine(path, @"GeoLite2-City-CSV\GeoLite2-City-Blocks-IPv6.csv"));
 
 			return csvData;
 		}

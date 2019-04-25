@@ -6,7 +6,7 @@ namespace BytecodeApi.UI
 	/// <summary>
 	/// Provides data for <see cref="HotKey" /> events.
 	/// </summary>
-	public class HotKeyEventArgs : EventArgs
+	public sealed class HotKeyEventArgs : EventArgs
 	{
 		/// <summary>
 		/// Get the key associated with the hotkey event.

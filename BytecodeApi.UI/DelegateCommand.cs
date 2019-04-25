@@ -47,7 +47,7 @@ namespace BytecodeApi.UI
 		/// </summary>
 		public void Execute()
 		{
-			if (CanExecute()) ExecuteDelegate?.Invoke();
+			if (CanExecute()) ExecuteDelegate();
 		}
 		/// <summary>
 		/// Cetermines whether the command can execute in its current state.
@@ -124,7 +124,7 @@ namespace BytecodeApi.UI
 		/// <param name="parameter">The parameter which is passed to the execute and canExecute delegate.</param>
 		public void Execute(TParameter parameter)
 		{
-			if (CanExecute(parameter)) ExecuteDelegate?.Invoke(parameter);
+			if (CanExecute(parameter)) ExecuteDelegate(parameter);
 		}
 		/// <summary>
 		/// Cetermines whether the command can execute in its current state.

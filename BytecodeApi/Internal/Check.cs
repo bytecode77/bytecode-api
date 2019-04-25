@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 
 namespace BytecodeApi
@@ -66,6 +67,11 @@ namespace BytecodeApi
 		{
 			if (!Directory.Exists(path)) throw new DirectoryNotFoundException(string.Format(CultureInfo.InvariantCulture, ExceptionMessages.DirectoryNotFound, path));
 		}
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void TargetParameterCount(bool condition)
+		{
+			if (!condition) throw new TargetParameterCountException();
+		}
 
 		[DebuggerStepThrough]
 		public static class ArgumentEx
@@ -94,6 +100,11 @@ namespace BytecodeApi
 			public static void ArrayValuesNotStringEmpty(IEnumerable<string> parameter, string parameterName)
 			{
 				if (parameter.Any(itm => itm == "")) throw new ArgumentException(ExceptionMessages.Argument.ArrayValuesNotStringEmpty, parameterName);
+			}
+			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			public static void Handle(IntPtr handle, string parameterName)
+			{
+				if (handle == IntPtr.Zero || handle == (IntPtr)(-1)) throw new ArgumentException(ExceptionMessages.Argument.InvalidHandle, parameterName);
 			}
 		}
 		[DebuggerStepThrough]

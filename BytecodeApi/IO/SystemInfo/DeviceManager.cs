@@ -11,7 +11,7 @@ namespace BytecodeApi.IO.SystemInfo
 	/// <summary>
 	/// Provides information for devices as shown in the Windows Device Manager.
 	/// </summary>
-	public class DeviceManager
+	public sealed class DeviceManager
 	{
 		/// <summary>
 		/// Gets all retrieved <see cref="DeviceInfo" /> objects, categorized by device types.

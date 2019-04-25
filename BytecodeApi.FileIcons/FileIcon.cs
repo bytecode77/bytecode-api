@@ -121,7 +121,7 @@ namespace BytecodeApi.FileIcons
 		{
 			Check.ArgumentNull(extension, nameof(extension));
 
-			return AllIcons.FirstOrDefault(icon => icon.Extension.CompareTo(extension.TrimStart('.'), SpecialStringComparisons.IgnoreCase) == 0);
+			return AllIcons.FirstOrDefault(icon => icon.Extension.Equals(extension.TrimStart('.'), SpecialStringComparisons.IgnoreCase));
 		}
 		/// <summary>
 		/// Checks whether the specified extension is known and exists in the resources of BytecodeApi.FileIcons.dll.

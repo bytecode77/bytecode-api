@@ -18,7 +18,7 @@ namespace BytecodeApi.Mathematics
 		public T Max { get; set; }
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="Range{T}" /> class to the values indicated by <paramref name="min" /> and <paramref name="max" />.
+		/// Initializes a new instance of the <see cref="Range{T}" /> structure to the values indicated by <paramref name="min" /> and <paramref name="max" />.
 		/// </summary>
 		/// <param name="min">The minimum value.</param>
 		/// <param name="max">The maximum value.</param>

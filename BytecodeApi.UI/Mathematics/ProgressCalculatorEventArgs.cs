@@ -5,7 +5,7 @@ namespace BytecodeApi.UI.Mathematics
 	/// <summary>
 	/// Provides data for <see cref="ProgressCalculator" /> events.
 	/// </summary>
-	public class ProgressCalculatorEventArgs : EventArgs
+	public sealed class ProgressCalculatorEventArgs : EventArgs
 	{
 		/// <summary>
 		/// Gets the value indicating the total progress. This is typically the amount of transferred bytes in a binary transfer operation.

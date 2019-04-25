@@ -13,7 +13,6 @@ namespace BytecodeApi.Text
 	{
 		internal const int DefaultFormatTimeSpanStringMaxElements = 2;
 		internal const string DefaultFormatTimeSpanStringSeparator = ", ";
-		internal const int DefaultFormatByteSizeStringDecimalPlaces = 2;
 
 		/// <summary>
 		/// Trims the specified <see cref="string" /> by the specified length. If the <see cref="string" /> is longer than the value of <paramref name="length" />, it will be truncated by a leading "..." to match the <paramref name="length" /> parameter, including the length of the "..." appendix (3 characters).
@@ -67,84 +66,6 @@ namespace BytecodeApi.Text
 			return strings.IsNullOrEmpty() ? "" : strings.Take(strings.Length - 1).AsString(separator) + (strings.Length > 1 ? lastSeparator : "") + strings[strings.Length - 1];
 		}
 		/// <summary>
-		/// Formats a <see cref="long" /> value representing a byte size in the <see cref="ByteSizeFormat.ByteSizeTwoDigits" /> format.
-		/// <para>Example: 12345 is converted to "12,06 KB"</para>
-		/// </summary>
-		/// <param name="size">A <see cref="long" /> value representing a byte size.</param>
-		/// <returns>
-		/// An equivalent <see cref="string" /> value representing the byte size value in the <see cref="ByteSizeFormat.ByteSizeTwoDigits" /> format.
-		/// </returns>
-		public static string FormatByteSizeString(long size)
-		{
-			return FormatByteSizeString(size, DefaultFormatByteSizeStringDecimalPlaces);
-		}
-		/// <summary>
-		/// Formats a <see cref="long" /> value representing a byte size with the specified number of decimal places.
-		/// <para>Example: 12345 is converted to "12,06 KB" (given, that <paramref name="decimalPlaces" /> = 2)</para>
-		/// </summary>
-		/// <param name="size">A <see cref="long" /> value representing a byte size.</param>
-		/// <param name="decimalPlaces">The number of decimal places to round the result to.</param>
-		/// <returns>
-		/// An equivalent <see cref="string" /> value representing the formatted byte size value.
-		/// </returns>
-		public static string FormatByteSizeString(long size, int decimalPlaces)
-		{
-			Check.ArgumentOutOfRangeEx.GreaterEqual0(size, nameof(size));
-			Check.ArgumentOutOfRangeEx.GreaterEqual0(decimalPlaces, nameof(decimalPlaces));
-
-			double calculatedSize = size;
-			int unit = 0;
-
-			while (calculatedSize >= 1024)
-			{
-				calculatedSize /= 1024;
-				unit++;
-			}
-
-			if (unit == 0)
-			{
-				return ((long)calculatedSize).ToStringInvariant() + " bytes";
-			}
-			else
-			{
-				return Math
-					.Round(calculatedSize, decimalPlaces)
-					.ToStringInvariant("0." + '0'.Repeat(decimalPlaces))
-					.Replace('.', ',') + " " + new[] { "KB", "MB", "GB", "TB", "PB", "EB" }[unit - 1];
-			}
-		}
-		/// <summary>
-		/// Formats a <see cref="long" /> value representing a byte size in the specified <see cref="ByteSizeFormat" /> and returns its equivalent <see cref="string" /> representation.
-		/// </summary>
-		/// <param name="size">A <see cref="long" /> value representing a byte size.</param>
-		/// <param name="format">The <see cref="ByteSizeFormat" /> to use to format <paramref name="size" />.</param>
-		/// <returns>
-		/// An equivalent <see cref="string" /> value representing the byte size value in the specified <see cref="ByteSizeFormat" />.
-		/// </returns>
-		public static string FormatByteSizeString(long size, ByteSizeFormat format)
-		{
-			Check.ArgumentOutOfRangeEx.GreaterEqual0(size, nameof(size));
-
-			switch (format)
-			{
-				case ByteSizeFormat.ByteSize:
-					return FormatByteSizeString(size, 0);
-				case ByteSizeFormat.ByteSizeTwoDigits:
-					return FormatByteSizeString(size, 2);
-				case ByteSizeFormat.Bytes:
-					return FormatInt64(size) + " bytes";
-				case ByteSizeFormat.KiloBytes:
-					return FormatInt64((long)Math.Ceiling(size / 1024.0)) + " KB";
-				case ByteSizeFormat.KiloBytesTwoDigits:
-					return FormatDouble(Math.Round(size / 1024.0, 2)) + " KB";
-				default:
-					throw Throw.InvalidEnumArgument(nameof(format));
-			}
-
-			string FormatInt64(long number) => number.ToStringInvariant("#,0").Replace(',', '.');
-			string FormatDouble(double number) => number.ToStringInvariant("#,0.##").Swap(',', '.');
-		}
-		/// <summary>
 		/// Converts the value of the specified <see cref="TimeSpan" /> to a human readable <see cref="string" /> representation by displaying the two most significant elements of either days, hours, minutes or seconds that are greater than zero, separated by a comma.
 		/// <para>Example: "12:00:03" is converted to "12h, 3s"</para>
 		/// </summary>
@@ -158,7 +79,7 @@ namespace BytecodeApi.Text
 		}
 		/// <summary>
 		/// Converts the value of the specified <see cref="TimeSpan" /> to a human readable <see cref="string" /> representation by displaying a specified number of most significant elements of either days, hours, minutes or seconds that are greater than zero, separated by a comma.
-		/// <para>Example: "5.03:30:15" is converted to "5d, 3h", if <paramref name="maxElements" /> is 2 and "5d, 3h, 30m", if <paramref name="maxElements" /> is 3.</para>
+		/// <para>Example: "5.03:30:15" is converted to "5d, 3h", if <paramref name="maxElements" /> is 2 and "5d, 3h, 30m", if <paramref name="maxElements" /> is 3</para>
 		/// </summary>
 		/// <param name="timeSpan">The <see cref="TimeSpan" /> value to convert.</param>
 		/// <param name="maxElements">A <see cref="int" /> value specifying the number of elements of either days, hours, minutes or seconds to display.</param>
@@ -171,7 +92,7 @@ namespace BytecodeApi.Text
 		}
 		/// <summary>
 		/// Converts the value of the specified <see cref="TimeSpan" /> to a human readable <see cref="string" /> representation by displaying a specified number of most significant elements of either days, hours, minutes or seconds that are greater than zero, separated by the specified separator.
-		/// <para>Example: "5.03:30:15" is converted to "5d, 3h", if <paramref name="maxElements" /> is 2 and "5d, 3h, 30m", if <paramref name="maxElements" /> is 3.</para>
+		/// <para>Example: "5.03:30:15" is converted to "5d, 3h", if <paramref name="maxElements" /> is 2 and "5d, 3h, 30m", if <paramref name="maxElements" /> is 3</para>
 		/// </summary>
 		/// <param name="timeSpan">The <see cref="TimeSpan" /> value to convert.</param>
 		/// <param name="maxElements">A <see cref="int" /> value specifying the number of elements of either days, hours, minutes or seconds to display.</param>
@@ -206,7 +127,7 @@ namespace BytecodeApi.Text
 		/// Wraps the specified text by splitting it up by whitespace characters and wrapping it by a specified maximum column width. This is typically used for console windows or in conjunction with monospace fonts.
 		/// </summary>
 		/// <param name="text">A <see cref="string" /> specifying the text to wrap.</param>
-		/// <param name="width">A <see cref="int" /> specifying the maximum number of characters per line.</param>
+		/// <param name="width">A <see cref="int" /> value specifying the maximum number of characters per line.</param>
 		/// <param name="overflow"><see langword="true" /> to allow words that are longer than <paramref name="width" /> to overflow; <see langword="false" /> to split up long words.</param>
 		/// <returns>
 		/// A multiline <see cref="string" /> with the wrapped text. Each line does not exceed an amount of characters equal to <paramref name="width" />, unless <paramref name="overflow" /> is set t <see langword="true" />.
@@ -331,7 +252,7 @@ namespace BytecodeApi.Text
 		}
 		/// <summary>
 		/// Encodes a <see cref="string" /> to its equivalent ROT13 representation. This function either encodes a <see cref="string" /> or decodes an already encoded <see cref="string" />.
-		/// <para>Example:"http://example.com/" is encoded to "uggc://rknzcyr.pbz/".</para>
+		/// <para>Example:"http://example.com/" is encoded to "uggc://rknzcyr.pbz/"</para>
 		/// </summary>
 		/// <param name="str">The <see cref="string" /> to be encoded or decoded.</param>
 		/// <returns>

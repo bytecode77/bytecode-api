@@ -7,7 +7,7 @@ namespace BytecodeApi.IO.SystemInfo
 	/// <summary>
 	/// Represents device information, retrieved by <see cref="DeviceManager" />.
 	/// </summary>
-	public class DeviceInfo
+	public sealed class DeviceInfo
 	{
 		/// <summary>
 		/// Gets the collection of attributes associated with this device.

@@ -4,7 +4,7 @@ namespace BytecodeApi.FileFormats.ResourceFile
 	/// Represents a named resource entry of a PE file.
 	/// </summary>
 	/// <typeparam name="TData">The data type of the resource entry</typeparam>
-	public class ResourceEntry<TData>
+	public sealed class ResourceEntry<TData>
 	{
 		/// <summary>
 		/// Gets or sets the type of the resource entry.

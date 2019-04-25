@@ -216,7 +216,9 @@ namespace BytecodeApi.FileFormats.Csv
 					{
 						csv.Headers = parser.ReadFields();
 					}
-					catch (MalformedLineException) { }
+					catch (MalformedLineException)
+					{
+					}
 
 					lineNumber++;
 				}
@@ -769,7 +771,7 @@ namespace BytecodeApi.FileFormats.Csv
 		/// </returns>
 		public int GetColumnIndex(string header, bool ignoreCase)
 		{
-			return Headers?.IndexOf(h => h.CompareTo(header, ignoreCase ? SpecialStringComparisons.IgnoreCase : SpecialStringComparisons.Default) == 0) ?? -1;
+			return Headers?.IndexOf(h => h.Equals(header, ignoreCase ? SpecialStringComparisons.IgnoreCase : SpecialStringComparisons.Default)) ?? -1;
 		}
 		/// <summary>
 		/// Writes the contents of this flat file database to a file. If <see cref="Headers" /> is not <see langword="null" />, the header row is included. The <see cref="Delimiter" /> property specifies the delimiter to use when writing.
@@ -868,7 +870,7 @@ namespace BytecodeApi.FileFormats.Csv
 			Check.ArgumentNull(Delimiter, nameof(Delimiter));
 			Check.ArgumentEx.StringNotEmpty(Delimiter, nameof(Delimiter));
 
-			if (Headers != null) SaveRows(stream, Singleton.Array(new CsvRow(Headers)), Delimiter, alwaysQuote, encoding, true);
+			if (Headers != null) SaveRows(stream, SingletonCollection.Array(new CsvRow(Headers)), Delimiter, alwaysQuote, encoding, true);
 			SaveRows(stream, Rows, Delimiter, alwaysQuote, encoding, leaveOpen);
 		}
 
@@ -878,7 +880,7 @@ namespace BytecodeApi.FileFormats.Csv
 			{
 				TextFieldType = FieldType.Delimited,
 				TrimWhiteSpace = true,
-				Delimiters = Singleton.Array(delimiter)
+				Delimiters = SingletonCollection.Array(delimiter)
 			};
 		}
 		private static IEnumerable<CsvRow> EnumerateTextFieldParser(TextFieldParser parser, bool ignoreEmptyLines)

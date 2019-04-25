@@ -58,9 +58,16 @@
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="CachedProperty.cs" />
+    <Compile Include="Comparers\DelegateComparer.cs" />
+    <Compile Include="Comparers\SpecialStringComparer.cs" />
+    <Compile Include="Extensions\Collections\BitArrayExtensions.cs" />
     <Compile Include="Extensions\IconExtensions.cs" />
     <Compile Include="Extensions\BitmapEncoderExtensions.cs" />
+    <Compile Include="IO\Interop\DynamicLibraryFunction.cs" />
+    <Compile Include="IO\Interop\DynamicLibrary.cs" />
     <Compile Include="IO\FileSystem\PathEx.cs" />
+    <Compile Include="Mathematics\ByteSizeUnit.cs" />
+    <Compile Include="Mathematics\ByteSize.cs" />
     <Compile Include="SingletonBucketBase.cs" />
     <Compile Include="EnumEx.cs" />
     <Compile Include="Data\BlobTree.cs" />
@@ -70,7 +77,7 @@
     <Compile Include="Extensions\ColorExtensions.cs" />
     <Compile Include="Internal\ExceptionMessages.cs" />
     <Compile Include="Internal\GeoIPHelper.cs" />
-    <Compile Include="IO\BlobArchive.cs" />
+    <Compile Include="IO\ZipCompression.cs" />
     <Compile Include="IO\FileSystem\AlternateDataStreamAttributes.cs" />
     <Compile Include="IO\FileSystem\AlternateDataStreamType.cs" />
     <Compile Include="IO\FileSystem\AlternateDataStreamInfo.cs" />
@@ -83,7 +90,7 @@
     <Compile Include="IO\SystemInfo\HostsFileEntry.cs" />
     <Compile Include="IO\SystemInfo\InstalledSoftwareInfo.cs" />
     <Compile Include="IO\Compression.cs" />
-    <Compile Include="Singleton.cs" />
+    <Compile Include="SingletonCollection.cs" />
     <Compile Include="KnownBrowser.cs" />
     <Compile Include="IO\WebRequestException.cs" />
     <Compile Include="IO\TransferCallback.cs" />
@@ -108,15 +115,14 @@
     <Compile Include="IO\SystemInfo\ProtocolMappingEntry.cs" />
     <Compile Include="IO\SystemInfo\TcpViewEntry.cs" />
     <Compile Include="Threading\ThreadFactory.cs" />
+    <Compile Include="ConvertObjectFlags.cs" />
     <Compile Include="Validate.cs" />
     <Compile Include="Comparers\AlwaysEqualComparer.cs" />
-    <Compile Include="Comparers\CustomComparer.cs" />
     <Compile Include="Comparers\IEnumerableCountComparer.cs" />
     <Compile Include="Comparers\StringLengthTrimmedComparer.cs" />
     <Compile Include="Comparers\StringLengthComparer.cs" />
     <Compile Include="Comparers\NaturalStringComparer.cs" />
     <Compile Include="IO\ElevationType.cs" />
-    <Compile Include="Text\ByteSizeFormat.cs" />
     <Compile Include="TypeNaming.cs" />
     <Compile Include="Mathematics\AngleType.cs" />
     <Compile Include="DateTimePart.cs" />
@@ -164,9 +170,9 @@
     <Compile Include="Extensions\WebRequestExtensions.cs" />
     <Compile Include="Extensions\XmlExtensions.cs" />
     <Compile Include="IO\SystemInfo\FileExtensionInfo.cs" />
-    <Compile Include="IO\GlobalKeyboardHook.cs" />
+    <Compile Include="IO\Interop\GlobalKeyboardHook.cs" />
     <Compile Include="Internal\Native.cs" />
-    <Compile Include="IO\OutlookDataObject.cs" />
+    <Compile Include="IO\Interop\OutlookDataObject.cs" />
     <Compile Include="Data\Blob.cs" />
     <Compile Include="IO\Http\HttpClient.cs" />
     <Compile Include="IO\Http\PostValue.cs" />

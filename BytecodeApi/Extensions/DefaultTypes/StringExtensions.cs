@@ -10,7 +10,7 @@ namespace BytecodeApi.Extensions
 	/// </summary>
 	public static class StringExtensions
 	{
-		private static readonly string SwapPlaceholder = Create.HexadecimalString(8);
+		private static readonly string SwapPlaceholder = Create.Guid().Left(8);
 
 		/// <summary>
 		/// Indicates whether this <see cref="string" /> is <see langword="null" /> or <see cref="string.Empty" />.
@@ -61,115 +61,39 @@ namespace BytecodeApi.Extensions
 			return str.IsNullOrWhiteSpace() ? null : str;
 		}
 		/// <summary>
-		/// Encodes all the characters in the specified <see cref="string" /> into a sequence of bytes using the <see cref="Encoding.Default" /> encoding.
+		/// Determines whether this <see cref="string" /> and a specified <see cref="string" /> object have the same value. One or multiple <see cref="SpecialStringComparisons" /> flags specify what comparison properties apply.
 		/// </summary>
-		/// <param name="str">The <see cref="string" /> to convert.</param>
+		/// <param name="str">A <see cref="string" /> to compare to <paramref name="value" />.</param>
+		/// <param name="value">A <see cref="string" /> to compare to <paramref name="str" />.</param>
+		/// <param name="comparison">The <see cref="SpecialStringComparisons" /> flags specifying what comparison properties apply.</param>
 		/// <returns>
-		/// A <see cref="byte" />[] containing the results of encoding the specified set of characters.
+		/// <see langword="true" />, if the value of the <paramref name="value" /> parameter is equal to the value of this <see cref="string" />;
+		/// otherwise, <see langword="false" />.
 		/// </returns>
-		public static byte[] ToAnsiBytes(this string str)
+		public static bool Equals(this string str, string value, SpecialStringComparisons comparison)
 		{
-			Check.ArgumentNull(str, nameof(str));
+			PrepareSpecialStringComparison(comparison, ref str, true);
+			PrepareSpecialStringComparison(comparison, ref value, true);
 
-			return Encoding.Default.GetBytes(str);
-		}
-		/// <summary>
-		/// Encodes all the characters in the specified <see cref="string" /> into a sequence of bytes using the <see cref="Encoding.UTF8" /> encoding.
-		/// </summary>
-		/// <param name="str">The <see cref="string" /> to convert.</param>
-		/// <returns>
-		/// A <see cref="byte" />[] containing the results of encoding the specified set of characters.
-		/// </returns>
-		public static byte[] ToUTF8Bytes(this string str)
-		{
-			Check.ArgumentNull(str, nameof(str));
-
-			return Encoding.UTF8.GetBytes(str);
-		}
-		/// <summary>
-		/// Encodes all the characters in the specified <see cref="string" /> into a sequence of bytes using the <see cref="Encoding.Unicode" /> encoding.
-		/// </summary>
-		/// <param name="str">The <see cref="string" /> to convert.</param>
-		/// <returns>
-		/// A <see cref="byte" />[] containing the results of encoding the specified set of characters.
-		/// </returns>
-		public static byte[] ToUnicodeBytes(this string str)
-		{
-			Check.ArgumentNull(str, nameof(str));
-
-			return Encoding.Unicode.GetBytes(str);
-		}
-		/// <summary>
-		/// Converts this <see cref="string" /> to its equivalent base-64 <see cref="string" /> representation using the specified encoding.
-		/// </summary>
-		/// <param name="str">The <see cref="string" /> to convert.</param>
-		/// <param name="encoding">The encoding be used to encode this <see cref="string" />.</param>
-		/// <returns>
-		/// The equivalent <see cref="string" /> representation that is encoded with base-64 using the specified encoding.
-		/// </returns>
-		public static string ToBase64String(this string str, Encoding encoding)
-		{
-			Check.ArgumentNull(str, nameof(str));
-			Check.ArgumentNull(encoding, nameof(encoding));
-
-			return Convert.ToBase64String(encoding.GetBytes(str));
-		}
-		/// <summary>
-		/// Converts this <see cref="string" /> from its equivalent base-64 <see cref="string" /> representation using the specified encoding.
-		/// </summary>
-		/// <param name="str">The <see cref="string" /> to convert.</param>
-		/// <param name="encoding">The encoding be used to encode the resulting binary to a <see cref="string" />.</param>
-		/// <returns>
-		/// The equivalent <see cref="string" /> representation that is decoded from a base-64 <see cref="string" /> using the specified encoding.
-		/// </returns>
-		public static string FromBase64String(this string str, Encoding encoding)
-		{
-			Check.ArgumentNull(str, nameof(str));
-			Check.ArgumentNull(encoding, nameof(encoding));
-
-			return encoding.GetString(Convert.FromBase64String(str));
-		}
-		/// <summary>
-		/// Splits this <see cref="string" /> into an array of lines, which are separated by either a CR or a CRLF separator.
-		/// </summary>
-		/// <param name="str">The <see cref="string" /> to split.</param>
-		/// <returns>
-		/// A new <see cref="string" />[] that represents the lines of the original <see cref="string" />.
-		/// </returns>
-		public static string[] SplitToLines(this string str)
-		{
-			return str.SplitToLines(false);
-		}
-		/// <summary>
-		/// Splits this <see cref="string" /> into an array of lines, which are separated by either a CR or a CRLF separator.
-		/// </summary>
-		/// <param name="str">The <see cref="string" /> to split.</param>
-		/// <param name="removeEmptyEntries"><see langword="true" /> to remove empty lines.</param>
-		/// <returns>
-		/// A new <see cref="string" />[] that represents the lines of the original <see cref="string" />.
-		/// </returns>
-		public static string[] SplitToLines(this string str, bool removeEmptyEntries)
-		{
-			Check.ArgumentNull(str, nameof(str));
-
-			return str.Split(new[] { "\r\n", "\n" }, removeEmptyEntries ? StringSplitOptions.RemoveEmptyEntries : StringSplitOptions.None);
+			if (comparison.HasFlag(SpecialStringComparisons.Natural)) return Native.StrCmpLogicalW(str ?? "", value ?? "") == 0;
+			else return string.Equals(str, value, StringComparison.InvariantCulture);
 		}
 		/// <summary>
 		/// Compares this <see cref="string" /> with a specified <see cref="string" /> object and indicates whether this instance precedes, follows, or appears in the same position in the sort order as the specified <see cref="string" />. One or multiple <see cref="SpecialStringComparisons" /> flags specify what comparison properties apply.
 		/// </summary>
-		/// <param name="strA">A <see cref="string" /> to compare to <paramref name="strB" />.</param>
-		/// <param name="strB">A <see cref="string" /> to compare to <paramref name="strA" />.</param>
+		/// <param name="str">A <see cref="string" /> to compare to <paramref name="value" />.</param>
+		/// <param name="value">A <see cref="string" /> to compare to <paramref name="str" />.</param>
 		/// <param name="comparison">The <see cref="SpecialStringComparisons" /> flags specifying what comparison properties apply.</param>
 		/// <returns>
-		/// A signed integer that indicates the relative values of <paramref name="strA" /> and <paramref name="strB" />.
+		/// A signed integer that indicates the relative values of <paramref name="str" /> and <paramref name="value" />.
 		/// </returns>
-		public static int CompareTo(this string strA, string strB, SpecialStringComparisons comparison)
+		public static int CompareTo(this string str, string value, SpecialStringComparisons comparison)
 		{
-			PrepareSpecialStringComparison(comparison, ref strA, true);
-			PrepareSpecialStringComparison(comparison, ref strB, true);
+			PrepareSpecialStringComparison(comparison, ref str, true);
+			PrepareSpecialStringComparison(comparison, ref value, true);
 
-			if (comparison.HasFlag(SpecialStringComparisons.Natural)) return Math.Sign(Native.StrCmpLogicalW(strA ?? "", strB ?? ""));
-			else return string.Compare(strA, strB, CultureInfo.InvariantCulture, CompareOptions.None);
+			if (comparison.HasFlag(SpecialStringComparisons.Natural)) return Math.Sign(Native.StrCmpLogicalW(str ?? "", value ?? ""));
+			else return string.Compare(str, value, CultureInfo.InvariantCulture, CompareOptions.None);
 		}
 		/// <summary>
 		/// Returns a <see cref="bool" /> value indicating whether a specified substring occurs within this <see cref="string" />. One or multiple <see cref="SpecialStringComparisons" /> flags specify what comparison properties apply.
@@ -613,20 +537,6 @@ namespace BytecodeApi.Extensions
 			return str == oldValue ? newValue : str;
 		}
 		/// <summary>
-		/// Replaces all occurrences of linebreaks ("\n" and "\r\n") in this <see cref="string" /> with a specified replacement value.
-		/// </summary>
-		/// <param name="str">The <see cref="string" /> to be processed.</param>
-		/// <param name="newValue">The <see cref="string" /> which will replace "\n" and "\r\n" occurrences in this <see cref="string" />.</param>
-		/// <returns>
-		/// The original value of this <see cref="string" /> where "\r" and "\r\n" have been replaced with <paramref name="newValue" />.
-		/// </returns>
-		public static string ReplaceLineBreaks(this string str, string newValue)
-		{
-			Check.ArgumentNull(str, nameof(str));
-
-			return str.ReplaceMultiple(newValue, "\r\n", "\n");
-		}
-		/// <summary>
 		/// Exchanges all occurrences of <paramref name="a" /> with <paramref name="b" /> and vice versa in this <see cref="string" />.
 		/// </summary>
 		/// <param name="str">The <see cref="string" /> to be processed.</param>
@@ -771,6 +681,114 @@ namespace BytecodeApi.Extensions
 						throw Throw.InvalidEnumArgument(nameof(casing));
 				}
 			}
+		}
+		/// <summary>
+		/// Encodes all the characters in the specified <see cref="string" /> into a sequence of bytes using the <see cref="Encoding.Default" /> encoding.
+		/// </summary>
+		/// <param name="str">The <see cref="string" /> to convert.</param>
+		/// <returns>
+		/// A <see cref="byte" />[] containing the results of encoding the specified set of characters.
+		/// </returns>
+		public static byte[] ToAnsiBytes(this string str)
+		{
+			Check.ArgumentNull(str, nameof(str));
+
+			return Encoding.Default.GetBytes(str);
+		}
+		/// <summary>
+		/// Encodes all the characters in the specified <see cref="string" /> into a sequence of bytes using the <see cref="Encoding.UTF8" /> encoding.
+		/// </summary>
+		/// <param name="str">The <see cref="string" /> to convert.</param>
+		/// <returns>
+		/// A <see cref="byte" />[] containing the results of encoding the specified set of characters.
+		/// </returns>
+		public static byte[] ToUTF8Bytes(this string str)
+		{
+			Check.ArgumentNull(str, nameof(str));
+
+			return Encoding.UTF8.GetBytes(str);
+		}
+		/// <summary>
+		/// Encodes all the characters in the specified <see cref="string" /> into a sequence of bytes using the <see cref="Encoding.Unicode" /> encoding.
+		/// </summary>
+		/// <param name="str">The <see cref="string" /> to convert.</param>
+		/// <returns>
+		/// A <see cref="byte" />[] containing the results of encoding the specified set of characters.
+		/// </returns>
+		public static byte[] ToUnicodeBytes(this string str)
+		{
+			Check.ArgumentNull(str, nameof(str));
+
+			return Encoding.Unicode.GetBytes(str);
+		}
+		/// <summary>
+		/// Converts this <see cref="string" /> to its equivalent base-64 <see cref="string" /> representation using the specified encoding.
+		/// </summary>
+		/// <param name="str">The <see cref="string" /> to convert.</param>
+		/// <param name="encoding">The encoding be used to encode this <see cref="string" />.</param>
+		/// <returns>
+		/// The equivalent <see cref="string" /> representation that is encoded with base-64 using the specified encoding.
+		/// </returns>
+		public static string ToBase64String(this string str, Encoding encoding)
+		{
+			Check.ArgumentNull(str, nameof(str));
+			Check.ArgumentNull(encoding, nameof(encoding));
+
+			return Convert.ToBase64String(encoding.GetBytes(str));
+		}
+		/// <summary>
+		/// Converts this <see cref="string" /> from its equivalent base-64 <see cref="string" /> representation using the specified encoding.
+		/// </summary>
+		/// <param name="str">The <see cref="string" /> to convert.</param>
+		/// <param name="encoding">The encoding be used to encode the resulting binary to a <see cref="string" />.</param>
+		/// <returns>
+		/// The equivalent <see cref="string" /> representation that is decoded from a base-64 <see cref="string" /> using the specified encoding.
+		/// </returns>
+		public static string FromBase64String(this string str, Encoding encoding)
+		{
+			Check.ArgumentNull(str, nameof(str));
+			Check.ArgumentNull(encoding, nameof(encoding));
+
+			return encoding.GetString(Convert.FromBase64String(str));
+		}
+		/// <summary>
+		/// Splits this <see cref="string" /> into an array of lines, which are separated by either a CR or a CRLF separator.
+		/// </summary>
+		/// <param name="str">The <see cref="string" /> to split.</param>
+		/// <returns>
+		/// A new <see cref="string" />[] that represents the lines of the original <see cref="string" />.
+		/// </returns>
+		public static string[] SplitToLines(this string str)
+		{
+			return str.SplitToLines(false);
+		}
+		/// <summary>
+		/// Splits this <see cref="string" /> into an array of lines, which are separated by either a CR or a CRLF separator.
+		/// </summary>
+		/// <param name="str">The <see cref="string" /> to split.</param>
+		/// <param name="removeEmptyEntries"><see langword="true" /> to remove empty lines.</param>
+		/// <returns>
+		/// A new <see cref="string" />[] that represents the lines of the original <see cref="string" />.
+		/// </returns>
+		public static string[] SplitToLines(this string str, bool removeEmptyEntries)
+		{
+			Check.ArgumentNull(str, nameof(str));
+
+			return str.Split(new[] { "\r\n", "\n" }, removeEmptyEntries ? StringSplitOptions.RemoveEmptyEntries : StringSplitOptions.None);
+		}
+		/// <summary>
+		/// Replaces all occurrences of linebreaks ("\n" and "\r\n") in this <see cref="string" /> with a specified replacement value.
+		/// </summary>
+		/// <param name="str">The <see cref="string" /> to be processed.</param>
+		/// <param name="newValue">The <see cref="string" /> which will replace "\n" and "\r\n" occurrences in this <see cref="string" />.</param>
+		/// <returns>
+		/// The original value of this <see cref="string" /> where "\r" and "\r\n" have been replaced with <paramref name="newValue" />.
+		/// </returns>
+		public static string ReplaceLineBreaks(this string str, string newValue)
+		{
+			Check.ArgumentNull(str, nameof(str));
+
+			return str.ReplaceMultiple(newValue, "\r\n", "\n");
 		}
 
 		private static void PrepareSpecialStringComparison(SpecialStringComparisons comparison, ref string str, bool allowNatural)

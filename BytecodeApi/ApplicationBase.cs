@@ -114,7 +114,7 @@ namespace BytecodeApi
 		/// <returns>
 		/// <see langword="null" />, if the process is already elevated;
 		/// <see langword="false" />, if elevation failed;
-		/// <see langword="true" /> if the restart was successful.
+		/// <see langword="true" />, if the restart was successful.
 		/// </returns>
 		public static bool? RestartElevated(string commandLine, Action shutdownCallback)
 		{
@@ -413,9 +413,9 @@ namespace BytecodeApi
 						{
 							if (key?.GetStringValue("Progid") is string program)
 							{
-								if (program.CompareTo("IE.HTTP", SpecialStringComparisons.IgnoreCase) == 0) return KnownBrowser.InternetExplorer;
+								if (program.Equals("IE.HTTP", SpecialStringComparisons.IgnoreCase)) return KnownBrowser.InternetExplorer;
 								else if (program == "AppXq0fevzme2pys62n3e0fbqa7peapykr8v") return KnownBrowser.Edge;
-								else if (program.CompareTo("ChromeHTML", SpecialStringComparisons.IgnoreCase) == 0) return KnownBrowser.Chrome;
+								else if (program.Equals("ChromeHTML", SpecialStringComparisons.IgnoreCase)) return KnownBrowser.Chrome;
 								else if (program.StartsWith("FirefoxURL", SpecialStringComparisons.IgnoreCase)) return KnownBrowser.Firefox;
 								else if (program.StartsWith("Opera", SpecialStringComparisons.IgnoreCase)) return KnownBrowser.Opera;
 								else if (program.StartsWith("Safari", SpecialStringComparisons.IgnoreCase)) return KnownBrowser.Safari;

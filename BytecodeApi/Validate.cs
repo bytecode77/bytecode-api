@@ -93,7 +93,7 @@ namespace BytecodeApi
 		/// </returns>
 		public static bool Path(string str)
 		{
-			return str != null && CSharp.Try(() => new FileIOPermission(FileIOPermissionAccess.Read, Singleton.Array(str)).Demand());
+			return str != null && CSharp.Try(() => new FileIOPermission(FileIOPermissionAccess.Read, SingletonCollection.Array(str)).Demand());
 		}
 		/// <summary>
 		/// Validates a <see cref="string" /> that is a base64 string, only containing the characters a-zA-Z0-9+/= and has the correct amount of padding characters.

@@ -56,7 +56,7 @@ namespace BytecodeApi.GeoIP.ASN
 		/// </returns>
 		public bool Equals(Asn other)
 		{
-			return Number == other.Number;
+			return other != null && Number == other.Number;
 		}
 		/// <summary>
 		/// Returns a hash code for this <see cref="Asn" />.

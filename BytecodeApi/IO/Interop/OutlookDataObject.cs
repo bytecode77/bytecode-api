@@ -10,7 +10,7 @@ using IComDataObject = System.Runtime.InteropServices.ComTypes.IDataObject;
 using IWindowsDataObject = System.Windows.IDataObject;
 using StatStg = System.Runtime.InteropServices.ComTypes.STATSTG;
 
-namespace BytecodeApi.IO
+namespace BytecodeApi.IO.Interop
 {
 	/// <summary>
 	/// Implements the data transfer mechanism for Microsoft Outlook. This class is typically used in drag&amp;drop operations from Outlook into a UI application.

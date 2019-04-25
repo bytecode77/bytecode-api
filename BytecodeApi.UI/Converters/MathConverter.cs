@@ -1,4 +1,6 @@
-﻿namespace BytecodeApi.UI.Converters
+﻿using System;
+
+namespace BytecodeApi.UI.Converters
 {
 	/// <summary>
 	/// Represents the converter that performs mathematical calculations on numeric value and parameter types. The <see cref="Convert(object, object)" /> method returns a numeric value based on the specified <see cref="MathConverterMethod" /> parameter and the types of the value and parameter.
@@ -48,11 +50,11 @@
 					case MathConverterMethod.Subtract: return a - b;
 					case MathConverterMethod.Multiply: return a * b;
 					case MathConverterMethod.Divide: return a / b;
-					case MathConverterMethod.Modulo:
+					case MathConverterMethod.Modulo: return a % b;
 					case MathConverterMethod.And:
 					case MathConverterMethod.Or:
 					case MathConverterMethod.Xor:
-						throw Throw.InvalidOperation("Floating point values cannot be used with this operator.");
+						throw CreateInvalidOperationException();
 					default: throw Throw.InvalidEnumArgument(nameof(Method));
 				}
 			}
@@ -67,11 +69,11 @@
 					case MathConverterMethod.Subtract: return a - b;
 					case MathConverterMethod.Multiply: return a * b;
 					case MathConverterMethod.Divide: return a / b;
-					case MathConverterMethod.Modulo:
+					case MathConverterMethod.Modulo: return a % b;
 					case MathConverterMethod.And:
 					case MathConverterMethod.Or:
 					case MathConverterMethod.Xor:
-						throw Throw.InvalidOperation("Floating point values cannot be used with this operator.");
+						throw CreateInvalidOperationException();
 					default: throw Throw.InvalidEnumArgument(nameof(Method));
 				}
 			}
@@ -86,11 +88,11 @@
 					case MathConverterMethod.Subtract: return a - b;
 					case MathConverterMethod.Multiply: return a * b;
 					case MathConverterMethod.Divide: return a / b;
-					case MathConverterMethod.Modulo:
+					case MathConverterMethod.Modulo: return a % b;
 					case MathConverterMethod.And:
 					case MathConverterMethod.Or:
 					case MathConverterMethod.Xor:
-						throw Throw.InvalidOperation("Floating point values cannot be used with this operator.");
+						throw CreateInvalidOperationException();
 					default: throw Throw.InvalidEnumArgument(nameof(Method));
 				}
 			}
@@ -111,6 +113,11 @@
 					case MathConverterMethod.Xor: return a ^ b;
 					default: throw Throw.InvalidEnumArgument(nameof(Method));
 				}
+			}
+
+			Exception CreateInvalidOperationException()
+			{
+				return Throw.InvalidOperation("Floating point values cannot be used with this operator.");
 			}
 		}
 	}

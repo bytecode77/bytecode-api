@@ -1,11 +1,13 @@
-﻿using System.IO;
+﻿using BytecodeApi.Extensions;
+using System;
+using System.IO;
 
 namespace BytecodeApi.Data
 {
 	/// <summary>
 	/// Represents an entity composed of a name and binary content in form or a <see cref="byte" />[].
 	/// </summary>
-	public class Blob
+	public class Blob : IEquatable<Blob>
 	{
 		/// <summary>
 		/// Gets or sets the name of the <see cref="Blob" />.
@@ -87,7 +89,41 @@ namespace BytecodeApi.Data
 		/// </returns>
 		public override string ToString()
 		{
-			return "[" + Name + ", Content Length: " + Content?.Length + "]";
+			return "[" + Name + ", Size: " + Content?.Length + "]";
+		}
+		/// <summary>
+		/// Determines whether the specified <see cref="object" /> is equal to this instance.
+		/// </summary>
+		/// <param name="obj">The <see cref="object" /> to compare with this instance.</param>
+		/// <returns>
+		/// <see langword="true" />, if the specified <see cref="object" /> is equal to this instance;
+		/// otherwise, <see langword="false" />.
+		/// </returns>
+		public override bool Equals(object obj)
+		{
+			return obj is Blob blob && Equals(blob);
+		}
+		/// <summary>
+		/// Determines whether this instance is equal to another <see cref="Blob" />.
+		/// </summary>
+		/// <param name="other">The <see cref="Blob" /> to compare to this instance.</param>
+		/// <returns>
+		/// <see langword="true" />, if this instance is equal to the <paramref name="other" /> parameter;
+		/// otherwise, <see langword="false" />.
+		/// </returns>
+		public bool Equals(Blob other)
+		{
+			return other != null && GetType() == other.GetType() && (this == other || Name == other.Name && Content.Compare(other.Content) && Equals(Tag, other.Tag));
+		}
+		/// <summary>
+		/// Returns a hash code for this <see cref="Blob" />.
+		/// </summary>
+		/// <returns>
+		/// The hash code for this <see cref="Blob" /> instance.
+		/// </returns>
+		public override int GetHashCode()
+		{
+			return (Name?.GetHashCode() ?? 0) ^ (Content?.GetHashCode() ?? 0) ^ (Tag?.GetHashCode() ?? 0);
 		}
 	}
 }

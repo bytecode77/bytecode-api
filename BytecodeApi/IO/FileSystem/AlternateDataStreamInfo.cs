@@ -26,6 +26,8 @@ namespace BytecodeApi.IO.FileSystem
 		{
 			get
 			{
+				Check.FileNotFound(Path);
+
 				if (_Streams == null)
 				{
 					using (SafeFileHandle file = Native.CreateFile(Path, 0x80000000, FileShare.Read, IntPtr.Zero, FileMode.Open, 0x2000000, IntPtr.Zero))
@@ -99,7 +101,7 @@ namespace BytecodeApi.IO.FileSystem
 		public AlternateDataStreamInfo(string path)
 		{
 			Check.ArgumentNull(path, nameof(path));
-			Check.FileNotFound(path);
+			Check.ArgumentEx.StringNotEmpty(path, nameof(path));
 
 			Path = path;
 		}
