@@ -25,6 +25,7 @@ namespace BytecodeApi.FileFormats.ResourceFile
 		public ResourceFileInfo(string path)
 		{
 			Check.ArgumentNull(path, nameof(path));
+			Check.ArgumentEx.StringNotEmpty(path, nameof(path));
 
 			Path = path;
 		}

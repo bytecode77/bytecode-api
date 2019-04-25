@@ -108,6 +108,8 @@
     <Compile Include="Markup\Int32Extension.cs" />
     <Compile Include="Markup\Int64Extension.cs" />
     <Compile Include="Markup\SByteExtension.cs" />
+    <Compile Include="Markup\TypeExtensionMethod.cs" />
+    <Compile Include="Markup\TypeExtension.cs" />
     <Compile Include="Markup\SingleExtension.cs" />
     <Compile Include="Markup\StringExtension.cs" />
     <Compile Include="Markup\UInt16Extension.cs" />
