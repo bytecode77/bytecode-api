@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BytecodeApi.Extensions;
+using System;
 
 namespace BytecodeApi.Mathematics
 {
@@ -93,6 +94,27 @@ namespace BytecodeApi.Mathematics
 		/// Gets the number of exabytes, calculated from the <see cref="Bytes" /> property.
 		/// </summary>
 		public double ExaBytes => Bytes / (double)BytesInExaByte;
+		/// <summary>
+		/// Gets the closest <see cref="ByteSizeUnit" /> in which the value of this instance can be represented as a number greater than or equal to 1.
+		/// <para>Example: 1023 bytes is <see cref="ByteSizeUnit.Byte" />; 1024 bytes is <see cref="ByteSizeUnit.KiloByte" /></para>
+		/// </summary>
+		public ByteSizeUnit ClosestUnit
+		{
+			get
+			{
+				if (Bytes < BytesInKiloByte) return ByteSizeUnit.Byte;
+				else if (Bytes < BytesInMegaByte) return ByteSizeUnit.KiloByte;
+				else if (Bytes < BytesInGigaByte) return ByteSizeUnit.MegaByte;
+				else if (Bytes < BytesInTeraByte) return ByteSizeUnit.GigaByte;
+				else if (Bytes < BytesInPetaByte) return ByteSizeUnit.TeraByte;
+				else if (Bytes < BytesInExaByte) return ByteSizeUnit.PetaByte;
+				else return ByteSizeUnit.ExaByte;
+			}
+		}
+		/// <summary>
+		/// Gets the <see cref="double" /> value that represents the value of this instance in accordance to the <see cref="ClosestUnit" /> property.
+		/// </summary>
+		public double NumberToClosestUnit => GetNumberForUnit(ClosestUnit);
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="ByteSize" /> structure with the number of bytes.
@@ -344,6 +366,161 @@ namespace BytecodeApi.Mathematics
 		public ByteSize Divide(ulong value)
 		{
 			return new ByteSize(Bytes / value);
+		}
+
+		/// <summary>
+		/// Gets the <see cref="double" /> value that represents the value of this instance in accordance to the <paramref name="unit" /> parameter.
+		/// </summary>
+		/// <param name="unit">The <see cref="ByteSizeUnit" /> to convert the value of this instance to.</param>
+		/// <returns>
+		/// A <see cref="double" /> value representing the value of this instance in accordance to the <paramref name="unit" /> parameter.
+		/// </returns>
+		public double GetNumberForUnit(ByteSizeUnit unit)
+		{
+			switch (unit)
+			{
+				case ByteSizeUnit.Byte: return Bytes;
+				case ByteSizeUnit.KiloByte: return KiloBytes;
+				case ByteSizeUnit.MegaByte: return MegaBytes;
+				case ByteSizeUnit.GigaByte: return GigaBytes;
+				case ByteSizeUnit.TeraByte: return TeraBytes;
+				case ByteSizeUnit.PetaByte: return PetaBytes;
+				case ByteSizeUnit.ExaByte: return ExaBytes;
+				default: throw Throw.InvalidEnumArgument(nameof(unit));
+			}
+		}
+		/// <summary>
+		/// Returns a <see cref="string" /> that represents this instance.
+		/// </summary>
+		/// <returns>
+		/// An equivalent <see cref="string" /> representing this instance.
+		/// </returns>
+		public string Format()
+		{
+			return Format(2);
+		}
+		/// <summary>
+		/// Returns a <see cref="string" /> that represents this instance using the specified formatting parameters.
+		/// </summary>
+		/// <param name="decimals">The number of decimals to round the result to. The default value is 2.</param>
+		/// <returns>
+		/// An equivalent <see cref="string" /> representing this instance.
+		/// </returns>
+		public string Format(int decimals)
+		{
+			return Format(decimals, false);
+		}
+		/// <summary>
+		/// Returns a <see cref="string" /> that represents this instance using the specified formatting parameters.
+		/// </summary>
+		/// <param name="decimals">The number of decimals to round the result to. The default value is 2.</param>
+		/// <param name="padDecimals"><see langword="true" /> to pad zero decimal places with a '0' character.</param>
+		/// <returns>
+		/// An equivalent <see cref="string" /> representing this instance.
+		/// </returns>
+		public string Format(int decimals, bool padDecimals)
+		{
+			return Format(decimals, padDecimals, false);
+		}
+		/// <summary>
+		/// Returns a <see cref="string" /> that represents this instance using the specified formatting parameters.
+		/// </summary>
+		/// <param name="decimals">The number of decimals to round the result to. The default value is 2.</param>
+		/// <param name="padDecimals"><see langword="true" /> to pad zero decimal places with a '0' character.</param>
+		/// <param name="thousandsSeparator"><see langword="true" /> to use a thousands separator.</param>
+		/// <returns>
+		/// An equivalent <see cref="string" /> representing this instance.
+		/// </returns>
+		public string Format(int decimals, bool padDecimals, bool thousandsSeparator)
+		{
+			return Format(decimals, padDecimals, thousandsSeparator, false);
+		}
+		/// <summary>
+		/// Returns a <see cref="string" /> that represents this instance using the specified formatting parameters.
+		/// </summary>
+		/// <param name="decimals">The number of decimals to round the result to. The default value is 2.</param>
+		/// <param name="padDecimals"><see langword="true" /> to pad zero decimal places with a '0' character.</param>
+		/// <param name="thousandsSeparator"><see langword="true" /> to use a thousands separator.</param>
+		/// <param name="roundUp"><see langword="true" /> to always round up. The <paramref name="decimals" /> parameter should typically be 0, if this option is used.</param>
+		/// <returns>
+		/// An equivalent <see cref="string" /> representing this instance.
+		/// </returns>
+		public string Format(int decimals, bool padDecimals, bool thousandsSeparator, bool roundUp)
+		{
+			Check.ArgumentOutOfRangeEx.GreaterEqual0(decimals, nameof(decimals));
+			Check.ArgumentOutOfRange(decimals <= 15, nameof(decimals), "The number of decimals must be in range of 0...15.");
+
+			return FormatWithUnit(ClosestUnit, decimals, padDecimals, thousandsSeparator, roundUp);
+		}
+		/// <summary>
+		/// Returns a <see cref="string" /> that represents this instance using a specified <see cref="ByteSizeUnit" />.
+		/// </summary>
+		/// <param name="unit">The <see cref="ByteSizeUnit" /> that is used to format the result <see cref="string" />.</param>
+		/// <returns>
+		/// An equivalent <see cref="string" /> representing this instance.
+		/// </returns>
+		public string FormatWithUnit(ByteSizeUnit unit)
+		{
+			return FormatWithUnit(unit, 2);
+		}
+		/// <summary>
+		/// Returns a <see cref="string" /> that represents this instance using a specified <see cref="ByteSizeUnit" /> and the specified formatting parameters.
+		/// </summary>
+		/// <param name="unit">The <see cref="ByteSizeUnit" /> that is used to format the result <see cref="string" />.</param>
+		/// <param name="decimals">The number of decimals to round the result to. The default value is 2.</param>
+		/// <returns>
+		/// An equivalent <see cref="string" /> representing this instance.
+		/// </returns>
+		public string FormatWithUnit(ByteSizeUnit unit, int decimals)
+		{
+			return FormatWithUnit(unit, decimals, false);
+		}
+		/// <summary>
+		/// Returns a <see cref="string" /> that represents this instance using a specified <see cref="ByteSizeUnit" /> and the specified formatting parameters.
+		/// </summary>
+		/// <param name="unit">The <see cref="ByteSizeUnit" /> that is used to format the result <see cref="string" />.</param>
+		/// <param name="decimals">The number of decimals to round the result to. The default value is 2.</param>
+		/// <param name="padDecimals"><see langword="true" /> to pad zero decimal places with a '0' character.</param>
+		/// <returns>
+		/// An equivalent <see cref="string" /> representing this instance.
+		/// </returns>
+		public string FormatWithUnit(ByteSizeUnit unit, int decimals, bool padDecimals)
+		{
+			return FormatWithUnit(unit, decimals, padDecimals, false);
+		}
+		/// <summary>
+		/// Returns a <see cref="string" /> that represents this instance using a specified <see cref="ByteSizeUnit" /> and the specified formatting parameters.
+		/// </summary>
+		/// <param name="unit">The <see cref="ByteSizeUnit" /> that is used to format the result <see cref="string" />.</param>
+		/// <param name="decimals">The number of decimals to round the result to. The default value is 2.</param>
+		/// <param name="padDecimals"><see langword="true" /> to pad zero decimal places with a '0' character.</param>
+		/// <param name="thousandsSeparator"><see langword="true" /> to use a thousands separator.</param>
+		/// <returns>
+		/// An equivalent <see cref="string" /> representing this instance.
+		/// </returns>
+		public string FormatWithUnit(ByteSizeUnit unit, int decimals, bool padDecimals, bool thousandsSeparator)
+		{
+			return FormatWithUnit(unit, decimals, padDecimals, thousandsSeparator, false);
+		}
+		/// <summary>
+		/// Returns a <see cref="string" /> that represents this instance using a specified <see cref="ByteSizeUnit" /> and the specified formatting parameters.
+		/// </summary>
+		/// <param name="unit">The <see cref="ByteSizeUnit" /> that is used to format the result <see cref="string" />.</param>
+		/// <param name="decimals">The number of decimals to round the result to. The default value is 2.</param>
+		/// <param name="padDecimals"><see langword="true" /> to pad zero decimal places with a '0' character.</param>
+		/// <param name="thousandsSeparator"><see langword="true" /> to use a thousands separator.</param>
+		/// <param name="roundUp"><see langword="true" /> to always round up. The <paramref name="decimals" /> parameter should typically be 0, if this option is used.</param>
+		/// <returns>
+		/// An equivalent <see cref="string" /> representing this instance.
+		/// </returns>
+		public string FormatWithUnit(ByteSizeUnit unit, int decimals, bool padDecimals, bool thousandsSeparator, bool roundUp)
+		{
+			Check.ArgumentOutOfRangeEx.GreaterEqual0(decimals, nameof(decimals));
+			Check.ArgumentOutOfRange(decimals <= 15, nameof(decimals), "The number of decimals must be in range of 0...15.");
+
+			double bytes = GetNumberForUnit(unit);
+			bytes = roundUp ? Math.Ceiling(bytes) : Math.Round(bytes, decimals);
+			return bytes.ToStringInvariant((thousandsSeparator ? "#," : null) + "0." + (padDecimals ? '0' : '#').Repeat(decimals)).Swap('.', ',') + " " + unit.GetDescription();
 		}
 
 		/// <summary>

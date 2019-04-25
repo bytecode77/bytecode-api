@@ -6,7 +6,7 @@ namespace BytecodeApi.UI.Mathematics
 {
 	/// <summary>
 	/// Provoides a wrapper for <see cref="Action" /> objects to be deferred.
-	/// <para>Example: A search TextBox, where the search is performed 0.5 seconds after typing activity stopped.</para>
+	/// <para>Example: A search TextBox, where the search is performed 0.5 seconds after typing activity stopped</para>
 	/// </summary>
 	public class Deferrer : IDisposable
 	{

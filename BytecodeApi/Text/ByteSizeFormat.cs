@@ -6,12 +6,12 @@
 	public enum ByteSizeFormat
 	{
 		/// <summary>
-		/// Specifies that the closest unit (Bytes, KB, MB, GB, TB, ...) is displayed. The result is rounded with no decimal places.
+		/// Specifies that the closest unit (Bytes, KB, MB, GB, TB, ...) is displayed. The result is rounded with no decimals.
 		/// <para>Example: 12345 is converted to "12 KB"</para>
 		/// </summary>
 		ByteSize,
 		/// <summary>
-		/// Specifies that the closest unit (Bytes, KB, MB, GB, TB, ...) is displayed. The result is rounded with two decimal places.
+		/// Specifies that the closest unit (Bytes, KB, MB, GB, TB, ...) is displayed. The result is rounded with two decimals.
 		/// <para>Example: 12345 is converted to "12,06 KB"</para>
 		/// </summary>
 		ByteSizeTwoDigits,
@@ -26,8 +26,8 @@
 		/// </summary>
 		KiloBytes,
 		/// <summary>
-		/// Specifies that the value is displayed as kilobytes. The result is rounded with two decimal places. A thousands separator is displayed as a dot.
-		/// <para>Example: 12345 is converted to "13 KB"</para>
+		/// Specifies that the value is displayed as kilobytes. The result is rounded with two decimals. A thousands separator is displayed as a dot.
+		/// <para>Example: 12345 is converted to "12,06 KB"</para>
 		/// </summary>
 		KiloBytesTwoDigits
 	}

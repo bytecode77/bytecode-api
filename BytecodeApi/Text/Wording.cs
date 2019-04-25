@@ -13,7 +13,7 @@ namespace BytecodeApi.Text
 	{
 		internal const int DefaultFormatTimeSpanStringMaxElements = 2;
 		internal const string DefaultFormatTimeSpanStringSeparator = ", ";
-		internal const int DefaultFormatByteSizeStringDecimalPlaces = 2;
+		internal const int DefaultFormatByteSizeStringDecimals = 2;
 
 		/// <summary>
 		/// Trims the specified <see cref="string" /> by the specified length. If the <see cref="string" /> is longer than the value of <paramref name="length" />, it will be truncated by a leading "..." to match the <paramref name="length" /> parameter, including the length of the "..." appendix (3 characters).
@@ -76,21 +76,21 @@ namespace BytecodeApi.Text
 		/// </returns>
 		public static string FormatByteSizeString(long size)
 		{
-			return FormatByteSizeString(size, DefaultFormatByteSizeStringDecimalPlaces);
+			return FormatByteSizeString(size, DefaultFormatByteSizeStringDecimals);
 		}
 		/// <summary>
-		/// Formats a <see cref="long" /> value representing a byte size with the specified number of decimal places.
-		/// <para>Example: 12345 is converted to "12,06 KB" (given, that <paramref name="decimalPlaces" /> = 2)</para>
+		/// Formats a <see cref="long" /> value representing a byte size with the specified number of decimals.
+		/// <para>Example: 12345 is converted to "12,06 KB" (given, that <paramref name="decimals" /> = 2)</para>
 		/// </summary>
 		/// <param name="size">A <see cref="long" /> value representing a byte size.</param>
-		/// <param name="decimalPlaces">The number of decimal places to round the result to.</param>
+		/// <param name="decimals">The number of decimals to round the result to.</param>
 		/// <returns>
 		/// An equivalent <see cref="string" /> value representing the formatted byte size value.
 		/// </returns>
-		public static string FormatByteSizeString(long size, int decimalPlaces)
+		public static string FormatByteSizeString(long size, int decimals)
 		{
 			Check.ArgumentOutOfRangeEx.GreaterEqual0(size, nameof(size));
-			Check.ArgumentOutOfRangeEx.GreaterEqual0(decimalPlaces, nameof(decimalPlaces));
+			Check.ArgumentOutOfRangeEx.GreaterEqual0(decimals, nameof(decimals));
 
 			double calculatedSize = size;
 			int unit = 0;
@@ -108,8 +108,8 @@ namespace BytecodeApi.Text
 			else
 			{
 				return Math
-					.Round(calculatedSize, decimalPlaces)
-					.ToStringInvariant("0." + '0'.Repeat(decimalPlaces))
+					.Round(calculatedSize, decimals)
+					.ToStringInvariant("0." + '0'.Repeat(decimals))
 					.Replace('.', ',') + " " + new[] { "KB", "MB", "GB", "TB", "PB", "EB" }[unit - 1];
 			}
 		}
@@ -158,7 +158,7 @@ namespace BytecodeApi.Text
 		}
 		/// <summary>
 		/// Converts the value of the specified <see cref="TimeSpan" /> to a human readable <see cref="string" /> representation by displaying a specified number of most significant elements of either days, hours, minutes or seconds that are greater than zero, separated by a comma.
-		/// <para>Example: "5.03:30:15" is converted to "5d, 3h", if <paramref name="maxElements" /> is 2 and "5d, 3h, 30m", if <paramref name="maxElements" /> is 3.</para>
+		/// <para>Example: "5.03:30:15" is converted to "5d, 3h", if <paramref name="maxElements" /> is 2 and "5d, 3h, 30m", if <paramref name="maxElements" /> is 3</para>
 		/// </summary>
 		/// <param name="timeSpan">The <see cref="TimeSpan" /> value to convert.</param>
 		/// <param name="maxElements">A <see cref="int" /> value specifying the number of elements of either days, hours, minutes or seconds to display.</param>
@@ -171,7 +171,7 @@ namespace BytecodeApi.Text
 		}
 		/// <summary>
 		/// Converts the value of the specified <see cref="TimeSpan" /> to a human readable <see cref="string" /> representation by displaying a specified number of most significant elements of either days, hours, minutes or seconds that are greater than zero, separated by the specified separator.
-		/// <para>Example: "5.03:30:15" is converted to "5d, 3h", if <paramref name="maxElements" /> is 2 and "5d, 3h, 30m", if <paramref name="maxElements" /> is 3.</para>
+		/// <para>Example: "5.03:30:15" is converted to "5d, 3h", if <paramref name="maxElements" /> is 2 and "5d, 3h, 30m", if <paramref name="maxElements" /> is 3</para>
 		/// </summary>
 		/// <param name="timeSpan">The <see cref="TimeSpan" /> value to convert.</param>
 		/// <param name="maxElements">A <see cref="int" /> value specifying the number of elements of either days, hours, minutes or seconds to display.</param>
@@ -331,7 +331,7 @@ namespace BytecodeApi.Text
 		}
 		/// <summary>
 		/// Encodes a <see cref="string" /> to its equivalent ROT13 representation. This function either encodes a <see cref="string" /> or decodes an already encoded <see cref="string" />.
-		/// <para>Example:"http://example.com/" is encoded to "uggc://rknzcyr.pbz/".</para>
+		/// <para>Example:"http://example.com/" is encoded to "uggc://rknzcyr.pbz/"</para>
 		/// </summary>
 		/// <param name="str">The <see cref="string" /> to be encoded or decoded.</param>
 		/// <returns>
