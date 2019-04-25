@@ -123,7 +123,6 @@
     <Compile Include="Comparers\StringLengthComparer.cs" />
     <Compile Include="Comparers\NaturalStringComparer.cs" />
     <Compile Include="IO\ElevationType.cs" />
-    <Compile Include="Text\ByteSizeFormat.cs" />
     <Compile Include="TypeNaming.cs" />
     <Compile Include="Mathematics\AngleType.cs" />
     <Compile Include="DateTimePart.cs" />

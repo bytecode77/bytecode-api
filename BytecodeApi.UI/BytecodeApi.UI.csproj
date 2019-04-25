@@ -52,12 +52,11 @@
     <Compile Include="Controls\TreeViewItemService.cs" />
     <Compile Include="Controls\WatermarkAdorner.cs" />
     <Compile Include="Controls\WatermarkService.cs" />
+    <Compile Include="Converters\ByteSizeConverter.cs" />
     <Compile Include="Converters\RangeConverter.cs" />
     <Compile Include="Converters\MathConverterMethod.cs" />
     <Compile Include="Converters\MathConverter.cs" />
     <Compile Include="Converters\IfConverter.cs" />
-    <Compile Include="Converters\ByteSizeDecimalConverter.cs" />
-    <Compile Include="Converters\ByteSizeFormatConverter.cs" />
     <Compile Include="Converters\IEnumerableAnyConverter.cs" />
     <Compile Include="Converters\ImageSourceConverter.cs" />
     <Compile Include="Converters\IEnumerableConverterMethod.cs" />

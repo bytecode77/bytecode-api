@@ -13,7 +13,6 @@ namespace BytecodeApi.Text
 	{
 		internal const int DefaultFormatTimeSpanStringMaxElements = 2;
 		internal const string DefaultFormatTimeSpanStringSeparator = ", ";
-		internal const int DefaultFormatByteSizeStringDecimals = 2;
 
 		/// <summary>
 		/// Trims the specified <see cref="string" /> by the specified length. If the <see cref="string" /> is longer than the value of <paramref name="length" />, it will be truncated by a leading "..." to match the <paramref name="length" /> parameter, including the length of the "..." appendix (3 characters).
@@ -65,84 +64,6 @@ namespace BytecodeApi.Text
 			Check.ArgumentNull(lastSeparator, nameof(lastSeparator));
 
 			return strings.IsNullOrEmpty() ? "" : strings.Take(strings.Length - 1).AsString(separator) + (strings.Length > 1 ? lastSeparator : "") + strings[strings.Length - 1];
-		}
-		/// <summary>
-		/// Formats a <see cref="long" /> value representing a byte size in the <see cref="ByteSizeFormat.ByteSizeTwoDigits" /> format.
-		/// <para>Example: 12345 is converted to "12,06 KB"</para>
-		/// </summary>
-		/// <param name="size">A <see cref="long" /> value representing a byte size.</param>
-		/// <returns>
-		/// An equivalent <see cref="string" /> value representing the byte size value in the <see cref="ByteSizeFormat.ByteSizeTwoDigits" /> format.
-		/// </returns>
-		public static string FormatByteSizeString(long size)
-		{
-			return FormatByteSizeString(size, DefaultFormatByteSizeStringDecimals);
-		}
-		/// <summary>
-		/// Formats a <see cref="long" /> value representing a byte size with the specified number of decimals.
-		/// <para>Example: 12345 is converted to "12,06 KB" (given, that <paramref name="decimals" /> = 2)</para>
-		/// </summary>
-		/// <param name="size">A <see cref="long" /> value representing a byte size.</param>
-		/// <param name="decimals">The number of decimals to round the result to.</param>
-		/// <returns>
-		/// An equivalent <see cref="string" /> value representing the formatted byte size value.
-		/// </returns>
-		public static string FormatByteSizeString(long size, int decimals)
-		{
-			Check.ArgumentOutOfRangeEx.GreaterEqual0(size, nameof(size));
-			Check.ArgumentOutOfRangeEx.GreaterEqual0(decimals, nameof(decimals));
-
-			double calculatedSize = size;
-			int unit = 0;
-
-			while (calculatedSize >= 1024)
-			{
-				calculatedSize /= 1024;
-				unit++;
-			}
-
-			if (unit == 0)
-			{
-				return ((long)calculatedSize).ToStringInvariant() + " bytes";
-			}
-			else
-			{
-				return Math
-					.Round(calculatedSize, decimals)
-					.ToStringInvariant("0." + '0'.Repeat(decimals))
-					.Replace('.', ',') + " " + new[] { "KB", "MB", "GB", "TB", "PB", "EB" }[unit - 1];
-			}
-		}
-		/// <summary>
-		/// Formats a <see cref="long" /> value representing a byte size in the specified <see cref="ByteSizeFormat" /> and returns its equivalent <see cref="string" /> representation.
-		/// </summary>
-		/// <param name="size">A <see cref="long" /> value representing a byte size.</param>
-		/// <param name="format">The <see cref="ByteSizeFormat" /> to use to format <paramref name="size" />.</param>
-		/// <returns>
-		/// An equivalent <see cref="string" /> value representing the byte size value in the specified <see cref="ByteSizeFormat" />.
-		/// </returns>
-		public static string FormatByteSizeString(long size, ByteSizeFormat format)
-		{
-			Check.ArgumentOutOfRangeEx.GreaterEqual0(size, nameof(size));
-
-			switch (format)
-			{
-				case ByteSizeFormat.ByteSize:
-					return FormatByteSizeString(size, 0);
-				case ByteSizeFormat.ByteSizeTwoDigits:
-					return FormatByteSizeString(size, 2);
-				case ByteSizeFormat.Bytes:
-					return FormatInt64(size) + " bytes";
-				case ByteSizeFormat.KiloBytes:
-					return FormatInt64((long)Math.Ceiling(size / 1024.0)) + " KB";
-				case ByteSizeFormat.KiloBytesTwoDigits:
-					return FormatDouble(Math.Round(size / 1024.0, 2)) + " KB";
-				default:
-					throw Throw.InvalidEnumArgument(nameof(format));
-			}
-
-			string FormatInt64(long number) => number.ToStringInvariant("#,0").Replace(',', '.');
-			string FormatDouble(double number) => number.ToStringInvariant("#,0.##").Swap(',', '.');
 		}
 		/// <summary>
 		/// Converts the value of the specified <see cref="TimeSpan" /> to a human readable <see cref="string" /> representation by displaying the two most significant elements of either days, hours, minutes or seconds that are greater than zero, separated by a comma.
