@@ -7,12 +7,12 @@ using System.Text;
 namespace BytecodeApi.Text
 {
 	/// <summary>
-	/// Class that performs string manipulation on <see cref="string" /> objects containing text.
+	/// Class that performs linguistic <see cref="string" /> manipulation on objects.
 	/// </summary>
 	public static class Wording
 	{
-		internal const int DefaultFormatTimeSpanStringMaxElements = 2;
-		internal const string DefaultFormatTimeSpanStringSeparator = ", ";
+		internal const int DefaultFormatTimeSpanMaxElements = 2;
+		internal const string DefaultFormatTimeSpanSeparator = ", ";
 
 		/// <summary>
 		/// Trims the specified <see cref="string" /> by the specified length. If the <see cref="string" /> is longer than the value of <paramref name="length" />, it will be truncated by a leading "..." to match the <paramref name="length" /> parameter, including the length of the "..." appendix (3 characters).
@@ -73,9 +73,9 @@ namespace BytecodeApi.Text
 		/// <returns>
 		/// The value of the specified <see cref="TimeSpan" /> as a human readable <see cref="string" /> representation.
 		/// </returns>
-		public static string FormatTimeSpanString(TimeSpan timeSpan)
+		public static string FormatTimeSpan(TimeSpan timeSpan)
 		{
-			return FormatTimeSpanString(timeSpan, DefaultFormatTimeSpanStringMaxElements);
+			return FormatTimeSpan(timeSpan, DefaultFormatTimeSpanMaxElements);
 		}
 		/// <summary>
 		/// Converts the value of the specified <see cref="TimeSpan" /> to a human readable <see cref="string" /> representation by displaying a specified number of most significant elements of either days, hours, minutes or seconds that are greater than zero, separated by a comma.
@@ -86,9 +86,9 @@ namespace BytecodeApi.Text
 		/// <returns>
 		/// The value of the specified <see cref="TimeSpan" /> as a human readable <see cref="string" /> representation.
 		/// </returns>
-		public static string FormatTimeSpanString(TimeSpan timeSpan, int maxElements)
+		public static string FormatTimeSpan(TimeSpan timeSpan, int maxElements)
 		{
-			return FormatTimeSpanString(timeSpan, maxElements, DefaultFormatTimeSpanStringSeparator);
+			return FormatTimeSpan(timeSpan, maxElements, DefaultFormatTimeSpanSeparator);
 		}
 		/// <summary>
 		/// Converts the value of the specified <see cref="TimeSpan" /> to a human readable <see cref="string" /> representation by displaying a specified number of most significant elements of either days, hours, minutes or seconds that are greater than zero, separated by the specified separator.
@@ -100,7 +100,7 @@ namespace BytecodeApi.Text
 		/// <returns>
 		/// The value of the specified <see cref="TimeSpan" /> as a human readable <see cref="string" /> representation.
 		/// </returns>
-		public static string FormatTimeSpanString(TimeSpan timeSpan, int maxElements, string separator)
+		public static string FormatTimeSpan(TimeSpan timeSpan, int maxElements, string separator)
 		{
 			Check.ArgumentOutOfRangeEx.Greater0(maxElements, nameof(maxElements));
 			Check.ArgumentNull(separator, nameof(separator));
@@ -200,7 +200,7 @@ namespace BytecodeApi.Text
 		}
 		/// <summary>
 		/// Creates a binary view for the specified <see cref="byte" />[].
-		/// <para>Example: 00000000h: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ; ................</para>
+		/// <para>Example: 00000000h: 41 42 43 00 00 00 00 00 00 00 00 00 00 00 00 00 ; ABC.............</para>
 		/// </summary>
 		/// <param name="bytes">The <see cref="byte" />[] to create the binary view from.</param>
 		/// <returns>
@@ -212,7 +212,7 @@ namespace BytecodeApi.Text
 		}
 		/// <summary>
 		/// Creates a binary view for the specified <see cref="byte" />[], starting from the specified offset, including the specified number of bytes.
-		/// <para>Example: 00000000h: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ; ................</para>
+		/// <para>Example: 00000000h: 41 42 43 00 00 00 00 00 00 00 00 00 00 00 00 00 ; ABC.............</para>
 		/// </summary>
 		/// <param name="bytes">The <see cref="byte" />[] to create the binary view from.</param>
 		/// <param name="offset">The starting point in the buffer at which to begin.</param>

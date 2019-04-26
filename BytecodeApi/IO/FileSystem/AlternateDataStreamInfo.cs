@@ -12,7 +12,7 @@ namespace BytecodeApi.IO.FileSystem
 	/// <summary>
 	/// Provides properties and instance methods for NTFS alternate data streams.
 	/// </summary>
-	public class AlternateDataStreamInfo
+	public sealed class AlternateDataStreamInfo
 	{
 		private ReadOnlyCollection<AlternateDataStream> _Streams;
 		/// <summary>

@@ -108,6 +108,14 @@
 		/// <summary>
 		/// Trims the <see cref="string" /> value by the specified length in the <see cref="int" /> parameter. If the <see cref="string" /> is longer than the value of length, it will be truncated by a leading "..." to match the length parameter, including the length of the "..." appendix (3 characters).
 		/// </summary>
-		TrimText
+		TrimText,
+		/// <summary>
+		/// Returns a <see cref="int" /> value representing the levenshtein distance between the <see cref="string" /> and the parameter <see cref="string" />. If the value or the parameter are <see langword="null" />, or parameter is not a <see cref="string" />, <see langword="null" /> is returned.
+		/// </summary>
+		StringDistanceLevenshtein,
+		/// <summary>
+		/// Returns a <see cref="int" /> value representing the damerau-levenshtein distance between the <see cref="string" /> and the parameter <see cref="string" />. If the value or the parameter are <see langword="null" />, or parameter is not a <see cref="string" />, <see langword="null" /> is returned.
+		/// </summary>
+		StringDistanceDamerauLevenshtein
 	}
 }
