@@ -1,15 +1,16 @@
-﻿using BytecodeApi.Extensions;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+using System.Windows;
 
 namespace BytecodeApi
 {
 	/// <summary>
-	/// Represents the base class for singleton buckets. Inherited classes can specify <see langword="static" /> properties that use the <see cref="Get{T}()" /> and <see cref="Set{T}(T)" /> methods. Each class that inherits <see cref="SingletonBucketBase" /> has its own scope for singleton objects. This is an abstract class.
+	/// Represents the base class for singleton buckets. Derived classes can specify <see langword="static" /> properties that use the <see cref="Get{T}()" /> and <see cref="Set{T}(T)" /> methods. Each class that inherits <see cref="SingletonBucketBase{TBucket}" /> has its own scope for singleton objects, defined by <typeparamref name="TBucket" />. Each property must be of a different type. This is an abstract class.
+	/// <para>Example class: <see langword="public" /> <see langword="class" /> AppSingletons : SingletonBucketBase&lt;AppSingletons&gt;</para>
+	/// <para>Example property: <see langword="public" /> <see langword="static" /> <see cref="Window" /> MainWindow { <see langword="get" /> => Get&lt;Window&gt;(); <see langword="set" /> => Set(value); }</para>
 	/// </summary>
-	public abstract class SingletonBucketBase
+	/// <typeparam name="TBucket">The class type that defines the scope for the derived class. This type parameter should be the derived class itself.</typeparam>
+	public abstract class SingletonBucketBase<TBucket> where TBucket : SingletonBucketBase<TBucket>
 	{
 		private static readonly Dictionary<Tuple<Type, Type>, object> Singletons = new Dictionary<Tuple<Type, Type>, object>();
 
@@ -101,15 +102,7 @@ namespace BytecodeApi
 
 		private static Tuple<Type, Type> GetKey<T>()
 		{
-			return Tuple.Create
-			(
-				new StackTrace()
-					.GetFrames()
-					.FirstOrDefault(frame => typeof(SingletonBucketBase).IsAssignableFrom(frame.GetMethod().DeclaringType, true))
-					?.GetMethod()
-					.DeclaringType ?? throw Throw.InvalidOperation("Could not determine class type."),
-				typeof(T)
-			);
+			return Tuple.Create(typeof(TBucket), typeof(T));
 		}
 	}
 }
