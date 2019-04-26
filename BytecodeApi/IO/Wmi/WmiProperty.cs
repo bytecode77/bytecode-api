@@ -81,7 +81,7 @@ namespace BytecodeApi.IO.Wmi
 		/// </returns>
 		public override int GetHashCode()
 		{
-			return (Name?.GetHashCode() ?? 0) ^ (Value?.GetHashCode() ?? 0);
+			return CSharp.GetHashCode(Name, Value);
 		}
 
 		/// <summary>

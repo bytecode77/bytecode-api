@@ -578,7 +578,7 @@ namespace BytecodeApi.Mathematics
 		/// </returns>
 		public override int GetHashCode()
 		{
-			return Bytes.GetHashCode();
+			return CSharp.GetHashCode(Bytes);
 		}
 
 		/// <summary>

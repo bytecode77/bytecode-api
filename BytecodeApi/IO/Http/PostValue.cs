@@ -69,7 +69,7 @@ namespace BytecodeApi.IO.Http
 		/// </returns>
 		public override int GetHashCode()
 		{
-			return (Key?.GetHashCode() ?? 0) ^ (Value?.GetHashCode() ?? 0);
+			return CSharp.GetHashCode(Key, Value);
 		}
 
 		/// <summary>

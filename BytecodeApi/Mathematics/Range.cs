@@ -107,7 +107,7 @@ namespace BytecodeApi.Mathematics
 		/// </returns>
 		public override int GetHashCode()
 		{
-			return Min.GetHashCode() ^ Max.GetHashCode();
+			return CSharp.GetHashCode(Min, Max);
 		}
 
 		/// <summary>

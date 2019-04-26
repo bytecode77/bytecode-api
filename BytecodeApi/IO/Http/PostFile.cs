@@ -98,7 +98,7 @@ namespace BytecodeApi.IO.Http
 		/// </returns>
 		public override int GetHashCode()
 		{
-			return (FormName?.GetHashCode() ?? 0) ^ (FileName?.GetHashCode() ?? 0) ^ (Content?.GetHashCode() ?? 0);
+			return CSharp.GetHashCode(FormName, FileName, Content);
 		}
 	}
 }

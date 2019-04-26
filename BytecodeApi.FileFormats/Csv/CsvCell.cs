@@ -80,7 +80,7 @@ namespace BytecodeApi.FileFormats.Csv
 		/// </returns>
 		public override int GetHashCode()
 		{
-			return Value?.GetHashCode() ?? 0;
+			return CSharp.GetHashCode(Value);
 		}
 
 		/// <summary>

@@ -123,7 +123,7 @@ namespace BytecodeApi.Data
 		/// </returns>
 		public override int GetHashCode()
 		{
-			return (Name?.GetHashCode() ?? 0) ^ (Content?.GetHashCode() ?? 0) ^ (Tag?.GetHashCode() ?? 0);
+			return CSharp.GetHashCode(Name, Content, Tag);
 		}
 	}
 }
