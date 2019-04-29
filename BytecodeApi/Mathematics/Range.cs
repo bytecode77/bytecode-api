@@ -11,11 +11,11 @@ namespace BytecodeApi.Mathematics
 		/// <summary>
 		/// Gets or sets the minimum value of this <see cref="Range{T}" />.
 		/// </summary>
-		public T Min { get; set; }
+		public T Min { get; private set; }
 		/// <summary>
 		/// Gets or sets the maximum value of this <see cref="Range{T}" />.
 		/// </summary>
-		public T Max { get; set; }
+		public T Max { get; private set; }
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Range{T}" /> structure to the values indicated by <paramref name="min" /> and <paramref name="max" />.
