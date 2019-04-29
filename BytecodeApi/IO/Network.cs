@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
+using System.Net.Security;
 using System.Net.Sockets;
 
 namespace BytecodeApi.IO
@@ -11,6 +12,11 @@ namespace BytecodeApi.IO
 	/// </summary>
 	public static class Network
 	{
+		/// <summary>
+		/// Represents a <see cref="RemoteCertificateValidationCallback" /> callback that validates all certificates without checking. This field is read-only.
+		/// </summary>
+		public static readonly RemoteCertificateValidationCallback AlwaysValidCertificateValidationCallback = delegate { return true; };
+
 		/// <summary>
 		/// Sets up the <see cref="ServicePointManager.ServerCertificateValidationCallback" /> to validate all certificates without checking.
 		/// </summary>

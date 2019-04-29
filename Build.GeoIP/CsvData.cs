@@ -21,9 +21,9 @@ namespace Build.GeoIP
 		{
 			CsvData csvData = new CsvData();
 
-			BlobTree countryBlob = ZipCompression.Decompress(HttpClient.Default.GetBytes("https://geolite.maxmind.com/download/geoip/database/GeoLite2-Country-CSV.zip"));
-			BlobTree asnBlob = ZipCompression.Decompress(HttpClient.Default.GetBytes("https://geolite.maxmind.com/download/geoip/database/GeoLite2-ASN-CSV.zip"));
-			BlobTree cityBlob = ZipCompression.Decompress(HttpClient.Default.GetBytes("https://geolite.maxmind.com/download/geoip/database/GeoLite2-City-CSV.zip"));
+			BlobTree countryBlob = ZipCompression.Decompress(HttpClient.Default.CreateGetRequest("https://geolite.maxmind.com/download/geoip/database/GeoLite2-Country-CSV.zip").ReadBytes());
+			BlobTree asnBlob = ZipCompression.Decompress(HttpClient.Default.CreateGetRequest("https://geolite.maxmind.com/download/geoip/database/GeoLite2-ASN-CSV.zip").ReadBytes());
+			BlobTree cityBlob = ZipCompression.Decompress(HttpClient.Default.CreateGetRequest("https://geolite.maxmind.com/download/geoip/database/GeoLite2-City-CSV.zip").ReadBytes());
 
 			csvData.Country = FindBlob(countryBlob, "GeoLite2-Country-Locations-en.csv");
 			csvData.Range = FindBlob(countryBlob, "GeoLite2-Country-Blocks-IPv4.csv");
