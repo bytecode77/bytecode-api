@@ -11,6 +11,8 @@ using System.Web;
 namespace BytecodeApi.IO.Http
 {
 	//FEATURE: PostMultipart TransferCallback
+	//IMPORTANT: Parameters for Get()
+	//IMPORTANT: HttpClientStream with TransferCallback
 	/// <summary>
 	/// Provides a base class for sending HTTP requests and receiving HTTP responses from a resource identified by a URI.
 	/// </summary>
@@ -398,7 +400,7 @@ namespace BytecodeApi.IO.Http
 		}
 		private HttpWebRequest CreateRequest(string url, string method)
 		{
-			HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
+			HttpWebRequest request = WebRequest.CreateHttp(url);
 			request.Method = method;
 			request.UserAgent = UserAgent;
 			request.AllowAutoRedirect = AllowAutoRedirect;

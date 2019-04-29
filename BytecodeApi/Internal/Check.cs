@@ -23,6 +23,11 @@ namespace BytecodeApi
 			if (parameter == null) throw new ArgumentNullException(parameterName);
 		}
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void InvalidOperation(bool condition, string message)
+		{
+			if (!condition) throw new InvalidOperationException(message);
+		}
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void ArgumentOutOfRange(bool condition, string parameterName, string message)
 		{
 			if (!condition) throw new ArgumentOutOfRangeException(parameterName, message);
