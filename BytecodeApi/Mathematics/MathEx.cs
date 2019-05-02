@@ -947,34 +947,61 @@ namespace BytecodeApi.Mathematics
 		/// <summary>
 		/// Computes the Fibonacci value at position <paramref name="n" />.
 		/// </summary>
-		/// <param name="n">A <see cref="int" /> value specifying the position of the Fibonacci value.</param>
+		/// <param name="n">A <see cref="int" /> value specifying the position of the Fibonacci value. If <paramref name="n" /> is greater than 91, an <see cref="OverflowException" /> will be raised.</param>
 		/// <returns>
 		/// The Fibonacci value at position <paramref name="n" />.
 		/// </returns>
 		public static long Fibonacci(int n)
 		{
 			Check.ArgumentOutOfRangeEx.GreaterEqual0(n, nameof(n));
+			Check.Overflow(n <= 91);
 
 			long a = 0;
 			long b = 1;
+
 			for (int i = 0; i < n; i++)
 			{
 				long swap = a;
 				a = b;
 				b = swap + b;
 			}
+
+			return a;
+		}
+		/// <summary>
+		/// Computes the Fibonacci value at position <paramref name="n" /> and returns a <see cref="BigInteger" /> value.
+		/// </summary>
+		/// <param name="n">A <see cref="int" /> value specifying the position of the Fibonacci value.</param>
+		/// <returns>
+		/// The Fibonacci value at position <paramref name="n" />, represented as a <see cref="BigInteger" /> value.
+		/// </returns>
+		public static BigInteger FibonacciBig(int n)
+		{
+			Check.ArgumentOutOfRangeEx.GreaterEqual0(n, nameof(n));
+
+			BigInteger a = 0;
+			BigInteger b = 1;
+
+			for (int i = 0; i < n; i++)
+			{
+				BigInteger swap = a;
+				a = b;
+				b = swap + b;
+			}
+
 			return a;
 		}
 		/// <summary>
 		/// Returns an enumerable of Fibonacci values that yields <paramref name="n" /> elements.
 		/// </summary>
-		/// <param name="n">A <see cref="int" /> value specifying the number of Fibonacci values to compute.</param>
+		/// <param name="n">A <see cref="int" /> value specifying the number of Fibonacci values to compute. If <paramref name="n" /> is greater than 91, an <see cref="OverflowException" /> will be raised.</param>
 		/// <returns>
 		/// An enumerable of Fibonacci values that yields <paramref name="n" /> elements.
 		/// </returns>
 		public static IEnumerable<long> EnumerateFibonacci(int n)
 		{
 			Check.ArgumentOutOfRangeEx.GreaterEqual0(n, nameof(n));
+			Check.Overflow(n <= 91);
 
 			long a = 0;
 			long b = 1;
@@ -983,6 +1010,28 @@ namespace BytecodeApi.Mathematics
 			{
 				yield return a;
 				long swap = a;
+				a = b;
+				b = swap + b;
+			}
+		}
+		/// <summary>
+		/// Returns an enumerable of Fibonacci values that yields <paramref name="n" /> <see cref="BigInteger" /> elements.
+		/// </summary>
+		/// <param name="n">A <see cref="int" /> value specifying the number of Fibonacci values to compute.</param>
+		/// <returns>
+		/// An enumerable of Fibonacci values that yields <paramref name="n" /> <see cref="BigInteger" /> elements.
+		/// </returns>
+		public static IEnumerable<BigInteger> EnumerateFibonacciBig(int n)
+		{
+			Check.ArgumentOutOfRangeEx.GreaterEqual0(n, nameof(n));
+
+			BigInteger a = 0;
+			BigInteger b = 1;
+
+			for (int i = 0; i < n; i++)
+			{
+				yield return a;
+				BigInteger swap = a;
 				a = b;
 				b = swap + b;
 			}

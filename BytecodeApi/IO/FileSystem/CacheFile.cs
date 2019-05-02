@@ -19,6 +19,10 @@ namespace BytecodeApi.IO.FileSystem
 		/// Gets the path to the file of this instance. This file does not need to exist.
 		/// </summary>
 		public string Path { get; private set; }
+		/// <summary>
+		/// Gets the amount of time that has passed since the cached file was last written to.
+		/// </summary>
+		public TimeSpan Age => DateTime.Now - new FileInfo(Path).LastWriteTime;
 
 		private CacheFile(string path, TimeSpan? timeout, CacheFileRequestCallback requestCallback, CacheFileUpdateCallback updateCallback)
 		{
@@ -32,7 +36,7 @@ namespace BytecodeApi.IO.FileSystem
 		/// </summary>
 		/// <param name="path">A <see cref="string" /> that contains the name of the file that represents the cached version. This file does not need to exist.</param>
 		/// <param name="timeout">A <see cref="TimeSpan" /> value that specifies the timeout period after which the file will be updated. This value is compared to the LastWriteTime property of the file.</param>
-		/// <param name="updateCallback">The method that is called when the file needs to be updated. The returns a stream to read from that will be written to the contents of this file.</param>
+		/// <param name="updateCallback">The method that is called when the file needs to be updated.</param>
 		/// <returns>
 		/// The <see cref="CacheFile" /> this method creates.
 		/// </returns>
@@ -49,7 +53,7 @@ namespace BytecodeApi.IO.FileSystem
 		/// </summary>
 		/// <param name="path">A <see cref="string" /> that contains the name of the file that represents the cached version. This file does not need to exist.</param>
 		/// <param name="requestCallback">The method that is called when the file is accessed. If the method returns <see langword="false" />, it means the cached file is invalid and <paramref name="updateCallback" /> is called to update the file. If it returns <see langword="true" />, the existing file is read from the disk. This method is only called when the file on the disk exists.</param>
-		/// <param name="updateCallback">The method that is called when the file needs to be updated. The returns a stream to read from that will be written to the contents of this file.</param>
+		/// <param name="updateCallback">The method that is called when the file needs to be updated.</param>
 		/// <returns>
 		/// The <see cref="CacheFile" /> this method creates.
 		/// </returns>
@@ -73,12 +77,11 @@ namespace BytecodeApi.IO.FileSystem
 		/// </returns>
 		public FileStream OpenRead(out bool updated)
 		{
-			if (!File.Exists(Path) || DateTime.Now - new FileInfo(Path).LastWriteTime > Timeout || RequestCallback?.Invoke(new FileInfo(Path)) == false)
+			if (!File.Exists(Path) || Age > Timeout || RequestCallback?.Invoke(new FileInfo(Path)) == false)
 			{
 				using (FileStream file = File.Create(Path))
-				using (Stream updateStream = UpdateCallback())
 				{
-					updateStream.CopyTo(file);
+					UpdateCallback(file);
 				}
 
 				updated = true;
