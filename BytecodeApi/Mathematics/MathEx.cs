@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Security.Cryptography;
 
 namespace BytecodeApi.Mathematics
@@ -865,21 +866,21 @@ namespace BytecodeApi.Mathematics
 		/// <summary>
 		/// Computes all prime factors of the specified <see cref="int" /> value.
 		/// </summary>
-		/// <param name="value">The <see cref="int" /> to compute its prime factors from.</param>
+		/// <param name="n">The <see cref="int" /> to compute its prime factors from.</param>
 		/// <returns>
-		/// A <see cref="int" />[] containing all prime factors of <paramref name="value" />.
+		/// A <see cref="int" />[] containing all prime factors of <paramref name="n" />.
 		/// </returns>
-		public static int[] ComputePrimeFactors(int value)
+		public static int[] ComputePrimeFactors(int n)
 		{
-			Check.ArgumentOutOfRangeEx.Greater0(value, nameof(value));
+			Check.ArgumentOutOfRangeEx.Greater0(n, nameof(n));
 
 			List<int> result = new List<int>();
 
-			for (int i = 2; value > 1; i++)
+			for (int i = 2; n > 1; i++)
 			{
-				while (value % i == 0)
+				while (n % i == 0)
 				{
-					value /= i;
+					n /= i;
 					result.Add(i);
 				}
 			}
@@ -889,26 +890,59 @@ namespace BytecodeApi.Mathematics
 		/// <summary>
 		/// Computes all prime factors of the specified <see cref="long" /> value.
 		/// </summary>
-		/// <param name="value">The <see cref="long" /> to compute its prime factors from.</param>
+		/// <param name="n">The <see cref="long" /> to compute its prime factors from.</param>
 		/// <returns>
-		/// A <see cref="long" />[] containing all prime factors of <paramref name="value" />.
+		/// A <see cref="long" />[] containing all prime factors of <paramref name="n" />.
 		/// </returns>
-		public static long[] ComputePrimeFactors(long value)
+		public static long[] ComputePrimeFactors(long n)
 		{
-			Check.ArgumentOutOfRangeEx.Greater0(value, nameof(value));
+			Check.ArgumentOutOfRangeEx.Greater0(n, nameof(n));
 
 			List<long> result = new List<long>();
 
-			for (long i = 2; value > 1; i++)
+			for (long i = 2; n > 1; i++)
 			{
-				while (value % i == 0)
+				while (n % i == 0)
 				{
-					value /= i;
+					n /= i;
 					result.Add(i);
 				}
 			}
 
 			return result.ToArray();
+		}
+		/// <summary>
+		/// Computes the factorial of a number.
+		/// <para>Example: Factorial(6) = 1*2*3*4*5*6</para>
+		/// </summary>
+		/// <param name="n">The value to compute the factorial from. If <paramref name="n" /> is greater than 20, an <see cref="OverflowException" /> will be raised. For larger numbers, use <see cref="ComputeFactorialBig(int)" />.</param>
+		/// <returns>
+		/// The factorial of <paramref name="n" />.
+		/// </returns>
+		public static long ComputeFactorial(int n)
+		{
+			Check.ArgumentOutOfRangeEx.GreaterEqual0(n, nameof(n));
+			Check.Overflow(n <= 20);
+
+			long result = 1;
+			for (int i = 1; i <= n; i++) result *= i;
+			return result;
+		}
+		/// <summary>
+		/// Computes the factorial of a number and returns a <see cref="BigInteger" /> value.
+		/// <para>Example: Factorial(6) = 1*2*3*4*5*6</para>
+		/// </summary>
+		/// <param name="n">The value to compute the factorial from.</param>
+		/// <returns>
+		/// The factorial of <paramref name="n" />, represented as a <see cref="BigInteger" /> value.
+		/// </returns>
+		public static BigInteger ComputeFactorialBig(int n)
+		{
+			Check.ArgumentOutOfRangeEx.GreaterEqual0(n, nameof(n));
+
+			BigInteger result = 1;
+			for (int i = 1; i <= n; i++) result *= i;
+			return result;
 		}
 		/// <summary>
 		/// Computes the Fibonacci value at position <paramref name="n" />.
