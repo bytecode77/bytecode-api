@@ -222,15 +222,30 @@ namespace BytecodeApi.Text
 		/// </returns>
 		public static string FormatBinary(byte[] bytes, int offset, int count)
 		{
+			return FormatBinary(bytes, offset, count, 0);
+		}
+		/// <summary>
+		/// Creates a binary view for the specified <see cref="byte" />[], starting from the specified offset, including the specified number of bytes.
+		/// <para>Example: 00000000h: 41 42 43 00 00 00 00 00 00 00 00 00 00 00 00 00 ; ABC.............</para>
+		/// </summary>
+		/// <param name="bytes">The <see cref="byte" />[] to create the binary view from.</param>
+		/// <param name="offset">The starting point in the buffer at which to begin.</param>
+		/// <param name="count">The number of bytes to take.</param>
+		/// <param name="startPosition">Indicates the starting position that is displayed in the first column of the result <see cref="string" />. This can be any number. The default value is 0.</param>
+		/// <returns>
+		/// A new <see cref="string" /> representing the specified <see cref="byte" />[] as a binary view.
+		/// </returns>
+		public static string FormatBinary(byte[] bytes, int offset, int count, int startPosition)
+		{
 			Check.ArgumentNull(bytes, nameof(bytes));
 			Check.ArgumentEx.OffsetAndLengthOutOfBounds(offset, count, bytes.Length);
 
 			StringBuilder stringBuilder = new StringBuilder();
 
-			for (int i = offset, position = 0; i < offset + count; i += 16, position += 16)
+			for (int i = offset; i < offset + count; i += 16, startPosition += 16)
 			{
 				int length = Math.Min(bytes.Length - i, 16);
-				string line1 = position.ToStringInvariant("x8") + "h: ";
+				string line1 = startPosition.ToStringInvariant("x8") + "h: ";
 				string line2 = null;
 
 				for (int j = 0; j < length; j++)
