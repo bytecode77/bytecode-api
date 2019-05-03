@@ -1,4 +1,6 @@
-﻿namespace BytecodeApi.Mathematics
+﻿using System.Collections;
+
+namespace BytecodeApi.Mathematics
 {
 	/// <summary>
 	/// Provides <see langword="static" /> methods that process single bits in integer datatypes and <see cref="byte" />[] objects.
@@ -354,6 +356,94 @@
 			{
 				value[index >> 3] ^= (byte)(1 << (index & 7));
 			}
+		}
+		/// <summary>
+		/// Converts the specified <see cref="byte" /> value to a <see cref="BitArray" />.
+		/// </summary>
+		/// <param name="value">The <see cref="byte" /> value to retrieve the bits from.</param>
+		/// <returns>
+		/// An equivalent <see cref="BitArray" /> value containing all bits from <paramref name="value" />.
+		/// </returns>
+		public static BitArray GetBitArray(byte value)
+		{
+			return new BitArray(new[] { value });
+		}
+		/// <summary>
+		/// Converts the specified <see cref="sbyte" /> value to a <see cref="BitArray" />.
+		/// </summary>
+		/// <param name="value">The <see cref="sbyte" /> value to retrieve the bits from.</param>
+		/// <returns>
+		/// An equivalent <see cref="BitArray" /> value containing all bits from <paramref name="value" />.
+		/// </returns>
+		public static BitArray GetBitArray(sbyte value)
+		{
+			return GetBitArray((byte)value);
+		}
+		/// <summary>
+		/// Converts the specified <see cref="int" /> value to a <see cref="BitArray" />.
+		/// </summary>
+		/// <param name="value">The <see cref="int" /> value to retrieve the bits from.</param>
+		/// <returns>
+		/// An equivalent <see cref="BitArray" /> value containing all bits from <paramref name="value" />.
+		/// </returns>
+		public static BitArray GetBitArray(int value)
+		{
+			return new BitArray(new[] { value });
+		}
+		/// <summary>
+		/// Converts the specified <see cref="uint" /> value to a <see cref="BitArray" />.
+		/// </summary>
+		/// <param name="value">The <see cref="uint" /> value to retrieve the bits from.</param>
+		/// <returns>
+		/// An equivalent <see cref="BitArray" /> value containing all bits from <paramref name="value" />.
+		/// </returns>
+		public static BitArray GetBitArray(uint value)
+		{
+			return GetBitArray((int)value);
+		}
+		/// <summary>
+		/// Converts the specified <see cref="long" /> value to a <see cref="BitArray" />.
+		/// </summary>
+		/// <param name="value">The <see cref="long" /> value to retrieve the bits from.</param>
+		/// <returns>
+		/// An equivalent <see cref="BitArray" /> value containing all bits from <paramref name="value" />.
+		/// </returns>
+		public static BitArray GetBitArray(long value)
+		{
+			return new BitArray(new int[] { (int)value, (int)(value >> 32) });
+		}
+		/// <summary>
+		/// Converts the specified <see cref="ulong" /> value to a <see cref="BitArray" />.
+		/// </summary>
+		/// <param name="value">The <see cref="ulong" /> value to retrieve the bits from.</param>
+		/// <returns>
+		/// An equivalent <see cref="BitArray" /> value containing all bits from <paramref name="value" />.
+		/// </returns>
+		public static BitArray GetBitArray(ulong value)
+		{
+			return GetBitArray((long)value);
+		}
+		/// <summary>
+		/// Converts the specified <see cref="short" /> value to a <see cref="BitArray" />.
+		/// </summary>
+		/// <param name="value">The <see cref="short" /> value to retrieve the bits from.</param>
+		/// <returns>
+		/// An equivalent <see cref="BitArray" /> value containing all bits from <paramref name="value" />.
+		/// </returns>
+		public static BitArray GetBitArray(short value)
+		{
+			return new BitArray(new byte[] { (byte)value, (byte)(value >> 8) });
+		}
+		/// <summary>
+		/// Converts the specified <see cref="ushort" /> value to a <see cref="BitArray" />.
+		/// </summary>
+		/// <param name="value">The <see cref="ushort" /> value to retrieve the bits from.</param>
+		/// <returns>
+		/// An equivalent <see cref="BitArray" /> value containing all bits from <paramref name="value" />.
+		/// </returns>
+		public static BitArray GetBitArray(ushort value)
+		{
+			return GetBitArray((short)value);
 		}
 	}
 }

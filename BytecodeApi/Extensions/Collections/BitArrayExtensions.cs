@@ -9,6 +9,22 @@ namespace BytecodeApi.Extensions
 	public static class BitArrayExtensions
 	{
 		/// <summary>
+		/// Converts the bits of this <see cref="BitArray" /> to a <see cref="string" /> containing a sequence of '0' or '1' characters.
+		/// </summary>
+		/// <param name="array">The <see cref="BitArray" /> to convert.</param>
+		/// <returns>
+		/// An equivalent sequence of '0' or '1' characters representing this <see cref="BitArray" />.
+		/// </returns>
+		public static string ToBitString(this BitArray array)
+		{
+			Check.ArgumentNull(array, nameof(array));
+
+			char[] str = new char[array.Length];
+			for (int i = 0; i < str.Length; i++) str[i] = array[i] ? '1' : '0';
+
+			return str.AsString();
+		}
+		/// <summary>
 		/// Returns the number of values in this <see cref="BitArray" /> whose value is <see langword="true" />.
 		/// </summary>
 		/// <param name="array">The <see cref="BitArray" /> to check.</param>
@@ -103,6 +119,29 @@ namespace BytecodeApi.Extensions
 			{
 				return false;
 			}
+		}
+		/// <summary>
+		/// Converts the bits of this <see cref="BitArray" /> to an equivalent <see cref="byte" />[]. If there is a padding of less than 8 bits, the last byte contains the remaining bits.
+		/// </summary>
+		/// <param name="array">The <see cref="BitArray" /> to convert.</param>
+		/// <returns>
+		/// An equivalent <see cref="byte" />[] representing this <see cref="BitArray" />.
+		/// </returns>
+		public static byte[] GetBytes(this BitArray array)
+		{
+			Check.ArgumentNull(array, nameof(array));
+
+			byte[] bytes = new byte[(array.Length + 7) / 8];
+
+			for (int i = 0, position = 0; i < bytes.Length; i++)
+			{
+				for (int j = 0; j < 8 && position < array.Length; j++, position++)
+				{
+					if (array[position]) bytes[i] = (byte)(bytes[i] | 1 << j);
+				}
+			}
+
+			return bytes;
 		}
 		/// <summary>
 		/// Copies a specified number of bits from this <see cref="BitArray" /> and returns a new <see cref="BitArray" /> representing a fraction of the original <see cref="BitArray" />.
