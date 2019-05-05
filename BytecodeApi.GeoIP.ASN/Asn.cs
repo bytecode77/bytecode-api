@@ -66,7 +66,7 @@ namespace BytecodeApi.GeoIP.ASN
 		/// </returns>
 		public override int GetHashCode()
 		{
-			return Number.GetHashCode();
+			return CSharp.GetHashCode(Number);
 		}
 
 		/// <summary>

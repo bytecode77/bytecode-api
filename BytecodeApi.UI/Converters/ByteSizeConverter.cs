@@ -72,7 +72,7 @@ namespace BytecodeApi.UI.Converters
 		/// Initializes a new instance of the <see cref="ByteSizeConverter" /> class with the specified parameters.
 		/// </summary>
 		/// <param name="unit">The <see cref="ByteSizeUnit" /> that is used to format the result <see cref="string" />.</param>
-		public ByteSizeConverter(ByteSizeUnit? unit) : this(unit, 2)
+		public ByteSizeConverter(ByteSizeUnit? unit) : this(unit, ByteSize.DefaultFormatDecimals)
 		{
 		}
 		/// <summary>

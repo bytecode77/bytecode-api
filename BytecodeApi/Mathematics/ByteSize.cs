@@ -8,6 +8,8 @@ namespace BytecodeApi.Mathematics
 	/// </summary>
 	public struct ByteSize : IComparable<ByteSize>, IEquatable<ByteSize>
 	{
+		internal const int DefaultFormatDecimals = 2;
+
 		/// <summary>
 		/// Represents the number of bytes in one kilobyte. This field is constant.
 		/// </summary>
@@ -397,7 +399,7 @@ namespace BytecodeApi.Mathematics
 		/// </returns>
 		public string Format()
 		{
-			return Format(2);
+			return Format(DefaultFormatDecimals);
 		}
 		/// <summary>
 		/// Returns a <see cref="string" /> that represents this instance using the specified formatting parameters.
@@ -461,7 +463,7 @@ namespace BytecodeApi.Mathematics
 		/// </returns>
 		public string FormatWithUnit(ByteSizeUnit unit)
 		{
-			return FormatWithUnit(unit, 2);
+			return FormatWithUnit(unit, DefaultFormatDecimals);
 		}
 		/// <summary>
 		/// Returns a <see cref="string" /> that represents this instance using a specified <see cref="ByteSizeUnit" /> and the specified formatting parameters.
@@ -576,7 +578,7 @@ namespace BytecodeApi.Mathematics
 		/// </returns>
 		public override int GetHashCode()
 		{
-			return Bytes.GetHashCode();
+			return CSharp.GetHashCode(Bytes);
 		}
 
 		/// <summary>

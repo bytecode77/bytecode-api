@@ -11,7 +11,7 @@ namespace BytecodeApi.FileFormats.Csv
 		/// <summary>
 		/// Gets or sets the cell content of a flat file database.
 		/// </summary>
-		public string Value { get; set; }
+		public string Value { get; private set; }
 		/// <summary>
 		/// Gets or sets the parsed <see cref="int" /> value of the <see cref="Value" /> property. If conversion fails, <see langword="null" /> is returned. Assigning a value sets the <see cref="Value" /> property by converting the value to a <see cref="string" />.
 		/// </summary>
@@ -80,7 +80,7 @@ namespace BytecodeApi.FileFormats.Csv
 		/// </returns>
 		public override int GetHashCode()
 		{
-			return Value?.GetHashCode() ?? 0;
+			return CSharp.GetHashCode(Value);
 		}
 
 		/// <summary>

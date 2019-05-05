@@ -137,9 +137,10 @@ namespace BytecodeApi.UI.Extensions
 			Type type = dependencyObject.GetType();
 			FieldInfo field = type.GetField(propertyName);
 
-			for (; field == null && type != typeof(DependencyObject); field = type.GetField(propertyName))
+			while (field == null && type != typeof(DependencyObject))
 			{
 				type = type.BaseType;
+				field = type.GetField(propertyName);
 			}
 
 			if (field == null)

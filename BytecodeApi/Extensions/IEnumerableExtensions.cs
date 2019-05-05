@@ -53,7 +53,7 @@ namespace BytecodeApi.Extensions
 		{
 			Check.ArgumentNull(source, nameof(source));
 
-			return Enumerable.Any(source);
+			return !Enumerable.Any(source);
 		}
 		/// <summary>
 		/// Determines whether a sequence that satisfies a specified condition contains no elements.

@@ -1,7 +1,7 @@
 namespace BytecodeApi.FileFormats.Coff
 {
 	/// <summary>
-	/// Represents the optional header of a PE image file. This is an abstract class.
+	/// Represents the base class for PE image optional headers. This is an abstract class.
 	/// </summary>
 	public abstract class ImageOptionalHeader
 	{

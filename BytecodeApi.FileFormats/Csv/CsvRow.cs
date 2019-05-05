@@ -51,9 +51,9 @@ namespace BytecodeApi.FileFormats.Csv
 		/// </summary>
 		public int Count => Cells.Count;
 		/// <summary>
-		/// Gets the one-based line number of this <see cref="CsvRow" /> object, if it was loaded from an existing flat file database source. Returns <see langword="null" />, if the row has been manually initialized.
+		/// Gets the one-based line number of this <see cref="CsvRow" /> object, if it was loaded from an existing flat file database source. Returns -1, if the row has been manually initialized.
 		/// </summary>
-		public long? LineNumber { get; internal set; }
+		public long LineNumber { get; internal set; }
 		/// <summary>
 		/// If the line could not be parsed, gets the <see cref="string" /> representing the original line, otherwise returns <see langword="null" />.
 		/// </summary>
@@ -65,6 +65,7 @@ namespace BytecodeApi.FileFormats.Csv
 		public CsvRow()
 		{
 			Cells = new List<CsvCell>();
+			LineNumber = -1;
 		}
 		/// <summary>
 		/// Initializes a new instance of the <see cref="CsvRow" /> class with a collection of cells.

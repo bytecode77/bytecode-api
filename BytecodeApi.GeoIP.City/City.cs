@@ -93,7 +93,7 @@ namespace BytecodeApi.GeoIP.City
 		/// </returns>
 		public override int GetHashCode()
 		{
-			return (Country?.GetHashCode() ?? 0) ^ (Name?.GetHashCode() ?? 0) ^ (Subdivision1Name?.GetHashCode() ?? 0) ^ (Subdivision2Name?.GetHashCode() ?? 0) ^ (TimeZone?.GetHashCode() ?? 0);
+			return CSharp.GetHashCode(Country, Name, Subdivision1Name, Subdivision2Name, TimeZone);
 		}
 
 		/// <summary>

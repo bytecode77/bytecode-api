@@ -101,14 +101,13 @@ if (index != -1)
 ### Example: HTTP GET & POST request handling
 
 ```
-// HttpClient implements GET and POST requests and returns a byte[] or a string.
-HttpClient client = new HttpClient();
-
-byte[] file = client.PostBytes("http://example.com/getFile", new[]
-{
-	new PostValue("fileID", "123"),
-	new PostValue("convert", "1")
-});
+// HttpClient implements GET, POST and multipart requests
+string str = new HttpClient()
+	.CreatePostRequest("http://example.com/")
+	.AddQueryParameter("id", "123")             // GET parameter for URL
+	.AddPostValue("submit", "on")               // POST value (e.g.: The Submit button)
+	.ReadString();
+//              ^- Complete the request and get the result as string or byte[]
 ```
 
 ### Example: WMI wrapper class
@@ -187,7 +186,7 @@ up-to-date reference.
 
 ## Downloads
 
-[![](https://bytecode77.com/images/shared/fileicons/zip.png) BytecodeApi 1.3.0 Binaries.zip](https://bytecode77.com/downloads/framework/bytecode-api/BytecodeApi%201.3.0%20Binaries.zip)
+[![](https://bytecode77.com/images/shared/fileicons/zip.png) BytecodeApi 1.3.1 Binaries.zip](https://bytecode77.com/downloads/framework/bytecode-api/BytecodeApi%201.3.1%20Binaries.zip)
 
 ## Project Page
 

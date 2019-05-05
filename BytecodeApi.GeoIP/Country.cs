@@ -83,7 +83,7 @@ namespace BytecodeApi.GeoIP
 		/// </returns>
 		public override int GetHashCode()
 		{
-			return Name.GetHashCode();
+			return CSharp.GetHashCode(Name);
 		}
 
 		/// <summary>

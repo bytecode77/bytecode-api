@@ -15,6 +15,25 @@ namespace BytecodeApi
 	public static class CSharp
 	{
 		/// <summary>
+		/// Calculates the hashcode for a set of objects by using XOR (i.e. a ^ b ^ c ...). This is a helper method for GetHashCode method implementations that do not require value specific handling.
+		/// </summary>
+		/// <param name="objects">A set of objects, where <see cref="object.GetHashCode" /> is called on each <see cref="object" /> that is not <see langword="null" />.</param>
+		/// <returns>
+		/// The combined hashcode of all objects in the given set.
+		/// </returns>
+		public static int GetHashCode(params object[] objects)
+		{
+			Check.ArgumentNull(objects, nameof(objects));
+
+			unchecked
+			{
+				int hashCode = 0;
+				foreach (object obj in objects) hashCode ^= obj?.GetHashCode() ?? 0;
+
+				return hashCode;
+			}
+		}
+		/// <summary>
 		/// Returns the converted version of <paramref name="obj" />, if it is of the specified type; otherwise, returns <see langword="default" />(<typeparamref name="T" />).
 		/// </summary>
 		/// <typeparam name="T">The type to which to convert <paramref name="obj" /> to.</typeparam>

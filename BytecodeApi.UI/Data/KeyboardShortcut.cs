@@ -10,7 +10,7 @@ namespace BytecodeApi.UI.Data
 	public class KeyboardShortcut : ObservableObject
 	{
 		/// <summary>
-		/// Gets or sets <see cref="bool" /> value indicating whether this <see cref="KeyboardShortcut" /> uses the Ctrl modifier.
+		/// Gets or sets a value indicating whether this <see cref="KeyboardShortcut" /> uses the Ctrl modifier.
 		/// </summary>
 		public bool IsCtrl
 		{
@@ -22,7 +22,7 @@ namespace BytecodeApi.UI.Data
 			}
 		}
 		/// <summary>
-		/// Gets or sets <see cref="bool" /> value indicating whether this <see cref="KeyboardShortcut" /> uses the Shift modifier.
+		/// Gets or sets a value indicating whether this <see cref="KeyboardShortcut" /> uses the Shift modifier.
 		/// </summary>
 		public bool IsShift
 		{
@@ -34,7 +34,7 @@ namespace BytecodeApi.UI.Data
 			}
 		}
 		/// <summary>
-		/// Gets or sets <see cref="bool" /> value indicating whether this <see cref="KeyboardShortcut" /> uses the Alt modifier.
+		/// Gets or sets a value indicating whether this <see cref="KeyboardShortcut" /> uses the Alt modifier.
 		/// </summary>
 		public bool IsAlt
 		{
