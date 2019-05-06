@@ -6,7 +6,7 @@ using System.Linq;
 namespace BytecodeApi.UI.Converters
 {
 	/// <summary>
-	/// Represents the converter that converts <see cref="IEnumerable" /> values. The <see cref="Convert(IEnumerable)" /> method returns an <see cref="object" /> based on the specified <see cref="IEnumerableConverterMethod" /> parameter.
+	/// Represents the converter that converts <see cref="IEnumerable" /> values. The <see cref="Convert(IEnumerable, object)" /> method returns an <see cref="object" /> based on the specified <see cref="IEnumerableConverterMethod" /> parameter.
 	/// </summary>
 	public sealed class IEnumerableConverter : ConverterBase<IEnumerable, object, object>
 	{
