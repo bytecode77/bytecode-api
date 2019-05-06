@@ -65,6 +65,7 @@
     <Compile Include="Extensions\Collections\BitArrayExtensions.cs" />
     <Compile Include="Extensions\IconExtensions.cs" />
     <Compile Include="Extensions\BitmapEncoderExtensions.cs" />
+    <Compile Include="IO\FileSystem\CompareDirectoryOptions.cs" />
     <Compile Include="IO\Http\HttpMultipartRequest.cs" />
     <Compile Include="IO\Http\HttpPostRequest.cs" />
     <Compile Include="IO\Http\HttpGetRequest.cs" />

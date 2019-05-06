@@ -1,6 +1,5 @@
 namespace BytecodeApi.FileFormats.Coff
 {
-	//FEATURE: Implement derived classes for specific data (e.g. import table, export table)
 	/// <summary>
 	/// Represents a data directory of a PE image file.
 	/// </summary>

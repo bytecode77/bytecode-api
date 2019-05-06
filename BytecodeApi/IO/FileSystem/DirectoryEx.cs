@@ -3,7 +3,6 @@ using System.IO;
 
 namespace BytecodeApi.IO.FileSystem
 {
-	//FEATURE: CompareContents - compare file&directory names and/or file contents, recursive and non-recursive
 	/// <summary>
 	/// Provides <see langword="static" /> methods that extend the <see cref="Directory" /> class.
 	/// </summary>
@@ -48,6 +47,24 @@ namespace BytecodeApi.IO.FileSystem
 			Check.DirectoryNotFound(path);
 
 			return new DirectoryInfo(path).ComputeDirectorySize();
+		}
+		/// <summary>
+		/// Compares two directories with an <see cref="CompareDirectoryOptions" /> parameter specifying the properties to compare.
+		/// </summary>
+		/// <param name="path">A <see cref="string" /> representing the path to a directory.</param>
+		/// <param name="otherPath">A <see cref="string" /> representing the path to the other directory to compare.</param>
+		/// <param name="options">The <see cref="CompareDirectoryOptions" /> flags specifying what properties to compare.</param>
+		/// <returns>
+		/// A value indicating whether the directories are equal.
+		/// </returns>
+		public static bool Compare(string path, string otherPath, CompareDirectoryOptions options)
+		{
+			Check.ArgumentNull(path, nameof(path));
+			Check.DirectoryNotFound(path);
+			Check.ArgumentNull(path, nameof(path));
+			Check.DirectoryNotFound(otherPath);
+
+			return new DirectoryInfo(path).Compare(new DirectoryInfo(otherPath), options);
 		}
 		/// <summary>
 		/// Copies this directory to a new location including all files and subdirectories recursively.

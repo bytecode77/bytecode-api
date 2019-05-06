@@ -1,16 +1,15 @@
-﻿using BytecodeApi.Extensions;
-using System;
+﻿using System;
 
 namespace BytecodeApi
 {
 	/// <summary>
-	/// Specifies flags for a custom <see cref="string" /> comparison used in <see cref="StringExtensions.CompareTo" />.
+	/// Specifies flags for a custom <see cref="string" /> comparison.
 	/// </summary>
 	[Flags]
 	public enum SpecialStringComparisons
 	{
 		/// <summary>
-		/// Specifies the default <see cref="string" /> comparison as used in <see cref="string.Compare(string, string)" />.
+		/// Specifies the default <see cref="string" /> comparison as in <see cref="string.Compare(string, string)" />.
 		/// </summary>
 		Default = 0,
 		/// <summary>

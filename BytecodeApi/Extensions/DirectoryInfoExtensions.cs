@@ -1,4 +1,6 @@
-﻿using Microsoft.VisualBasic.FileIO;
+﻿using BytecodeApi.Comparers;
+using BytecodeApi.IO.FileSystem;
+using Microsoft.VisualBasic.FileIO;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -61,6 +63,72 @@ namespace BytecodeApi.Extensions
 			Check.DirectoryNotFound(directory.FullName);
 
 			return directory.EnumerateFiles("*", System.IO.SearchOption.AllDirectories).Sum(file => file.Length);
+		}
+		/// <summary>
+		/// Compares two directories with an <see cref="CompareDirectoryOptions" /> parameter specifying the properties to compare.
+		/// </summary>
+		/// <param name="directory">The <see cref="DirectoryInfo" /> to process.</param>
+		/// <param name="other">The other <see cref="DirectoryInfo" /> to compare to <paramref name="directory" />.</param>
+		/// <param name="options">The <see cref="CompareDirectoryOptions" /> flags specifying what properties to compare.</param>
+		/// <returns>
+		/// A value indicating whether the directories are equal.
+		/// </returns>
+		public static bool Compare(this DirectoryInfo directory, DirectoryInfo other, CompareDirectoryOptions options)
+		{
+			Check.ArgumentNull(directory, nameof(directory));
+			Check.DirectoryNotFound(directory.FullName);
+			Check.ArgumentNull(other, nameof(other));
+			Check.DirectoryNotFound(other.FullName);
+
+			if (!options.HasFlag(CompareDirectoryOptions.IgnoreDirectories))
+			{
+				DirectoryInfo[] directoriesA = directory.GetDirectories().OrderBy(d => d.Name).ToArray();
+				DirectoryInfo[] directoriesB = other.GetDirectories().OrderBy(d => d.Name).ToArray();
+
+				if (directoriesA.Length == directoriesB.Length)
+				{
+					DelegateEqualityComparer<DirectoryInfo> comparer = new DelegateEqualityComparer<DirectoryInfo>((a, b) =>
+						CompareNames(a.Name, b.Name) &&
+						(!options.HasFlag(CompareDirectoryOptions.CompareDirectoryLastWriteTime) || a.LastWriteTime == b.LastWriteTime) &&
+						(!options.HasFlag(CompareDirectoryOptions.Recursive) || a.Compare(b, options))
+					);
+
+					if (!directoriesA.SequenceEqual(directoriesB, comparer)) return false;
+				}
+				else
+				{
+					return false;
+				}
+			}
+
+			if (!options.HasFlag(CompareDirectoryOptions.IgnoreFiles))
+			{
+				FileInfo[] filesA = directory.GetFiles().OrderBy(f => f.Name).ToArray();
+				FileInfo[] filesB = other.GetFiles().OrderBy(f => f.Name).ToArray();
+
+				if (filesA.Length == filesB.Length)
+				{
+					DelegateEqualityComparer<FileInfo> comparer = new DelegateEqualityComparer<FileInfo>((a, b) =>
+						CompareNames(a.Name, b.Name) &&
+						(!options.HasFlag(CompareDirectoryOptions.CompareFileLastWriteTime) || a.LastWriteTime == b.LastWriteTime) &&
+						(!options.HasFlag(CompareDirectoryOptions.CompareFileContents) || a.CompareContents(b)) &&
+						(!options.HasFlag(CompareDirectoryOptions.CompareFileSize) || a.Length == b.Length)
+					);
+
+					if (!filesA.SequenceEqual(filesB, comparer)) return false;
+				}
+				else
+				{
+					return false;
+				}
+			}
+
+			return true;
+
+			bool CompareNames(string nameA, string nameB)
+			{
+				return nameA.Equals(nameB, options.HasFlag(CompareDirectoryOptions.IgnoreCase) ? SpecialStringComparisons.IgnoreCase : SpecialStringComparisons.Default);
+			}
 		}
 		/// <summary>
 		/// Copies this directory to a new location including all files and subdirectories recursively.
