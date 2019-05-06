@@ -61,46 +61,7 @@ namespace BytecodeApi.UI.Data
 		/// <summary>
 		/// Gets the equivalent display name for the <see cref="Key" /> property.
 		/// </summary>
-		public string KeyName
-		{
-			get
-			{
-				//IMPORTANT: Proper implementation
-				switch (Key)
-				{
-					case Key.D0:
-					case Key.D1:
-					case Key.D2:
-					case Key.D3:
-					case Key.D4:
-					case Key.D5:
-					case Key.D6:
-					case Key.D7:
-					case Key.D8:
-					case Key.D9: return Key.ToString().Substring(1);
-					case Key.NumPad0:
-					case Key.NumPad1:
-					case Key.NumPad2:
-					case Key.NumPad3:
-					case Key.NumPad4:
-					case Key.NumPad5:
-					case Key.NumPad6:
-					case Key.NumPad7:
-					case Key.NumPad8:
-					case Key.NumPad9: return "NumPad " + Key.ToString().Substring(6);
-					case Key.Oem5: return "^";
-					case Key.OemOpenBrackets: return "ß";
-					case Key.Oem6: return "´";
-					case Key.OemPlus: return "+";
-					case Key.OemQuestion: return "#";
-					case Key.OemMinus: return "-";
-					case Key.OemPeriod: return ".";
-					case Key.OemComma: return ",";
-					case Key.OemBackslash: return "<";
-					default: return Key.ToString();
-				}
-			}
-		}
+		public string KeyName => new KeyConverter().ConvertTo(Key, typeof(string)) as string ?? "";
 		/// <summary>
 		/// Gets the display name for this instance.
 		/// <para>Example: Ctrl+Shift+A</para>
