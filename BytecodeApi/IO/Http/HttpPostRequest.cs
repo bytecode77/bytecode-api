@@ -56,7 +56,7 @@ namespace BytecodeApi.IO.Http
 		/// <summary>
 		/// Sets the raw POST data of the HTTP POST request. If required, this can be used instead of the <see cref="AddPostValue(string, string)" /> method. Both methods cannot be used in the same request.
 		/// </summary>
-		/// <param name="data">A <see cref="byte" />[] with the raw POST data..</param>
+		/// <param name="data">A <see cref="byte" />[] with the raw POST data.</param>
 		/// <returns>
 		/// A reference to this instance after the operation has completed.
 		/// </returns>

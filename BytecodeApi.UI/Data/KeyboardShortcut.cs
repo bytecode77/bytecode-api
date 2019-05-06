@@ -50,7 +50,7 @@ namespace BytecodeApi.UI.Data
 		/// </summary>
 		public Key Key
 		{
-			get => Get(() => Key);
+			get => Get(() => Key, () => Key.None);
 			set
 			{
 				Set(() => Key, value);
@@ -125,7 +125,6 @@ namespace BytecodeApi.UI.Data
 		/// </summary>
 		public KeyboardShortcut()
 		{
-			Key = Key.None;
 		}
 		/// <summary>
 		/// Initializes a new instance of the <see cref="KeyboardShortcut" /> class with the specified modifiers and the specified key.
