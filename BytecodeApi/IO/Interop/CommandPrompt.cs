@@ -49,11 +49,11 @@ namespace BytecodeApi.IO.Interop
 				StartInfo =
 				{
 					FileName = "cmd.exe",
+					UseShellExecute = false,
+					CreateNoWindow = true,
 					RedirectStandardInput = true,
 					RedirectStandardOutput = true,
-					RedirectStandardError = true,
-					CreateNoWindow = true,
-					UseShellExecute = false
+					RedirectStandardError = true
 				},
 				EnableRaisingEvents = true
 			};
