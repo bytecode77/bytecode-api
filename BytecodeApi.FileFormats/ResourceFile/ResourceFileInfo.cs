@@ -214,12 +214,12 @@ namespace BytecodeApi.FileFormats.ResourceFile
 					{
 						byte[] icon = GetData(module, ResourceType.Icon, BitConverter.ToUInt16(data, 18 + 14 * i));
 
-						memoryStream.Seek(6 + 16 * i);
+						memoryStream.Seek(6 + 16 * i, SeekOrigin.Begin);
 						writer.Write(data, 6 + 14 * i, 8);
 						writer.Write(icon.Length);
 						writer.Write(offset);
 
-						memoryStream.Seek(offset);
+						memoryStream.Seek(offset, SeekOrigin.Begin);
 						writer.Write(icon);
 						offset += icon.Length;
 					}

@@ -41,14 +41,14 @@ namespace BytecodeApi.IO
 		{
 			Check.ArgumentNull(data, nameof(data));
 
-			using (MemoryStream memoryStream = new MemoryStream(data))
-			using (MemoryStream decompressedStream = new MemoryStream())
+			using (MemoryStream memoryStream = new MemoryStream())
 			{
-				using (GZipStream gzipStream = new GZipStream(memoryStream, CompressionMode.Decompress))
+				using (GZipStream gzipStream = new GZipStream(new MemoryStream(data), CompressionMode.Decompress))
 				{
-					gzipStream.CopyTo(decompressedStream);
-					return decompressedStream.ToArray();
+					gzipStream.CopyTo(memoryStream);
 				}
+
+				return memoryStream.ToArray();
 			}
 		}
 	}

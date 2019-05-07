@@ -125,7 +125,7 @@ namespace BytecodeApi.Cryptography
 
 			void EncodeLength(BinaryWriter writer, int length)
 			{
-				if (length < 0x80)
+				if (length < 128)
 				{
 					writer.Write((byte)length);
 				}
@@ -136,7 +136,7 @@ namespace BytecodeApi.Cryptography
 					{
 					}
 
-					writer.Write((byte)(bytesRequired | 0x80));
+					writer.Write((byte)(bytesRequired | 128));
 
 					for (int i = bytesRequired - 1; i >= 0; i--)
 					{
@@ -146,7 +146,7 @@ namespace BytecodeApi.Cryptography
 			}
 			void EncodeIntegerBigEndian(BinaryWriter writer, byte[] value)
 			{
-				writer.Write((byte)0x02);
+				writer.Write((byte)2);
 
 				int prefixZeros = 0;
 				for (int i = 0; i < value.Length && value[i] == 0; i++, prefixZeros++)
@@ -279,7 +279,7 @@ namespace BytecodeApi.Cryptography
 					}
 
 					byte[] modulus = reader.ReadBytes(moduluSize);
-					if (reader.ReadByte() != 0x02) throw new Exception();
+					if (reader.ReadByte() != 2) throw new Exception();
 
 					return new RSAParameters
 					{
@@ -294,7 +294,7 @@ namespace BytecodeApi.Cryptography
 				{
 					ReadDataSequence(reader);
 
-					if (reader.ReadUInt16() != 0x0102 || reader.ReadByte() != 0) throw new Exception();
+					if (reader.ReadUInt16() != 0x102 || reader.ReadByte() != 0) throw new Exception();
 
 					return new RSAParameters
 					{
@@ -310,7 +310,7 @@ namespace BytecodeApi.Cryptography
 
 					byte[] ReadParameter()
 					{
-						if (reader.ReadByte() != 0x02) return new byte[0];
+						if (reader.ReadByte() != 2) return new byte[0];
 
 						int size = reader.ReadByte();
 

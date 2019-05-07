@@ -278,9 +278,9 @@ namespace BytecodeApi
 			List<byte> bytes = new List<byte>();
 			uint remaining = (uint)value;
 
-			while (remaining >= 0x80)
+			while (remaining > 127)
 			{
-				bytes.Add((byte)(remaining | 0x80));
+				bytes.Add((byte)(remaining | 128));
 				remaining >>= 7;
 			}
 
@@ -290,21 +290,20 @@ namespace BytecodeApi
 		/// <summary>
 		/// Converts a compressed 32-bit integer into a <see cref="int" /> value.
 		/// </summary>
-		/// <param name="value">The <see cref="byte" />[] value to convert.</param>
+		/// <param name="value">The <see cref="byte" />[] value to convert with up to 4 bytes capacity.</param>
 		/// <returns>
 		/// A <see cref="int" /> value that was converted from the specified 32-bit integer in binary format.
 		/// </returns>
 		public static int From7BitEncodedInt(byte[] value)
 		{
 			Check.ArgumentNull(value, nameof(value));
-			Check.Argument(value.Length == 4, nameof(value), "Array must be a 32-bit sized byte array (4 bytes).");
+			Check.Argument(value.Length <= 4, nameof(value), "Array must be a 32-bit sized byte array (4 bytes).");
 
 			int returnValue = 0;
 			int bitIndex = 0;
 
 			foreach (byte by in value)
 			{
-				if (bitIndex == 35) break;
 				returnValue |= (by & 127) << bitIndex;
 				bitIndex += 7;
 

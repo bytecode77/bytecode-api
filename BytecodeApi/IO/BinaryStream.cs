@@ -602,7 +602,7 @@ namespace BytecodeApi.IO
 			int size = 0;
 			uint remaining = (uint)value;
 
-			while (remaining >= 0x80)
+			while (remaining > 127)
 			{
 				remaining >>= 7;
 				size++;

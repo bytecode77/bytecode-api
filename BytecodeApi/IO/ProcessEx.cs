@@ -141,6 +141,8 @@ namespace BytecodeApi.IO
 		/// </returns>
 		public static string ReadProcessOutput(string fileName, string arguments, bool inclueErrorStream)
 		{
+			Check.ArgumentNull(fileName, nameof(fileName));
+
 			StringBuilder result = new StringBuilder();
 
 			using (Process process = new Process

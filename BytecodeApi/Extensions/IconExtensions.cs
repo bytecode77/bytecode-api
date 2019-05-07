@@ -38,7 +38,7 @@ namespace BytecodeApi.Extensions
 					writer.Write(22);
 					writer.Write(iconData, offset, length);
 
-					writer.BaseStream.Seek(0);
+					writer.BaseStream.Seek(0, SeekOrigin.Begin);
 					icons[i] = new Icon(writer.BaseStream);
 				}
 			}

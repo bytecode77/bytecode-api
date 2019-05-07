@@ -197,7 +197,6 @@
     <Compile Include="IO\Wmi\WmiClass.cs" />
     <Compile Include="IO\Wmi\WmiNamespace.cs" />
     <Compile Include="IO\FileSystem\KnownPaths.cs" />
-    <Compile Include="IO\KnownRegistryKeys.cs" />
     <Compile Include="Text\TextResources.cs" />
     <Compile Include="Mathematics\MathEx.cs" />
     <Compile Include="Mathematics\Range.cs" />

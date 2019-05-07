@@ -327,11 +327,11 @@ namespace BytecodeApi.Extensions
 				process?.Kill();
 			}
 
-			using (RegistryKey currentVersionKey = KnownRegistryKeys.CurrentUser.WindowsCurrentVersion(true))
+			using (RegistryKey currentVersionKey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion", true))
 			using (RegistryKey appletKey = currentVersionKey.CreateSubKey("Applets"))
 			using (RegistryKey regeditAppletKey = appletKey.CreateSubKey("Regedit"))
 			{
-				regeditAppletKey.SetStringValue("LastKey", key?.Name);
+				regeditAppletKey.SetStringValue("LastKey", key.Name);
 			}
 
 			CSharp.Try(() => Process.Start("regedit"));
