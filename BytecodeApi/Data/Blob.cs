@@ -1,5 +1,4 @@
 ﻿using BytecodeApi.Extensions;
-using System;
 using System.IO;
 
 namespace BytecodeApi.Data
@@ -7,7 +6,7 @@ namespace BytecodeApi.Data
 	/// <summary>
 	/// Represents an entity composed of a name and binary content in form or a <see cref="byte" />[].
 	/// </summary>
-	public class Blob : IEquatable<Blob>
+	public class Blob
 	{
 		/// <summary>
 		/// Gets or sets the name of the <see cref="Blob" />.
@@ -71,6 +70,18 @@ namespace BytecodeApi.Data
 		}
 
 		/// <summary>
+		/// Compares this <see cref="Blob" /> agains another <see cref="Blob" />, including binary content. Returns <see langword="true" />, if both objects contain the exact same set of data.
+		/// </summary>
+		/// <param name="other">A <see cref="Blob" /> to compare to this instance to.</param>
+		/// <returns>
+		/// <see langword="true" />, if both objects contain the exact same set of data;
+		/// otherwise <see langword="false" />.
+		/// </returns>
+		public bool Compare(Blob other)
+		{
+			return other != null && GetType() == other.GetType() && (this == other || Name == other.Name && Content.Compare(other.Content) && Equals(Tag, other.Tag));
+		}
+		/// <summary>
 		/// Writes the contents of <see cref="Content" /> to a binary file.
 		/// </summary>
 		/// <param name="path">A <see cref="string" /> specifying the path of a file to which <see cref="Content" /> is written to.</param>
@@ -90,40 +101,6 @@ namespace BytecodeApi.Data
 		public override string ToString()
 		{
 			return "[" + Name + ", Size: " + Content?.Length + "]";
-		}
-		/// <summary>
-		/// Determines whether the specified <see cref="object" /> is equal to this instance.
-		/// </summary>
-		/// <param name="obj">The <see cref="object" /> to compare with this instance.</param>
-		/// <returns>
-		/// <see langword="true" />, if the specified <see cref="object" /> is equal to this instance;
-		/// otherwise, <see langword="false" />.
-		/// </returns>
-		public override bool Equals(object obj)
-		{
-			return obj is Blob blob && Equals(blob);
-		}
-		/// <summary>
-		/// Determines whether this instance is equal to another <see cref="Blob" />.
-		/// </summary>
-		/// <param name="other">The <see cref="Blob" /> to compare to this instance.</param>
-		/// <returns>
-		/// <see langword="true" />, if this instance is equal to the <paramref name="other" /> parameter;
-		/// otherwise, <see langword="false" />.
-		/// </returns>
-		public bool Equals(Blob other)
-		{
-			return other != null && GetType() == other.GetType() && (this == other || Name == other.Name && Content.Compare(other.Content) && Equals(Tag, other.Tag));
-		}
-		/// <summary>
-		/// Returns a hash code for this <see cref="Blob" />.
-		/// </summary>
-		/// <returns>
-		/// The hash code for this <see cref="Blob" /> instance.
-		/// </returns>
-		public override int GetHashCode()
-		{
-			return CSharp.GetHashCode(Name, Content, Tag);
 		}
 	}
 }

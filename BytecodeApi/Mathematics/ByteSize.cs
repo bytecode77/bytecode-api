@@ -6,7 +6,7 @@ namespace BytecodeApi.Mathematics
 	/// <summary>
 	/// Represents a byte size value as a 64-bit unsigned integer value.
 	/// </summary>
-	public struct ByteSize : IComparable<ByteSize>, IEquatable<ByteSize>
+	public struct ByteSize : IComparable, IComparable<ByteSize>, IEquatable<ByteSize>
 	{
 		internal const int DefaultFormatDecimals = 2;
 
@@ -528,9 +528,22 @@ namespace BytecodeApi.Mathematics
 		/// <summary>
 		/// Compares this instance to a specified <see cref="ByteSize" /> and returns a comparison of their relative values.
 		/// </summary>
-		/// <param name="other">The <see cref="ByteSize" /> to compare with this instance.</param>
+		/// <param name="obj">An <see cref="object" /> to compare with this instance.</param>
 		/// <returns>
-		/// A signed integer that indicates the relative values of this instance and <paramref name="other" />.
+		/// A value that indicates the relative order of the objects being compared.
+		/// </returns>
+		public int CompareTo(object obj)
+		{
+			Check.Argument(obj is ByteSize, nameof(obj), nameof(obj) + " is not the same type as this instance.");
+
+			return CompareTo((ByteSize)obj);
+		}
+		/// <summary>
+		/// Compares this instance to a specified <see cref="ByteSize" /> and returns a comparison of their relative values.
+		/// </summary>
+		/// <param name="other">A <see cref="ByteSize" /> to compare with this instance.</param>
+		/// <returns>
+		/// A value that indicates the relative order of the objects being compared.
 		/// </returns>
 		public int CompareTo(ByteSize other)
 		{

@@ -221,15 +221,15 @@ namespace BytecodeApi.Extensions
 		/// <summary>
 		/// Compares the value of this <see cref="DateTime" /> instance to a specified <see cref="DateTime" /> value and returns an integer that indicates whether this instance is earlier than, the same as, or later than the specified <see cref="DateTime" /> value. The <paramref name="part" /> parameter specifies which fraction is considered during comparison.
 		/// </summary>
-		/// <param name="dateTime">The <see cref="DateTime" /> value to be compared to <paramref name="value" />.</param>
-		/// <param name="value">The <see cref="DateTime" /> value to be compared to this <see cref="DateTime" />.</param>
+		/// <param name="dateTime">The <see cref="DateTime" /> value to be compared to <paramref name="other" />.</param>
+		/// <param name="other">A <see cref="DateTime" /> to compare with <paramref name="dateTime" />.</param>
 		/// <param name="part">The <see cref="DateTimePart" /> specifying, which fraction is considered during comparison.</param>
 		/// <returns>
-		/// A signed integer that indicates the relative values of this <see cref="DateTime" /> and <paramref name="value" /> considering only the specified <see cref="DateTimePart" />.
+		/// A value that indicates the relative order of the objects being compared considering only the specified <see cref="DateTimePart" />.
 		/// </returns>
-		public static int CompareTo(this DateTime dateTime, DateTime value, DateTimePart part)
+		public static int CompareTo(this DateTime dateTime, DateTime other, DateTimePart part)
 		{
-			return dateTime.GetPart(part).CompareTo(value.GetPart(part));
+			return dateTime.GetPart(part).CompareTo(other.GetPart(part));
 		}
 		/// <summary>
 		/// Returns a new <see cref="DateTime" /> that represents a fraction of this <see cref="DateTime" /> value specified by the <paramref name="part" /> parameter.

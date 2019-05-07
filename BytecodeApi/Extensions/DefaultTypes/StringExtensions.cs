@@ -81,19 +81,19 @@ namespace BytecodeApi.Extensions
 		/// <summary>
 		/// Compares this <see cref="string" /> with a specified <see cref="string" /> object and indicates whether this instance precedes, follows, or appears in the same position in the sort order as the specified <see cref="string" />. One or multiple <see cref="SpecialStringComparisons" /> flags specify what comparison properties apply.
 		/// </summary>
-		/// <param name="str">A <see cref="string" /> to compare to <paramref name="value" />.</param>
-		/// <param name="value">A <see cref="string" /> to compare to <paramref name="str" />.</param>
+		/// <param name="str">A <see cref="string" /> to compare to <paramref name="other" />.</param>
+		/// <param name="other">A <see cref="string" /> to compare with <paramref name="str" />.</param>
 		/// <param name="comparison">The <see cref="SpecialStringComparisons" /> flags specifying what comparison properties apply.</param>
 		/// <returns>
-		/// A signed integer that indicates the relative values of <paramref name="str" /> and <paramref name="value" />.
+		/// A value that indicates the relative order of the objects being compared using the specified <see cref="SpecialStringComparisons" />.
 		/// </returns>
-		public static int CompareTo(this string str, string value, SpecialStringComparisons comparison)
+		public static int CompareTo(this string str, string other, SpecialStringComparisons comparison)
 		{
 			PrepareSpecialStringComparison(comparison, ref str, true);
-			PrepareSpecialStringComparison(comparison, ref value, true);
+			PrepareSpecialStringComparison(comparison, ref other, true);
 
-			if (comparison.HasFlag(SpecialStringComparisons.Natural)) return Math.Sign(Native.StrCmpLogicalW(str ?? "", value ?? ""));
-			else return string.Compare(str, value, CultureInfo.InvariantCulture, CompareOptions.None);
+			if (comparison.HasFlag(SpecialStringComparisons.Natural)) return Math.Sign(Native.StrCmpLogicalW(str ?? "", other ?? ""));
+			else return string.Compare(str, other, CultureInfo.InvariantCulture, CompareOptions.None);
 		}
 		/// <summary>
 		/// Returns a <see cref="bool" /> value indicating whether a specified substring occurs within this <see cref="string" />. One or multiple <see cref="SpecialStringComparisons" /> flags specify what comparison properties apply.
