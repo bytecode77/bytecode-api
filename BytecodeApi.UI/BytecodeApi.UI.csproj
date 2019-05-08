@@ -113,6 +113,7 @@
     <Compile Include="Markup\SingleExtension.cs" />
     <Compile Include="Markup\StringExtension.cs" />
     <Compile Include="Markup\UInt16Extension.cs" />
+    <Compile Include="Markup\TimeSpanExtension.cs" />
     <Compile Include="Markup\UInt32Extension.cs" />
     <Compile Include="Markup\UInt64Extension.cs" />
     <Compile Include="Mathematics\Deferrer.cs" />
