@@ -213,7 +213,6 @@ namespace BytecodeApi.Data
 
 			Blobs.CopyTo(array, arrayIndex);
 		}
-
 		/// <summary>
 		/// Returns an enumerator that iterates through the <see cref="BlobCollection" />.
 		/// </summary>

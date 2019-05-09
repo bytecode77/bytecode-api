@@ -205,7 +205,6 @@ namespace BytecodeApi.FileFormats.Ini
 
 			Properties.CopyTo(array, arrayIndex);
 		}
-
 		/// <summary>
 		/// Returns an enumerator that iterates through the <see cref="IniPropertyCollection" />.
 		/// </summary>

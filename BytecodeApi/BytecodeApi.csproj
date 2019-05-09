@@ -114,6 +114,7 @@
     <Compile Include="IO\SystemInfo\DeviceTypeInfo.cs" />
     <Compile Include="Mathematics\BitCalculator.cs" />
     <Compile Include="Mathematics\DateTimeEx.cs" />
+    <Compile Include="Text\QuotedString.cs" />
     <Compile Include="Text\StringDistance.cs" />
     <Compile Include="Threading\Atomic.cs" />
     <Compile Include="ApplicationBase.cs" />

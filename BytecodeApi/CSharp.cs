@@ -1,4 +1,5 @@
 ﻿using BytecodeApi.Extensions;
+using BytecodeApi.Text;
 using BytecodeApi.Threading;
 using System;
 using System.Collections.Generic;
@@ -14,25 +15,6 @@ namespace BytecodeApi
 	/// </summary>
 	public static class CSharp
 	{
-		/// <summary>
-		/// Calculates the hashcode for a set of objects by using XOR (i.e. a ^ b ^ c ...). This is a helper method for GetHashCode method implementations that do not require value specific handling.
-		/// </summary>
-		/// <param name="objects">A set of objects, where <see cref="object.GetHashCode" /> is called on each <see cref="object" /> that is not <see langword="null" />.</param>
-		/// <returns>
-		/// The combined hashcode of all objects in the given set.
-		/// </returns>
-		public static int GetHashCode(params object[] objects)
-		{
-			Check.ArgumentNull(objects, nameof(objects));
-
-			unchecked
-			{
-				int hashCode = 0;
-				foreach (object obj in objects) hashCode ^= obj?.GetHashCode() ?? 0;
-
-				return hashCode;
-			}
-		}
 		/// <summary>
 		/// Returns the converted version of <paramref name="obj" />, if it is of the specified type; otherwise, returns <see langword="default" />(<typeparamref name="T" />).
 		/// </summary>
@@ -221,6 +203,52 @@ namespace BytecodeApi
 				if (Nullable.GetUnderlyingType(type) is Type nullable) type = nullable;
 				if (type.IsEnum) type = type.GetEnumUnderlyingType();
 			}
+		}
+
+		/// <summary>
+		/// Calculates the hashcode for a set of objects by using XOR (i.e. a ^ b ^ c ...). This is a helper method for GetHashCode method implementations that do not require value specific handling.
+		/// </summary>
+		/// <param name="objects">A set of objects, where <see cref="object.GetHashCode" /> is called on each <see cref="object" /> that is not <see langword="null" />.</param>
+		/// <returns>
+		/// The combined hashcode of all objects in the given set.
+		/// </returns>
+		public static int GetHashCode(params object[] objects)
+		{
+			Check.ArgumentNull(objects, nameof(objects));
+
+			unchecked
+			{
+				int hashCode = 0;
+				foreach (object obj in objects) hashCode ^= obj?.GetHashCode() ?? 0;
+
+				return hashCode;
+			}
+		}
+		/// <summary>
+		/// Builds a <see cref="string" /> for the <see cref="DebuggerDisplayAttribute" /> from a set of objects.
+		/// </summary>
+		/// <param name="str">A composite format <see cref="string" />.</param>
+		/// <param name="type">The <see cref="Type" /> of the class or structure where the <see cref="DebuggerDisplayAttribute" /> is used.</param>
+		/// <param name="objects">An <see cref="object" /> array that contains zero or more objects to format.</param>
+		/// <returns>
+		/// A formatted <see cref="string" /> that displays debug information. Each <see cref="object" /> is treated individually, depending on its type.
+		/// </returns>
+		public static string DebuggerDisplay(string str, Type type, params object[] objects)
+		{
+			Check.ArgumentNull(str, nameof(str));
+			Check.ArgumentNull(objects, nameof(objects));
+
+			object[] args = new object[objects.Length];
+			for (int i = 0; i < args.Length; i++)
+			{
+				if (objects[i] == null || objects[i] is QuotedString quotedStringObject && quotedStringObject == null) args[i] = "null";
+				else if (objects[i] is Type typeObject) args[i] = typeObject.ToCSharpName();
+				else if (objects[i] is Type[] typeArrayObject) args[i] = typeArrayObject.Select(t => t.ToCSharpName()).AsString(", ");
+				else if (objects[i] is Array arrayObject) args[i] = arrayObject.GetType().ToCSharpName().SubstringUntil("[]", true) + "[" + arrayObject.Length + "]";
+				else args[i] = objects[i];
+			}
+
+			return type.ToCSharpName() + ": " + str.FormatInvariant(args);
 		}
 
 		/// <summary>
