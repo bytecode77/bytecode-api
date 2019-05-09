@@ -11,7 +11,7 @@ namespace BytecodeApi.UI.Data
 	/// <summary>
 	/// Class that wraps an object, implementing the <see cref="INotifyPropertyChanged" /> interface. Typically, this class is set as a <see cref="DependencyProperty" /> on a <see cref="DependencyObject" />.
 	/// </summary>
-	public class ObservableObject : INotifyPropertyChanged, INotifyPropertyChanging
+	public abstract class ObservableObject : INotifyPropertyChanged, INotifyPropertyChanging
 	{
 		private readonly Dictionary<string, object> BackingFields;
 		/// <summary>

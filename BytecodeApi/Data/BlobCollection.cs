@@ -10,7 +10,7 @@ namespace BytecodeApi.Data
 	/// <summary>
 	/// Represents a collection of <see cref="Blob" /> objects.
 	/// </summary>
-	public class BlobCollection : ICollection<Blob>
+	public sealed class BlobCollection : ICollection<Blob>
 	{
 		private readonly List<Blob> Blobs;
 		/// <summary>
