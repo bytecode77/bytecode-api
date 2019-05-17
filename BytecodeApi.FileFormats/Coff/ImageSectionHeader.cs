@@ -54,10 +54,10 @@ namespace BytecodeApi.FileFormats.Coff
 		}
 
 		/// <summary>
-		/// Returns a <see cref="string" /> that represents this instance.
+		/// Returns the name of this <see cref="ImageSectionHeader" />.
 		/// </summary>
 		/// <returns>
-		/// A <see cref="string" /> that represents this instance.
+		/// The name of this <see cref="ImageSectionHeader" />.
 		/// </returns>
 		public override string ToString()
 		{

@@ -1,4 +1,6 @@
 ﻿using BytecodeApi.Extensions;
+using BytecodeApi.Text;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -8,9 +10,11 @@ namespace BytecodeApi.IO.Interop
 	/// <summary>
 	/// Represents the function of a native DLL file that does not return a value.
 	/// </summary>
+	[DebuggerDisplay("{DebuggerDisplay,nq}")]
 	public sealed class DynamicLibraryFunction
 	{
 		private readonly MethodInfo Method;
+		private string DebuggerDisplay => CSharp.DebuggerDisplay<DynamicLibraryFunction>("Name = {0} ({1}), Parameters: {2}", new QuotedString(Name), Path.GetFileName(Library.DllName), Method.GetParameters().Select(parameter => parameter.ParameterType).ToArray());
 		/// <summary>
 		/// Gets the <see cref="DynamicLibrary" /> that was used to create this <see cref="DynamicLibraryFunction" />.
 		/// </summary>
@@ -38,14 +42,14 @@ namespace BytecodeApi.IO.Interop
 		}
 
 		/// <summary>
-		/// Returns a <see cref="string" /> that represents this instance.
+		/// Returns the name of this <see cref="DynamicLibraryFunction" />.
 		/// </summary>
 		/// <returns>
-		/// A <see cref="string" /> that represents this instance.
+		/// The name of this <see cref="DynamicLibraryFunction" />.
 		/// </returns>
 		public override string ToString()
 		{
-			return "[" + Path.GetFileName(Library.DllName) + ", " + Name + ", Parameters: " + Method.GetParameters().Select(parameter => parameter.ParameterType.ToCSharpName(TypeNaming.CSharp)).AsString(", ") + "]";
+			return Name;
 		}
 	}
 
@@ -53,9 +57,11 @@ namespace BytecodeApi.IO.Interop
 	/// Represents the function of a native DLL file that returns a value of the specified type.
 	/// </summary>
 	/// <typeparam name="T">The function's return type.</typeparam>
+	[DebuggerDisplay("{DebuggerDisplay,nq}")]
 	public sealed class DynamicLibraryFunction<T>
 	{
 		private readonly MethodInfo Method;
+		private string DebuggerDisplay => CSharp.DebuggerDisplay<DynamicLibraryFunction<T>>("Name = {0} ({1}), Parameters: {2}", new QuotedString(Name), Path.GetFileName(Library.DllName), Method.GetParameters().Select(parameter => parameter.ParameterType).ToArray());
 		/// <summary>
 		/// Gets the <see cref="DynamicLibrary" /> that was used to create this <see cref="DynamicLibraryFunction{T}" />.
 		/// </summary>
@@ -86,14 +92,14 @@ namespace BytecodeApi.IO.Interop
 		}
 
 		/// <summary>
-		/// Returns a <see cref="string" /> that represents this instance.
+		/// Returns the name of this <see cref="DynamicLibraryFunction{T}" />.
 		/// </summary>
 		/// <returns>
-		/// A <see cref="string" /> that represents this instance.
+		/// The name of this <see cref="DynamicLibraryFunction{T}" />.
 		/// </returns>
 		public override string ToString()
 		{
-			return "[" + Path.GetFileName(Library.DllName) + ", " + Name + ", Parameters: " + Method.GetParameters().Select(parameter => parameter.ParameterType.ToCSharpName(TypeNaming.CSharp)).AsString(", ") + "]";
+			return Name;
 		}
 	}
 }

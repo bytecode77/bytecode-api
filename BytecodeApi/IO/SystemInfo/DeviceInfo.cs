@@ -1,14 +1,18 @@
 ﻿using BytecodeApi.Extensions;
+using BytecodeApi.Text;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 
 namespace BytecodeApi.IO.SystemInfo
 {
 	/// <summary>
 	/// Represents device information, retrieved by <see cref="DeviceManager" />.
 	/// </summary>
+	[DebuggerDisplay("{DebuggerDisplay,nq}")]
 	public sealed class DeviceInfo
 	{
+		private string DebuggerDisplay => CSharp.DebuggerDisplay<DeviceInfo>("Name = {0}, Description = {1}, Attributes: {2}", new QuotedString(Name), new QuotedString(Description), Attributes.Count);
 		/// <summary>
 		/// Gets the collection of attributes associated with this device.
 		/// </summary>
@@ -30,14 +34,14 @@ namespace BytecodeApi.IO.SystemInfo
 		}
 
 		/// <summary>
-		/// Returns a <see cref="string" /> that represents this instance.
+		/// Returns the name of this <see cref="DeviceInfo" />.
 		/// </summary>
 		/// <returns>
-		/// A <see cref="string" /> that represents this instance.
+		/// The name of this <see cref="DeviceInfo" />.
 		/// </returns>
 		public override string ToString()
 		{
-			return "[" + Name + ", " + Description + ", Attributes: " + Attributes.Count + "]";
+			return Name;
 		}
 	}
 }

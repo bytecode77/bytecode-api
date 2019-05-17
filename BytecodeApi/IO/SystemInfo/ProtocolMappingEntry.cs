@@ -1,6 +1,8 @@
 ﻿using BytecodeApi.Extensions;
 using BytecodeApi.IO.FileSystem;
+using BytecodeApi.Text;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -10,8 +12,10 @@ namespace BytecodeApi.IO.SystemInfo
 	/// <summary>
 	/// Provides a snapshot from the services file in %systemroot%\drivers\etc\services.
 	/// </summary>
+	[DebuggerDisplay("{DebuggerDisplay,nq}")]
 	public sealed class ProtocolMappingEntry
 	{
+		private string DebuggerDisplay => CSharp.DebuggerDisplay<ProtocolMappingEntry>("Protocol = {0}, Port = {1}, Name = {2}", Protocol, Port, new QuotedString(Name));
 		private static readonly Regex ServicesFileRegex = new Regex(@"(.*) +([0-9]+)\/(tcp|udp)", RegexOptions.IgnoreCase);
 		/// <summary>
 		/// Gets the protocol that is associated with this instance.
@@ -50,17 +54,6 @@ namespace BytecodeApi.IO.SystemInfo
 					Name = match.Groups[1].Value.Trim()
 				})
 				.ToArray();
-		}
-
-		/// <summary>
-		/// Returns a <see cref="string" /> that represents this instance.
-		/// </summary>
-		/// <returns>
-		/// A <see cref="string" /> that represents this instance.
-		/// </returns>
-		public override string ToString()
-		{
-			return "[" + Port + ", " + Protocol.GetDescription() + ", " + Name + "]";
 		}
 	}
 }

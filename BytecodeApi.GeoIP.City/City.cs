@@ -1,12 +1,16 @@
-﻿using System;
+﻿using BytecodeApi.Text;
+using System;
+using System.Diagnostics;
 
 namespace BytecodeApi.GeoIP.City
 {
 	/// <summary>
 	/// Represents a city with a name and a <see cref="GeoIP.Country" /> reference.
 	/// </summary>
+	[DebuggerDisplay("{DebuggerDisplay,nq}")]
 	public sealed class City : IEquatable<City>
 	{
+		private string DebuggerDisplay => CSharp.DebuggerDisplay<City>("Name = {0}, Subdivision1: {1} ({2})", new QuotedString(Name), new QuotedString(Subdivision1Name), Subdivision1IsoCode);
 		/// <summary>
 		/// Gets the <see cref="GeoIP.Country" /> reference associated with this <see cref="City" />.
 		/// </summary>
@@ -52,14 +56,14 @@ namespace BytecodeApi.GeoIP.City
 		}
 
 		/// <summary>
-		/// Returns a <see cref="string" /> that represents this instance.
+		/// Returns the name of this <see cref="City" />.
 		/// </summary>
 		/// <returns>
-		/// A <see cref="string" /> that represents this instance.
+		/// The name of this <see cref="City" />.
 		/// </returns>
 		public override string ToString()
 		{
-			return "[" + Name + ", " + Subdivision1IsoCode + ", " + Subdivision1Name + "]";
+			return Name;
 		}
 		/// <summary>
 		/// Determines whether the specified <see cref="object" /> is equal to this instance.

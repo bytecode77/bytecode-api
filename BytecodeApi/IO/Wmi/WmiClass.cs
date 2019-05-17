@@ -1,4 +1,6 @@
 ﻿using BytecodeApi.Extensions;
+using BytecodeApi.Text;
+using System.Diagnostics;
 using System.Linq;
 using System.Management;
 
@@ -7,8 +9,10 @@ namespace BytecodeApi.IO.Wmi
 	/// <summary>
 	/// Represents a WMI class.
 	/// </summary>
+	[DebuggerDisplay("{DebuggerDisplay,nq}")]
 	public class WmiClass
 	{
+		private string DebuggerDisplay => CSharp.DebuggerDisplay<WmiClass>("Name = {0}, Namespace = {1}", new QuotedString(Name), new QuotedString(Namespace.FullName));
 		/// <summary>
 		/// Gets the <see cref="WmiNamespace" /> that this <see cref="WmiClass" /> was created from.
 		/// </summary>
@@ -125,10 +129,10 @@ namespace BytecodeApi.IO.Wmi
 		}
 
 		/// <summary>
-		/// Returns a <see cref="string" /> whose value is the name of this <see cref="WmiClass" />.
+		/// Returns the name of this <see cref="WmiClass" />.
 		/// </summary>
 		/// <returns>
-		/// A <see cref="string" /> whose value is the name of this <see cref="WmiClass" />.
+		/// The name of this <see cref="WmiClass" />.
 		/// </returns>
 		public override string ToString()
 		{

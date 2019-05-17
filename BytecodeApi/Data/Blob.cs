@@ -1,4 +1,6 @@
 ﻿using BytecodeApi.Extensions;
+using BytecodeApi.Text;
+using System.Diagnostics;
 using System.IO;
 
 namespace BytecodeApi.Data
@@ -6,8 +8,10 @@ namespace BytecodeApi.Data
 	/// <summary>
 	/// Represents an entity composed of a name and binary content in form or a <see cref="byte" />[].
 	/// </summary>
+	[DebuggerDisplay("{DebuggerDisplay,nq}")]
 	public class Blob
 	{
+		private string DebuggerDisplay => CSharp.DebuggerDisplay<Blob>("Name = {0}, Content = {1}, Tag = {2}", new QuotedString(Name), Content, Tag);
 		/// <summary>
 		/// Gets or sets the name of the <see cref="Blob" />.
 		/// </summary>
@@ -93,14 +97,14 @@ namespace BytecodeApi.Data
 		}
 
 		/// <summary>
-		/// Returns a <see cref="string" /> that represents this instance.
+		/// Returns the name of this <see cref="Blob" />.
 		/// </summary>
 		/// <returns>
-		/// A <see cref="string" /> that represents this instance.
+		/// The name of this <see cref="Blob" />.
 		/// </returns>
 		public override string ToString()
 		{
-			return "[" + Name + ", Size: " + Content?.Length + "]";
+			return Name;
 		}
 	}
 }

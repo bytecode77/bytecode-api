@@ -100,10 +100,10 @@ namespace BytecodeApi.UI.Data
 		}
 
 		/// <summary>
-		/// Returns a <see cref="string" /> whose value represents the <see cref="DisplayName" /> property.
+		/// Returns the display name of this <see cref="KeyboardShortcut" />.
 		/// </summary>
 		/// <returns>
-		/// A <see cref="string" /> whose value represents the <see cref="DisplayName" /> property.
+		/// The display name of this <see cref="KeyboardShortcut" />.
 		/// </returns>
 		public override string ToString()
 		{

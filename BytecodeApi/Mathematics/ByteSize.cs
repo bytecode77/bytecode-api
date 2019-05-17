@@ -557,7 +557,7 @@ namespace BytecodeApi.Mathematics
 		/// </returns>
 		public override string ToString()
 		{
-			return "[" + Bytes + "]";
+			return Bytes.ToString();
 		}
 		/// <summary>
 		/// Determines whether the specified <see cref="object" /> is equal to this instance.

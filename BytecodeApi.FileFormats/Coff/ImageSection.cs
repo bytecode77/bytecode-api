@@ -1,10 +1,14 @@
+using System.Diagnostics;
+
 namespace BytecodeApi.FileFormats.Coff
 {
 	/// <summary>
 	/// Represents a section of a PE image file, containing the header and a <see cref="byte" />[] representing the contents of the section.
 	/// </summary>
+	[DebuggerDisplay("{DebuggerDisplay,nq}")]
 	public sealed class ImageSection
 	{
+		private string DebuggerDisplay => CSharp.DebuggerDisplay<ImageSection>("Header: {0}, Size: {1}", Header.Name, Data.Length);
 		/// <summary>
 		/// Gets or sets the section header.
 		/// </summary>
@@ -21,19 +25,11 @@ namespace BytecodeApi.FileFormats.Coff
 		/// <param name="data">A <see cref="byte" />[] representing the contents of the section.</param>
 		public ImageSection(ImageSectionHeader header, byte[] data)
 		{
+			Check.ArgumentNull(header, nameof(header));
+			Check.ArgumentNull(data, nameof(data));
+
 			Header = header;
 			Data = data;
-		}
-
-		/// <summary>
-		/// Returns a <see cref="string" /> that represents this instance.
-		/// </summary>
-		/// <returns>
-		/// A <see cref="string" /> that represents this instance.
-		/// </returns>
-		public override string ToString()
-		{
-			return "[" + Header.Name + ", Size: " + Data.Length + "]";
 		}
 	}
 }

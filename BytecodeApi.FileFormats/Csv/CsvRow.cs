@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace BytecodeApi.FileFormats.Csv
@@ -7,8 +8,10 @@ namespace BytecodeApi.FileFormats.Csv
 	/// <summary>
 	/// Represents a row of a <see cref="CsvFile" /> flat file database.
 	/// </summary>
+	[DebuggerDisplay("{DebuggerDisplay,nq}")]
 	public sealed class CsvRow : IReadOnlyCollection<CsvCell>
 	{
+		private string DebuggerDisplay => CSharp.DebuggerDisplay<CsvRow>("LineNumber = {0}, Cells: {1}{2}", LineNumber, Count, ErrorLine == null ? null : " (error)");
 		private readonly List<CsvCell> Cells;
 		/// <summary>
 		/// Gets or sets the <see cref="CsvCell" /> at the specified column index.
@@ -97,17 +100,6 @@ namespace BytecodeApi.FileFormats.Csv
 		/// <param name="cells">The collection of cells to be added to this <see cref="CsvRow" />, represented as <see cref="string" /> objects.</param>
 		public CsvRow(params string[] cells) : this((IEnumerable<string>)cells)
 		{
-		}
-
-		/// <summary>
-		/// Returns a <see cref="string" /> that represents this instance.
-		/// </summary>
-		/// <returns>
-		/// A <see cref="string" /> that represents this instance.
-		/// </returns>
-		public override string ToString()
-		{
-			return "[Line: " + LineNumber + ", " + (ErrorLine == null ? "Cells: " + Count : "ErrorLine") + "]";
 		}
 
 		/// <summary>

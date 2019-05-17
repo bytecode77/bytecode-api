@@ -1,10 +1,15 @@
-﻿namespace BytecodeApi.IO.FileSystem
+﻿using BytecodeApi.Text;
+using System.Diagnostics;
+
+namespace BytecodeApi.IO.FileSystem
 {
 	/// <summary>
 	/// Represents an alternate data stream entry of a file or directory.
 	/// </summary>
+	[DebuggerDisplay("{DebuggerDisplay,nq}")]
 	public sealed class AlternateDataStream
 	{
+		private string DebuggerDisplay => CSharp.DebuggerDisplay<AlternateDataStream>("Name = {0}, Size = {1}", new QuotedString(Name), Size);
 		/// <summary>
 		/// Gets the name of the alternate data stream without the leading colon.
 		/// </summary>
@@ -38,14 +43,14 @@
 		}
 
 		/// <summary>
-		/// Returns a <see cref="string" /> that represents this instance.
+		/// Returns the name of this <see cref="AlternateDataStream" />.
 		/// </summary>
 		/// <returns>
-		/// A <see cref="string" /> that represents this instance.
+		/// The name of this <see cref="AlternateDataStream" />.
 		/// </returns>
 		public override string ToString()
 		{
-			return "[" + Name + ", Size: " + Size + "]";
+			return Name;
 		}
 	}
 }

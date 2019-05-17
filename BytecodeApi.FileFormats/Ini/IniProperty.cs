@@ -1,12 +1,16 @@
 ﻿using BytecodeApi.Extensions;
+using BytecodeApi.Text;
+using System.Diagnostics;
 
 namespace BytecodeApi.FileFormats.Ini
 {
 	/// <summary>
 	/// Represents a property of an <see cref="IniFile" />.
 	/// </summary>
+	[DebuggerDisplay("{DebuggerDisplay,nq}")]
 	public sealed class IniProperty
 	{
+		private string DebuggerDisplay => CSharp.DebuggerDisplay<IniProperty>("Name = {0}, Value = {1}", new QuotedString(Name), new QuotedString(Value));
 		/// <summary>
 		/// Gets or sets the name of this INI property.
 		/// </summary>
@@ -41,17 +45,6 @@ namespace BytecodeApi.FileFormats.Ini
 		{
 			Name = name;
 			Value = value;
-		}
-
-		/// <summary>
-		/// Returns a <see cref="string" /> that represents this instance.
-		/// </summary>
-		/// <returns>
-		/// A <see cref="string" /> that represents this instance.
-		/// </returns>
-		public override string ToString()
-		{
-			return "[" + Name + ", " + Value + "]";
 		}
 	}
 }
