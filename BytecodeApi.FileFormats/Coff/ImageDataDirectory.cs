@@ -1,11 +1,14 @@
+using System.Diagnostics;
+
 namespace BytecodeApi.FileFormats.Coff
 {
-	//FEATURE: Implement derived classes for specific data (e.g. import table, export table)
 	/// <summary>
 	/// Represents a data directory of a PE image file.
 	/// </summary>
+	[DebuggerDisplay("{DebuggerDisplay,nq}")]
 	public sealed class ImageDataDirectory
 	{
+		private string DebuggerDisplay => CSharp.DebuggerDisplay<ImageDataDirectory>("Name = {0}", Name);
 		/// <summary>
 		/// Gets the name of the data directory. This may not be a valid enum value of <see cref="ImageDataDirectoryName" />, if the image has more than 14 data directories.
 		/// </summary>
@@ -27,17 +30,6 @@ namespace BytecodeApi.FileFormats.Coff
 			Name = name;
 			VirtualAddress = virtualAddress;
 			Size = size;
-		}
-
-		/// <summary>
-		/// Returns a <see cref="string" /> that represents this instance.
-		/// </summary>
-		/// <returns>
-		/// A <see cref="string" /> that represents this instance.
-		/// </returns>
-		public override string ToString()
-		{
-			return "[" + (int)Name + ", " + Name + "]";
 		}
 	}
 }

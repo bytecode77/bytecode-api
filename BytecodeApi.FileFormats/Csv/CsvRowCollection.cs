@@ -92,7 +92,6 @@ namespace BytecodeApi.FileFormats.Csv
 
 			Rows.CopyTo(array, arrayIndex);
 		}
-
 		/// <summary>
 		/// Returns an enumerator that iterates through the <see cref="CsvRowCollection" />.
 		/// </summary>

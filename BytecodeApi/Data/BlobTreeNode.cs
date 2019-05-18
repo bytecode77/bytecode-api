@@ -1,5 +1,7 @@
 ﻿using BytecodeApi.Extensions;
+using BytecodeApi.Text;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace BytecodeApi.Data
 {
@@ -7,8 +9,10 @@ namespace BytecodeApi.Data
 	/// <summary>
 	/// Represents a tree node within a <see cref="BlobTree" />.
 	/// </summary>
+	[DebuggerDisplay("{DebuggerDisplay,nq}")]
 	public sealed class BlobTreeNode
 	{
+		private string DebuggerDisplay => CSharp.DebuggerDisplay<BlobTreeNode>("Name = {0}, Nodes: {1}, Blobs: {2}, Tag = {3}", new QuotedString(Name), Nodes.Count, Blobs.Count, Tag);
 		/// <summary>
 		/// Gets or sets the name of the <see cref="BlobTreeNode" />.
 		/// </summary>
@@ -118,14 +122,14 @@ namespace BytecodeApi.Data
 		}
 
 		/// <summary>
-		/// Returns a <see cref="string" /> that represents this instance.
+		/// Returns the name of this <see cref="BlobTreeNode" />.
 		/// </summary>
 		/// <returns>
-		/// A <see cref="string" /> that represents this instance.
+		/// The name of this <see cref="BlobTreeNode" />.
 		/// </returns>
 		public override string ToString()
 		{
-			return "[" + Name + ", Nodes: " + Nodes.Count + ", Blobs: " + Blobs.Count + "]";
+			return Name;
 		}
 	}
 }

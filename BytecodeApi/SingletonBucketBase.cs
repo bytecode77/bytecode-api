@@ -15,6 +15,13 @@ namespace BytecodeApi
 		private static readonly Dictionary<Tuple<Type, Type>, object> Singletons = new Dictionary<Tuple<Type, Type>, object>();
 
 		/// <summary>
+		/// Initializes a new instance of the <see cref="SingletonBucketBase{TBucket}" /> class.
+		/// </summary>
+		protected SingletonBucketBase()
+		{
+		}
+
+		/// <summary>
 		/// Gets a value indicating whether the singleton <see cref="object" /> of the specified type exists.
 		/// </summary>
 		/// <typeparam name="T">The type that identifies the class of the singleton <see cref="object" />.</typeparam>

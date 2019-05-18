@@ -161,7 +161,6 @@ namespace BytecodeApi.Data
 
 			Nodes.CopyTo(array, arrayIndex);
 		}
-
 		/// <summary>
 		/// Returns an enumerator that iterates through the <see cref="BlobTreeNodeCollection" />.
 		/// </summary>

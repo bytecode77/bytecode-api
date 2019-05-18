@@ -8,9 +8,41 @@ namespace BytecodeApi.UI.Converters
 	public enum IEnumerableConverterMethod
 	{
 		/// <summary>
+		/// Returns the first element in the <see cref="IEnumerable" /> value.
+		/// </summary>
+		First,
+		/// <summary>
+		/// Returns the first element in the <see cref="IEnumerable" /> value, or a default value if the sequence contains no elements.
+		/// </summary>
+		FirstOrDefault,
+		/// <summary>
+		/// Returns the last element in the <see cref="IEnumerable" /> value.
+		/// </summary>
+		Last,
+		/// <summary>
+		/// Returns the last element in the <see cref="IEnumerable" /> value, or a default value if the sequence contains no elements.
+		/// </summary>
+		LastOrDefault,
+		/// <summary>
+		/// Returns the element in the <see cref="IEnumerable" /> value at the index as specified in the <see cref="int" /> parameter.
+		/// </summary>
+		ElementAt,
+		/// <summary>
+		/// Returns the element in the <see cref="IEnumerable" /> value at the index as specified in the <see cref="int" /> parameter or a default value if the index is out of range.
+		/// </summary>
+		ElementAtOrDefault,
+		/// <summary>
 		/// Returns the number of elements in the <see cref="IEnumerable" /> value.
 		/// </summary>
 		Count,
+		/// <summary>
+		/// Bypasses a number of elements in the <see cref="IEnumerable" /> value as specified in the <see cref="int" /> parameter and then returns the remaining elements.
+		/// </summary>
+		Skip,
+		/// <summary>
+		/// Returns a number of contiguous elements as specified in the <see cref="int" /> parameter from the start of the <see cref="IEnumerable" /> value.
+		/// </summary>
+		Take,
 		/// <summary>
 		/// Returns a <see cref="string" /> from the <see cref="IEnumerable" /> value of objects. All objects in the <see cref="IEnumerable" /> value are converted to <see cref="string" /> by calling <see cref="object.ToString" />. Then, the resulting strings are concatenated.
 		/// </summary>
@@ -30,6 +62,5 @@ namespace BytecodeApi.UI.Converters
 		/// The value must be a collection of <see cref="bool" /> or <see cref="bool" />? values.
 		/// </summary>
 		BooleansToIndeterminate
-		//IMPORTANT: Additional methods
 	}
 }

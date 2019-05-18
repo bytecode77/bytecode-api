@@ -10,7 +10,7 @@ namespace BytecodeApi.Data
 	/// <summary>
 	/// Represents a collection of <see cref="Blob" /> objects.
 	/// </summary>
-	public class BlobCollection : ICollection<Blob>
+	public sealed class BlobCollection : ICollection<Blob>
 	{
 		private readonly List<Blob> Blobs;
 		/// <summary>
@@ -213,7 +213,6 @@ namespace BytecodeApi.Data
 
 			Blobs.CopyTo(array, arrayIndex);
 		}
-
 		/// <summary>
 		/// Returns an enumerator that iterates through the <see cref="BlobCollection" />.
 		/// </summary>

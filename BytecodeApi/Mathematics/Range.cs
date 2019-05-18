@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace BytecodeApi.Mathematics
 {
@@ -6,8 +7,10 @@ namespace BytecodeApi.Mathematics
 	/// Represents a generic range of two numeric values that implement <see cref="IComparable" />.
 	/// </summary>
 	/// <typeparam name="T">The type of the two numeric values.</typeparam>
+	[DebuggerDisplay("{DebuggerDisplay,nq}")]
 	public struct Range<T> : IEquatable<Range<T>> where T : struct, IComparable
 	{
+		private string DebuggerDisplay => CSharp.DebuggerDisplay<Range<T>>("Min = {0}, Max = {1}", Min, Max);
 		/// <summary>
 		/// Gets or sets the minimum value of this <see cref="Range{T}" />.
 		/// </summary>
@@ -65,16 +68,6 @@ namespace BytecodeApi.Mathematics
 			return value.CompareTo(Min) >= 0 && value.CompareTo(Max) <= 0;
 		}
 
-		/// <summary>
-		/// Returns a <see cref="string" /> that represents this instance.
-		/// </summary>
-		/// <returns>
-		/// A <see cref="string" /> that represents this instance.
-		/// </returns>
-		public override string ToString()
-		{
-			return "[" + Min + ", " + Max + "]";
-		}
 		/// <summary>
 		/// Determines whether the specified <see cref="object" /> is equal to this instance.
 		/// </summary>

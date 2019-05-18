@@ -581,7 +581,7 @@ namespace BytecodeApi.FileFormats.Csv
 			{
 				foreach (string delimiterTest in delimitersToTest)
 				{
-					stream.Seek(0);
+					stream.Seek(0, SeekOrigin.Begin);
 					int rowCount = 0;
 					int cellCount = -1;
 
@@ -608,7 +608,7 @@ namespace BytecodeApi.FileFormats.Csv
 			}
 			finally
 			{
-				stream.Seek(position);
+				stream.Seek(position, SeekOrigin.Begin);
 			}
 
 			return null;

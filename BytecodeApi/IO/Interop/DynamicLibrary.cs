@@ -1,5 +1,7 @@
 ﻿using BytecodeApi.Extensions;
+using BytecodeApi.Text;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Reflection.Emit;
@@ -10,8 +12,10 @@ namespace BytecodeApi.IO.Interop
 	/// <summary>
 	/// Represents a native DLL file with functions that can be dynamically generated and called.
 	/// </summary>
+	[DebuggerDisplay("{DebuggerDisplay,nq}")]
 	public sealed class DynamicLibrary
 	{
+		private string DebuggerDisplay => CSharp.DebuggerDisplay<DynamicLibrary>("DllName = {0}", new QuotedString(DllName));
 		/// <summary>
 		/// Gets the name of the DLL that is supplied in the constructor of <see cref="DynamicLibrary" />.
 		/// </summary>
@@ -83,14 +87,14 @@ namespace BytecodeApi.IO.Interop
 		}
 
 		/// <summary>
-		/// Returns a <see cref="string" /> that represents this instance.
+		/// Returns the filename of the DLL of this <see cref="DynamicLibrary" />.
 		/// </summary>
 		/// <returns>
-		/// A <see cref="string" /> that represents this instance.
+		/// The filename of the DLL of this <see cref="DynamicLibrary" />.
 		/// </returns>
 		public override string ToString()
 		{
-			return "[" + Path.GetFileName(DllName) + "]";
+			return Path.GetFileName(DllName);
 		}
 	}
 }

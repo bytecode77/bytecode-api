@@ -1,10 +1,15 @@
-﻿namespace BytecodeApi.FileFormats.Ini
+﻿using BytecodeApi.Text;
+using System.Diagnostics;
+
+namespace BytecodeApi.FileFormats.Ini
 {
 	/// <summary>
 	/// Represents a section of an <see cref="IniFile" />.
 	/// </summary>
+	[DebuggerDisplay("{DebuggerDisplay,nq}")]
 	public sealed class IniSection
 	{
+		private string DebuggerDisplay => CSharp.DebuggerDisplay<IniSection>("Name = {0}, Properties: {1}", new QuotedString(Name), Properties.Count);
 		/// <summary>
 		/// Gets or sets the name of this INI section.
 		/// </summary>
@@ -22,17 +27,6 @@
 		{
 			Name = name;
 			Properties = new IniPropertyCollection();
-		}
-
-		/// <summary>
-		/// Returns a <see cref="string" /> that represents this instance.
-		/// </summary>
-		/// <returns>
-		/// A <see cref="string" /> that represents this instance.
-		/// </returns>
-		public override string ToString()
-		{
-			return "[" + Name + ", Properties: " + Properties.Count + "]";
 		}
 	}
 }

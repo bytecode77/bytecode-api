@@ -1,5 +1,7 @@
 ﻿using BytecodeApi.Extensions;
+using BytecodeApi.Text;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 
 namespace BytecodeApi.IO.Wmi
@@ -7,8 +9,10 @@ namespace BytecodeApi.IO.Wmi
 	/// <summary>
 	/// Represents a WMI object instance.
 	/// </summary>
+	[DebuggerDisplay("{DebuggerDisplay,nq}")]
 	public class WmiObject
 	{
+		private string DebuggerDisplay => CSharp.DebuggerDisplay<WmiObject>("Class = {0}, Properties: {1}", new QuotedString(Class.Name), Properties.Count);
 		/// <summary>
 		/// Gets the <see cref="WmiClass" /> that this <see cref="WmiObject" /> was created from.
 		/// </summary>
@@ -27,17 +31,6 @@ namespace BytecodeApi.IO.Wmi
 			Class = wmiClass;
 			Properties = new WmiPropertyCollection(properties);
 			PropertyNames = properties.Select(property => property.Name).ToReadOnlyCollection();
-		}
-
-		/// <summary>
-		/// Returns a <see cref="string" /> that represents this instance.
-		/// </summary>
-		/// <returns>
-		/// A <see cref="string" /> that represents this instance.
-		/// </returns>
-		public override string ToString()
-		{
-			return "[" + Class.Name + ", Properties: " + Properties.Count + "]";
 		}
 	}
 }

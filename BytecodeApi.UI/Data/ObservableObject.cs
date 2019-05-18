@@ -11,7 +11,7 @@ namespace BytecodeApi.UI.Data
 	/// <summary>
 	/// Class that wraps an object, implementing the <see cref="INotifyPropertyChanged" /> interface. Typically, this class is set as a <see cref="DependencyProperty" /> on a <see cref="DependencyObject" />.
 	/// </summary>
-	public class ObservableObject : INotifyPropertyChanged, INotifyPropertyChanging
+	public abstract class ObservableObject : INotifyPropertyChanged, INotifyPropertyChanging
 	{
 		private readonly Dictionary<string, object> BackingFields;
 		/// <summary>
@@ -42,9 +42,26 @@ namespace BytecodeApi.UI.Data
 		/// </returns>
 		protected T Get<T>(Expression<Func<T>> property)
 		{
+			return Get(property, null);
+		}
+		/// <summary>
+		/// Method that can be used by the <see langword="get" /> accessor of a property. Backing fields are managed automatically.
+		/// <para>Example: <see langword="public" /> <see cref="int" /> Foo { <see langword="get" /> => Get(() => Foo, () => 1); <see langword="set" /> => Set(() => Foo, <see langword="value" />); }</para>
+		/// </summary>
+		/// <typeparam name="T">The type of the property.</typeparam>
+		/// <param name="property">The strongly typed lambda expression of the property.</param>
+		/// <param name="defaultValue">A <see cref="Func{TResult}" /> that retrieves a default value. This delegate can be used as a property initializer. <paramref name="defaultValue" /> is invoked if the property is retrieved for the first time and is not set.</param>
+		/// <returns>
+		/// The value of the property backing field. The default value is <see langword="default" />(<typeparamref name="T" />).
+		/// </returns>
+		protected T Get<T>(Expression<Func<T>> property, Func<T> defaultValue)
+		{
 			Check.ArgumentNull(property, nameof(property));
 
-			return CSharp.CastOrDefault<T>(BackingFields.ValueOrDefault(property.GetMemberName()));
+			string propertyName = property.GetMemberName();
+			if (!BackingFields.ContainsKey(propertyName)) BackingFields[propertyName] = defaultValue == null ? default : defaultValue();
+
+			return CSharp.CastOrDefault<T>(BackingFields[propertyName]);
 		}
 		/// <summary>
 		/// Method that can be used by the <see langword="set" /> accessor of a property. Backing fields are managed automatically. This method raises the <see cref="PropertyChanging" /> event and the <see cref="PropertyChanged" /> event.

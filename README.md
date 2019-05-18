@@ -186,7 +186,7 @@ up-to-date reference.
 
 ## Downloads
 
-[![](https://bytecode77.com/images/shared/fileicons/zip.png) BytecodeApi 1.3.1 Binaries.zip](https://bytecode77.com/downloads/framework/bytecode-api/BytecodeApi%201.3.1%20Binaries.zip)
+[![](https://bytecode77.com/images/shared/fileicons/zip.png) BytecodeApi 1.3.2 Binaries.zip](https://bytecode77.com/downloads/framework/bytecode-api/BytecodeApi%201.3.2%20Binaries.zip)
 
 ## Project Page
 

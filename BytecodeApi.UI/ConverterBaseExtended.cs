@@ -14,6 +14,13 @@ namespace BytecodeApi.UI
 	public abstract class ConverterBaseExtended<TValue, TResult, TBackValue, TBackResult> : ConverterBase<TValue, TResult>, IValueConverter
 	{
 		/// <summary>
+		/// Initializes a new instance of the <see cref="ConverterBaseExtended{TValue, TResult, TBackValue, TBackResult}" /> class.
+		/// </summary>
+		protected ConverterBaseExtended()
+		{
+		}
+
+		/// <summary>
 		/// Converts a value.
 		/// </summary>
 		/// <param name="value">The value that is produced by the binding target.</param>
@@ -39,6 +46,13 @@ namespace BytecodeApi.UI
 	/// <typeparam name="TBackResult">The type of the conversion result when converted back. This is usually equal to <typeparamref name="TResult" />.</typeparam>
 	public abstract class ConverterBaseExtended<TValue, TParameter, TResult, TBackValue, TBackResult> : ConverterBase<TValue, TParameter, TResult>, IValueConverter
 	{
+		/// <summary>
+		/// Initializes a new instance of the <see cref="ConverterBaseExtended{TValue, TParameter, TResult, TBackValue, TBackResult}" /> class.
+		/// </summary>
+		protected ConverterBaseExtended()
+		{
+		}
+
 		/// <summary>
 		/// Converts a value.
 		/// </summary>

@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Threading;
 
 namespace BytecodeApi.IO
@@ -107,9 +108,77 @@ namespace BytecodeApi.IO
 			throw Throw.Win32("Process could not be created.");
 		}
 		/// <summary>
+		/// Creates a <see cref="Process" />, reads the standard output stream and waits until the process has exited.
+		/// </summary>
+		/// <param name="fileName">The name of an application file to run in the process.</param>
+		/// <returns>
+		/// The result <see cref="string" /> from the standard output stream of the process after it has exited.
+		/// </returns>
+		public static string ReadProcessOutput(string fileName)
+		{
+			return ReadProcessOutput(fileName, null);
+		}
+		/// <summary>
+		/// Creates a <see cref="Process" />, reads the standard output stream and waits until the process has exited.
+		/// </summary>
+		/// <param name="fileName">The name of an application file to run in the process.</param>
+		/// <param name="arguments">Command-line arguments to pass when starting the process.</param>
+		/// <returns>
+		/// The result <see cref="string" /> from the standard output stream of the process after it has exited.
+		/// </returns>
+		public static string ReadProcessOutput(string fileName, string arguments)
+		{
+			return ReadProcessOutput(fileName, arguments, false);
+		}
+		/// <summary>
+		/// Creates a <see cref="Process" />, reads the standard output stream and waits until the process has exited.
+		/// </summary>
+		/// <param name="fileName">The name of an application file to run in the process.</param>
+		/// <param name="arguments">Command-line arguments to pass when starting the process.</param>
+		/// <param name="inclueErrorStream"><see langword="true" /> to include the standard error stream; <see langword="false" /> to exclude it.</param>
+		/// <returns>
+		/// The result <see cref="string" /> from the standard output stream of the process after it has exited.
+		/// </returns>
+		public static string ReadProcessOutput(string fileName, string arguments, bool inclueErrorStream)
+		{
+			Check.ArgumentNull(fileName, nameof(fileName));
+
+			StringBuilder result = new StringBuilder();
+
+			using (Process process = new Process
+			{
+				StartInfo =
+				{
+					FileName = fileName,
+					Arguments = arguments,
+					UseShellExecute = false,
+					RedirectStandardOutput = true,
+					RedirectStandardError = true
+				},
+				EnableRaisingEvents = true
+			})
+			{
+				process.OutputDataReceived += DataReceived;
+				if (inclueErrorStream) process.ErrorDataReceived += DataReceived;
+
+				process.Start();
+				process.BeginOutputReadLine();
+				if (inclueErrorStream) process.BeginErrorReadLine();
+				process.WaitForExit();
+			}
+
+			return result.ToString();
+
+			void DataReceived(object sender, DataReceivedEventArgs e)
+			{
+				result.AppendLine(e.Data);
+			}
+		}
+
+		/// <summary>
 		/// Executes a .NET executable from a <see cref="byte" />[] by invoking the main entry point. The Main method must either have no parameters or one <see cref="string" />[] parameter. If it has a parameter, <see langword="new" /> <see cref="string" />[0] is passed.
 		/// </summary>
-		/// <param name="executable">A <see cref="byte" />[] that represents a .NET executable.</param>
+		/// <param name="executable">A <see cref="byte" />[] that represents a .NET executable file.</param>
 		public static void ExecuteDotNetAssembly(byte[] executable)
 		{
 			ExecuteDotNetAssembly(executable, null);
@@ -117,7 +186,7 @@ namespace BytecodeApi.IO
 		/// <summary>
 		/// Executes a .NET executable from a <see cref="byte" />[] by invoking the main entry point. The Main method must either have no parameters or one <see cref="string" />[] parameter. If it has a parameter, <paramref name="args" /> is passed, otherwise <paramref name="args" /> is ignored.
 		/// </summary>
-		/// <param name="executable">A <see cref="byte" />[] that represents a .NET executable.</param>
+		/// <param name="executable">A <see cref="byte" />[] that represents a .NET executable file.</param>
 		/// <param name="args">A <see cref="string" />[] representing the arguments that is passed to the main entry point, if the Main method has a <see cref="string" />[] parameter.</param>
 		public static void ExecuteDotNetAssembly(byte[] executable, params string[] args)
 		{
@@ -127,7 +196,7 @@ namespace BytecodeApi.IO
 		/// <summary>
 		/// Executes a .NET executable from a <see cref="byte" />[] by invoking the main entry point. The Main method must either have no parameters or one <see cref="string" />[] parameter. If it has a parameter, <paramref name="args" /> is passed, otherwise <paramref name="args" /> is ignored.
 		/// </summary>
-		/// <param name="executable">A <see cref="byte" />[] that represents a .NET executable.</param>
+		/// <param name="executable">A <see cref="byte" />[] that represents a .NET executable file.</param>
 		/// <param name="args">A <see cref="string" />[] representing the arguments that is passed to the main entry point, if the Main method has a <see cref="string" />[] parameter.</param>
 		/// <param name="thread"><see langword="true" /> to invoke the main entry point in a new thread.</param>
 		public static void ExecuteDotNetAssembly(byte[] executable, string[] args, bool thread)

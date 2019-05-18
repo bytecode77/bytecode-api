@@ -23,6 +23,13 @@ namespace BytecodeApi.UI
 		public object ThenParameter { get; set; }
 
 		/// <summary>
+		/// Initializes a new instance of the <see cref="ConverterBase{TValue, TResult}" /> class.
+		/// </summary>
+		protected ConverterBase()
+		{
+		}
+
+		/// <summary>
 		/// Converts a value.
 		/// </summary>
 		/// <param name="value">The value produced by the binding source.</param>
@@ -70,6 +77,13 @@ namespace BytecodeApi.UI
 		/// If <see cref="Then" /> is not <see langword="null" />, specifies a converter parameter that is used to convert the result of this converter.
 		/// </summary>
 		public object ThenParameter { get; set; }
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="ConverterBase{TValue, TParameter, TResult}" /> class.
+		/// </summary>
+		protected ConverterBase()
+		{
+		}
 
 		/// <summary>
 		/// Converts a value.

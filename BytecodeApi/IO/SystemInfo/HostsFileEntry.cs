@@ -1,5 +1,7 @@
 ﻿using BytecodeApi.Extensions;
 using BytecodeApi.IO.FileSystem;
+using BytecodeApi.Text;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
@@ -8,8 +10,10 @@ namespace BytecodeApi.IO.SystemInfo
 	/// <summary>
 	/// Represents a hosts file entry from the Windows hosts file in %SYSTEMROOT%\drivers\etc\hosts.
 	/// </summary>
+	[DebuggerDisplay("{DebuggerDisplay,nq}")]
 	public sealed class HostsFileEntry
 	{
+		private string DebuggerDisplay => CSharp.DebuggerDisplay<HostsFileEntry>("IPAddress = {0}, HostName = {1}", new QuotedString(IPAddress), new QuotedString(HostName));
 		/// <summary>
 		/// Gets or sets the IP address of the hosts file entry.
 		/// </summary>
@@ -44,17 +48,6 @@ namespace BytecodeApi.IO.SystemInfo
 				.Where(line => line.Contains(' '))
 				.Select(line => new HostsFileEntry(line.SubstringUntil(" ").Trim(), line.SubstringFrom(" ").Trim()))
 				.ToArray();
-		}
-
-		/// <summary>
-		/// Returns a <see cref="string" /> that represents this instance.
-		/// </summary>
-		/// <returns>
-		/// A <see cref="string" /> that represents this instance.
-		/// </returns>
-		public override string ToString()
-		{
-			return "[" + IPAddress + ", " + HostName + "]";
 		}
 	}
 }

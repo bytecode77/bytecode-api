@@ -1,6 +1,8 @@
 ﻿using BytecodeApi.Extensions;
+using BytecodeApi.Text;
 using Microsoft.Win32;
 using System;
+using System.Diagnostics;
 using System.Linq;
 
 namespace BytecodeApi.IO.SystemInfo
@@ -8,8 +10,10 @@ namespace BytecodeApi.IO.SystemInfo
 	/// <summary>
 	/// Provides information about installed software on this computer.
 	/// </summary>
+	[DebuggerDisplay("{DebuggerDisplay,nq}")]
 	public sealed class InstalledSoftwareInfo
 	{
+		private string DebuggerDisplay => CSharp.DebuggerDisplay<InstalledSoftwareInfo>("Name = {0}, Publisher = {1}, Version = {2}", new QuotedString(Name), new QuotedString(Publisher), new QuotedString(Version));
 		/// <summary>
 		/// Gets the name of the software, or <see langword="null" />, if it cannot be retrieved.
 		/// </summary>
@@ -77,14 +81,14 @@ namespace BytecodeApi.IO.SystemInfo
 		}
 
 		/// <summary>
-		/// Returns a <see cref="string" /> that represents this instance.
+		/// Returns the name of this <see cref="InstalledSoftwareInfo" />.
 		/// </summary>
 		/// <returns>
-		/// A <see cref="string" /> that represents this instance.
+		/// The name of this <see cref="InstalledSoftwareInfo" />.
 		/// </returns>
 		public override string ToString()
 		{
-			return "[" + Name + ", Version: " + Version + "]";
+			return Name;
 		}
 	}
 }

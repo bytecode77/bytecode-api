@@ -192,7 +192,6 @@ namespace BytecodeApi.FileFormats.Ini
 
 			Sections.CopyTo(array, arrayIndex);
 		}
-
 		/// <summary>
 		/// Returns an enumerator that iterates through the <see cref="IniSectionCollection" />.
 		/// </summary>

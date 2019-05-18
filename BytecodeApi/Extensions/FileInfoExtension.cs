@@ -251,7 +251,7 @@ namespace BytecodeApi.Extensions
 
 			using (FileStream stream = file.OpenRead())
 			{
-				stream.Seek(startIndex);
+				stream.Seek(startIndex, SeekOrigin.Begin);
 				long index = stream.FindSequence(sequence);
 				return index == -1 ? -1 : index + startIndex;
 			}

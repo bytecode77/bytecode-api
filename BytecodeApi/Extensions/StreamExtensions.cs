@@ -24,20 +24,6 @@ namespace BytecodeApi.Extensions
 			return stream.Read(buffer, 0, buffer.Length);
 		}
 		/// <summary>
-		/// Sets the position within the current stream to an offset starting at the beginning.
-		/// </summary>
-		/// <param name="stream">The <see cref="Stream" /> to process.</param>
-		/// <param name="offset">A byte offset relative to the beginning of the stream.</param>
-		/// <returns>
-		/// The new position within the current stream.
-		/// </returns>
-		public static long Seek(this Stream stream, long offset)
-		{
-			Check.ArgumentNull(stream, nameof(stream));
-
-			return stream.Seek(offset, SeekOrigin.Begin);
-		}
-		/// <summary>
 		/// Writes a sequence of bytes to the current <see cref="Stream" /> and advances the current position within this <see cref="Stream" /> by the number of bytes written.
 		/// </summary>
 		/// <param name="stream">The <see cref="Stream" /> to write to.</param>

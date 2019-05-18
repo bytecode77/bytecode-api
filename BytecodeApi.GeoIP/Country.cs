@@ -1,12 +1,16 @@
-﻿using System;
+﻿using BytecodeApi.Text;
+using System;
+using System.Diagnostics;
 
 namespace BytecodeApi.GeoIP
 {
 	/// <summary>
 	/// Represents a country with a name, an ISO code and related properties.
 	/// </summary>
+	[DebuggerDisplay("{DebuggerDisplay,nq}")]
 	public sealed class Country : IEquatable<Country>
 	{
+		private string DebuggerDisplay => CSharp.DebuggerDisplay<Country>("Name = {0} ({1}), Continent = {2} ({3}), EuropeanUnion = {4}", new QuotedString(Name), IsoCode, new QuotedString(Continent), ContinentIsoCode, EuropeanUnion);
 		/// <summary>
 		/// Gets the name of the country.
 		/// <para>Example: United States</para>
@@ -42,14 +46,14 @@ namespace BytecodeApi.GeoIP
 		}
 
 		/// <summary>
-		/// Returns a <see cref="string" /> that represents this instance.
+		/// Returns the name of this <see cref="Country" />.
 		/// </summary>
 		/// <returns>
-		/// A <see cref="string" /> that represents this instance.
+		/// The name of this <see cref="Country" />.
 		/// </returns>
 		public override string ToString()
 		{
-			return "[" + Name + ", " + IsoCode + "]";
+			return Name;
 		}
 		/// <summary>
 		/// Determines whether the specified <see cref="object" /> is equal to this instance.

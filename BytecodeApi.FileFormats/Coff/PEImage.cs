@@ -427,7 +427,7 @@ namespace BytecodeApi.FileFormats.Coff
 					// Section Data
 					foreach (ImageSection section in Sections)
 					{
-						memoryStream.Seek((int)section.Header.PointerToRawData);
+						memoryStream.Seek((int)section.Header.PointerToRawData, SeekOrigin.Begin);
 						writer.Write(section.Data);
 					}
 				}

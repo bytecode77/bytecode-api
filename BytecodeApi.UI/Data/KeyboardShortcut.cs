@@ -1,4 +1,5 @@
 ﻿using BytecodeApi.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Windows.Input;
 
@@ -7,7 +8,7 @@ namespace BytecodeApi.UI.Data
 	/// <summary>
 	/// Represents a keyboard shortcut composed of a key and a set of modifiers (Ctrl, Shift, Alt).
 	/// </summary>
-	public class KeyboardShortcut : ObservableObject
+	public class KeyboardShortcut : ObservableObject, IEquatable<KeyboardShortcut>
 	{
 		/// <summary>
 		/// Gets or sets a value indicating whether this <see cref="KeyboardShortcut" /> uses the Ctrl modifier.
@@ -50,7 +51,7 @@ namespace BytecodeApi.UI.Data
 		/// </summary>
 		public Key Key
 		{
-			get => Get(() => Key);
+			get => Get(() => Key, () => Key.None);
 			set
 			{
 				Set(() => Key, value);
@@ -61,46 +62,7 @@ namespace BytecodeApi.UI.Data
 		/// <summary>
 		/// Gets the equivalent display name for the <see cref="Key" /> property.
 		/// </summary>
-		public string KeyName
-		{
-			get
-			{
-				//IMPORTANT: Proper implementation
-				switch (Key)
-				{
-					case Key.D0:
-					case Key.D1:
-					case Key.D2:
-					case Key.D3:
-					case Key.D4:
-					case Key.D5:
-					case Key.D6:
-					case Key.D7:
-					case Key.D8:
-					case Key.D9: return Key.ToString().Substring(1);
-					case Key.NumPad0:
-					case Key.NumPad1:
-					case Key.NumPad2:
-					case Key.NumPad3:
-					case Key.NumPad4:
-					case Key.NumPad5:
-					case Key.NumPad6:
-					case Key.NumPad7:
-					case Key.NumPad8:
-					case Key.NumPad9: return "NumPad " + Key.ToString().Substring(6);
-					case Key.Oem5: return "^";
-					case Key.OemOpenBrackets: return "ß";
-					case Key.Oem6: return "´";
-					case Key.OemPlus: return "+";
-					case Key.OemQuestion: return "#";
-					case Key.OemMinus: return "-";
-					case Key.OemPeriod: return ".";
-					case Key.OemComma: return ",";
-					case Key.OemBackslash: return "<";
-					default: return Key.ToString();
-				}
-			}
-		}
+		public string KeyName => new KeyConverter().ConvertTo(Key, typeof(string)) as string ?? "";
 		/// <summary>
 		/// Gets the display name for this instance.
 		/// <para>Example: Ctrl+Shift+A</para>
@@ -125,7 +87,6 @@ namespace BytecodeApi.UI.Data
 		/// </summary>
 		public KeyboardShortcut()
 		{
-			Key = Key.None;
 		}
 		/// <summary>
 		/// Initializes a new instance of the <see cref="KeyboardShortcut" /> class with the specified modifiers and the specified key.
@@ -139,14 +100,75 @@ namespace BytecodeApi.UI.Data
 		}
 
 		/// <summary>
-		/// Returns a <see cref="string" /> whose value represents the <see cref="DisplayName" /> property.
+		/// Returns the display name of this <see cref="KeyboardShortcut" />.
 		/// </summary>
 		/// <returns>
-		/// A <see cref="string" /> whose value represents the <see cref="DisplayName" /> property.
+		/// The display name of this <see cref="KeyboardShortcut" />.
 		/// </returns>
 		public override string ToString()
 		{
 			return DisplayName;
+		}
+		/// <summary>
+		/// Determines whether the specified <see cref="object" /> is equal to this instance.
+		/// </summary>
+		/// <param name="obj">The <see cref="object" /> to compare with this instance.</param>
+		/// <returns>
+		/// <see langword="true" />, if the specified <see cref="object" /> is equal to this instance;
+		/// otherwise, <see langword="false" />.
+		/// </returns>
+		public override bool Equals(object obj)
+		{
+			return obj is KeyboardShortcut keyboardShortcut && Equals(keyboardShortcut);
+		}
+		/// <summary>
+		/// Determines whether this instance is equal to another <see cref="KeyboardShortcut" />.
+		/// </summary>
+		/// <param name="other">The <see cref="KeyboardShortcut" /> to compare to this instance.</param>
+		/// <returns>
+		/// <see langword="true" />, if this instance is equal to the <paramref name="other" /> parameter;
+		/// otherwise, <see langword="false" />.
+		/// </returns>
+		public bool Equals(KeyboardShortcut other)
+		{
+			return other != null && GetType() == other.GetType() && IsCtrl == other.IsCtrl && IsShift == other.IsShift && IsAlt == other.IsAlt && Key == other.Key;
+		}
+		/// <summary>
+		/// Returns a hash code for this <see cref="KeyboardShortcut" />.
+		/// </summary>
+		/// <returns>
+		/// The hash code for this <see cref="KeyboardShortcut" /> instance.
+		/// </returns>
+		public override int GetHashCode()
+		{
+			return CSharp.GetHashCode((IsCtrl ? 1 : 0) << 10 | (IsShift ? 1 : 0) << 9 | (IsAlt ? 1 : 0) << 8, Key);
+		}
+
+		/// <summary>
+		/// Compares two <see cref="KeyboardShortcut" /> instances for equality.
+		/// </summary>
+		/// <param name="a">The first <see cref="KeyboardShortcut" /> to compare.</param>
+		/// <param name="b">The second <see cref="KeyboardShortcut" /> to compare.</param>
+		/// <returns>
+		/// <see langword="true" />, if both <see cref="KeyboardShortcut" /> are equal;
+		/// otherwise, <see langword="false" />.
+		/// </returns>
+		public static bool operator ==(KeyboardShortcut a, KeyboardShortcut b)
+		{
+			return Equals(a, b);
+		}
+		/// <summary>
+		/// Compares two <see cref="KeyboardShortcut" /> instances for inequality.
+		/// </summary>
+		/// <param name="a">The first <see cref="KeyboardShortcut" /> to compare.</param>
+		/// <param name="b">The second <see cref="KeyboardShortcut" /> to compare.</param>
+		/// <returns>
+		/// <see langword="true" />, if both <see cref="KeyboardShortcut" /> are not equal;
+		/// otherwise, <see langword="false" />.
+		/// </returns>
+		public static bool operator !=(KeyboardShortcut a, KeyboardShortcut b)
+		{
+			return !(a == b);
 		}
 	}
 }

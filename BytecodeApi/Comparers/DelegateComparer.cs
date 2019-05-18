@@ -7,6 +7,7 @@ namespace BytecodeApi.Comparers
 	/// <summary>
 	/// Represents a comparison operation that compares objects using a specified <see cref="Comparison{T}" /> delegate.
 	/// </summary>
+	/// <typeparam name="T">The type of objects to compare.</typeparam>
 	public sealed class DelegateComparer<T> : IComparer, IComparer<T>
 	{
 		/// <summary>

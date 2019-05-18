@@ -1,14 +1,18 @@
 ﻿using BytecodeApi.Extensions;
+using BytecodeApi.Text;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 
 namespace BytecodeApi.IO.SystemInfo
 {
 	/// <summary>
 	/// Represents a device type, containing an array of <see cref="DeviceInfo" />, retrieved by <see cref="DeviceManager" />.
 	/// </summary>
+	[DebuggerDisplay("{DebuggerDisplay,nq}")]
 	public sealed class DeviceTypeInfo
 	{
+		private string DebuggerDisplay => CSharp.DebuggerDisplay<DeviceTypeInfo>("Name = {0}, ClassName = {1}, Devices: {2}", new QuotedString(Name), new QuotedString(ClassName), Devices.Count);
 		/// <summary>
 		/// Gets the class GUID of this device type.
 		/// </summary>
@@ -35,14 +39,14 @@ namespace BytecodeApi.IO.SystemInfo
 		}
 
 		/// <summary>
-		/// Returns a <see cref="string" /> that represents this instance.
+		/// Returns the name of this <see cref="DeviceTypeInfo" />.
 		/// </summary>
 		/// <returns>
-		/// A <see cref="string" /> that represents this instance.
+		/// The name of this <see cref="DeviceTypeInfo" />.
 		/// </returns>
 		public override string ToString()
 		{
-			return "[" + Name + ", Devices: " + Devices.Count + "]";
+			return Name;
 		}
 	}
 }

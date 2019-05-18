@@ -1,12 +1,16 @@
-﻿using System;
+﻿using BytecodeApi.Text;
+using System;
+using System.Diagnostics;
 
 namespace BytecodeApi.GeoIP.ASN
 {
 	/// <summary>
 	/// Represents an Autonomous System Number with an organization name.
 	/// </summary>
+	[DebuggerDisplay("{DebuggerDisplay,nq}")]
 	public sealed class Asn : IEquatable<Asn>
 	{
+		private string DebuggerDisplay => CSharp.DebuggerDisplay<Asn>("Number = {0}, Organization = {1}", Number, new QuotedString(Organization));
 		/// <summary>
 		/// Gets the Autonomous System Number.
 		/// <para>Example: 46164</para>
@@ -25,14 +29,14 @@ namespace BytecodeApi.GeoIP.ASN
 		}
 
 		/// <summary>
-		/// Returns a <see cref="string" /> that represents this instance.
+		/// Returns the organization name of this <see cref="Asn" />.
 		/// </summary>
 		/// <returns>
-		/// A <see cref="string" /> that represents this instance.
+		/// The organization name of this <see cref="Asn" />.
 		/// </returns>
 		public override string ToString()
 		{
-			return "[" + Number + ", " + Organization + "]";
+			return Organization;
 		}
 		/// <summary>
 		/// Determines whether the specified <see cref="object" /> is equal to this instance.

@@ -10,7 +10,7 @@ namespace BytecodeApi.IO.SystemInfo
 	public class FileExtensionInfo
 	{
 		/// <summary>
-		/// Gets the file extension as specified in the constructor of <see cref="FileExtensionInfo" /> without the leading dot.
+		/// Gets the file extension as supplied in the constructor of <see cref="FileExtensionInfo" /> without the leading dot.
 		/// </summary>
 		public string Extension { get; private set; }
 		/// <summary>

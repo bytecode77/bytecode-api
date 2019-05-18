@@ -1,12 +1,16 @@
-﻿using System;
+﻿using BytecodeApi.Text;
+using System;
+using System.Diagnostics;
 
 namespace BytecodeApi.IO.Wmi
 {
 	/// <summary>
 	/// Represents a WMI property, composed of a name and a value.
 	/// </summary>
+	[DebuggerDisplay("{DebuggerDisplay,nq}")]
 	public struct WmiProperty : IEquatable<WmiProperty>
 	{
+		private string DebuggerDisplay => CSharp.DebuggerDisplay<WmiProperty>("Name = {0}, Value = {1}", new QuotedString(Name), Value is string stringValue ? new QuotedString(stringValue) : Value);
 		/// <summary>
 		/// Gets the name of the <see cref="WmiProperty" />.
 		/// </summary>
@@ -40,14 +44,14 @@ namespace BytecodeApi.IO.Wmi
 		}
 
 		/// <summary>
-		/// Returns a <see cref="string" /> that represents this instance.
+		/// Returns the name of this <see cref="WmiProperty" />.
 		/// </summary>
 		/// <returns>
-		/// A <see cref="string" /> that represents this instance.
+		/// The name of this <see cref="WmiProperty" />.
 		/// </returns>
 		public override string ToString()
 		{
-			return "[" + Name + ", " + Value + "]";
+			return Name;
 		}
 		/// <summary>
 		/// Determines whether the specified <see cref="object" /> is equal to this instance.

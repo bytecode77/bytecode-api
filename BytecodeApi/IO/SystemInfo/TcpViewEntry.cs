@@ -1,6 +1,8 @@
 ﻿using BytecodeApi.Extensions;
+using BytecodeApi.Text;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
@@ -12,9 +14,11 @@ namespace BytecodeApi.IO.SystemInfo
 	/// <summary>
 	/// Provides information from the TCPView table for both TCP and UDP protocols in both IPv4 and IPv6.
 	/// </summary>
+	[DebuggerDisplay("{DebuggerDisplay,nq}")]
 	public sealed class TcpViewEntry
 	{
 		private static ProtocolMappingEntry[] ProtocolMap;
+		private string DebuggerDisplay => CSharp.DebuggerDisplay<TcpViewEntry>("Protocol = {0}, Local: {1}, Remote: {2}", Protocol, new QuotedString(LocalAddress + ":" + (LocalProtocolName ?? LocalPort.ToString())), new QuotedString(RemoteAddress == null ? null : RemoteAddress + ":" + (RemoteProtocolName ?? RemotePort?.ToString())));
 		/// <summary>
 		/// Gets the protocol that is associated with this instance.
 		/// </summary>
@@ -218,22 +222,6 @@ namespace BytecodeApi.IO.SystemInfo
 		public static void InvalidateProtocolMapping()
 		{
 			ProtocolMap = null;
-		}
-
-		/// <summary>
-		/// Returns a <see cref="string" /> that represents this instance.
-		/// </summary>
-		/// <returns>
-		/// A <see cref="string" /> that represents this instance.
-		/// </returns>
-		public override string ToString()
-		{
-			return
-				"[" +
-				Protocol.GetDescription() + ", " +
-				LocalAddress + ":" + (LocalProtocolName ?? LocalPort.ToString()) +
-				(RemoteAddress == null ? null : ", " + RemoteAddress + ":" + (RemoteProtocolName ?? RemotePort?.ToString())) +
-				"]";
 		}
 	}
 }
