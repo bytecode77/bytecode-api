@@ -3,7 +3,7 @@
 namespace BytecodeApi.Text
 {
 	/// <summary>
-	/// Represents a <see cref="string" /> value that can be converted to a quoted string.
+	/// Represents a <see cref="string" /> value that can be converted to a quoted string (a C# string literal or verbatim string literal).
 	/// </summary>
 	public struct QuotedString : IEquatable<QuotedString>
 	{
