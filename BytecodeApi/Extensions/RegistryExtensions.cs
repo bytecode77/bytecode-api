@@ -164,6 +164,37 @@ namespace BytecodeApi.Extensions
 			return key.GetDateTimeValue(name) ?? defaultValue;
 		}
 		/// <summary>
+		/// Retrieves an <see cref="Enum" /> value from this <see cref="RegistryKey" /> that is represented as a REG_DWORD value. Returns <see langword="null" />, if the value does not exist in the registry or is not a REG_DWORD value.
+		/// </summary>
+		/// <typeparam name="T">The type of the returned <see cref="Enum" /> value.</typeparam>
+		/// <param name="key">The <see cref="RegistryKey" /> to read the value from.</param>
+		/// <param name="name">A <see cref="string" /> value specifying the name of the value to read.</param>
+		/// <returns>
+		/// The converted value, if it exists and conversion is possible;
+		/// otherwise, <see langword="null" />.
+		/// </returns>
+		public static T? GetEnumValue<T>(this RegistryKey key, string name) where T : struct, Enum
+		{
+			Check.ArgumentNull(key, nameof(key));
+
+			return key.GetInt32Value(name) is int value ? (T?)Enum.ToObject(typeof(T), value) : null;
+		}
+		/// <summary>
+		/// Retrieves an <see cref="Enum" /> value from this <see cref="RegistryKey" /> that is represented as a REG_DWORD value. Returns a default value, if the value does not exist in the registry or is not a REG_DWORD value.
+		/// </summary>
+		/// <typeparam name="T">The type of the returned <see cref="Enum" /> value.</typeparam>
+		/// <param name="key">The <see cref="RegistryKey" /> to read the value from.</param>
+		/// <param name="name">A <see cref="string" /> value specifying the name of the value to read.</param>
+		/// <param name="defaultValue">The value that is used if retrieving or conversion failed.</param>
+		/// <returns>
+		/// The converted value, if it exists and conversion is possible;
+		/// otherwise, <paramref name="defaultValue" />.
+		/// </returns>
+		public static T GetEnumValue<T>(this RegistryKey key, string name, T defaultValue) where T : struct, Enum
+		{
+			return key.GetEnumValue<T>(name) ?? defaultValue;
+		}
+		/// <summary>
 		/// Retrieves a <see cref="byte" />[] value from this <see cref="RegistryKey" /> that is represented as a REG_BINARY value. Returns <see langword="null" />, if the value does not exist in the registry or is not a REG_BINARY value.
 		/// </summary>
 		/// <param name="key">The <see cref="RegistryKey" /> to read the value from.</param>
@@ -232,8 +263,7 @@ namespace BytecodeApi.Extensions
 		{
 			Check.ArgumentNull(key, nameof(key));
 
-			if (value == null) key.DeleteValue(name, false);
-			else key.SetValue(name, value == true ? 1 : 0, RegistryValueKind.DWord);
+			key.SetInt32Value(name, value == null ? (int?)null : value.Value ? 1 : 0);
 		}
 		/// <summary>
 		/// Writes a <see cref="int" /> value to this <see cref="RegistryKey" /> that is represented as a REG_DWORD value. If <see langword="null" /> is provided, the value will be deleted.
@@ -284,8 +314,14 @@ namespace BytecodeApi.Extensions
 		{
 			Check.ArgumentNull(key, nameof(key));
 
+			key.SetStringValue(name, value?.ToStringInvariant("yyyy-MM-dd HH:mm:ss"));
+		}
+		public static void SetEnumValue<T>(this RegistryKey key, string name, T? value) where T : struct, Enum
+		{
+			Check.ArgumentNull(key, nameof(key));
+
 			if (value == null) key.DeleteValue(name, false);
-			else key.SetValue(name, value.Value.ToStringInvariant("yyyy-MM-dd HH:mm:ss"), RegistryValueKind.String);
+			else key.SetInt32Value(name, Convert.ToInt32(value.Value));
 		}
 		/// <summary>
 		/// Writes a <see cref="byte" />[] value to this <see cref="RegistryKey" /> that is represented as a REG_BINARY value. If <see langword="null" /> is provided, the value will be deleted.
