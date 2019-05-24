@@ -54,6 +54,7 @@
     <Compile Include="Controls\WatermarkAdorner.cs" />
     <Compile Include="Controls\WatermarkService.cs" />
     <Compile Include="Converters\ByteSizeConverter.cs" />
+    <Compile Include="Converters\VersionConverter.cs" />
     <Compile Include="Converters\RangeConverter.cs" />
     <Compile Include="Converters\MathConverterMethod.cs" />
     <Compile Include="Converters\MathConverter.cs" />
