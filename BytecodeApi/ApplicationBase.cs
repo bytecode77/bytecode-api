@@ -87,13 +87,13 @@ namespace BytecodeApi
 		/// <param name="condition">The <see cref="Func{TResult}" /> to be evaluated.</param>
 		public static void DoEventsWhile(Func<bool> condition)
 		{
-			DoEventsWhile(condition, TimeSpan.Zero);
+			DoEventsWhile(condition, TimeSpan.FromMilliseconds(1));
 		}
 		/// <summary>
 		/// Invokes an empty <see cref="Action" /> on the <see cref="Dispatcher" /> of <see cref="Application.Current" /> while <paramref name="condition" /> evaluates to <see langword="true" />, thereby refreshing the UI. This is the WPF equivalent to <see cref="System.Windows.Forms.Application.DoEvents" />. The specified delay is waited between each call to <paramref name="condition" />.
 		/// </summary>
 		/// <param name="condition">The <see cref="Func{TResult}" /> to be evaluated.</param>
-		/// <param name="delay">A <see cref="TimeSpan" /> that specifies the delay between each call to <paramref name="condition" />.</param>
+		/// <param name="delay">A <see cref="TimeSpan" /> that specifies the delay between each call to <paramref name="condition" />. The default value is 1 milliseconds.</param>
 		public static void DoEventsWhile(Func<bool> condition, TimeSpan delay)
 		{
 			Check.ArgumentNull(condition, nameof(condition));
