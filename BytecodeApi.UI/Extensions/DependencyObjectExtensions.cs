@@ -78,30 +78,81 @@ namespace BytecodeApi.UI.Extensions
 		/// </returns>
 		public static T[] FindChildren<T>(this DependencyObject dependencyObject, UITreeType treeType) where T : DependencyObject
 		{
+			return dependencyObject.FindChildren<T>(treeType, null);
+		}
+		/// <summary>
+		/// Finds all children of this <see cref="DependencyObject" /> matching the specified type and satisfying a specified condition by traversing either the visual or the logical tree recursively. If no children have been found, an empty array is returned.
+		/// </summary>
+		/// <typeparam name="T">The explicit type of the children to search for.</typeparam>
+		/// <param name="dependencyObject">The <see cref="DependencyObject" /> to traverse the tree recursively.</param>
+		/// <param name="treeType">A <see cref="UITreeType" /> value indicating whether to use the <see cref="LogicalTreeHelper" /> or the <see cref="VisualTreeHelper" />.</param>
+		/// <param name="canExecute">The <see cref="Predicate{T}" /> that determines whether the child is included in the result.</param>
+		/// <returns>
+		/// An array of the specified type with all children, depending on <paramref name="treeType" /> and <paramref name="predicate" />, that can be casted to <typeparamref name="T" />. If no children have been found, an empty array is returned.
+		/// </returns>
+		public static T[] FindChildren<T>(this DependencyObject dependencyObject, UITreeType treeType, Predicate<T> predicate) where T : DependencyObject
+		{
 			Check.ArgumentNull(dependencyObject, nameof(dependencyObject));
 
-			List<T> children = new List<T>();
-			IEnumerable<DependencyObject> subChildren;
+			List<T> result = new List<T>();
+			IEnumerable<DependencyObject> children;
 
 			switch (treeType)
 			{
 				case UITreeType.Logical:
-					subChildren = LogicalTreeHelper.GetChildren(dependencyObject).OfType<DependencyObject>();
+					children = LogicalTreeHelper.GetChildren(dependencyObject).OfType<DependencyObject>();
 					break;
 				case UITreeType.Visual:
-					subChildren = Create.Enumerable(VisualTreeHelper.GetChildrenCount(dependencyObject), i => VisualTreeHelper.GetChild(dependencyObject, i));
+					children = Create.Enumerable(VisualTreeHelper.GetChildrenCount(dependencyObject), i => VisualTreeHelper.GetChild(dependencyObject, i));
 					break;
 				default:
 					throw Throw.InvalidEnumArgument(nameof(treeType));
 			}
 
-			foreach (DependencyObject child in subChildren)
+			foreach (DependencyObject child in children)
 			{
-				if (child is T convertedChild) children.Add(convertedChild);
-				children.AddRange(child.FindChildren<T>(treeType));
+				if (child is T convertedChild && predicate?.Invoke(convertedChild) != false) result.Add(convertedChild);
+				result.AddRange(child.FindChildren(treeType, predicate));
 			}
 
-			return children.ToArray();
+			return result.ToArray();
+		}
+		/// <summary>
+		/// Finds the first child of this <see cref="DependencyObject" /> matching the specified type and satisfying a specified condition by traversing either the visual or the logical tree recursively. If no child was found, <see langword="null" /> is returned.
+		/// </summary>
+		/// <typeparam name="T">The explicit type of the children to search for.</typeparam>
+		/// <param name="dependencyObject">The <see cref="DependencyObject" /> to traverse the tree recursively.</param>
+		/// <param name="treeType">A <see cref="UITreeType" /> value indicating whether to use the <see cref="LogicalTreeHelper" /> or the <see cref="VisualTreeHelper" />.</param>
+		/// <param name="canExecute">The <see cref="Predicate{T}" /> that determines whether the child is included in the result.</param>
+		/// <returns>
+		/// The first child of the specified type that satisfies a specified condition, depending on <paramref name="treeType" />, that can be casted to <typeparamref name="T" />. If no child was found, <see langword="null" /> is returned.
+		/// </returns>
+		public static T FindChild<T>(this DependencyObject dependencyObject, UITreeType treeType, Predicate<T> predicate) where T : DependencyObject
+		{
+			Check.ArgumentNull(dependencyObject, nameof(dependencyObject));
+			Check.ArgumentNull(predicate, nameof(predicate));
+
+			IEnumerable<DependencyObject> children;
+
+			switch (treeType)
+			{
+				case UITreeType.Logical:
+					children = LogicalTreeHelper.GetChildren(dependencyObject).OfType<DependencyObject>();
+					break;
+				case UITreeType.Visual:
+					children = Create.Enumerable(VisualTreeHelper.GetChildrenCount(dependencyObject), i => VisualTreeHelper.GetChild(dependencyObject, i));
+					break;
+				default:
+					throw Throw.InvalidEnumArgument(nameof(treeType));
+			}
+
+			foreach (DependencyObject child in children)
+			{
+				if (child is T convertedChild && predicate(convertedChild)) return convertedChild;
+				else if (child.FindChild(treeType, predicate) is T convertedSubChild) return convertedSubChild;
+			}
+
+			return null;
 		}
 		/// <summary>
 		/// Validates this <see cref="DependencyObject" /> and all of its children and returns <see langword="true" />, if validation succeeded.
