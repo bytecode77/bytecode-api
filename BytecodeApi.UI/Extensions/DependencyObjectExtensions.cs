@@ -86,7 +86,7 @@ namespace BytecodeApi.UI.Extensions
 		/// <typeparam name="T">The explicit type of the children to search for.</typeparam>
 		/// <param name="dependencyObject">The <see cref="DependencyObject" /> to traverse the tree recursively.</param>
 		/// <param name="treeType">A <see cref="UITreeType" /> value indicating whether to use the <see cref="LogicalTreeHelper" /> or the <see cref="VisualTreeHelper" />.</param>
-		/// <param name="canExecute">The <see cref="Predicate{T}" /> that determines whether the child is included in the result.</param>
+		/// <param name="predicate">The <see cref="Predicate{T}" /> that determines whether the child is included in the result.</param>
 		/// <returns>
 		/// An array of the specified type with all children, depending on <paramref name="treeType" /> and <paramref name="predicate" />, that can be casted to <typeparamref name="T" />. If no children have been found, an empty array is returned.
 		/// </returns>
@@ -123,7 +123,7 @@ namespace BytecodeApi.UI.Extensions
 		/// <typeparam name="T">The explicit type of the children to search for.</typeparam>
 		/// <param name="dependencyObject">The <see cref="DependencyObject" /> to traverse the tree recursively.</param>
 		/// <param name="treeType">A <see cref="UITreeType" /> value indicating whether to use the <see cref="LogicalTreeHelper" /> or the <see cref="VisualTreeHelper" />.</param>
-		/// <param name="canExecute">The <see cref="Predicate{T}" /> that determines whether the child is included in the result.</param>
+		/// <param name="predicate">The <see cref="Predicate{T}" /> that determines whether the child is included in the result.</param>
 		/// <returns>
 		/// The first child of the specified type that satisfies a specified condition, depending on <paramref name="treeType" />, that can be casted to <typeparamref name="T" />. If no child was found, <see langword="null" /> is returned.
 		/// </returns>

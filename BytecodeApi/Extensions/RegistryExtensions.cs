@@ -309,13 +309,20 @@ namespace BytecodeApi.Extensions
 		/// </summary>
 		/// <param name="key">The <see cref="RegistryKey" /> to write the value to.</param>
 		/// <param name="name">A <see cref="string" /> value specifying the name of the value to write to.</param>
-		/// <param name="value">The <see cref="DateTime" /> value to be written to in the format "yyyy-MM-dd HH:mm:ss". If <see langword="null" /> is provided, the value will be deleted.</param>
+		/// <param name="value">The <see cref="DateTime" /> value to be written in the format "yyyy-MM-dd HH:mm:ss". If <see langword="null" /> is provided, the value will be deleted.</param>
 		public static void SetDateTimeValue(this RegistryKey key, string name, DateTime? value)
 		{
 			Check.ArgumentNull(key, nameof(key));
 
 			key.SetStringValue(name, value?.ToStringInvariant("yyyy-MM-dd HH:mm:ss"));
 		}
+		/// <summary>
+		/// Writes an <see cref="Enum" /> value to this <see cref="RegistryKey" /> that is represented as a REG_dword value. If <see langword="null" /> is provided, the value will be deleted.
+		/// </summary>
+		/// <typeparam name="T">The type of the <see cref="Enum" /> to write.</typeparam>
+		/// <param name="key">The <see cref="RegistryKey" /> to write the value to.</param>
+		/// <param name="name">A <see cref="string" /> value specifying the name of the value to write to.</param>
+		/// <param name="value">The <see cref="Enum" /> value to be written. If <see langword="null" /> is provided, the value will be deleted.</param>
 		public static void SetEnumValue<T>(this RegistryKey key, string name, T? value) where T : struct, Enum
 		{
 			Check.ArgumentNull(key, nameof(key));

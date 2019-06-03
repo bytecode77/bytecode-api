@@ -216,9 +216,7 @@ namespace BytecodeApi.FileFormats.Csv
 					{
 						csv.Headers = parser.ReadFields();
 					}
-					catch (MalformedLineException)
-					{
-					}
+					catch (MalformedLineException) { }
 
 					lineNumber++;
 				}
