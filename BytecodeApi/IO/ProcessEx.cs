@@ -19,6 +19,11 @@ namespace BytecodeApi.IO
 	public static class ProcessEx
 	{
 		/// <summary>
+		/// Gets a value indicating whether the current <see cref="Process" /> has a console window.
+		/// </summary>
+		public static bool HasConsole => Native.GetConsoleWindow() != IntPtr.Zero;
+
+		/// <summary>
 		/// Creates a new <see cref="Process" /> component for each process resource with the SessionId of the current <see cref="Process" /> on the local computer.
 		/// </summary>
 		/// <returns>

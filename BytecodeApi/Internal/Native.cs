@@ -23,6 +23,8 @@ namespace BytecodeApi
 		public static extern bool CloseHandle(IntPtr obj);
 		[DllImport("kernel32.dll", SetLastError = true)]
 		public static extern IntPtr LocalFree(IntPtr mem);
+		[DllImport("kernel32.dll")]
+		public static extern IntPtr GetConsoleWindow();
 		[DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
 		public static extern int AllocConsole();
 		[DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
