@@ -167,8 +167,7 @@ namespace BytecodeApi.Text
 			{
 				if (!overflow && word.Length > width)
 				{
-					int wordIndex = 0;
-					while (wordIndex < word.Length)
+					for (int wordIndex = 0; wordIndex < word.Length;)
 					{
 						string subWord = word.Substring(wordIndex, Math.Min(width, word.Length - wordIndex));
 						AddWord(subWord);

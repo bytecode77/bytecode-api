@@ -1,8 +1,10 @@
 ﻿using BytecodeApi.Extensions;
 using BytecodeApi.Threading;
+using Microsoft.Win32.SafeHandles;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -16,6 +18,11 @@ namespace BytecodeApi.IO
 	/// </summary>
 	public static class ProcessEx
 	{
+		/// <summary>
+		/// Gets a value indicating whether the current <see cref="Process" /> has a console window.
+		/// </summary>
+		public static bool HasConsole => Native.GetConsoleWindow() != IntPtr.Zero;
+
 		/// <summary>
 		/// Creates a new <see cref="Process" /> component for each process resource with the SessionId of the current <see cref="Process" /> on the local computer.
 		/// </summary>
@@ -106,6 +113,43 @@ namespace BytecodeApi.IO
 			}
 
 			throw Throw.Win32("Process could not be created.");
+		}
+		/// <summary>
+		/// Creates a console window for the current <see cref="Process" />.
+		/// </summary>
+		/// <param name="alwaysCreateNewConsole"><see langword="true" /> to always create a new console window; <see langword="false" /> to attach to an existing console window, if one already exists.</param>
+		/// <param name="setInStream"><see langword="true" /> to set the input stream.</param>
+		public static void CreateConsole(bool alwaysCreateNewConsole, bool setInStream)
+		{
+			//TODO: Bug: Does not support console color; setInStream causes to pause the application
+			bool consoleAttached = true;
+			if (alwaysCreateNewConsole || (Native.AttachConsole(0xffffffff) == 0 && Marshal.GetLastWin32Error() != 5))
+			{
+				consoleAttached = Native.AllocConsole() != 0;
+			}
+
+			if (consoleAttached)
+			{
+				FileStream outStream = CreateFileStream("CONOUT$", 0x40000000, FileShare.Write, FileAccess.Write);
+				if (outStream != null)
+				{
+					StreamWriter streamWriter = new StreamWriter(outStream) { AutoFlush = true };
+					Console.SetOut(streamWriter);
+					Console.SetError(streamWriter);
+				}
+
+				if (setInStream)
+				{
+					FileStream inStream = CreateFileStream("CONIN$", 0x80000000, FileShare.Read, FileAccess.Read);
+					if (inStream != null) Console.SetIn(new StreamReader(inStream));
+				}
+			}
+
+			FileStream CreateFileStream(string name, uint access, FileShare fileShare, FileAccess dotNetFileAccess)
+			{
+				SafeFileHandle file = Native.CreateFile(name, access, fileShare, IntPtr.Zero, FileMode.Open, 0x80, IntPtr.Zero);
+				return file.IsInvalid ? null : new FileStream(file, dotNetFileAccess);
+			}
 		}
 		/// <summary>
 		/// Creates a <see cref="Process" />, reads the standard output stream and waits until the process has exited.

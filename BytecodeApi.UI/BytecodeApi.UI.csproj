@@ -48,11 +48,13 @@
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Controls\MenuItemService.cs" />
+    <Compile Include="Controls\ContainerItemsControl.cs" />
     <Compile Include="Controls\NoInheritanceContainer.cs" />
     <Compile Include="Controls\TreeViewItemService.cs" />
     <Compile Include="Controls\WatermarkAdorner.cs" />
     <Compile Include="Controls\WatermarkService.cs" />
     <Compile Include="Converters\ByteSizeConverter.cs" />
+    <Compile Include="Converters\VersionConverter.cs" />
     <Compile Include="Converters\RangeConverter.cs" />
     <Compile Include="Converters\MathConverterMethod.cs" />
     <Compile Include="Converters\MathConverter.cs" />
@@ -116,7 +118,6 @@
     <Compile Include="Markup\TimeSpanExtension.cs" />
     <Compile Include="Markup\UInt32Extension.cs" />
     <Compile Include="Markup\UInt64Extension.cs" />
-    <Compile Include="Mathematics\Deferrer.cs" />
     <Compile Include="Mathematics\ProgressCalculator.cs" />
     <Compile Include="Data\ObservableObject.cs" />
     <Compile Include="Controls\ObservableUserControl.cs" />

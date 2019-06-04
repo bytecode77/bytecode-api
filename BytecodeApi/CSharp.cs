@@ -191,9 +191,7 @@ namespace BytecodeApi
 						setValue(Convert.ChangeType(getValue(), destType));
 						changed = true;
 					}
-					catch
-					{
-					}
+					catch { }
 				}
 
 				if (!changed) setValue(null);

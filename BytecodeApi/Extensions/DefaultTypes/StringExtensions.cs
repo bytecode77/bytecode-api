@@ -147,6 +147,21 @@ namespace BytecodeApi.Extensions
 			return str.EndsWith(value);
 		}
 		/// <summary>
+		/// Replaces the format item in a specified <see cref="string" /> with the <see cref="string" /> representation of a corresponding <see cref="object" /> in a specified array.
+		/// </summary>
+		/// <param name="str">A composite format <see cref="string" />.</param>
+		/// <param name="args">An <see cref="object" /> array that contains zero or more objects to format.</param>
+		/// <returns>
+		/// A copy of this <see cref="string" /> in which the format items have been replaced by the <see cref="string" /> representation of the corresponding objects in <paramref name="args" />.
+		/// </returns>
+		public static string Format(this string str, params object[] args)
+		{
+			Check.ArgumentNull(str, nameof(str));
+			Check.ArgumentNull(args, nameof(args));
+
+			return string.Format(str, args);
+		}
+		/// <summary>
 		/// Replaces the format item in a specified <see cref="string" /> with the <see cref="string" /> representation of a corresponding <see cref="object" /> in a specified array using the invariant culture.
 		/// </summary>
 		/// <param name="str">A composite format <see cref="string" />.</param>

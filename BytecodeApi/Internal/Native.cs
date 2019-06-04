@@ -24,6 +24,12 @@ namespace BytecodeApi
 		[DllImport("kernel32.dll", SetLastError = true)]
 		public static extern IntPtr LocalFree(IntPtr mem);
 		[DllImport("kernel32.dll")]
+		public static extern IntPtr GetConsoleWindow();
+		[DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
+		public static extern int AllocConsole();
+		[DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
+		public static extern uint AttachConsole(uint processId);
+		[DllImport("kernel32.dll")]
 		public static extern IntPtr OpenProcess(int desiredAccess, bool inheritHandle, int processId);
 		[DllImport("kernel32.dll", CharSet = CharSet.Ansi, ExactSpelling = true, SetLastError = true)]
 		public static extern IntPtr GetProcAddress(IntPtr module, string procName);
@@ -153,8 +159,6 @@ namespace BytecodeApi
 		public static extern bool SHPickIconDialog(IntPtr handle, StringBuilder fileName, int fileNameLength, out int iconIndex);
 		[DllImport("shell32.dll", SetLastError = true)]
 		public static extern IntPtr CommandLineToArgvW([MarshalAs(UnmanagedType.LPWStr)] string commandLine, out int argumentCount);
-		[DllImport("shell32.dll", EntryPoint = "ExtractIconExW", CharSet = CharSet.Unicode, ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
-		public static extern int ExtractIconEx(string fileName, int index, out IntPtr largeVersion, out IntPtr smallVersion, int iconCount);
 		[DllImport("ntdll.dll", SetLastError = true)]
 		public static extern int NtSetInformationProcess(IntPtr processHandle, int processInformationClass, ref int processInformation, uint processInformationLength);
 		[DllImport("ntdll.dll", SetLastError = true)]

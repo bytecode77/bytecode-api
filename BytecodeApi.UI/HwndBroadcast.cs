@@ -15,7 +15,7 @@ namespace BytecodeApi.UI
 		/// <summary>
 		/// Occurs when <see cref="Notify" /> is called by another running instance using the same name.
 		/// </summary>
-		public EventHandler Notified;
+		public event EventHandler Notified;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="HwndBroadcast" /> class with the specified name.

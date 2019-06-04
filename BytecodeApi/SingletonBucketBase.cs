@@ -102,7 +102,7 @@ namespace BytecodeApi
 				}
 				else
 				{
-					Singletons[key] = obj;
+					if (obj == null) Singletons.Remove(key); else Singletons[key] = obj;
 				}
 			}
 		}

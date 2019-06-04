@@ -65,6 +65,10 @@
     <Compile Include="Extensions\Collections\BitArrayExtensions.cs" />
     <Compile Include="Extensions\IconExtensions.cs" />
     <Compile Include="Extensions\BitmapEncoderExtensions.cs" />
+    <Compile Include="IO\Debugging\TraceEventInfo.cs" />
+    <Compile Include="IO\Debugging\TraceTransferInfo.cs" />
+    <Compile Include="IO\Debugging\TraceDataInfo.cs" />
+    <Compile Include="IO\Debugging\DelegateTraceListener.cs" />
     <Compile Include="IO\FileSystem\CompareDirectoryOptions.cs" />
     <Compile Include="IO\Http\HttpMultipartRequest.cs" />
     <Compile Include="IO\Http\HttpPostRequest.cs" />
@@ -127,6 +131,7 @@
     <Compile Include="Extensions\IEnumerableConvertExtensions.cs" />
     <Compile Include="IO\SystemInfo\ProtocolMappingEntry.cs" />
     <Compile Include="IO\SystemInfo\TcpViewEntry.cs" />
+    <Compile Include="Threading\Deferrer.cs" />
     <Compile Include="Threading\ThreadFactory.cs" />
     <Compile Include="ConvertObjectFlags.cs" />
     <Compile Include="Validate.cs" />
