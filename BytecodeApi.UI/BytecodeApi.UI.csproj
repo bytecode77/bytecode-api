@@ -118,7 +118,6 @@
     <Compile Include="Markup\TimeSpanExtension.cs" />
     <Compile Include="Markup\UInt32Extension.cs" />
     <Compile Include="Markup\UInt64Extension.cs" />
-    <Compile Include="Mathematics\Deferrer.cs" />
     <Compile Include="Mathematics\ProgressCalculator.cs" />
     <Compile Include="Data\ObservableObject.cs" />
     <Compile Include="Controls\ObservableUserControl.cs" />
