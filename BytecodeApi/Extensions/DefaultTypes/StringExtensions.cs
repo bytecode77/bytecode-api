@@ -803,7 +803,7 @@ namespace BytecodeApi.Extensions
 		{
 			Check.ArgumentNull(str, nameof(str));
 
-			return str.ReplaceMultiple(newValue, "\r\n", "\n");
+			return str.Replace("\r\n", "\n").Replace("\n", newValue);
 		}
 
 		private static void PrepareSpecialStringComparison(SpecialStringComparisons comparison, ref string str, bool allowNatural)

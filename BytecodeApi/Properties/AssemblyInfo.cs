@@ -1,9 +1,11 @@
 ﻿using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Windows.Markup;
 
 [assembly: AssemblyTitle("BytecodeApi")]
 [assembly: AssemblyProduct("BytecodeApi")]
+[assembly: Guid("2d3ac17b-38a1-40f7-94a5-c94ed0eaef86")]
 
 [assembly: InternalsVisibleTo("BytecodeApi.Cryptography")]
 [assembly: InternalsVisibleTo("BytecodeApi.FileFormats")]
