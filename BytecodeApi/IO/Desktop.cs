@@ -71,5 +71,30 @@ namespace BytecodeApi.IO
 
 			return Native.SystemParametersInfo(20, 0, path, 1) == 1;
 		}
+		/// <summary>
+		/// Refreshes the system tray area and removes icons processes that no longer run.
+		/// </summary>
+		public static void RefreshSystemTray()
+		{
+			//TODO: Bug: Only works if "always show all icons" option is enabled in Windows
+			IntPtr systemTray = Native.FindWindowEx(Native.FindWindow("Shell_TrayWnd", null), IntPtr.Zero, "TrayNotifyWnd", null);
+			IntPtr sysPager = Native.FindWindowEx(systemTray, IntPtr.Zero, "SysPager", null);
+			IntPtr notificationArea = Native.FindWindowEx(sysPager, IntPtr.Zero, "ToolbarWindow32", null);
+
+			if (notificationArea != IntPtr.Zero)
+			{
+				Native.Rect rect;
+				if (Native.GetClientRect(notificationArea, out rect))
+				{
+					for (var x = 0; x < rect.Right; x += 5)
+					{
+						for (var y = 0; y < rect.Bottom; y += 5)
+						{
+							Native.SendMessage(notificationArea, 0x0200, 0, (y << 16) + x);
+						}
+					}
+				}
+			}
+		}
 	}
 }
