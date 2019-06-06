@@ -146,7 +146,7 @@ namespace BytecodeApi.FileFormats.Ini
 				case IniDuplicatePropertyNameBehavior.Duplicate:
 					break;
 				default:
-					throw Throw.InvalidEnumArgument(nameof(behavior));
+					throw Throw.InvalidEnumArgument(nameof(behavior), behavior);
 			}
 
 			Properties.RemoveRange(removedProperties);

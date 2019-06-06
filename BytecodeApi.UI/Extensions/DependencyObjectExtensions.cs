@@ -57,7 +57,7 @@ namespace BytecodeApi.UI.Extensions
 						parent = VisualTreeHelper.GetParent(dependencyObject);
 						break;
 					default:
-						throw Throw.InvalidEnumArgument(nameof(treeType));
+						throw Throw.InvalidEnumArgument(nameof(treeType), treeType);
 				}
 
 				return parent is T visualParent ? visualParent : parent?.FindParent<T>(treeType);
@@ -106,7 +106,7 @@ namespace BytecodeApi.UI.Extensions
 					children = Create.Enumerable(VisualTreeHelper.GetChildrenCount(dependencyObject), i => VisualTreeHelper.GetChild(dependencyObject, i));
 					break;
 				default:
-					throw Throw.InvalidEnumArgument(nameof(treeType));
+					throw Throw.InvalidEnumArgument(nameof(treeType), treeType);
 			}
 
 			foreach (DependencyObject child in children)
@@ -143,7 +143,7 @@ namespace BytecodeApi.UI.Extensions
 					children = Create.Enumerable(VisualTreeHelper.GetChildrenCount(dependencyObject), i => VisualTreeHelper.GetChild(dependencyObject, i));
 					break;
 				default:
-					throw Throw.InvalidEnumArgument(nameof(treeType));
+					throw Throw.InvalidEnumArgument(nameof(treeType), treeType);
 			}
 
 			foreach (DependencyObject child in children)

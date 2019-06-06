@@ -55,7 +55,7 @@ namespace BytecodeApi.UI.Converters
 					case MathConverterMethod.Or:
 					case MathConverterMethod.Xor:
 						throw CreateInvalidOperationException();
-					default: throw Throw.InvalidEnumArgument(nameof(Method));
+					default: throw Throw.InvalidEnumArgument(nameof(Method), Method);
 				}
 			}
 			else if (value is double || parameter is double)
@@ -74,7 +74,7 @@ namespace BytecodeApi.UI.Converters
 					case MathConverterMethod.Or:
 					case MathConverterMethod.Xor:
 						throw CreateInvalidOperationException();
-					default: throw Throw.InvalidEnumArgument(nameof(Method));
+					default: throw Throw.InvalidEnumArgument(nameof(Method), Method);
 				}
 			}
 			else if (value is float || parameter is float)
@@ -93,7 +93,7 @@ namespace BytecodeApi.UI.Converters
 					case MathConverterMethod.Or:
 					case MathConverterMethod.Xor:
 						throw CreateInvalidOperationException();
-					default: throw Throw.InvalidEnumArgument(nameof(Method));
+					default: throw Throw.InvalidEnumArgument(nameof(Method), Method);
 				}
 			}
 			else
@@ -111,7 +111,7 @@ namespace BytecodeApi.UI.Converters
 					case MathConverterMethod.And: return a & b;
 					case MathConverterMethod.Or: return a | b;
 					case MathConverterMethod.Xor: return a ^ b;
-					default: throw Throw.InvalidEnumArgument(nameof(Method));
+					default: throw Throw.InvalidEnumArgument(nameof(Method), Method);
 				}
 			}
 

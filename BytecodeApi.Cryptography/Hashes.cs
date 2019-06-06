@@ -77,7 +77,7 @@ namespace BytecodeApi.Cryptography
 			{
 				using (HashAlgorithm hash = HashAlgorithm.Create(type.ToString()))
 				{
-					if (hash == null) throw Throw.InvalidEnumArgument(nameof(type));
+					if (hash == null) throw Throw.InvalidEnumArgument(nameof(type), type);
 					Repeat(ref data, hash.ComputeHash);
 				}
 			}

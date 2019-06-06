@@ -58,7 +58,7 @@ namespace BytecodeApi.UI.Converters
 						if (value is IEnumerable<bool> booleanCollection) return booleanCollection.ToIndeterminate();
 						else if (value is IEnumerable<bool?> nullableBooleanCollection) return nullableBooleanCollection.ToIndeterminate();
 						else throw Throw.UnsupportedType(nameof(value));
-					default: throw Throw.InvalidEnumArgument(nameof(Method));
+					default: throw Throw.InvalidEnumArgument(nameof(Method), Method);
 				}
 			}
 		}

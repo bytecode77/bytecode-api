@@ -133,7 +133,7 @@ namespace BytecodeApi.FileFormats.Ini
 				case IniDuplicateSectionNameBehavior.Duplicate:
 					break;
 				default:
-					throw Throw.InvalidEnumArgument(nameof(behavior));
+					throw Throw.InvalidEnumArgument(nameof(behavior), behavior);
 			}
 
 			Sections.RemoveRange(removedSections);

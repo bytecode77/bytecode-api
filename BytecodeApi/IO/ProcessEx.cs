@@ -292,7 +292,7 @@ namespace BytecodeApi.IO
 			}
 			else
 			{
-				throw Throw.InvalidEnumArgument(nameof(processAnalyser));
+				throw Throw.InvalidEnumArgument(nameof(processAnalyser), processAnalyser);
 			}
 		}
 		/// <summary>

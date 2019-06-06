@@ -215,7 +215,7 @@ namespace BytecodeApi.FileFormats.Ini
 								create = true;
 								break;
 							default:
-								throw Throw.InvalidEnumArgument(nameof(parsingOptions.DuplicatePropertyNameBehavior));
+								throw Throw.InvalidEnumArgument(nameof(parsingOptions.DuplicatePropertyNameBehavior), parsingOptions.DuplicatePropertyNameBehavior);
 						}
 
 						if (create)
@@ -277,7 +277,7 @@ namespace BytecodeApi.FileFormats.Ini
 										section.Properties.Add(property);
 										break;
 									default:
-										throw Throw.InvalidEnumArgument(nameof(parsingOptions.DuplicatePropertyNameBehavior));
+										throw Throw.InvalidEnumArgument(nameof(parsingOptions.DuplicatePropertyNameBehavior), parsingOptions.DuplicatePropertyNameBehavior);
 								}
 							}
 						}

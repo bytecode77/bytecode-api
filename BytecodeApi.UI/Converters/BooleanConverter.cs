@@ -43,7 +43,7 @@ namespace BytecodeApi.UI.Converters
 				case BooleanConverterMethod.GridLengthZeroAutoInverse: return value == true ? new GridLength(0) : GridLength.Auto;
 				case BooleanConverterMethod.GridLengthZeroStar: return value == true ? new GridLength(1, GridUnitType.Star) : new GridLength(0);
 				case BooleanConverterMethod.GridLengthZeroStarInverse: return value == true ? new GridLength(0) : new GridLength(1, GridUnitType.Star);
-				default: throw Throw.InvalidEnumArgument(nameof(Method));
+				default: throw Throw.InvalidEnumArgument(nameof(Method), Method);
 			}
 		}
 	}

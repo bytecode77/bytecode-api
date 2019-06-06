@@ -51,7 +51,7 @@ namespace BytecodeApi.UI.Converters
 					case DateTimeConverterMethod.Minute: return value.Value.Minute.ToString();
 					case DateTimeConverterMethod.Second: return value.Value.Second.ToString();
 					case DateTimeConverterMethod.Format: return value.Value.ToStringInvariant(parameter);
-					default: throw Throw.InvalidEnumArgument(nameof(Method));
+					default: throw Throw.InvalidEnumArgument(nameof(Method), Method);
 				}
 			}
 		}

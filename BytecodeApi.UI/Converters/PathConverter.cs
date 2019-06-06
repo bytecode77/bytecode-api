@@ -49,7 +49,7 @@ namespace BytecodeApi.UI.Converters
 					case PathConverterMethod.Combine: return Path.Combine(value, parameter);
 					case PathConverterMethod.ChangeExtension: return Path.ChangeExtension(value, parameter);
 					case PathConverterMethod.OriginalPath: return PathEx.GetOriginalPath(value);
-					default: throw Throw.InvalidEnumArgument(nameof(Method));
+					default: throw Throw.InvalidEnumArgument(nameof(Method), Method);
 				}
 			}
 		}

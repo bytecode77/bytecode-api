@@ -693,7 +693,7 @@ namespace BytecodeApi.Extensions
 								.ChangeCasing(casing == StringCasing.LowerSnakeCase || casing == StringCasing.LowerKebabCase ? StringCasing.Lower : StringCasing.Upper);
 						}
 					default:
-						throw Throw.InvalidEnumArgument(nameof(casing));
+						throw Throw.InvalidEnumArgument(nameof(casing), casing);
 				}
 			}
 		}

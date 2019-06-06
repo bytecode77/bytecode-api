@@ -66,7 +66,7 @@ namespace BytecodeApi.UI.Converters
 						case EqualityConverterMethod.LessEqual: result = comparison <= 0; break;
 						case EqualityConverterMethod.Greater: result = comparison > 0; break;
 						case EqualityConverterMethod.GreaterEqual: result = comparison >= 0; break;
-						default: throw Throw.InvalidEnumArgument(nameof(Result));
+						default: throw Throw.InvalidEnumArgument(nameof(Result), Result);
 					}
 				}
 				else

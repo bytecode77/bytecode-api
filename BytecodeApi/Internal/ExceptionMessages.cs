@@ -5,8 +5,7 @@
 		public const string InvalidCast = "Specified cast is not valid. Parameter name: {0}";
 		public const string DivideByZero = "Attempted to divide by zero. Parameter name: {0}";
 		public const string DirectoryNotFound = "Could not find a part of the path '{0}'.";
-		public const string InvalidEnumArgument = "The enum value is not implemented. Parameter name: {0}";
-		public const string UnsupportedType = "The parameter is of an unsupported type. Parameter name: {0}";
+		public const string UnsupportedType = "The type is not supported. Parameter name: {0}";
 		public const string Win32 = "An unmanaged exception was raised.";
 
 		public static class Argument

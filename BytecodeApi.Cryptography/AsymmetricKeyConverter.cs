@@ -112,7 +112,7 @@ namespace BytecodeApi.Cryptography
 						}
 						else
 						{
-							throw Throw.InvalidEnumArgument(nameof(keyType));
+							throw Throw.InvalidEnumArgument(nameof(keyType), keyType);
 						}
 
 						EncodeLength(writer, (int)innerStream.Length);
