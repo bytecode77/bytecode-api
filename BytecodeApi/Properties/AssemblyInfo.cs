@@ -24,6 +24,7 @@ using System.Windows.Markup;
 [assembly: XmlnsDefinition("https://schemas.bytecode77.com/2019/xaml/api", "BytecodeApi.Data")]
 [assembly: XmlnsDefinition("https://schemas.bytecode77.com/2019/xaml/api", "BytecodeApi.Extensions")]
 [assembly: XmlnsDefinition("https://schemas.bytecode77.com/2019/xaml/api", "BytecodeApi.IO")]
+[assembly: XmlnsDefinition("https://schemas.bytecode77.com/2019/xaml/api", "BytecodeApi.IO.Cli")]
 [assembly: XmlnsDefinition("https://schemas.bytecode77.com/2019/xaml/api", "BytecodeApi.IO.Debugging")]
 [assembly: XmlnsDefinition("https://schemas.bytecode77.com/2019/xaml/api", "BytecodeApi.IO.FileSystem")]
 [assembly: XmlnsDefinition("https://schemas.bytecode77.com/2019/xaml/api", "BytecodeApi.IO.Http")]

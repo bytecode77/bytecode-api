@@ -15,6 +15,8 @@ namespace BytecodeApi
 	/// </summary>
 	public static class CSharp
 	{
+		internal const string DebuggerDisplayString = "{DebuggerDisplay,nq}";
+
 		/// <summary>
 		/// Returns the converted version of <paramref name="obj" />, if it is of the specified type; otherwise, returns <see langword="default" />(<typeparamref name="T" />).
 		/// </summary>

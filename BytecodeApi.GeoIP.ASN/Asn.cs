@@ -7,7 +7,7 @@ namespace BytecodeApi.GeoIP.ASN
 	/// <summary>
 	/// Represents an Autonomous System Number with an organization name.
 	/// </summary>
-	[DebuggerDisplay("{DebuggerDisplay,nq}")]
+	[DebuggerDisplay(CSharp.DebuggerDisplayString)]
 	public sealed class Asn : IEquatable<Asn>
 	{
 		private string DebuggerDisplay => CSharp.DebuggerDisplay<Asn>("Number = {0}, Organization = {1}", Number, new QuotedString(Organization));

@@ -12,7 +12,7 @@ namespace BytecodeApi.IO.Interop
 	/// <summary>
 	/// Represents a native DLL file with functions that can be dynamically generated and called.
 	/// </summary>
-	[DebuggerDisplay("{DebuggerDisplay,nq}")]
+	[DebuggerDisplay(CSharp.DebuggerDisplayString)]
 	public sealed class DynamicLibrary
 	{
 		private string DebuggerDisplay => CSharp.DebuggerDisplay<DynamicLibrary>("DllName = {0}", new QuotedString(DllName));

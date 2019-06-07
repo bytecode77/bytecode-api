@@ -9,7 +9,7 @@ namespace BytecodeApi.IO.Wmi
 	/// <summary>
 	/// Represents a WMI class.
 	/// </summary>
-	[DebuggerDisplay("{DebuggerDisplay,nq}")]
+	[DebuggerDisplay(CSharp.DebuggerDisplayString)]
 	public class WmiClass
 	{
 		private string DebuggerDisplay => CSharp.DebuggerDisplay<WmiClass>("Name = {0}, Namespace = {1}", new QuotedString(Name), new QuotedString(Namespace.FullName));

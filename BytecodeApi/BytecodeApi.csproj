@@ -65,6 +65,11 @@
     <Compile Include="Extensions\Collections\BitArrayExtensions.cs" />
     <Compile Include="Extensions\IconExtensions.cs" />
     <Compile Include="Extensions\BitmapEncoderExtensions.cs" />
+    <Compile Include="IO\Cli\CliValidationSource.cs" />
+    <Compile Include="IO\Cli\CliException.cs" />
+    <Compile Include="IO\Cli\ParsedOptionSet.cs" />
+    <Compile Include="IO\Cli\ParsedOption.cs" />
+    <Compile Include="IO\Cli\Option.cs" />
     <Compile Include="IO\Debugging\TraceEventInfo.cs" />
     <Compile Include="IO\Debugging\TraceTransferInfo.cs" />
     <Compile Include="IO\Debugging\TraceDataInfo.cs" />
@@ -82,6 +87,7 @@
     <Compile Include="IO\Interop\DynamicLibraryFunction.cs" />
     <Compile Include="IO\Interop\DynamicLibrary.cs" />
     <Compile Include="IO\FileSystem\PathEx.cs" />
+    <Compile Include="IO\Cli\OptionSet.cs" />
     <Compile Include="Mathematics\ByteSizeUnit.cs" />
     <Compile Include="Mathematics\ByteSize.cs" />
     <Compile Include="SingletonBucketBase.cs" />

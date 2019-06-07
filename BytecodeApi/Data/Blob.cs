@@ -8,7 +8,7 @@ namespace BytecodeApi.Data
 	/// <summary>
 	/// Represents an entity composed of a name and binary content in form or a <see cref="byte" />[].
 	/// </summary>
-	[DebuggerDisplay("{DebuggerDisplay,nq}")]
+	[DebuggerDisplay(CSharp.DebuggerDisplayString)]
 	public class Blob
 	{
 		private string DebuggerDisplay => CSharp.DebuggerDisplay<Blob>("Name = {0}, Content = {1}, Tag = {2}", new QuotedString(Name), Content, Tag);

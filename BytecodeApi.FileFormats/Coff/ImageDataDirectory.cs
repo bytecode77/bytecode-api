@@ -5,7 +5,7 @@ namespace BytecodeApi.FileFormats.Coff
 	/// <summary>
 	/// Represents a data directory of a PE image file.
 	/// </summary>
-	[DebuggerDisplay("{DebuggerDisplay,nq}")]
+	[DebuggerDisplay(CSharp.DebuggerDisplayString)]
 	public sealed class ImageDataDirectory
 	{
 		private string DebuggerDisplay => CSharp.DebuggerDisplay<ImageDataDirectory>("Name = {0}", Name);

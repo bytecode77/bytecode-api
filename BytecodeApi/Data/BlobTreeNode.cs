@@ -9,7 +9,7 @@ namespace BytecodeApi.Data
 	/// <summary>
 	/// Represents a tree node within a <see cref="BlobTree" />.
 	/// </summary>
-	[DebuggerDisplay("{DebuggerDisplay,nq}")]
+	[DebuggerDisplay(CSharp.DebuggerDisplayString)]
 	public sealed class BlobTreeNode
 	{
 		private string DebuggerDisplay => CSharp.DebuggerDisplay<BlobTreeNode>("Name = {0}, Nodes: {1}, Blobs: {2}, Tag = {3}", new QuotedString(Name), Nodes.Count, Blobs.Count, Tag);

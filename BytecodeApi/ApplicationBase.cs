@@ -59,29 +59,6 @@ namespace BytecodeApi
 		);
 
 		/// <summary>
-		/// Parses commandline arguments from a <see cref="string" /> and returns the equivalent <see cref="string" />[] with split commandline arguments.
-		/// </summary>
-		/// <param name="commandLine">A <see cref="string" /> specifying a commandline.</param>
-		/// <returns>
-		/// The equivalent <see cref="string" />[] with split commandline arguments from the given commandline.
-		/// </returns>
-		public static string[] ParseCommandLineArgs(string commandLine)
-		{
-			Check.ArgumentNull(commandLine, nameof(commandLine));
-
-			IntPtr argumentsPtr = Native.CommandLineToArgvW(commandLine, out int count);
-			if (argumentsPtr == IntPtr.Zero) throw Throw.Win32();
-
-			try
-			{
-				return Create.Array(count, i => Marshal.PtrToStringUni(Marshal.ReadIntPtr(argumentsPtr, i * IntPtr.Size)));
-			}
-			finally
-			{
-				Native.LocalFree(argumentsPtr);
-			}
-		}
-		/// <summary>
 		/// Invokes an empty <see cref="Action" /> on the <see cref="Dispatcher" /> of <see cref="Application.Current" /> while <paramref name="condition" /> evaluates to <see langword="true" />, thereby refreshing the UI. This is the WPF equivalent to <see cref="System.Windows.Forms.Application.DoEvents" />.
 		/// </summary>
 		/// <param name="condition">The <see cref="Func{TResult}" /> to be evaluated.</param>

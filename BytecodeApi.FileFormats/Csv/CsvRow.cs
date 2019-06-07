@@ -8,7 +8,7 @@ namespace BytecodeApi.FileFormats.Csv
 	/// <summary>
 	/// Represents a row of a <see cref="CsvFile" /> flat file database.
 	/// </summary>
-	[DebuggerDisplay("{DebuggerDisplay,nq}")]
+	[DebuggerDisplay(CSharp.DebuggerDisplayString)]
 	public sealed class CsvRow : IReadOnlyCollection<CsvCell>
 	{
 		private string DebuggerDisplay => CSharp.DebuggerDisplay<CsvRow>("LineNumber = {0}, Cells: {1}{2}", LineNumber, Count, ErrorLine == null ? null : " (error)");

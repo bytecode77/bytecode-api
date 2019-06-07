@@ -201,12 +201,7 @@ namespace BytecodeApi.Data
 		{
 			return Blobs.Contains(item);
 		}
-		/// <summary>
-		/// Copies the elements of the <see cref="BlobCollection" /> to an <see cref="Array" />, starting at a particular <see cref="Array" /> index.
-		/// </summary>
-		/// <param name="array">The one-dimensional <see cref="Array" /> that is the destination of the elements copied from <see cref="BlobCollection" />.</param>
-		/// <param name="arrayIndex">The zero-based index in <paramref name="array" /> at which copying begins.</param>
-		public void CopyTo(Blob[] array, int arrayIndex)
+		void ICollection<Blob>.CopyTo(Blob[] array, int arrayIndex)
 		{
 			Check.ArgumentNull(array, nameof(array));
 			Check.IndexOutOfRange(arrayIndex, array.Length - Count + 1);

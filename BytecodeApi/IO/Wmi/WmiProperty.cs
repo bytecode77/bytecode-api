@@ -7,7 +7,7 @@ namespace BytecodeApi.IO.Wmi
 	/// <summary>
 	/// Represents a WMI property, composed of a name and a value.
 	/// </summary>
-	[DebuggerDisplay("{DebuggerDisplay,nq}")]
+	[DebuggerDisplay(CSharp.DebuggerDisplayString)]
 	public struct WmiProperty : IEquatable<WmiProperty>
 	{
 		private string DebuggerDisplay => CSharp.DebuggerDisplay<WmiProperty>("Name = {0}, Value = {1}", new QuotedString(Name), Value is string stringValue ? new QuotedString(stringValue) : Value);

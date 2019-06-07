@@ -60,7 +60,7 @@ namespace BytecodeApi
 			return Dictionary(keyValuePair.Key, keyValuePair.Value, comparer);
 		}
 		/// <summary>
-		/// Creates a <see cref="System.Collections.Generic.Dictionary{TKey, TValue}" /> with the a <see cref="KeyValuePair{TKey, TValue}" /> from the <paramref name="key" /> and <paramref name="value" /> parameters as the single element.
+		/// Creates a <see cref="System.Collections.Generic.Dictionary{TKey, TValue}" /> with the <see cref="KeyValuePair{TKey, TValue}" /> from the <paramref name="key" /> and <paramref name="value" /> parameters as the single element.
 		/// </summary>
 		/// <typeparam name="TKey">The type of the key of the specified <see cref="KeyValuePair{TKey, TValue}" />.</typeparam>
 		/// <typeparam name="TValue">The type of the value of the specified <see cref="KeyValuePair{TKey, TValue}" />.</typeparam>
@@ -74,7 +74,7 @@ namespace BytecodeApi
 			return Dictionary(key, value, null);
 		}
 		/// <summary>
-		/// Creates a <see cref="System.Collections.Generic.Dictionary{TKey, TValue}" /> that uses the specified equality comparer for the set type with the a <see cref="KeyValuePair{TKey, TValue}" /> from the <paramref name="key" /> and <paramref name="value" /> parameters as the single element.
+		/// Creates a <see cref="System.Collections.Generic.Dictionary{TKey, TValue}" /> that uses the specified equality comparer for the set type with the <see cref="KeyValuePair{TKey, TValue}" /> from the <paramref name="key" /> and <paramref name="value" /> parameters as the single element.
 		/// </summary>
 		/// <typeparam name="TKey">The type of the key of the specified <see cref="KeyValuePair{TKey, TValue}" />.</typeparam>
 		/// <typeparam name="TValue">The type of the value of the specified <see cref="KeyValuePair{TKey, TValue}" />.</typeparam>
@@ -116,7 +116,7 @@ namespace BytecodeApi
 			return ReadOnlyDictionary(keyValuePair.Key, keyValuePair.Value, comparer);
 		}
 		/// <summary>
-		/// Creates a <see cref="System.Collections.ObjectModel.ReadOnlyDictionary{TKey, TValue}" /> with the a <see cref="KeyValuePair{TKey, TValue}" /> from the <paramref name="key" /> and <paramref name="value" /> parameters as the single element.
+		/// Creates a <see cref="System.Collections.ObjectModel.ReadOnlyDictionary{TKey, TValue}" /> with the <see cref="KeyValuePair{TKey, TValue}" /> from the <paramref name="key" /> and <paramref name="value" /> parameters as the single element.
 		/// </summary>
 		/// <typeparam name="TKey">The type of the key of the specified <see cref="KeyValuePair{TKey, TValue}" />.</typeparam>
 		/// <typeparam name="TValue">The type of the value of the specified <see cref="KeyValuePair{TKey, TValue}" />.</typeparam>
@@ -130,7 +130,7 @@ namespace BytecodeApi
 			return ReadOnlyDictionary(key, value, null);
 		}
 		/// <summary>
-		/// Creates a <see cref="System.Collections.ObjectModel.ReadOnlyDictionary{TKey, TValue}" /> that uses the specified equality comparer for the set type with the a <see cref="KeyValuePair{TKey, TValue}" /> from the <paramref name="key" /> and <paramref name="value" /> parameters as the single element.
+		/// Creates a <see cref="System.Collections.ObjectModel.ReadOnlyDictionary{TKey, TValue}" /> that uses the specified equality comparer for the set type with the <see cref="KeyValuePair{TKey, TValue}" /> from the <paramref name="key" /> and <paramref name="value" /> parameters as the single element.
 		/// </summary>
 		/// <typeparam name="TKey">The type of the key of the specified <see cref="KeyValuePair{TKey, TValue}" />.</typeparam>
 		/// <typeparam name="TValue">The type of the value of the specified <see cref="KeyValuePair{TKey, TValue}" />.</typeparam>

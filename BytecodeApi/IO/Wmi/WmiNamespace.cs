@@ -11,7 +11,7 @@ namespace BytecodeApi.IO.Wmi
 	/// <summary>
 	/// Represents a WMI namespace.
 	/// </summary>
-	[DebuggerDisplay("{DebuggerDisplay,nq}")]
+	[DebuggerDisplay(CSharp.DebuggerDisplayString)]
 	public class WmiNamespace
 	{
 		private string DebuggerDisplay => CSharp.DebuggerDisplay<WmiNamespace>("{0}", new QuotedString(FullName));

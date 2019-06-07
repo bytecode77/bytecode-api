@@ -65,7 +65,6 @@ namespace Playground.Console
 
 		public static void Test1()
 		{
-			new ByteSize().GetNumberForUnit((ByteSizeUnit)1234);
 		}
 		public static void Test2()
 		{

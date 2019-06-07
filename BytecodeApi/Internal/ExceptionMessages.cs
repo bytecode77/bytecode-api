@@ -11,6 +11,7 @@
 		public static class Argument
 		{
 			public const string StringNotEmpty = "String must not be empty.";
+			public const string StringNotEmptyOrWhiteSpace = "String must not be empty or whitespace.";
 			public const string OffsetAndLengthOutOfBounds = "Offset and length were out of bounds.";
 			public const string ArrayElementsRequired = "Array must have elements.";
 			public const string ArrayValuesNotNull = "Array must not contain null values.";

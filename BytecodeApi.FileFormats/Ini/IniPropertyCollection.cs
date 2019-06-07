@@ -1,5 +1,4 @@
 ﻿using BytecodeApi.Extensions;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -193,12 +192,7 @@ namespace BytecodeApi.FileFormats.Ini
 		{
 			return Properties.Contains(item);
 		}
-		/// <summary>
-		/// Copies the elements of the <see cref="IniPropertyCollection" /> to an <see cref="Array" />, starting at a particular <see cref="Array" /> index.
-		/// </summary>
-		/// <param name="array">The one-dimensional <see cref="Array" /> that is the destination of the elements copied from <see cref="IniPropertyCollection" />.</param>
-		/// <param name="arrayIndex">The zero-based index in <paramref name="array" /> at which copying begins.</param>
-		public void CopyTo(IniProperty[] array, int arrayIndex)
+		void ICollection<IniProperty>.CopyTo(IniProperty[] array, int arrayIndex)
 		{
 			Check.ArgumentNull(array, nameof(array));
 			Check.IndexOutOfRange(arrayIndex, array.Length - Count + 1);

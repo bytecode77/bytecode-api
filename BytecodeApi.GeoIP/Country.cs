@@ -7,7 +7,7 @@ namespace BytecodeApi.GeoIP
 	/// <summary>
 	/// Represents a country with a name, an ISO code and related properties.
 	/// </summary>
-	[DebuggerDisplay("{DebuggerDisplay,nq}")]
+	[DebuggerDisplay(CSharp.DebuggerDisplayString)]
 	public sealed class Country : IEquatable<Country>
 	{
 		private string DebuggerDisplay => CSharp.DebuggerDisplay<Country>("Name = {0} ({1}), Continent = {2} ({3}), EuropeanUnion = {4}", new QuotedString(Name), IsoCode, new QuotedString(Continent), ContinentIsoCode, EuropeanUnion);

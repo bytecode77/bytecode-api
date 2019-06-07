@@ -9,7 +9,7 @@ namespace BytecodeApi.IO.SystemInfo
 	/// <summary>
 	/// Represents device information, retrieved by <see cref="DeviceManager" />.
 	/// </summary>
-	[DebuggerDisplay("{DebuggerDisplay,nq}")]
+	[DebuggerDisplay(CSharp.DebuggerDisplayString)]
 	public sealed class DeviceInfo
 	{
 		private string DebuggerDisplay => CSharp.DebuggerDisplay<DeviceInfo>("Name = {0}, Description = {1}, Attributes: {2}", new QuotedString(Name), new QuotedString(Description), Attributes.Count);
