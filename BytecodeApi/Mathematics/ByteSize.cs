@@ -388,7 +388,7 @@ namespace BytecodeApi.Mathematics
 				case ByteSizeUnit.TeraByte: return TeraBytes;
 				case ByteSizeUnit.PetaByte: return PetaBytes;
 				case ByteSizeUnit.ExaByte: return ExaBytes;
-				default: throw Throw.InvalidEnumArgument(nameof(unit));
+				default: throw Throw.InvalidEnumArgument(nameof(unit), unit);
 			}
 		}
 		/// <summary>

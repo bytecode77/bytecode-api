@@ -55,7 +55,7 @@ namespace BytecodeApi.UI
 		/// <returns>
 		/// This instance of <see cref="IValueConverter" />.
 		/// </returns>
-		public override object ProvideValue(IServiceProvider serviceProvider)
+		public sealed override object ProvideValue(IServiceProvider serviceProvider)
 		{
 			return this;
 		}
@@ -112,7 +112,7 @@ namespace BytecodeApi.UI
 		/// <returns>
 		/// This instance of <see cref="IValueConverter" />.
 		/// </returns>
-		public override object ProvideValue(IServiceProvider serviceProvider)
+		public sealed override object ProvideValue(IServiceProvider serviceProvider)
 		{
 			return this;
 		}

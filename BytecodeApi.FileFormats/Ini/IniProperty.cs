@@ -7,7 +7,7 @@ namespace BytecodeApi.FileFormats.Ini
 	/// <summary>
 	/// Represents a property of an <see cref="IniFile" />.
 	/// </summary>
-	[DebuggerDisplay("{DebuggerDisplay,nq}")]
+	[DebuggerDisplay(CSharp.DebuggerDisplayString)]
 	public sealed class IniProperty
 	{
 		private string DebuggerDisplay => CSharp.DebuggerDisplay<IniProperty>("Name = {0}, Value = {1}", new QuotedString(Name), new QuotedString(Value));

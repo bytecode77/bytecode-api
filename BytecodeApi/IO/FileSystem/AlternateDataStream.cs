@@ -6,7 +6,7 @@ namespace BytecodeApi.IO.FileSystem
 	/// <summary>
 	/// Represents an alternate data stream entry of a file or directory.
 	/// </summary>
-	[DebuggerDisplay("{DebuggerDisplay,nq}")]
+	[DebuggerDisplay(CSharp.DebuggerDisplayString)]
 	public sealed class AlternateDataStream
 	{
 		private string DebuggerDisplay => CSharp.DebuggerDisplay<AlternateDataStream>("Name = {0}, Size = {1}", new QuotedString(Name), Size);

@@ -63,7 +63,7 @@ namespace BytecodeApi.UI.Converters
 				case StringConverterMethod.TrimText: return value == null ? null : Wording.TrimText(value, (int)parameter);
 				case StringConverterMethod.StringDistanceLevenshtein: return value != null && parameter is string ? StringDistance.Levenshtein(value, (string)parameter) : (int?)null;
 				case StringConverterMethod.StringDistanceDamerauLevenshtein: return value != null && parameter is string ? StringDistance.DamerauLevenshtein(value, (string)parameter) : (int?)null;
-				default: throw Throw.InvalidEnumArgument(nameof(Method));
+				default: throw Throw.InvalidEnumArgument(nameof(Method), Method);
 			}
 		}
 	}

@@ -206,23 +206,23 @@ namespace BytecodeApi.Mathematics
 			{
 				if (destType == AngleType.Degrees) return angle * 180.0 / Math.PI;
 				else if (destType == AngleType.Gradians) return angle * 200.0 / Math.PI;
-				else throw Throw.InvalidEnumArgument(nameof(destType));
+				else throw Throw.InvalidEnumArgument(nameof(destType), destType);
 			}
 			else if (sourceType == AngleType.Degrees)
 			{
 				if (destType == AngleType.Radians) return angle * Math.PI / 180.0;
 				else if (destType == AngleType.Gradians) return angle * 200.0 / 180.0;
-				else throw Throw.InvalidEnumArgument(nameof(destType));
+				else throw Throw.InvalidEnumArgument(nameof(destType), destType);
 			}
 			else if (sourceType == AngleType.Gradians)
 			{
 				if (destType == AngleType.Radians) return angle * Math.PI / 200.0;
 				else if (destType == AngleType.Degrees) return angle * 180.0 / 200.0;
-				else throw Throw.InvalidEnumArgument(nameof(destType));
+				else throw Throw.InvalidEnumArgument(nameof(destType), destType);
 			}
 			else
 			{
-				throw Throw.InvalidEnumArgument(nameof(sourceType));
+				throw Throw.InvalidEnumArgument(nameof(sourceType), sourceType);
 			}
 		}
 

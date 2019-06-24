@@ -25,10 +25,6 @@ namespace BytecodeApi.UI.Mathematics
 		/// Gets or sets an <see cref="Action" /> that is used when <see cref="InvokeDefault()" /> is called. This property does not change the behavior or <see cref="Invoke(Action)" />.
 		/// </summary>
 		public Action DefaultAction { get; set; }
-		/// <summary>
-		/// Occurs when an <see cref="Action" /> was invoked. This event will only be invoked, if a call to <see cref="Invoke(Action)" /> was not deferred.
-		/// </summary>
-		public event EventHandler Invoked;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Deferrer" /> class with the specified delay.
@@ -45,7 +41,6 @@ namespace BytecodeApi.UI.Mathematics
 				{
 					LastInvocation = DateTime.MaxValue;
 					LastAction?.Invoke();
-					OnInvoked(EventArgs.Empty);
 				}
 			}, TimeSpan.FromMilliseconds(10));
 		}
@@ -118,15 +113,6 @@ namespace BytecodeApi.UI.Mathematics
 			Check.ArgumentNull(DefaultAction, nameof(DefaultAction));
 
 			Invoke(DefaultAction, now);
-		}
-
-		/// <summary>
-		/// Raises the <see cref="Invoked" /> event.
-		/// </summary>
-		/// <param name="e">The event data for the <see cref="Invoked" /> event.</param>
-		protected void OnInvoked(EventArgs e)
-		{
-			Invoked?.Invoke(this, e);
 		}
 	}
 }

@@ -10,7 +10,7 @@ namespace BytecodeApi.IO.SystemInfo
 	/// <summary>
 	/// Provides information about installed software on this computer.
 	/// </summary>
-	[DebuggerDisplay("{DebuggerDisplay,nq}")]
+	[DebuggerDisplay(CSharp.DebuggerDisplayString)]
 	public sealed class InstalledSoftwareInfo
 	{
 		private string DebuggerDisplay => CSharp.DebuggerDisplay<InstalledSoftwareInfo>("Name = {0}, Publisher = {1}, Version = {2}", new QuotedString(Name), new QuotedString(Publisher), new QuotedString(Version));

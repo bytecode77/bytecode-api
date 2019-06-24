@@ -49,7 +49,7 @@ namespace BytecodeApi.UI.Converters
 			{
 				case StringEmptyConverterMethod.NotNullOrEmpty: result = !value.IsNullOrEmpty(); break;
 				case StringEmptyConverterMethod.NotNullOrWhiteSpace: result = !value.IsNullOrWhiteSpace(); break;
-				default: throw Throw.InvalidEnumArgument(nameof(Result));
+				default: throw Throw.InvalidEnumArgument(nameof(Result), Result);
 			}
 
 			return new BooleanConverter(Result).Convert(result);

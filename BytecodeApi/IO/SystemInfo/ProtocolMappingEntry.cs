@@ -12,7 +12,7 @@ namespace BytecodeApi.IO.SystemInfo
 	/// <summary>
 	/// Provides a snapshot from the services file in %systemroot%\drivers\etc\services.
 	/// </summary>
-	[DebuggerDisplay("{DebuggerDisplay,nq}")]
+	[DebuggerDisplay(CSharp.DebuggerDisplayString)]
 	public sealed class ProtocolMappingEntry
 	{
 		private string DebuggerDisplay => CSharp.DebuggerDisplay<ProtocolMappingEntry>("Protocol = {0}, Port = {1}, Name = {2}", Protocol, Port, new QuotedString(Name));

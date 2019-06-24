@@ -10,7 +10,7 @@ namespace BytecodeApi.IO.SystemInfo
 	/// <summary>
 	/// Represents a hosts file entry from the Windows hosts file in %SYSTEMROOT%\drivers\etc\hosts.
 	/// </summary>
-	[DebuggerDisplay("{DebuggerDisplay,nq}")]
+	[DebuggerDisplay(CSharp.DebuggerDisplayString)]
 	public sealed class HostsFileEntry
 	{
 		private string DebuggerDisplay => CSharp.DebuggerDisplay<HostsFileEntry>("IPAddress = {0}, HostName = {1}", new QuotedString(IPAddress), new QuotedString(HostName));

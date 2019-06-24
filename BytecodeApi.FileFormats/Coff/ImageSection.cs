@@ -5,7 +5,7 @@ namespace BytecodeApi.FileFormats.Coff
 	/// <summary>
 	/// Represents a section of a PE image file, containing the header and a <see cref="byte" />[] representing the contents of the section.
 	/// </summary>
-	[DebuggerDisplay("{DebuggerDisplay,nq}")]
+	[DebuggerDisplay(CSharp.DebuggerDisplayString)]
 	public sealed class ImageSection
 	{
 		private string DebuggerDisplay => CSharp.DebuggerDisplay<ImageSection>("Header: {0}, Size: {1}", Header.Name, Data.Length);

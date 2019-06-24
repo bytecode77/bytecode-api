@@ -29,13 +29,13 @@ namespace BytecodeApi
 		{
 			return new ManagementException(message);
 		}
-		public static Exception InvalidEnumArgument(string parameterName)
+		public static Exception InvalidEnumArgument<TEnum>(string parameterName, TEnum enumValue) where TEnum : Enum
 		{
-			return new InvalidEnumArgumentException(string.Format(CultureInfo.InvariantCulture, ExceptionMessages.InvalidEnumArgument, parameterName));
+			return new InvalidEnumArgumentException(parameterName, Convert.ToInt32(enumValue), typeof(TEnum));
 		}
 		public static Exception UnsupportedType(string parameterName)
 		{
-			return new ArgumentException(string.Format(CultureInfo.InvariantCulture, ExceptionMessages.UnsupportedType, parameterName));
+			return new NotSupportedException(string.Format(CultureInfo.InvariantCulture, ExceptionMessages.UnsupportedType, parameterName));
 		}
 		public static Exception WrongPassword()
 		{

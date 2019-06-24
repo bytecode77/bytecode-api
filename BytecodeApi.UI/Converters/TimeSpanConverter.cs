@@ -51,7 +51,7 @@ namespace BytecodeApi.UI.Converters
 					case TimeSpanConverterMethod.TotalHours: return ((int)value.Value.TotalHours).ToString();
 					case TimeSpanConverterMethod.TotalDays: return ((int)value.Value.TotalDays).ToString();
 					case TimeSpanConverterMethod.Format: return value.Value.ToStringInvariant(parameter);
-					default: throw Throw.InvalidEnumArgument(nameof(Method));
+					default: throw Throw.InvalidEnumArgument(nameof(Method), Method);
 				}
 			}
 		}

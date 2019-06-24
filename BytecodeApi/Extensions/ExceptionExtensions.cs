@@ -14,6 +14,17 @@ namespace BytecodeApi.Extensions
 		/// Gets a <see cref="string" /> representing the complete stack trace including all inner exceptions for this <see cref="Exception" /> object.
 		/// </summary>
 		/// <param name="exception">The <see cref="Exception" /> to evaluate.</param>
+		/// <returns>
+		/// The complete stack trace including all inner exceptions for this <see cref="Exception" /> object.
+		/// </returns>
+		public static string GetFullStackTrace(this Exception exception)
+		{
+			return exception.GetFullStackTrace(out _);
+		}
+		/// <summary>
+		/// Gets a <see cref="string" /> representing the complete stack trace including all inner exceptions for this <see cref="Exception" /> object.
+		/// </summary>
+		/// <param name="exception">The <see cref="Exception" /> to evaluate.</param>
 		/// <param name="count">When this method returns, a <see cref="int" /> value indicating the amount of cascaded exceptions (inner exceptions).</param>
 		/// <returns>
 		/// The complete stack trace including all inner exceptions for this <see cref="Exception" /> object.

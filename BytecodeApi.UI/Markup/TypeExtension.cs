@@ -46,7 +46,7 @@ namespace BytecodeApi.UI.Markup
 				case TypeExtensionMethod.EnumValues: return EnumEx.GetValues(Type);
 				case TypeExtensionMethod.EnumDescriptions: return EnumEx.GetValues(Type).Select(value => value.GetDescription()).ToArray();
 				case TypeExtensionMethod.EnumDescriptionLookup: return EnumEx.GetDescriptionLookup(Type);
-				default: throw Throw.InvalidEnumArgument(nameof(Method));
+				default: throw Throw.InvalidEnumArgument(nameof(Method), Method);
 			}
 		}
 	}

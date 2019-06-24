@@ -366,7 +366,7 @@ namespace BytecodeApi.Mathematics
 		/// </returns>
 		public static BitArray GetBitArray(byte value)
 		{
-			return new BitArray(new[] { value });
+			return new BitArray(SingletonCollection.Array(value));
 		}
 		/// <summary>
 		/// Converts the specified <see cref="sbyte" /> value to a <see cref="BitArray" />.
@@ -388,7 +388,7 @@ namespace BytecodeApi.Mathematics
 		/// </returns>
 		public static BitArray GetBitArray(int value)
 		{
-			return new BitArray(new[] { value });
+			return new BitArray(SingletonCollection.Array(value));
 		}
 		/// <summary>
 		/// Converts the specified <see cref="uint" /> value to a <see cref="BitArray" />.

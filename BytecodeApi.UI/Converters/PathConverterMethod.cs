@@ -6,11 +6,11 @@
 	public enum PathConverterMethod
 	{
 		/// <summary>
-		/// Returns the file name and extension of the path <see cref="string" /> value.
+		/// Returns the filename and extension of the path <see cref="string" /> value.
 		/// </summary>
 		FileName,
 		/// <summary>
-		/// Returns the file name of the of the path <see cref="string" /> value without the extension.
+		/// Returns the filename of the of the path <see cref="string" /> value without the extension.
 		/// </summary>
 		FileNameWithoutExtension,
 		/// <summary>

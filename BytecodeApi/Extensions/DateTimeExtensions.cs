@@ -256,7 +256,7 @@ namespace BytecodeApi.Extensions
 				case DateTimePart.Year:
 					return new DateTime(dateTime.Year, 1, 1, 0, 0, 0, dateTime.Kind);
 				default:
-					throw Throw.InvalidEnumArgument(nameof(part));
+					throw Throw.InvalidEnumArgument(nameof(part), part);
 			}
 		}
 		/// <summary>

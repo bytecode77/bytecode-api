@@ -10,7 +10,7 @@ namespace BytecodeApi.IO.Interop
 	/// <summary>
 	/// Represents the function of a native DLL file that does not return a value.
 	/// </summary>
-	[DebuggerDisplay("{DebuggerDisplay,nq}")]
+	[DebuggerDisplay(CSharp.DebuggerDisplayString)]
 	public sealed class DynamicLibraryFunction
 	{
 		private readonly MethodInfo Method;
@@ -57,7 +57,7 @@ namespace BytecodeApi.IO.Interop
 	/// Represents the function of a native DLL file that returns a value of the specified type.
 	/// </summary>
 	/// <typeparam name="T">The function's return type.</typeparam>
-	[DebuggerDisplay("{DebuggerDisplay,nq}")]
+	[DebuggerDisplay(CSharp.DebuggerDisplayString)]
 	public sealed class DynamicLibraryFunction<T>
 	{
 		private readonly MethodInfo Method;

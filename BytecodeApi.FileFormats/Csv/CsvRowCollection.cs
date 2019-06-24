@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 
 namespace BytecodeApi.FileFormats.Csv
@@ -80,12 +79,7 @@ namespace BytecodeApi.FileFormats.Csv
 		{
 			return Rows.Contains(item);
 		}
-		/// <summary>
-		/// Copies the elements of the <see cref="CsvRowCollection" /> to an <see cref="Array" />, starting at a particular <see cref="Array" /> index.
-		/// </summary>
-		/// <param name="array">The one-dimensional <see cref="Array" /> that is the destination of the elements copied from <see cref="CsvRowCollection" />.</param>
-		/// <param name="arrayIndex">The zero-based index in <paramref name="array" /> at which copying begins.</param>
-		public void CopyTo(CsvRow[] array, int arrayIndex)
+		void ICollection<CsvRow>.CopyTo(CsvRow[] array, int arrayIndex)
 		{
 			Check.ArgumentNull(array, nameof(array));
 			Check.IndexOutOfRange(arrayIndex, array.Length - Count + 1);

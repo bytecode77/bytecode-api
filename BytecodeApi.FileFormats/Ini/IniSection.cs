@@ -6,7 +6,7 @@ namespace BytecodeApi.FileFormats.Ini
 	/// <summary>
 	/// Represents a section of an <see cref="IniFile" />.
 	/// </summary>
-	[DebuggerDisplay("{DebuggerDisplay,nq}")]
+	[DebuggerDisplay(CSharp.DebuggerDisplayString)]
 	public sealed class IniSection
 	{
 		private string DebuggerDisplay => CSharp.DebuggerDisplay<IniSection>("Name = {0}, Properties: {1}", new QuotedString(Name), Properties.Count);

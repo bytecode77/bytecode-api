@@ -7,7 +7,7 @@ namespace BytecodeApi.Mathematics
 	/// Represents a generic range of two numeric values that implement <see cref="IComparable" />.
 	/// </summary>
 	/// <typeparam name="T">The type of the two numeric values.</typeparam>
-	[DebuggerDisplay("{DebuggerDisplay,nq}")]
+	[DebuggerDisplay(CSharp.DebuggerDisplayString)]
 	public struct Range<T> : IEquatable<Range<T>> where T : struct, IComparable
 	{
 		private string DebuggerDisplay => CSharp.DebuggerDisplay<Range<T>>("Min = {0}, Max = {1}", Min, Max);

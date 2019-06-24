@@ -1,4 +1,5 @@
 ﻿using BytecodeApi.IO;
+using BytecodeApi.IO.Cli;
 using BytecodeApi.IO.Wmi;
 using System;
 using System.Diagnostics;
@@ -143,7 +144,7 @@ namespace BytecodeApi.Extensions
 		{
 			Check.ArgumentNull(process, nameof(process));
 
-			return ApplicationBase.ParseCommandLineArgs(process.GetCommandLine());
+			return OptionSet.ParseCommandLine(process.GetCommandLine());
 		}
 		/// <summary>
 		/// Gets the mandatory integrity level of this <see cref="Process" /> or <see langword="null" />, if this method failed.

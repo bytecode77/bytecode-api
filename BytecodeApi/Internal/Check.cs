@@ -90,6 +90,11 @@ namespace BytecodeApi
 				if (parameter == "") throw new ArgumentException(ExceptionMessages.Argument.StringNotEmpty, parameterName);
 			}
 			[DebuggerHidden, MethodImpl(MethodImplOptions.AggressiveInlining)]
+			public static void StringNotEmptyOrWhiteSpace(string parameter, string parameterName)
+			{
+				if (parameter == "" || parameter.Any(c => char.IsWhiteSpace(c))) throw new ArgumentException(ExceptionMessages.Argument.StringNotEmptyOrWhiteSpace, parameterName);
+			}
+			[DebuggerHidden, MethodImpl(MethodImplOptions.AggressiveInlining)]
 			public static void OffsetAndLengthOutOfBounds(int offset, int count, int length)
 			{
 				if (offset + count > length) throw new ArgumentException(ExceptionMessages.Argument.OffsetAndLengthOutOfBounds);
