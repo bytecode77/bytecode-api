@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Security.Cryptography;
 
 namespace BytecodeApi.Extensions
@@ -184,6 +185,30 @@ namespace BytecodeApi.Extensions
 			Check.ArgumentNull(randomNumberGenerator, nameof(randomNumberGenerator));
 
 			return BitConverter.ToUInt16(randomNumberGenerator.GetBytes(2), 0);
+		}
+		/// <summary>
+		/// Creates a <see cref="BitArray" /> with a specified length and fills all elements with a cryptographically strong random sequence of <see cref="bool" /> values.
+		/// </summary>
+		/// <param name="randomNumberGenerator">The <see cref="RandomNumberGenerator" /> object to be used for random number generation.</param>
+		/// <param name="count">The size of the returned <see cref="BitArray" />.</param>
+		/// <returns>
+		/// A new <see cref="BitArray" /> with a specified length, filled with a cryptographically strong random sequence of <see cref="bool" /> values.
+		/// </returns>
+		public static BitArray GetBits(this RandomNumberGenerator randomNumberGenerator, int count)
+		{
+			Check.ArgumentNull(randomNumberGenerator, nameof(randomNumberGenerator));
+			Check.ArgumentOutOfRangeEx.GreaterEqual0(count, nameof(count));
+
+			BitArray bits = new BitArray(count);
+			byte[] bytes = new byte[1];
+
+			for (int i = 0; i < count; i++)
+			{
+				randomNumberGenerator.GetBytes(bytes);
+				bits[i] = (bytes[0] & 1) == 1;
+			}
+
+			return bits;
 		}
 	}
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace BytecodeApi.Extensions
@@ -225,6 +226,28 @@ namespace BytecodeApi.Extensions
 			Check.ArgumentNull(random, nameof(random));
 
 			return (ushort)random.Next(65536);
+		}
+		/// <summary>
+		/// Creates a <see cref="BitArray" /> with a specified length and fills all elements with random <see cref="bool" /> values.
+		/// </summary>
+		/// <param name="random">The <see cref="Random" /> object to be used for random number generation.</param>
+		/// <param name="count">The size of the returned <see cref="BitArray" />.</param>
+		/// <returns>
+		/// A new <see cref="BitArray" /> with a specified length, filled with random <see cref="bool" /> values.
+		/// </returns>
+		public static BitArray NextBits(this Random random, int count)
+		{
+			Check.ArgumentNull(random, nameof(random));
+			Check.ArgumentOutOfRangeEx.GreaterEqual0(count, nameof(count));
+
+			BitArray bits = new BitArray(count);
+
+			for (int i = 0; i < count; i++)
+			{
+				bits[i] = (random.Next() & 1) == 1;
+			}
+
+			return bits;
 		}
 		/// <summary>
 		/// Returns a random <see cref="object" /> of the specified type from <paramref name="array" />, selected based on a random index.
