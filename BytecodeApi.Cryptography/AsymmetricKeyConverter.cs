@@ -1,7 +1,6 @@
 using BytecodeApi.Extensions;
 using System;
 using System.IO;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -192,7 +191,7 @@ namespace BytecodeApi.Cryptography
 			StringBuilder pemKey = new StringBuilder();
 			pemKey.AppendLine(keyType == AsymmetricKeyType.Public ? PublicKeyHeader : PrivateKeyHeader);
 
-			foreach (string line in Convert.ToBase64String(derKey).Chunk(64).Select(line => line.AsString()))
+			foreach (string line in Convert.ToBase64String(derKey).SplitToChunks(64))
 			{
 				pemKey.AppendLine(line);
 			}
