@@ -70,6 +70,7 @@
     <Compile Include="IO\Cli\ParsedOptionSet.cs" />
     <Compile Include="IO\Cli\ParsedOption.cs" />
     <Compile Include="IO\Cli\Option.cs" />
+    <Compile Include="IO\Debugging\BindingErrorTraceListener.cs" />
     <Compile Include="IO\Debugging\TraceEventInfo.cs" />
     <Compile Include="IO\Debugging\TraceTransferInfo.cs" />
     <Compile Include="IO\Debugging\TraceDataInfo.cs" />
