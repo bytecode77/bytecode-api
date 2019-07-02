@@ -40,9 +40,9 @@ namespace UnitTest
 		public void BytecodeApi_GeoIP_DatabaseUpToDate()
 		{
 			// GeoLite2 database is updated on a monthly basis. If this test fails, Build.GeoIP needs to be run.
-			if ("a118f076c2678e52466c0e723d2ea3e9" != HttpClient.Default.CreateGetRequest("https://geolite.maxmind.com/download/geoip/database/GeoLite2-Country-CSV.zip.md5").ReadString() ||
-				"5d8b986843ee261f1610191d28596b31" != HttpClient.Default.CreateGetRequest("https://geolite.maxmind.com/download/geoip/database/GeoLite2-ASN-CSV.zip.md5").ReadString() ||
-				"844232ad5699053ea3e86ce76458dd38" != HttpClient.Default.CreateGetRequest("https://geolite.maxmind.com/download/geoip/database/GeoLite2-City-CSV.zip.md5").ReadString())
+			if (HttpClient.Default.CreateGetRequest("https://geolite.maxmind.com/download/geoip/database/GeoLite2-Country-CSV.zip.md5").ReadString() != "94119dd84078673777f861bf8ff0b537" ||
+				HttpClient.Default.CreateGetRequest("https://geolite.maxmind.com/download/geoip/database/GeoLite2-ASN-CSV.zip.md5").ReadString() != "ec1771a9c15b167e2b4ccaf30df0fe06" ||
+				HttpClient.Default.CreateGetRequest("https://geolite.maxmind.com/download/geoip/database/GeoLite2-City-CSV.zip.md5").ReadString() != "7e1174519d1aa1020230947f0dd32d4c")
 			{
 				Assert.Inconclusive("GeoIP database is not up-to-date");
 			}

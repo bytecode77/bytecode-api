@@ -259,6 +259,7 @@ namespace Build.GeoIP
 			{
 				using (BinaryWriter writer = new BinaryWriter(memoryStream, Encoding.UTF8))
 				{
+					writer.Write(DateTime.Now.Ticks);
 					writer.Write((byte)Countries.Length);
 					writer.Write(IPRanges.Length);
 					writer.Write(IPRanges6.Length);
@@ -299,6 +300,7 @@ namespace Build.GeoIP
 			{
 				using (BinaryWriter writer = new BinaryWriter(memoryStream, Encoding.UTF8))
 				{
+					writer.Write(DateTime.Now.Ticks);
 					writer.Write((ushort)Asns.Count);
 					writer.Write(AsnRanges.Length);
 					writer.Write(AsnRanges6.Length);
@@ -337,6 +339,7 @@ namespace Build.GeoIP
 			{
 				using (BinaryWriter writer = new BinaryWriter(memoryStream, Encoding.UTF8))
 				{
+					writer.Write(DateTime.Now.Ticks);
 					writer.Write(Cities.Length);
 					writer.Write(CityRanges.Length);
 					writer.Write(CityRanges6.Length);

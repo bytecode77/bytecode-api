@@ -1,6 +1,7 @@
 ﻿using BytecodeApi.Extensions;
 using BytecodeApi.GeoIP.City.Properties;
 using BytecodeApi.IO;
+using System;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Net;
@@ -17,6 +18,10 @@ namespace BytecodeApi.GeoIP.City
 		private static readonly CityRange[] Ranges;
 		private static readonly CityRange6[] Ranges6;
 		/// <summary>
+		/// Gets a <see cref="DateTime" /> value indicating, when this database was last updated.
+		/// </summary>
+		public static DateTime DatabaseTimeStamp { get; private set; }
+		/// <summary>
 		/// Gets a collection of all <see cref="City" /> objects.
 		/// </summary>
 		public static ReadOnlyCollection<City> Cities { get; private set; }
@@ -25,6 +30,7 @@ namespace BytecodeApi.GeoIP.City
 		{
 			using (BinaryReader reader = new BinaryReader(new MemoryStream(Compression.Decompress(Resources.GeoIP_City)), Encoding.UTF8))
 			{
+				DatabaseTimeStamp = new DateTime(reader.ReadInt64());
 				City[] cities = new City[reader.ReadInt32()];
 				Ranges = new CityRange[reader.ReadInt32()];
 				Ranges6 = new CityRange6[reader.ReadInt32()];
