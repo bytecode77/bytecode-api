@@ -1,6 +1,7 @@
 ﻿using BytecodeApi.Extensions;
 using BytecodeApi.GeoIP.ASN.Properties;
 using BytecodeApi.IO;
+using System;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Net;
@@ -17,6 +18,10 @@ namespace BytecodeApi.GeoIP.ASN
 		private static readonly AsnRange[] Ranges;
 		private static readonly AsnRange6[] Ranges6;
 		/// <summary>
+		/// Gets a <see cref="DateTime" /> value indicating, when this database was last updated.
+		/// </summary>
+		public static DateTime DatabaseTimeStamp { get; private set; }
+		/// <summary>
 		/// Gets a collection of all <see cref="Asn" /> objects.
 		/// </summary>
 		public static ReadOnlyCollection<Asn> Asns { get; private set; }
@@ -25,6 +30,7 @@ namespace BytecodeApi.GeoIP.ASN
 		{
 			using (BinaryReader reader = new BinaryReader(new MemoryStream(Compression.Decompress(Resources.GeoIP_ASN)), Encoding.UTF8))
 			{
+				DatabaseTimeStamp = new DateTime(reader.ReadInt64());
 				Asn[] asns = new Asn[reader.ReadUInt16()];
 				Ranges = new AsnRange[reader.ReadInt32()];
 				Ranges6 = new AsnRange6[reader.ReadInt32()];

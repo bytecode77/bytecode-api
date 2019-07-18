@@ -14,14 +14,14 @@ conventions, patterns, etc. The entire code style resembles the patterns used in
 the .NET Framework itself. You will find it intuitive to understand.
 
 Documentation can be taken for granted! <b>All</b> classes and members have XML
-tags. The [online documentation](https://docs.bytecode77.com/bytecode-api/)
-makes it easy to find the class or method you are looking for.
+tags. The [online documentation](http://docs.bytecode77.com/bytecode-api/) makes
+it easy to find the class or method you are looking for.
 
 ## Examples
 
 Following examples are a very brief overview over what features you can come to
 expect. However, the entire framework covers a lot more. Please review the
-[online documentation](https://docs.bytecode77.com/bytecode-api/) to get a
+[online documentation](http://docs.bytecode77.com/bytecode-api/) to get a
 complete overview.
 
 ### Example: Advanced conversion
@@ -181,7 +181,7 @@ public class MyViewModel : ObservableObject
 ## Online Documentation
 
 BytecodeApi is fully documented using XML tags. The
-[online documentation](https://docs.bytecode77.com/bytecode-api/) is an
+[online documentation](http://docs.bytecode77.com/bytecode-api/) is an
 up-to-date reference.
 
 ## Downloads

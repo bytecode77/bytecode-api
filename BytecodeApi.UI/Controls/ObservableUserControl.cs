@@ -203,11 +203,25 @@ namespace BytecodeApi.UI.Controls
 		}
 		/// <summary>
 		/// Method that can be used by the <see langword="get" /> accessor of a property. Backing fields are managed automatically.
+		/// <para>Example: <see langword="public" /> <see cref="int" /> Foo { <see langword="get" /> => Get(() => Foo, 1); <see langword="set" /> => Set(() => Foo, <see langword="value" />); }</para>
+		/// </summary>
+		/// <typeparam name="T">The type of the property.</typeparam>
+		/// <param name="property">The strongly typed lambda expression of the property.</param>
+		/// <param name="defaultValue">A default value. This parameter can be used as a property initializer.</param>
+		/// <returns>
+		/// The value of the property backing field. The default value is <see langword="default" />(<typeparamref name="T" />).
+		/// </returns>
+		protected T Get<T>(Expression<Func<T>> property, T defaultValue)
+		{
+			return Get(property, () => defaultValue);
+		}
+		/// <summary>
+		/// Method that can be used by the <see langword="get" /> accessor of a property. Backing fields are managed automatically.
 		/// <para>Example: <see langword="public" /> <see cref="int" /> Foo { <see langword="get" /> => Get(() => Foo, () => 1); <see langword="set" /> => Set(() => Foo, <see langword="value" />); }</para>
 		/// </summary>
 		/// <typeparam name="T">The type of the property.</typeparam>
 		/// <param name="property">The strongly typed lambda expression of the property.</param>
-		/// <param name="defaultValue">A <see cref="Func{TResult}" /> that retrieves a default value. This delegate can be used as a property initializer. <paramref name="defaultValue" /> is invoked if the property is retrieved for the first time and is not set.</param>
+		/// <param name="defaultValue">A <see cref="Func{TResult}" /> that retrieves a default value. This delegate can be used as a property initializer. <paramref name="defaultValue" /> is invoked, if the property is retrieved for the first time and is not set.</param>
 		/// <returns>
 		/// The value of the property backing field. The default value is <see langword="default" />(<typeparamref name="T" />).
 		/// </returns>

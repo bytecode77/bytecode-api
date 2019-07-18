@@ -792,6 +792,36 @@ namespace BytecodeApi.Extensions
 			return str.Split(new[] { "\r\n", "\n" }, removeEmptyEntries ? StringSplitOptions.RemoveEmptyEntries : StringSplitOptions.None);
 		}
 		/// <summary>
+		/// Splits this <see cref="string" /> into chunks of a given size. The last <see cref="string" /> may be smaller than <paramref name="chunkSize" />.
+		/// </summary>
+		/// <param name="str">The <see cref="string" /> to chunk.</param>
+		/// <param name="chunkSize">The size of each chunk.</param>
+		/// <returns>
+		/// A new <see cref="string" />[] with the chunks from the original <see cref="string" />.
+		/// </returns>
+		public static string[] SplitToChunks(this string str, int chunkSize)
+		{
+			Check.ArgumentNull(str, nameof(str));
+			Check.ArgumentOutOfRangeEx.Greater0(chunkSize, nameof(chunkSize));
+
+			if (str.Length <= chunkSize)
+			{
+				return SingletonCollection.Array(str);
+			}
+			else
+			{
+				string[] chunks = new string[(str.Length + chunkSize - 1) / chunkSize];
+
+				for (int i = 0; i < chunks.Length; i++)
+				{
+					chunks[i] = i < chunks.Length - 1 ? str.Substring(i * chunkSize, chunkSize) : str.Substring(i * chunkSize);
+				}
+
+
+				return chunks;
+			}
+		}
+		/// <summary>
 		/// Replaces all occurrences of linebreaks ("\n" and "\r\n") in this <see cref="string" /> with a specified replacement value.
 		/// </summary>
 		/// <param name="str">The <see cref="string" /> to be processed.</param>

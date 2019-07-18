@@ -13,6 +13,8 @@ using BytecodeApi.GeoIP;
 using BytecodeApi.GeoIP.ASN;
 using BytecodeApi.GeoIP.City;
 using BytecodeApi.IO;
+using BytecodeApi.IO.Cli;
+using BytecodeApi.IO.Debugging;
 using BytecodeApi.IO.FileSystem;
 using BytecodeApi.IO.Http;
 using BytecodeApi.IO.Interop;
