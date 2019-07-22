@@ -39,7 +39,7 @@ namespace BytecodeApi.FileFormats.Ini
 			{
 				Check.ArgumentNull(name, nameof(name));
 				Check.KeyNotFoundException(HasProperty(name, ignoreCase), "The property '" + name + "' was not found.");
-				return Properties.First(property => property.Name.Equals(name, ignoreCase ? SpecialStringComparisons.IgnoreCase : SpecialStringComparisons.Default));
+				return Properties.First(property => property.Name.Equals(name, ignoreCase ? SpecialStringComparisons.IgnoreCase : SpecialStringComparisons.None));
 			}
 		}
 		/// <summary>
@@ -95,7 +95,7 @@ namespace BytecodeApi.FileFormats.Ini
 		/// </returns>
 		public bool HasProperty(string name, bool ignoreCase)
 		{
-			return Properties.Any(property => property.Name.Equals(name, ignoreCase ? SpecialStringComparisons.IgnoreCase : SpecialStringComparisons.Default));
+			return Properties.Any(property => property.Name.Equals(name, ignoreCase ? SpecialStringComparisons.IgnoreCase : SpecialStringComparisons.None));
 		}
 		/// <summary>
 		/// Processes all duplicate properties within this collection according to the specified behavior.
@@ -125,7 +125,7 @@ namespace BytecodeApi.FileFormats.Ini
 				case IniDuplicatePropertyNameBehavior.Ignore:
 					for (int i = 1; i < Count; i++)
 					{
-						if (Properties.Take(i).Any(property => property.Name.Equals(Properties[i].Name, ignoreCase ? SpecialStringComparisons.IgnoreCase : SpecialStringComparisons.Default)))
+						if (Properties.Take(i).Any(property => property.Name.Equals(Properties[i].Name, ignoreCase ? SpecialStringComparisons.IgnoreCase : SpecialStringComparisons.None)))
 						{
 							removedProperties.Add(Properties[i]);
 						}
@@ -134,7 +134,7 @@ namespace BytecodeApi.FileFormats.Ini
 				case IniDuplicatePropertyNameBehavior.Overwrite:
 					for (int i = 1; i < Count; i++)
 					{
-						IniProperty firstProperty = Properties.Take(i).FirstOrDefault(property => property.Name.Equals(Properties[i].Name, ignoreCase ? SpecialStringComparisons.IgnoreCase : SpecialStringComparisons.Default));
+						IniProperty firstProperty = Properties.Take(i).FirstOrDefault(property => property.Name.Equals(Properties[i].Name, ignoreCase ? SpecialStringComparisons.IgnoreCase : SpecialStringComparisons.None));
 						if (firstProperty != null)
 						{
 							firstProperty.Value = Properties[i].Value;

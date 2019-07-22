@@ -11,7 +11,7 @@ namespace BytecodeApi
 		/// <summary>
 		/// Specifies that no conversion flags are defined.
 		/// </summary>
-		Default = 0,
+		None = 0,
 		/// <summary>
 		/// Specifies that character casing of property and field names is not considered.
 		/// </summary>

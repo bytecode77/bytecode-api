@@ -124,7 +124,7 @@ namespace BytecodeApi
 					result.Append(charset[index]);
 				}
 
-				int padding = 8 - (result.Length % 8);
+				int padding = 8 - result.Length % 8;
 				if (padding > 0 && padding < 8) result.Append('=', padding);
 
 				return result.ToString();

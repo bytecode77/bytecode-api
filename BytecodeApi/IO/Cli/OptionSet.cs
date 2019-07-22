@@ -128,7 +128,7 @@ namespace BytecodeApi.IO.Cli
 
 			for (int i = 0; i < args.Length; i++)
 			{
-				SpecialStringComparisons comparison = OptionPrefixIgnoreCase ? SpecialStringComparisons.IgnoreCase : SpecialStringComparisons.Default;
+				SpecialStringComparisons comparison = OptionPrefixIgnoreCase ? SpecialStringComparisons.IgnoreCase : SpecialStringComparisons.None;
 				Option option = Options.FirstOrDefault(o =>
 					o.Arguments.Any(a => args[i].Equals(OptionPrefix + a, comparison)) ||
 					o.Alternatives.Any(a => args[i].Equals(OptionAlternativePrefix + a, comparison))

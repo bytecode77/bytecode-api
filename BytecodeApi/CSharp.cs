@@ -70,7 +70,7 @@ namespace BytecodeApi
 		/// </returns>
 		public static TDest ConvertObject<TDest>(object obj) where TDest : class
 		{
-			return ConvertObject<TDest>(obj, ConvertObjectFlags.Default);
+			return ConvertObject<TDest>(obj, ConvertObjectFlags.None);
 		}
 		/// <summary>
 		/// Copies the contents of properties and fields of an <see cref="object" /> to another <see cref="object" /> of a different <see cref="Type" /> by comparing property and field names. A new instance of <typeparamref name="TDest" /> is created.
@@ -99,7 +99,7 @@ namespace BytecodeApi
 		/// <param name="dest">The <see cref="object" /> to copy the contents to.</param>
 		public static void ConvertObject<TDest>(object obj, TDest dest) where TDest : class
 		{
-			ConvertObject(obj, dest, ConvertObjectFlags.Default);
+			ConvertObject(obj, dest, ConvertObjectFlags.None);
 		}
 		/// <summary>
 		/// Copies the contents of properties and fields of an <see cref="object" /> to another <see cref="object" /> of a different <see cref="Type" /> by comparing property and field names.

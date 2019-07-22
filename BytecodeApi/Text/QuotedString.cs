@@ -32,7 +32,7 @@ namespace BytecodeApi.Text
 		{
 			if (OriginalString == null)
 			{
-				return null;
+				return "";
 			}
 			else
 			{

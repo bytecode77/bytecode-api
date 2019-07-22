@@ -11,7 +11,7 @@ namespace BytecodeApi
 		/// <summary>
 		/// Specifies the default <see cref="string" /> comparison as in <see cref="string.Compare(string, string)" />.
 		/// </summary>
-		Default = 0,
+		None = 0,
 		/// <summary>
 		/// Specifies that strings which are either <see langword="null" /> or <see cref="string.Empty" /> are treated equally.
 		/// </summary>

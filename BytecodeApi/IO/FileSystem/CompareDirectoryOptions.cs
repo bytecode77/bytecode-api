@@ -12,7 +12,7 @@ namespace BytecodeApi.IO.FileSystem
 		/// <summary>
 		/// Specifies that no comparison flags are defined.
 		/// </summary>
-		Default = 0,
+		None = 0,
 		/// <summary>
 		/// Specifies to compare subdirectories recursively.
 		/// </summary>

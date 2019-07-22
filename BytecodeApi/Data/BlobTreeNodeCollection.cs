@@ -43,7 +43,7 @@ namespace BytecodeApi.Data
 			get
 			{
 				Check.KeyNotFoundException(HasNode(name, ignoreCase), "A node with the name '" + name + "' was not found.");
-				return Nodes.First(n => n.Name.Equals(name, ignoreCase ? SpecialStringComparisons.IgnoreCase : SpecialStringComparisons.Default));
+				return Nodes.First(n => n.Name.Equals(name, ignoreCase ? SpecialStringComparisons.IgnoreCase : SpecialStringComparisons.None));
 			}
 		}
 		/// <summary>
@@ -94,7 +94,7 @@ namespace BytecodeApi.Data
 		/// </returns>
 		public bool HasNode(string name, bool ignoreCase)
 		{
-			return Nodes.Any(node => node.Name.Equals(name, ignoreCase ? SpecialStringComparisons.IgnoreCase : SpecialStringComparisons.Default));
+			return Nodes.Any(node => node.Name.Equals(name, ignoreCase ? SpecialStringComparisons.IgnoreCase : SpecialStringComparisons.None));
 		}
 		/// <summary>
 		/// Computes the size, in bytes, of all <see cref="Blob" /> objects within this <see cref="BlobTreeNodeCollection" /> recursively.

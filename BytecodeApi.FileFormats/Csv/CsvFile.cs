@@ -769,7 +769,7 @@ namespace BytecodeApi.FileFormats.Csv
 		/// </returns>
 		public int GetColumnIndex(string header, bool ignoreCase)
 		{
-			return Headers?.IndexOf(h => h.Equals(header, ignoreCase ? SpecialStringComparisons.IgnoreCase : SpecialStringComparisons.Default)) ?? -1;
+			return Headers?.IndexOf(h => h.Equals(header, ignoreCase ? SpecialStringComparisons.IgnoreCase : SpecialStringComparisons.None)) ?? -1;
 		}
 		/// <summary>
 		/// Writes the contents of this flat file database to a file. If <see cref="Headers" /> is not <see langword="null" />, the header row is included. The <see cref="Delimiter" /> property specifies the delimiter to use when writing.
