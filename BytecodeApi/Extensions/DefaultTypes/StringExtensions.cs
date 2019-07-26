@@ -681,7 +681,6 @@ namespace BytecodeApi.Extensions
 								{
 									if (index == -1) stringBuilder.Append(str.Substring(position));
 									else stringBuilder.Append(str.Substring(position, index - position)).Append(separator);
-									position = index;
 								}
 
 								skip = !skip;

@@ -244,19 +244,19 @@ namespace BytecodeApi.Text
 			for (int i = offset; i < offset + count; i += 16, startPosition += 16)
 			{
 				int length = Math.Min(bytes.Length - i, 16);
-				string line1 = startPosition.ToStringInvariant("x8") + "h: ";
-				string line2 = null;
+				StringBuilder line1 = new StringBuilder(startPosition.ToStringInvariant("x8") + "h: ");
+				StringBuilder line2 = new StringBuilder();
 
 				for (int j = 0; j < length; j++)
 				{
-					line1 += bytes[i + j].ToStringInvariant("x2") + " ";
-					line2 += bytes[i + j] >= 32 && bytes[i + j] <= 126 ? (char)bytes[i + j] : '.';
+					line1.Append(bytes[i + j].ToStringInvariant("x2") + " ");
+					line2.Append(bytes[i + j] >= 32 && bytes[i + j] <= 126 ? (char)bytes[i + j] : '.');
 				}
 
 				if (length < 16)
 				{
-					line1 += ' '.Repeat((16 - length) * 3);
-					line2 += ' '.Repeat(16 - length);
+					line1.Append(' '.Repeat((16 - length) * 3));
+					line2.Append(' '.Repeat(16 - length));
 				}
 
 				stringBuilder.AppendLine(line1 + "; " + line2);

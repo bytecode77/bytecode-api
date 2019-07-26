@@ -8,7 +8,7 @@ namespace BytecodeApi.UI.Data
 	/// <summary>
 	/// Represents a keyboard shortcut composed of a key and a set of modifiers (Ctrl, Shift, Alt).
 	/// </summary>
-	public class KeyboardShortcut : ObservableObject, IEquatable<KeyboardShortcut>
+	public sealed class KeyboardShortcut : ObservableObject, IEquatable<KeyboardShortcut>
 	{
 		/// <summary>
 		/// Gets or sets a value indicating whether this <see cref="KeyboardShortcut" /> uses the Ctrl modifier.

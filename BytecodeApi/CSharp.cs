@@ -70,7 +70,7 @@ namespace BytecodeApi
 		/// </returns>
 		public static TDest ConvertObject<TDest>(object obj) where TDest : class
 		{
-			return ConvertObject<TDest>(obj, ConvertObjectFlags.None);
+			return ConvertObject<TDest>(obj, ConvertObjectOptions.None);
 		}
 		/// <summary>
 		/// Copies the contents of properties and fields of an <see cref="object" /> to another <see cref="object" /> of a different <see cref="Type" /> by comparing property and field names. A new instance of <typeparamref name="TDest" /> is created.
@@ -78,11 +78,11 @@ namespace BytecodeApi
 		/// </summary>
 		/// <typeparam name="TDest">The type of the <see cref="object" /> to copy the contents to.</typeparam>
 		/// <param name="obj">The <see cref="object" /> to copy the contents from.</param>
-		/// <param name="flags">The <see cref="ConvertObjectFlags" /> flags that specify comparison and copy behavior.</param>
+		/// <param name="flags">The <see cref="ConvertObjectOptions" /> flags that specify comparison and copy behavior.</param>
 		/// <returns>
 		/// The new instance of <typeparamref name="TDest" /> this method creates, with properties and fields copied from <paramref name="obj" />.
 		/// </returns>
-		public static TDest ConvertObject<TDest>(object obj, ConvertObjectFlags flags) where TDest : class
+		public static TDest ConvertObject<TDest>(object obj, ConvertObjectOptions flags) where TDest : class
 		{
 			Check.ArgumentNull(obj, nameof(obj));
 
@@ -99,7 +99,7 @@ namespace BytecodeApi
 		/// <param name="dest">The <see cref="object" /> to copy the contents to.</param>
 		public static void ConvertObject<TDest>(object obj, TDest dest) where TDest : class
 		{
-			ConvertObject(obj, dest, ConvertObjectFlags.None);
+			ConvertObject(obj, dest, ConvertObjectOptions.None);
 		}
 		/// <summary>
 		/// Copies the contents of properties and fields of an <see cref="object" /> to another <see cref="object" /> of a different <see cref="Type" /> by comparing property and field names.
@@ -108,18 +108,18 @@ namespace BytecodeApi
 		/// <typeparam name="TDest">The type of the <see cref="object" /> to copy the contents to.</typeparam>
 		/// <param name="obj">The <see cref="object" /> to copy the contents from.</param>
 		/// <param name="dest">The <see cref="object" /> to copy the contents to.</param>
-		/// <param name="flags">The <see cref="ConvertObjectFlags" /> flags that specify comparison and copy behavior.</param>
-		public static void ConvertObject<TDest>(object obj, TDest dest, ConvertObjectFlags flags) where TDest : class
+		/// <param name="flags">The <see cref="ConvertObjectOptions" /> flags that specify comparison and copy behavior.</param>
+		public static void ConvertObject<TDest>(object obj, TDest dest, ConvertObjectOptions flags) where TDest : class
 		{
 			Check.ArgumentNull(obj, nameof(obj));
 			Check.ArgumentNull(dest, nameof(dest));
 
 			BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public;
-			if (flags.HasFlag(ConvertObjectFlags.IgnoreCase)) bindingFlags |= BindingFlags.IgnoreCase;
-			if (flags.HasFlag(ConvertObjectFlags.NonPublic)) bindingFlags |= BindingFlags.NonPublic;
-			if (flags.HasFlag(ConvertObjectFlags.Static)) bindingFlags |= BindingFlags.Static;
+			if (flags.HasFlag(ConvertObjectOptions.IgnoreCase)) bindingFlags |= BindingFlags.IgnoreCase;
+			if (flags.HasFlag(ConvertObjectOptions.NonPublic)) bindingFlags |= BindingFlags.NonPublic;
+			if (flags.HasFlag(ConvertObjectOptions.Static)) bindingFlags |= BindingFlags.Static;
 
-			if (!flags.HasFlag(ConvertObjectFlags.IgnoreProperties))
+			if (!flags.HasFlag(ConvertObjectOptions.IgnoreProperties))
 			{
 				foreach (PropertyInfo sourceProperty in obj.GetType().GetProperties(bindingFlags))
 				{
@@ -134,7 +134,7 @@ namespace BytecodeApi
 						);
 					}
 
-					if (flags.HasFlag(ConvertObjectFlags.PropertiesToFields) && dest.GetType().GetField(sourceProperty.Name, bindingFlags) is FieldInfo destField)
+					if (flags.HasFlag(ConvertObjectOptions.PropertiesToFields) && dest.GetType().GetField(sourceProperty.Name, bindingFlags) is FieldInfo destField)
 					{
 						Process
 						(
@@ -147,7 +147,7 @@ namespace BytecodeApi
 				}
 			}
 
-			if (!flags.HasFlag(ConvertObjectFlags.IgnoreFields))
+			if (!flags.HasFlag(ConvertObjectOptions.IgnoreFields))
 			{
 				foreach (FieldInfo sourceField in obj.GetType().GetFields(bindingFlags))
 				{
@@ -162,7 +162,7 @@ namespace BytecodeApi
 						);
 					}
 
-					if (flags.HasFlag(ConvertObjectFlags.FieldsToProperties) && dest.GetType().GetProperty(sourceField.Name, bindingFlags) is PropertyInfo destProperty)
+					if (flags.HasFlag(ConvertObjectOptions.FieldsToProperties) && dest.GetType().GetProperty(sourceField.Name, bindingFlags) is PropertyInfo destProperty)
 					{
 						Process
 						(
