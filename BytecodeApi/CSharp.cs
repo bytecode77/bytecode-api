@@ -123,7 +123,7 @@ namespace BytecodeApi
 			{
 				foreach (PropertyInfo sourceProperty in obj.GetType().GetProperties(bindingFlags))
 				{
-					if (dest.GetType().GetProperty(sourceProperty.Name, bindingFlags) is PropertyInfo destProperty)
+					if (dest.GetType().GetProperty(sourceProperty.Name, bindingFlags) is PropertyInfo destProperty && destProperty.SetMethod != null)
 					{
 						Process
 						(
@@ -162,7 +162,7 @@ namespace BytecodeApi
 						);
 					}
 
-					if (flags.HasFlag(ConvertObjectOptions.FieldsToProperties) && dest.GetType().GetProperty(sourceField.Name, bindingFlags) is PropertyInfo destProperty)
+					if (flags.HasFlag(ConvertObjectOptions.FieldsToProperties) && dest.GetType().GetProperty(sourceField.Name, bindingFlags) is PropertyInfo destProperty && destProperty.SetMethod != null)
 					{
 						Process
 						(
