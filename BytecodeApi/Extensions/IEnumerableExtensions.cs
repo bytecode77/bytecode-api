@@ -424,6 +424,21 @@ namespace BytecodeApi.Extensions
 		}
 
 		/// <summary>
+		/// Filters the elements of an <see cref="IEnumerable" /> based on a specified type. Objects must be of type <typeparamref name="TResult" />. Objects of classes that inherit <typeparamref name="TResult" /> are not returned.
+		/// </summary>
+		/// <typeparam name="TResult">The type to filter the elements of the sequence on.</typeparam>
+		/// <param name="source">The <see cref="IEnumerable" /> whose elements to filter.</param>
+		/// <returns>
+		/// An <see cref="IEnumerable{T}" /> that contains elements from the input sequence of type <typeparamref name="TResult" />. Objects of classes that inherit <typeparamref name="TResult" /> are not returned.
+		/// </returns>
+		public static IEnumerable<TResult> OfExactType<TResult>(this IEnumerable source)
+		{
+			foreach (object item in source)
+			{
+				if (item.GetType() == typeof(TResult)) yield return (TResult)item;
+			}
+		}
+		/// <summary>
 		/// Bypasses a specified number of elements at the end of a sequence and then returns the preceding elements.
 		/// </summary>
 		/// <typeparam name="TSource">The type of the elements of <paramref name="source" />.</typeparam>
