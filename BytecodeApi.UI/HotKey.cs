@@ -94,7 +94,7 @@ namespace BytecodeApi.UI
 		/// Raises the <see cref="Pressed" /> event.
 		/// </summary>
 		/// <param name="e">The event data for the <see cref="Pressed" /> event.</param>
-		protected void OnPressed(HotKeyEventArgs e)
+		protected virtual void OnPressed(HotKeyEventArgs e)
 		{
 			Pressed?.Invoke(this, e);
 		}

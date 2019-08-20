@@ -87,7 +87,7 @@ namespace BytecodeApi.UI
 		/// Raises the <see cref="Notified" /> event.
 		/// </summary>
 		/// <param name="e">The event data for the <see cref="Notified" /> event.</param>
-		protected void OnNotified(EventArgs e)
+		protected virtual void OnNotified(EventArgs e)
 		{
 			Notified?.Invoke(this, e);
 		}
