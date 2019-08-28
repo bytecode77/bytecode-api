@@ -85,7 +85,10 @@
     <Compile Include="IO\Http\HttpParameter.cs" />
     <Compile Include="IO\Http\HttpClient.cs" />
     <Compile Include="IO\IconHelper.cs" />
+    <Compile Include="IO\Interop\GlobalAtom.cs" />
     <Compile Include="IO\Interop\CommandPrompt.cs" />
+    <Compile Include="IO\Interop\Atom.cs" />
+    <Compile Include="IO\Interop\IAtom.cs" />
     <Compile Include="IO\Interop\CommandPromptEventArgs.cs" />
     <Compile Include="IO\Interop\DynamicLibraryFunction.cs" />
     <Compile Include="IO\Interop\DynamicLibrary.cs" />
