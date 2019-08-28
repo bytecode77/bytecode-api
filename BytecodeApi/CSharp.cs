@@ -539,5 +539,44 @@ namespace BytecodeApi
 		{
 			return EqualsAll(obj, (IEnumerable<T>)values);
 		}
+		/// <summary>
+		/// Returns <see langword="true" />, if <paramref name="obj" /> is an <see cref="object" /> of the specified <see cref="Type" />. If <paramref name="obj" /> is not of the specified <see cref="Type" />, or <paramref name="obj" /> is of a <see cref="Type" /> that inherits <paramref name="type" />, <see langword="false" /> is returned.
+		/// </summary>
+		/// <param name="obj">The <see cref="object" /> to check.</param>
+		/// <param name="type">The <see cref="Type" /> to compare to the type of <paramref name="obj" />.</param>
+		/// <returns>
+		/// <see langword="true" />, if <paramref name="obj" /> is an <see cref="object" /> of the specified <see cref="Type" />;
+		/// <see langword="false" />, If <paramref name="obj" /> is not of the specified <see cref="Type" />, or <paramref name="obj" /> is of a <see cref="Type" /> that inherits <paramref name="type" />.
+		/// </returns>
+		public static bool IsType(object obj, Type type)
+		{
+			return obj?.GetType() == type;
+		}
+		/// <summary>
+		/// Returns <see langword="true" />, if <paramref name="obj" /> is an <see cref="object" /> of the specified type. If <paramref name="obj" /> is not of the specified type, or <paramref name="obj" /> is of a type that inherits <typeparamref name="T" />, <see langword="false" /> is returned.
+		/// </summary>
+		/// <typeparam name="T">The type to compare to the type of <paramref name="obj" />.</typeparam>
+		/// <param name="obj">The <see cref="object" /> to check.</param>
+		/// <returns>
+		/// <see langword="true" />, if <paramref name="obj" /> is an <see cref="object" /> of the specified type;
+		/// <see langword="false" />, If <paramref name="obj" /> is not of the specified type, or <paramref name="obj" /> is of a type that inherits <typeparamref name="T" />.
+		/// </returns>
+		public static bool IsType<T>(object obj)
+		{
+			return obj?.GetType() == typeof(T);
+		}
+		/// <summary>
+		/// Returns <see langword="true" />, if <paramref name="objA" /> and <paramref name="objB" /> are of the same <see cref="Type" />, of if both objects are <see langword="null" />.
+		/// </summary>
+		/// <param name="objA">The first <see cref="object" /> to compare.</param>
+		/// <param name="objB">The second <see cref="object" /> to compare.</param>
+		/// <returns>
+		/// <see langword="true" />, if <paramref name="objA" /> and <paramref name="objB" /> are of the same <see cref="Type" />, of if both objects are <see langword="null" />;
+		/// otherwise, <see langword="false" />.
+		/// </returns>
+		public static bool TypeEquals(object objA, object objB)
+		{
+			return objA?.GetType() == objB?.GetType();
+		}
 	}
 }

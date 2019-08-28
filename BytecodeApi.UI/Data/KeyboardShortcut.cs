@@ -131,7 +131,7 @@ namespace BytecodeApi.UI.Data
 		/// </returns>
 		public bool Equals(KeyboardShortcut other)
 		{
-			return other != null && GetType() == other.GetType() && IsCtrl == other.IsCtrl && IsShift == other.IsShift && IsAlt == other.IsAlt && Key == other.Key;
+			return other != null && CSharp.TypeEquals(this, other) && IsCtrl == other.IsCtrl && IsShift == other.IsShift && IsAlt == other.IsAlt && Key == other.Key;
 		}
 		/// <summary>
 		/// Returns a hash code for this <see cref="KeyboardShortcut" />.

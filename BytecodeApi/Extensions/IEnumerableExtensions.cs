@@ -435,7 +435,7 @@ namespace BytecodeApi.Extensions
 		{
 			foreach (object item in source)
 			{
-				if (item.GetType() == typeof(TResult)) yield return (TResult)item;
+				if (CSharp.IsType<TResult>(item)) yield return (TResult)item;
 			}
 		}
 		/// <summary>

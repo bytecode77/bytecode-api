@@ -33,21 +33,6 @@ namespace BytecodeApi.Extensions
 		}.ToReadOnlyDictionary();
 
 		/// <summary>
-		/// Returns the value of a field supported by a given <see cref="object" />.
-		/// </summary>
-		/// <typeparam name="T">The type to which the returned value is casted to.</typeparam>
-		/// <param name="fieldInfo">The <see cref="FieldInfo" /> to retrieve the value from.</param>
-		/// <param name="obj">The <see cref="object" /> to retrieve the value from.</param>
-		/// <returns>
-		/// The value of a field supported by a given <see cref="object" />.
-		/// </returns>
-		public static T GetValue<T>(this FieldInfo fieldInfo, object obj)
-		{
-			Check.ArgumentNull(fieldInfo, nameof(fieldInfo));
-
-			return (T)fieldInfo.GetValue(obj);
-		}
-		/// <summary>
 		/// Determines whether an instance of this <see cref="Type" /> can be assigned to the current <see cref="Type" /> instance.
 		/// </summary>
 		/// <param name="type">The <see cref="Type" /> to check.</param>
@@ -63,47 +48,6 @@ namespace BytecodeApi.Extensions
 			Check.ArgumentNull(c, nameof(c));
 
 			return type.IsAssignableFrom(c) && (!excludeSelf || type != c);
-		}
-		/// <summary>
-		/// Invokes the method or constructor represented by the current instance with no parameters.
-		/// </summary>
-		/// <param name="method">The method to invoke.</param>
-		/// <returns>
-		/// An <see cref="object" /> containing the return value of the invoked method, or null in the case of a constructor.
-		/// </returns>
-		public static object Invoke(this MethodBase method)
-		{
-			Check.ArgumentNull(method, nameof(method));
-
-			return method.Invoke(null, null);
-		}
-		/// <summary>
-		/// Invokes the method or constructor represented by the current instance with no parameters.
-		/// </summary>
-		/// <typeparam name="T">The return type of <paramref name="method" />.</typeparam>
-		/// <param name="method">The method to invoke.</param>
-		/// <returns>
-		/// An <see cref="object" /> containing the return value of the invoked method, or null in the case of a constructor.
-		/// </returns>
-		public static T Invoke<T>(this MethodBase method)
-		{
-			return method.Invoke<T>(null, null);
-		}
-		/// <summary>
-		/// Invokes the method or constructor represented by the current instance with, using the specified parameters.
-		/// </summary>
-		/// <typeparam name="T">The return type of <paramref name="method" />.</typeparam>
-		/// <param name="method">The method to invoke.</param>
-		/// <param name="obj">The <see cref="object" /> on which to invoke the method or constructor. If a method is static, this argument is ignored. If a constructor is static, this argument must be <see langword="null" /> or an instance of the class that defines the constructor.</param>
-		/// <param name="parameters">An argument list for the invoked method or constructor. This is an array of objects with the same number, order, and type as the parameters of the method or constructor to be invoked. If there are no parameters, parameters should be <see langword="null" />. If the method or constructor represented by this instance takes a ref parameter, no special attribute is required for that parameter in order to invoke the method or constructor using this function. Any <see cref="object" /> in this array that is not explicitly initialized with a value will contain the default value for that <see cref="object" /> type.</param>
-		/// <returns>
-		/// An <see cref="object" /> containing the return value of the invoked method, or null in the case of a constructor.
-		/// </returns>
-		public static T Invoke<T>(this MethodBase method, object obj, object[] parameters)
-		{
-			Check.ArgumentNull(method, nameof(method));
-
-			return (T)method.Invoke(obj, parameters);
 		}
 		/// <summary>
 		/// Returns the name of this <see cref="Type" />, including its nested class names.
@@ -193,6 +137,62 @@ namespace BytecodeApi.Extensions
 			{
 				return name + suffix;
 			}
+		}
+		/// <summary>
+		/// Returns the value of a field supported by a given <see cref="object" />.
+		/// </summary>
+		/// <typeparam name="T">The type to which the returned value is casted to.</typeparam>
+		/// <param name="fieldInfo">The <see cref="FieldInfo" /> to retrieve the value from.</param>
+		/// <param name="obj">The <see cref="object" /> to retrieve the value from.</param>
+		/// <returns>
+		/// The value of a field supported by a given <see cref="object" />.
+		/// </returns>
+		public static T GetValue<T>(this FieldInfo fieldInfo, object obj)
+		{
+			Check.ArgumentNull(fieldInfo, nameof(fieldInfo));
+
+			return (T)fieldInfo.GetValue(obj);
+		}
+		/// <summary>
+		/// Invokes the method or constructor represented by the current instance with no parameters.
+		/// </summary>
+		/// <param name="method">The method to invoke.</param>
+		/// <returns>
+		/// An <see cref="object" /> containing the return value of the invoked method, or null in the case of a constructor.
+		/// </returns>
+		public static object Invoke(this MethodBase method)
+		{
+			Check.ArgumentNull(method, nameof(method));
+
+			return method.Invoke(null, null);
+		}
+		/// <summary>
+		/// Invokes the method or constructor represented by the current instance with no parameters.
+		/// </summary>
+		/// <typeparam name="T">The return type of <paramref name="method" />.</typeparam>
+		/// <param name="method">The method to invoke.</param>
+		/// <returns>
+		/// An <see cref="object" /> containing the return value of the invoked method, or null in the case of a constructor.
+		/// </returns>
+		public static T Invoke<T>(this MethodBase method)
+		{
+			return method.Invoke<T>(null, null);
+		}
+		/// <summary>
+		/// Invokes the method or constructor represented by the current instance with, using the specified parameters.
+		/// </summary>
+		/// <typeparam name="T">The return type of <paramref name="method" />.</typeparam>
+		/// <param name="method">The method to invoke.</param>
+		/// <param name="obj">The <see cref="object" /> on which to invoke the method or constructor. If a method is static, this argument is ignored. If a constructor is static, this argument must be <see langword="null" /> or an instance of the class that defines the constructor.</param>
+		/// <param name="parameters">An argument list for the invoked method or constructor. This is an array of objects with the same number, order, and type as the parameters of the method or constructor to be invoked. If there are no parameters, parameters should be <see langword="null" />. If the method or constructor represented by this instance takes a ref parameter, no special attribute is required for that parameter in order to invoke the method or constructor using this function. Any <see cref="object" /> in this array that is not explicitly initialized with a value will contain the default value for that <see cref="object" /> type.</param>
+		/// <returns>
+		/// An <see cref="object" /> containing the return value of the invoked method, or null in the case of a constructor.
+		/// </returns>
+		public static T Invoke<T>(this MethodBase method, object obj, object[] parameters)
+		{
+			Check.ArgumentNull(method, nameof(method));
+
+			return (T)method.Invoke(obj, parameters);
 		}
 	}
 }

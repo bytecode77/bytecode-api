@@ -16,7 +16,7 @@ namespace BytecodeApi.Extensions
 		/// <param name="otherArray">A <see cref="byte" />[] to compare to <paramref name="array" />.</param>
 		/// <returns>
 		/// <see langword="true" />, if both arrays contain the exact same set of data or if <paramref name="array" /> and <paramref name="otherArray" /> are both <see langword="null" />;
-		/// otherwise <see langword="false" />.
+		/// otherwise, <see langword="false" />.
 		/// </returns>
 		public static bool Compare(this byte[] array, byte[] otherArray)
 		{
