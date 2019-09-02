@@ -424,6 +424,26 @@ namespace BytecodeApi.Extensions
 		}
 
 		/// <summary>
+		/// Performs an <see cref="Action{T}" /> on each element of a sequence and returns the elements after invoking <paramref name="action" />.
+		/// </summary>
+		/// <typeparam name="TSource">The type of the elements of <paramref name="source" />.</typeparam>
+		/// <param name="source">An <see cref="IEnumerable{T}" /> to process.</param>
+		/// <param name="action">The action to perform on each element of <paramref name="source" />.</param>
+		/// <returns>
+		/// An <see cref="IEnumerable{T}" /> that contains all elements from the input sequence.
+		/// </returns>
+		public static IEnumerable<TSource> Each<TSource>(this IEnumerable<TSource> source, Action<TSource> action)
+		{
+			Check.ArgumentNull(source, nameof(source));
+			Check.ArgumentNull(action, nameof(action));
+
+			foreach (TSource item in source)
+			{
+				action(item);
+				yield return item;
+			}
+		}
+		/// <summary>
 		/// Filters the elements of an <see cref="IEnumerable" /> based on a specified type. Objects must be of type <typeparamref name="TResult" />. Objects of classes that inherit <typeparamref name="TResult" /> are not returned.
 		/// </summary>
 		/// <typeparam name="TResult">The type to filter the elements of the sequence on.</typeparam>
