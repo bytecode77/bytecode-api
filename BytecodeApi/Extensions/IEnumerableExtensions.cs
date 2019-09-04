@@ -597,7 +597,7 @@ namespace BytecodeApi.Extensions
 		/// <param name="source">An <see cref="IEnumerable{T}" /> to return elements from.</param>
 		/// <param name="keySelector">A <see cref="Func{T, TResult}" /> to extract the key for each element.</param>
 		/// <returns>
-		/// An <see cref="IEnumerator{T}" /> with all distinct elements of <paramref name="source" />.
+		/// An <see cref="IEnumerable{T}" /> with all distinct elements of <paramref name="source" />.
 		/// </returns>
 		public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
 		{
@@ -612,7 +612,7 @@ namespace BytecodeApi.Extensions
 		/// <param name="keySelector">A <see cref="Func{T, TResult}" /> to extract the key for each element.</param>
 		/// <param name="comparer">An <see cref="IComparer{T}" /> to compare the elements.</param>
 		/// <returns>
-		/// An <see cref="IEnumerator{T}" /> with all distinct elements of <paramref name="source" />.
+		/// An <see cref="IEnumerable{T}" /> with all distinct elements of <paramref name="source" />.
 		/// </returns>
 		public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer)
 		{
@@ -628,7 +628,7 @@ namespace BytecodeApi.Extensions
 		/// <param name="first">The first sequence to concatenate.</param>
 		/// <param name="second">The element to concatenate to the first sequence.</param>
 		/// <returns>
-		/// An <see cref="IEnumerator{T}" /> that contains the concatenated elements of the source
+		/// An <see cref="IEnumerable{T}" /> that contains the concatenated elements of the source
 		/// </returns>
 		public static IEnumerable<TSource> Concat<TSource>(this IEnumerable<TSource> first, TSource second)
 		{
