@@ -161,6 +161,28 @@ namespace BytecodeApi.IO.Cli
 				return ParsedOptionSet;
 			}
 			/// <summary>
+			/// Validates that the argument has a specific amount of values. If the <see cref="Option" /> was not found, this validation succeeds.
+			/// </summary>
+			/// <param name="argument">A <see cref="string" /> that identifies an <see cref="Option" />.</param>
+			/// <param name="count">A <see cref="int" /> specifying the amount of values for the <see cref="ParsedOption" />.</param>
+			/// <param name="failed">A custom handler that is invoked, if the condition is not met.</param>
+			/// <returns>
+			/// A reference to the instance of <see cref="Cli.ParsedOptionSet" /> after the operation has completed.
+			/// </returns>
+			public ParsedOptionSet ValueCount(string argument, int count, Action failed)
+			{
+				Check.ArgumentNull(argument, nameof(argument));
+				Check.ArgumentEx.StringNotEmpty(argument, nameof(argument));
+				Check.ArgumentNull(failed, nameof(failed));
+
+				foreach (ParsedOption option in ParsedOptionSet.GetOptions(argument))
+				{
+					if (option.Values.Count != count) failed();
+				}
+
+				return ParsedOptionSet;
+			}
+			/// <summary>
 			/// Validates that the argument has a minimum amount of values. If the <see cref="Option" /> was not found, this validation succeeds.
 			/// </summary>
 			/// <param name="argument">A <see cref="string" /> that identifies an <see cref="Option" />.</param>
@@ -358,6 +380,25 @@ namespace BytecodeApi.IO.Cli
 				bool failed = false;
 				ParsedOptionSet.Validate.OptionNotDuplicate(argument, () => failed = true);
 				if (failed) throw new CliException(CliValidationSource.OptionNotDuplicate, "Option '" + argument + "' must not have multiple occurrences.");
+
+				return ParsedOptionSet;
+			}
+			/// <summary>
+			/// Validates that the argument has a specific amount of values; otherwise, a <see cref="CliException" /> is thrown. If the <see cref="Option" /> was not found, this validation succeeds.
+			/// </summary>
+			/// <param name="argument">A <see cref="string" /> that identifies an <see cref="Option" />.</param>
+			/// <param name="count">A <see cref="int" /> specifying the amount of values for the <see cref="ParsedOption" />.</param>
+			/// <returns>
+			/// A reference to the instance of <see cref="Cli.ParsedOptionSet" /> after the operation has completed.
+			/// </returns>
+			public ParsedOptionSet ValueCount(string argument, int count)
+			{
+				Check.ArgumentNull(argument, nameof(argument));
+				Check.ArgumentEx.StringNotEmpty(argument, nameof(argument));
+
+				bool failed = false;
+				ParsedOptionSet.Validate.ValueCount(argument, count, () => failed = true);
+				if (failed) throw new CliException(CliValidationSource.ValueCount, "Option '" + argument + "' must have at least " + count + " values.");
 
 				return ParsedOptionSet;
 			}

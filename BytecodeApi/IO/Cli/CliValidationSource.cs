@@ -20,6 +20,10 @@ namespace BytecodeApi.IO.Cli
 		/// </summary>
 		OptionNotDuplicate,
 		/// <summary>
+		/// The exception occurred in the <see cref="ParsedOptionSet.AssertHelper.ValueCount(string, int)" /> method.
+		/// </summary>
+		ValueCount,
+		/// <summary>
 		/// The exception occurred in the <see cref="ParsedOptionSet.AssertHelper.MinimumValueCount(string, int)" /> method.
 		/// </summary>
 		MinimumValueCount,
