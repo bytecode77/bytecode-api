@@ -120,7 +120,7 @@ namespace BytecodeApi.IO
 		{
 			//TODO: Bug: Does not support console color; setInStream causes to pause the application
 			bool consoleAttached = true;
-			if (alwaysCreateNewConsole || (Native.AttachConsole(0xffffffff) == 0 && Marshal.GetLastWin32Error() != 5))
+			if (alwaysCreateNewConsole || Native.AttachConsole(0xffffffff) == 0 && Marshal.GetLastWin32Error() != 5)
 			{
 				consoleAttached = Native.AllocConsole() != 0;
 			}
@@ -142,10 +142,10 @@ namespace BytecodeApi.IO
 				}
 			}
 
-			FileStream CreateFileStream(string name, uint access, FileShare fileShare, FileAccess dotNetFileAccess)
+			FileStream CreateFileStream(string name, uint access, FileShare fileShare, FileAccess fileAccess)
 			{
 				SafeFileHandle file = Native.CreateFile(name, access, fileShare, IntPtr.Zero, FileMode.Open, 0x80, IntPtr.Zero);
-				return file.IsInvalid ? null : new FileStream(file, dotNetFileAccess);
+				return file.IsInvalid ? null : new FileStream(file, fileAccess);
 			}
 		}
 		/// <summary>

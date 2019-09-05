@@ -87,7 +87,7 @@ namespace BytecodeApi.IO.Cli
 			return Options.Where(o => o.Option.Arguments.Contains(argument));
 		}
 		/// <summary>
-		/// Handles all <see cref="ParsedOption" /> objects with the specified argument using a custom handler. If no option was found, an exception is thrown.
+		/// Handles all <see cref="ParsedOption" /> objects with the specified argument using a custom handler.
 		/// </summary>
 		/// <param name="argument">A <see cref="string" /> that identifies an <see cref="Option" />.</param>
 		/// <param name="handler">A custom handler that is invoked with a <see cref="string" />[] containing the values of the <see cref="ParsedOption" />.</param>
@@ -103,10 +103,6 @@ namespace BytecodeApi.IO.Cli
 			if (HasOption(argument))
 			{
 				foreach (ParsedOption option in GetOptions(argument)) handler(option.Values.ToArray());
-			}
-			else
-			{
-				throw new CliException("Option '" + argument + "' was not found.");
 			}
 
 			return this;
