@@ -83,6 +83,7 @@ namespace BytecodeApi.Extensions
 			Check.ArgumentNull(array, nameof(array));
 			Check.ArgumentNull(sequence, nameof(sequence));
 			Check.ArgumentEx.ArrayElementsRequired(sequence, nameof(sequence));
+			Check.ArgumentOutOfRangeEx.GreaterEqual0(startIndex, nameof(startIndex));
 			Check.ArgumentEx.OffsetAndLengthOutOfBounds(startIndex, 0, array.Length);
 
 			for (int i = startIndex; i < array.Length - sequence.Length + 1; i++)

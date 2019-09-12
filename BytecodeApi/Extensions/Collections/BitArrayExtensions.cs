@@ -1,4 +1,4 @@
-﻿using BytecodeApi.Mathematics;
+using BytecodeApi.Mathematics;
 using System.Collections;
 
 namespace BytecodeApi.Extensions
@@ -172,6 +172,8 @@ namespace BytecodeApi.Extensions
 		public static BitArray GetBits(this BitArray array, int index, int count)
 		{
 			Check.ArgumentNull(array, nameof(array));
+			Check.ArgumentOutOfRangeEx.GreaterEqual0(index, nameof(index));
+			Check.ArgumentOutOfRangeEx.GreaterEqual0(count, nameof(count));
 			Check.ArgumentEx.OffsetAndLengthOutOfBounds(index, count, array.Length);
 
 			BitArray copy = new BitArray(count);
@@ -189,6 +191,8 @@ namespace BytecodeApi.Extensions
 		public static void SetAll(this BitArray array, int offset, int count, bool value)
 		{
 			Check.ArgumentNull(array, nameof(array));
+			Check.ArgumentOutOfRangeEx.GreaterEqual0(offset, nameof(offset));
+			Check.ArgumentOutOfRangeEx.GreaterEqual0(count, nameof(count));
 			Check.ArgumentEx.OffsetAndLengthOutOfBounds(offset, count, array.Length);
 
 			for (int i = offset; i < offset + count; i++)
@@ -233,6 +237,8 @@ namespace BytecodeApi.Extensions
 		public static void SetRandomValues(this BitArray array, int offset, int count, bool cryptographic)
 		{
 			Check.ArgumentNull(array, nameof(array));
+			Check.ArgumentOutOfRangeEx.GreaterEqual0(offset, nameof(offset));
+			Check.ArgumentOutOfRangeEx.GreaterEqual0(count, nameof(count));
 			Check.ArgumentEx.OffsetAndLengthOutOfBounds(offset, count, array.Length);
 
 			if (cryptographic)

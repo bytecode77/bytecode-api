@@ -237,7 +237,10 @@ namespace BytecodeApi.Text
 		public static string FormatBinary(byte[] bytes, int offset, int count, int startPosition)
 		{
 			Check.ArgumentNull(bytes, nameof(bytes));
+			Check.ArgumentOutOfRangeEx.GreaterEqual0(offset, nameof(offset));
+			Check.ArgumentOutOfRangeEx.GreaterEqual0(count, nameof(count));
 			Check.ArgumentEx.OffsetAndLengthOutOfBounds(offset, count, bytes.Length);
+			Check.ArgumentOutOfRangeEx.GreaterEqual0(startPosition, nameof(startPosition));
 
 			StringBuilder stringBuilder = new StringBuilder();
 
