@@ -86,9 +86,9 @@ namespace BytecodeApi.IO
 				Native.Rect rect;
 				if (Native.GetClientRect(notificationArea, out rect))
 				{
-					for (var x = 0; x < rect.Right; x += 5)
+					for (int x = 0; x < rect.Right; x += 5)
 					{
-						for (var y = 0; y < rect.Bottom; y += 5)
+						for (int y = 0; y < rect.Bottom; y += 5)
 						{
 							Native.SendMessage(notificationArea, 0x0200, 0, (y << 16) + x);
 						}

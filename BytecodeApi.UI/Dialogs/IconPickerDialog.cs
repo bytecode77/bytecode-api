@@ -29,16 +29,16 @@ namespace BytecodeApi.UI.Dialogs
 		/// <summary>
 		/// Is called to display the icon picker dialog.
 		/// </summary>
-		/// <param name="owner">Handle to the window that owns the dialog box.</param>
+		/// <param name="hwndOwner">Handle to the window that owns the dialog box.</param>
 		/// <returns>
 		/// If the user clicks the OK button of the dialog that is displayed, <see langword="true" /> is returned;
 		/// otherwise, <see langword="false" />.
 		/// </returns>
-		protected override bool RunDialog(IntPtr owner)
+		protected override bool RunDialog(IntPtr hwndOwner)
 		{
 			StringBuilder stringBuilder = new StringBuilder(FileName, 260);
 
-			if (Native.SHPickIconDialog(owner, stringBuilder, 260, out int index))
+			if (Native.SHPickIconDialog(hwndOwner, stringBuilder, 260, out int index))
 			{
 				FileName = Environment.ExpandEnvironmentVariables(stringBuilder.ToString());
 				IconIndex = index;

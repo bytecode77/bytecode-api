@@ -76,27 +76,24 @@ namespace BytecodeApi.IO
 					token = process.OpenToken(0x8b);
 				}
 
-				if (token != IntPtr.Zero)
+				if (token != IntPtr.Zero && Native.DuplicateTokenEx(token, 0, IntPtr.Zero, 2, 1, out newToken))
 				{
-					if (Native.DuplicateTokenEx(token, 0, IntPtr.Zero, 2, 1, out newToken))
+					Native.SidIdentifierAuthority securityMandatoryLabelAuthority = new Native.SidIdentifierAuthority { Value = new byte[] { 0, 0, 0, 0, 0, 16 } };
+					if (Native.AllocateAndInitializeSid(ref securityMandatoryLabelAuthority, 1, (int)integrityLevel, 0, 0, 0, 0, 0, 0, 0, out integritySid))
 					{
-						Native.SidIdentifierAuthority securityMandatoryLabelAuthority = new Native.SidIdentifierAuthority { Value = new byte[] { 0, 0, 0, 0, 0, 16 } };
-						if (Native.AllocateAndInitializeSid(ref securityMandatoryLabelAuthority, 1, (int)integrityLevel, 0, 0, 0, 0, 0, 0, 0, out integritySid))
-						{
-							Native.TokenMandatoryLabel mandatoryTokenLabel;
-							mandatoryTokenLabel.Label.Attributes = 0x20;
-							mandatoryTokenLabel.Label.Sid = integritySid;
+						Native.TokenMandatoryLabel mandatoryTokenLabel;
+						mandatoryTokenLabel.Label.Attributes = 0x20;
+						mandatoryTokenLabel.Label.Sid = integritySid;
 
-							int tokenInfo = Marshal.SizeOf(mandatoryTokenLabel);
-							tokenInfoPtr = Marshal.AllocHGlobal(tokenInfo);
-							Marshal.StructureToPtr(mandatoryTokenLabel, tokenInfoPtr, false);
-							if (Native.SetTokenInformation(newToken, 25, tokenInfoPtr, tokenInfo + Native.GetLengthSid(integritySid)))
+						int tokenInfo = Marshal.SizeOf(mandatoryTokenLabel);
+						tokenInfoPtr = Marshal.AllocHGlobal(tokenInfo);
+						Marshal.StructureToPtr(mandatoryTokenLabel, tokenInfoPtr, false);
+						if (Native.SetTokenInformation(newToken, 25, tokenInfoPtr, tokenInfo + Native.GetLengthSid(integritySid)))
+						{
+							startupInfo.StructSize = Marshal.SizeOf(startupInfo);
+							if (Native.CreateProcessAsUser(newToken, null, commandLine, IntPtr.Zero, IntPtr.Zero, false, 0, IntPtr.Zero, null, ref startupInfo, out processInformation))
 							{
-								startupInfo.StructSize = Marshal.SizeOf(startupInfo);
-								if (Native.CreateProcessAsUser(newToken, null, commandLine, IntPtr.Zero, IntPtr.Zero, false, 0, IntPtr.Zero, null, ref startupInfo, out processInformation))
-								{
-									return Process.GetProcessById(processInformation.ProcessId);
-								}
+								return Process.GetProcessById(processInformation.ProcessId);
 							}
 						}
 					}
@@ -123,7 +120,7 @@ namespace BytecodeApi.IO
 		{
 			//TODO: Bug: Does not support console color; setInStream causes to pause the application
 			bool consoleAttached = true;
-			if (alwaysCreateNewConsole || (Native.AttachConsole(0xffffffff) == 0 && Marshal.GetLastWin32Error() != 5))
+			if (alwaysCreateNewConsole || Native.AttachConsole(0xffffffff) == 0 && Marshal.GetLastWin32Error() != 5)
 			{
 				consoleAttached = Native.AllocConsole() != 0;
 			}
@@ -145,10 +142,10 @@ namespace BytecodeApi.IO
 				}
 			}
 
-			FileStream CreateFileStream(string name, uint access, FileShare fileShare, FileAccess dotNetFileAccess)
+			FileStream CreateFileStream(string name, uint access, FileShare fileShare, FileAccess fileAccess)
 			{
 				SafeFileHandle file = Native.CreateFile(name, access, fileShare, IntPtr.Zero, FileMode.Open, 0x80, IntPtr.Zero);
-				return file.IsInvalid ? null : new FileStream(file, dotNetFileAccess);
+				return file.IsInvalid ? null : new FileStream(file, fileAccess);
 			}
 		}
 		/// <summary>

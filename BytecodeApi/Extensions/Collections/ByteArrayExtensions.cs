@@ -16,7 +16,7 @@ namespace BytecodeApi.Extensions
 		/// <param name="otherArray">A <see cref="byte" />[] to compare to <paramref name="array" />.</param>
 		/// <returns>
 		/// <see langword="true" />, if both arrays contain the exact same set of data or if <paramref name="array" /> and <paramref name="otherArray" /> are both <see langword="null" />;
-		/// otherwise <see langword="false" />.
+		/// otherwise, <see langword="false" />.
 		/// </returns>
 		public static bool Compare(this byte[] array, byte[] otherArray)
 		{
@@ -83,6 +83,7 @@ namespace BytecodeApi.Extensions
 			Check.ArgumentNull(array, nameof(array));
 			Check.ArgumentNull(sequence, nameof(sequence));
 			Check.ArgumentEx.ArrayElementsRequired(sequence, nameof(sequence));
+			Check.ArgumentOutOfRangeEx.GreaterEqual0(startIndex, nameof(startIndex));
 			Check.ArgumentEx.OffsetAndLengthOutOfBounds(startIndex, 0, array.Length);
 
 			for (int i = startIndex; i < array.Length - sequence.Length + 1; i++)

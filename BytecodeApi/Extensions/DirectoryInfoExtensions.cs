@@ -127,7 +127,7 @@ namespace BytecodeApi.Extensions
 
 			bool CompareNames(string nameA, string nameB)
 			{
-				return nameA.Equals(nameB, options.HasFlag(CompareDirectoryOptions.IgnoreCase) ? SpecialStringComparisons.IgnoreCase : SpecialStringComparisons.Default);
+				return nameA.Equals(nameB, options.HasFlag(CompareDirectoryOptions.IgnoreCase) ? SpecialStringComparisons.IgnoreCase : SpecialStringComparisons.None);
 			}
 		}
 		/// <summary>

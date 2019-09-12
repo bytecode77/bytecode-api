@@ -26,19 +26,19 @@ namespace BytecodeApi.UI
 		/// Initializes a new instance of the <see cref="DelegateCommand" /> class with the specified execute delegate.
 		/// </summary>
 		/// <param name="execute">The <see cref="Action" /> to be called when the command is invoked.</param>
-		public DelegateCommand(Action execute) : this(execute, null)
+		public DelegateCommand(Action execute)
 		{
+			Check.ArgumentNull(execute, nameof(execute));
+
+			ExecuteDelegate = execute;
 		}
 		/// <summary>
 		/// Initializes a new instance of the <see cref="DelegateCommand" /> class with the specified execute and canExecute delegates.
 		/// </summary>
 		/// <param name="execute">The <see cref="Action" /> to be called when the command is invoked.</param>
 		/// <param name="canExecute">The <see cref="Func{TResult}" /> that determines whether the command can execute in its current state.</param>
-		public DelegateCommand(Action execute, Func<bool> canExecute)
+		public DelegateCommand(Action execute, Func<bool> canExecute) : this(execute)
 		{
-			Check.ArgumentNull(execute, nameof(execute));
-
-			ExecuteDelegate = execute;
 			CanExecuteDelegate = canExecute;
 		}
 
@@ -94,19 +94,19 @@ namespace BytecodeApi.UI
 		/// Initializes a new instance of the <see cref="DelegateCommand{TParameter}" /> class with the specified execute delegate.
 		/// </summary>
 		/// <param name="execute">The <see cref="Action{T}" /> to be called when the command is invoked. The first argument of <paramref name="execute" /> is the command parameter.</param>
-		public DelegateCommand(Action<TParameter> execute) : this(execute, (Predicate<TParameter>)null)
+		public DelegateCommand(Action<TParameter> execute)
 		{
+			Check.ArgumentNull(execute, nameof(execute));
+
+			ExecuteDelegate = execute;
 		}
 		/// <summary>
 		/// Initializes a new instance of the <see cref="DelegateCommand{TParameter}" /> class with the specified execute and canExecute delegates.
 		/// </summary>
 		/// <param name="execute">The <see cref="Action{T}" /> to be called when the command is invoked. The first argument of <paramref name="execute" /> is the command parameter.</param>
 		/// <param name="canExecute">The <see cref="Predicate{T}" /> that determines whether the command can execute in its current state. The first argument of <paramref name="canExecute" /> is the command parameter.</param>
-		public DelegateCommand(Action<TParameter> execute, Predicate<TParameter> canExecute)
+		public DelegateCommand(Action<TParameter> execute, Predicate<TParameter> canExecute) : this(execute)
 		{
-			Check.ArgumentNull(execute, nameof(execute));
-
-			ExecuteDelegate = execute;
 			CanExecuteDelegate = canExecute;
 		}
 		/// <summary>

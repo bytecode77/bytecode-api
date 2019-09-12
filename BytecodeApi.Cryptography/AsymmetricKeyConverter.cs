@@ -222,50 +222,39 @@ namespace BytecodeApi.Cryptography
 		{
 			Check.ArgumentNull(derKey, nameof(derKey));
 
-			try
-			{
-				return ImportPrivateKey();
-			}
-			catch
-			{
-				try
-				{
-					return ImportPublicKey();
-				}
-				catch
-				{
-					throw CreateFormatException();
-				}
-			}
+			if (ImportPrivateKey(out RSAParameters privateKey)) return privateKey;
+			else if (ImportPublicKey(out RSAParameters publicKey)) return publicKey;
+			else throw CreateFormatException();
 
-			RSAParameters ImportPublicKey()
+			bool ImportPublicKey(out RSAParameters key)
 			{
+				key = new RSAParameters();
+
 				using (BinaryReader reader = new BinaryReader(new MemoryStream(derKey)))
 				{
-					ReadDataSequence(reader);
+					if (!ReadDataSequence(reader)) return false;
 
 					if (!reader.ReadBytes(15).Compare(new byte[] { 0x30, 0x0d, 0x06, 0x09, 0x2a, 0x86, 0x48, 0x86, 0xf7, 0x0d, 0x01, 0x01, 0x01, 0x05, 0x00 }))
 					{
-						throw new Exception();
+						return false;
 					}
 
 					switch (reader.ReadUInt16())
 					{
 						case 0x8103: reader.ReadByte(); break;
 						case 0x8203: reader.ReadInt16(); break;
-						default: throw new Exception();
+						default: return false;
 					}
 
-					if (reader.ReadByte() != 0) throw new Exception();
-
-					ReadDataSequence(reader);
+					if (reader.ReadByte() != 0) return false;
+					if (!ReadDataSequence(reader)) return false;
 
 					int moduluSize;
 					switch (reader.ReadUInt16())
 					{
 						case 0x8102: moduluSize = reader.ReadByte(); break;
 						case 0x8202: moduluSize = reader.ReadByte() << 8 | reader.ReadByte(); break;
-						default: throw new Exception();
+						default: return false;
 					}
 
 					byte firstByte = reader.ReadByte();
@@ -278,24 +267,26 @@ namespace BytecodeApi.Cryptography
 					}
 
 					byte[] modulus = reader.ReadBytes(moduluSize);
-					if (reader.ReadByte() != 2) throw new Exception();
+					if (reader.ReadByte() != 2) return false;
 
-					return new RSAParameters
+					key = new RSAParameters
 					{
 						Modulus = modulus,
 						Exponent = reader.ReadBytes(reader.ReadByte())
 					};
+					return true;
 				}
 			}
-			RSAParameters ImportPrivateKey()
+			bool ImportPrivateKey(out RSAParameters key)
 			{
+				key = new RSAParameters();
+
 				using (BinaryReader reader = new BinaryReader(new MemoryStream(derKey)))
 				{
-					ReadDataSequence(reader);
+					if (!ReadDataSequence(reader)) return false;
+					if (reader.ReadUInt16() != 0x102 || reader.ReadByte() != 0) return false;
 
-					if (reader.ReadUInt16() != 0x102 || reader.ReadByte() != 0) throw new Exception();
-
-					return new RSAParameters
+					key = new RSAParameters
 					{
 						Modulus = ReadParameter(),
 						Exponent = ReadParameter(),
@@ -306,6 +297,7 @@ namespace BytecodeApi.Cryptography
 						DQ = ReadParameter(),
 						InverseQ = ReadParameter()
 					};
+					return true;
 
 					byte[] ReadParameter()
 					{
@@ -323,14 +315,16 @@ namespace BytecodeApi.Cryptography
 					}
 				}
 			}
-			void ReadDataSequence(BinaryReader reader)
+			bool ReadDataSequence(BinaryReader reader)
 			{
 				switch (reader.ReadUInt16())
 				{
 					case 0x8130: reader.ReadByte(); break;
 					case 0x8230: reader.ReadInt16(); break;
-					default: throw new Exception();
+					default: return false;
 				}
+
+				return true;
 			}
 		}
 		/// <summary>

@@ -1,5 +1,4 @@
-﻿using BytecodeApi;
-using BytecodeApi.Extensions;
+﻿using BytecodeApi.Extensions;
 using BytecodeApi.FileFormats.Coff;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;

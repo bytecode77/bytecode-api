@@ -424,6 +424,41 @@ namespace BytecodeApi.Extensions
 		}
 
 		/// <summary>
+		/// Performs an <see cref="Action{T}" /> on each element of a sequence and returns the elements after invoking <paramref name="action" />.
+		/// </summary>
+		/// <typeparam name="TSource">The type of the elements of <paramref name="source" />.</typeparam>
+		/// <param name="source">An <see cref="IEnumerable{T}" /> to process.</param>
+		/// <param name="action">The action to perform on each element of <paramref name="source" />.</param>
+		/// <returns>
+		/// An <see cref="IEnumerable{T}" /> that contains all elements from the input sequence.
+		/// </returns>
+		public static IEnumerable<TSource> Each<TSource>(this IEnumerable<TSource> source, Action<TSource> action)
+		{
+			Check.ArgumentNull(source, nameof(source));
+			Check.ArgumentNull(action, nameof(action));
+
+			foreach (TSource item in source)
+			{
+				action(item);
+				yield return item;
+			}
+		}
+		/// <summary>
+		/// Filters the elements of an <see cref="IEnumerable" /> based on a specified type. Objects must be of type <typeparamref name="TResult" />. Objects of classes that inherit <typeparamref name="TResult" /> are not returned.
+		/// </summary>
+		/// <typeparam name="TResult">The type to filter the elements of the sequence on.</typeparam>
+		/// <param name="source">The <see cref="IEnumerable" /> whose elements to filter.</param>
+		/// <returns>
+		/// An <see cref="IEnumerable{T}" /> that contains elements from the input sequence of type <typeparamref name="TResult" />. Objects of classes that inherit <typeparamref name="TResult" /> are not returned.
+		/// </returns>
+		public static IEnumerable<TResult> OfExactType<TResult>(this IEnumerable source)
+		{
+			foreach (object item in source)
+			{
+				if (CSharp.IsType<TResult>(item)) yield return (TResult)item;
+			}
+		}
+		/// <summary>
 		/// Bypasses a specified number of elements at the end of a sequence and then returns the preceding elements.
 		/// </summary>
 		/// <typeparam name="TSource">The type of the elements of <paramref name="source" />.</typeparam>
@@ -562,7 +597,7 @@ namespace BytecodeApi.Extensions
 		/// <param name="source">An <see cref="IEnumerable{T}" /> to return elements from.</param>
 		/// <param name="keySelector">A <see cref="Func{T, TResult}" /> to extract the key for each element.</param>
 		/// <returns>
-		/// An <see cref="IEnumerator{T}" /> with all distinct elements of <paramref name="source" />.
+		/// An <see cref="IEnumerable{T}" /> with all distinct elements of <paramref name="source" />.
 		/// </returns>
 		public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
 		{
@@ -577,7 +612,7 @@ namespace BytecodeApi.Extensions
 		/// <param name="keySelector">A <see cref="Func{T, TResult}" /> to extract the key for each element.</param>
 		/// <param name="comparer">An <see cref="IComparer{T}" /> to compare the elements.</param>
 		/// <returns>
-		/// An <see cref="IEnumerator{T}" /> with all distinct elements of <paramref name="source" />.
+		/// An <see cref="IEnumerable{T}" /> with all distinct elements of <paramref name="source" />.
 		/// </returns>
 		public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer)
 		{
@@ -585,50 +620,6 @@ namespace BytecodeApi.Extensions
 			Check.ArgumentNull(keySelector, nameof(keySelector));
 
 			return source.GroupBy(keySelector, comparer).Select(x => x.First());
-		}
-		/// <summary>
-		/// Concatenates a sequence and one element, where the single element is put after all elements of this sequence.
-		/// </summary>
-		/// <typeparam name="TSource">The type of the elements to concatenate.</typeparam>
-		/// <param name="first">The first sequence to concatenate.</param>
-		/// <param name="second">The element to concatenate to the first sequence.</param>
-		/// <returns>
-		/// An <see cref="IEnumerator{T}" /> that contains the concatenated elements of the source
-		/// </returns>
-		public static IEnumerable<TSource> Concat<TSource>(this IEnumerable<TSource> first, TSource second)
-		{
-			Check.ArgumentNull(first, nameof(first));
-
-			return first.Concat(SingletonCollection.List(second));
-		}
-		/// <summary>
-		/// Produces the set union of a sequence and one element.
-		/// </summary>
-		/// <typeparam name="TSource">The type of the elements of the input sequence and the second element.</typeparam>
-		/// <param name="first">An <see cref="IEnumerable{T}" /> whose distinct elements form the first set for the union.</param>
-		/// <param name="second">The second element, which forms the second set for the union.</param>
-		/// <returns>
-		/// An <see cref="IEnumerable{T}" /> that contains the elements from the input sequence and the second element, excluding duplicates.
-		/// </returns>
-		public static IEnumerable<TSource> Union<TSource>(this IEnumerable<TSource> first, TSource second)
-		{
-			return first.Union(second, null);
-		}
-		/// <summary>
-		/// Produces the set union of a sequence and one element by using a specified <see cref="IEqualityComparer{T}" />.
-		/// </summary>
-		/// <typeparam name="TSource">The type of the elements of the input sequence and the second element.</typeparam>
-		/// <param name="first">An <see cref="IEnumerable{T}" /> whose distinct elements form the first set for the union.</param>
-		/// <param name="second">The second element, which forms the second set for the union.</param>
-		/// <param name="comparer">An <see cref="IComparer{T}" /> to compare the elements.</param>
-		/// <returns>
-		/// An <see cref="IEnumerable{T}" /> that contains the elements from the input sequence and the second element, excluding duplicates.
-		/// </returns>
-		public static IEnumerable<TSource> Union<TSource>(this IEnumerable<TSource> first, TSource second, IEqualityComparer<TSource> comparer)
-		{
-			Check.ArgumentNull(first, nameof(first));
-
-			return first.Union(SingletonCollection.List(second), comparer);
 		}
 		/// <summary>
 		/// Produces the set difference of a sequence and one element.
@@ -753,6 +744,35 @@ namespace BytecodeApi.Extensions
 			{
 				return source.OrderBy(itm => MathEx._Random.Next());
 			}
+		}
+		/// <summary>
+		/// Exchanges keys with values in this <see cref="IDictionary{TKey, TValue}" /> and returns a new <see cref="Dictionary{TKey, TValue}" />, where keys and values are swapped.
+		/// </summary>
+		/// <typeparam name="TKey">The type of the key of this <see cref="IDictionary{TKey, TValue}" />.</typeparam>
+		/// <typeparam name="TValue">The type of the value of this <see cref="IDictionary{TKey, TValue}" />.</typeparam>
+		/// <param name="dictionary">The <see cref="IDictionary{TKey, TValue}" /> to process.</param>
+		/// <returns>
+		/// A new <see cref="Dictionary{TKey, TValue}" />, where keys and values are swapped.
+		/// </returns>
+		public static Dictionary<TValue, TKey> Swap<TKey, TValue>(this IDictionary<TKey, TValue> dictionary)
+		{
+			return Swap(dictionary, null);
+		}
+		/// <summary>
+		/// Exchanges keys with values in this <see cref="IDictionary{TKey, TValue}" /> using a specified <see cref="IEqualityComparer{T}" /> and returns a new <see cref="Dictionary{TKey, TValue}" />, where keys and values are swapped.
+		/// </summary>
+		/// <typeparam name="TKey">The type of the key of this <see cref="IDictionary{TKey, TValue}" />.</typeparam>
+		/// <typeparam name="TValue">The type of the value of this <see cref="IDictionary{TKey, TValue}" />.</typeparam>
+		/// <param name="dictionary">The <see cref="IDictionary{TKey, TValue}" /> to process.</param>
+		/// <param name="comparer">An <see cref="IComparer{T}" /> to compare the elements.</param>
+		/// <returns>
+		/// A new <see cref="Dictionary{TKey, TValue}" />, where keys and values are swapped.
+		/// </returns>
+		public static Dictionary<TValue, TKey> Swap<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, IEqualityComparer<TKey> comparer)
+		{
+			Check.ArgumentNull(dictionary, nameof(dictionary));
+
+			return dictionary.ToDictionary(itm => itm.Value, itm => itm.Key);
 		}
 
 		/// <summary>

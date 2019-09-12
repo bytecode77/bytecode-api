@@ -85,7 +85,7 @@ namespace BytecodeApi.UI
 		/// Raises the <see cref="Activated" /> event.
 		/// </summary>
 		/// <param name="e">The event data for the <see cref="Activated" /> event.</param>
-		protected void OnActivated(EventArgs e)
+		protected virtual void OnActivated(EventArgs e)
 		{
 			Activated?.Invoke(this, e);
 		}

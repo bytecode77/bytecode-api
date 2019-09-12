@@ -162,7 +162,7 @@ namespace BytecodeApi.IO.Http
 		/// Raises the <see cref="WebRequestCreated" /> event.
 		/// </summary>
 		/// <param name="request">The internal <see cref="HttpWebRequest" /> object that is temporarily created with each HTTP request.</param>
-		protected void OnWebRequestCreated(HttpWebRequest request)
+		protected virtual void OnWebRequestCreated(HttpWebRequest request)
 		{
 			Check.ArgumentNull(request, nameof(request));
 

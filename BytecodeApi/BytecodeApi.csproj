@@ -65,6 +65,7 @@
     <Compile Include="Extensions\Collections\BitArrayExtensions.cs" />
     <Compile Include="Extensions\IconExtensions.cs" />
     <Compile Include="Extensions\BitmapEncoderExtensions.cs" />
+    <Compile Include="Extensions\DelegateExtensions.cs" />
     <Compile Include="IO\Cli\CliValidationSource.cs" />
     <Compile Include="IO\Cli\CliException.cs" />
     <Compile Include="IO\Cli\ParsedOptionSet.cs" />
@@ -83,7 +84,11 @@
     <Compile Include="IO\Http\HttpFile.cs" />
     <Compile Include="IO\Http\HttpParameter.cs" />
     <Compile Include="IO\Http\HttpClient.cs" />
+    <Compile Include="IO\IconHelper.cs" />
+    <Compile Include="IO\Interop\GlobalAtom.cs" />
     <Compile Include="IO\Interop\CommandPrompt.cs" />
+    <Compile Include="IO\Interop\Atom.cs" />
+    <Compile Include="IO\Interop\IAtom.cs" />
     <Compile Include="IO\Interop\CommandPromptEventArgs.cs" />
     <Compile Include="IO\Interop\DynamicLibraryFunction.cs" />
     <Compile Include="IO\Interop\DynamicLibrary.cs" />
@@ -140,7 +145,7 @@
     <Compile Include="IO\SystemInfo\TcpViewEntry.cs" />
     <Compile Include="Threading\Deferrer.cs" />
     <Compile Include="Threading\ThreadFactory.cs" />
-    <Compile Include="ConvertObjectFlags.cs" />
+    <Compile Include="ConvertObjectOptions.cs" />
     <Compile Include="Validate.cs" />
     <Compile Include="Comparers\AlwaysEqualComparer.cs" />
     <Compile Include="Comparers\IEnumerableCountComparer.cs" />

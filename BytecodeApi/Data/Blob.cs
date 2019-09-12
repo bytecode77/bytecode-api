@@ -79,11 +79,11 @@ namespace BytecodeApi.Data
 		/// <param name="other">A <see cref="Blob" /> to compare to this instance to.</param>
 		/// <returns>
 		/// <see langword="true" />, if both objects contain the exact same set of data;
-		/// otherwise <see langword="false" />.
+		/// otherwise, <see langword="false" />.
 		/// </returns>
 		public bool Compare(Blob other)
 		{
-			return other != null && GetType() == other.GetType() && (this == other || Name == other.Name && Content.Compare(other.Content) && Equals(Tag, other.Tag));
+			return other != null && CSharp.TypeEquals(this, other) && (this == other || Name == other.Name && Content.Compare(other.Content) && Equals(Tag, other.Tag));
 		}
 		/// <summary>
 		/// Writes the contents of <see cref="Content" /> to a binary file.

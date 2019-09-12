@@ -1,7 +1,5 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Windows.Media.Imaging;
 
 namespace BytecodeApi.Extensions
@@ -11,41 +9,6 @@ namespace BytecodeApi.Extensions
 	/// </summary>
 	public static class IconExtensions
 	{
-		/// <summary>
-		/// Splits this <see cref="Icon" /> and returns an array with a new <see cref="Icon" /> for each frame.
-		/// </summary>
-		/// <param name="icon">The original <see cref="Icon" /> to split.</param>
-		/// <returns>
-		/// An array with a new <see cref="Icon" /> for each frame.
-		/// </returns>
-		public static Icon[] Split(this Icon icon)
-		{
-			Check.ArgumentNull(icon, nameof(icon));
-
-			byte[] iconData = icon.ToArray();
-			Icon[] icons = new Icon[BitConverter.ToUInt16(iconData, 4)];
-
-			for (int i = 0; i < icons.Length; i++)
-			{
-				int offset = BitConverter.ToInt32(iconData, i * 16 + 18);
-				int length = BitConverter.ToInt32(iconData, i * 16 + 14);
-
-				using (BinaryWriter writer = new BinaryWriter(new MemoryStream(length + 24)))
-				{
-					writer.Write(iconData, 0, 4);
-					writer.Write((short)1);
-					writer.Write(iconData, i * 16 + 6, 12);
-					writer.Write(22);
-					writer.Write(iconData, offset, length);
-
-					writer.BaseStream.Seek(0, SeekOrigin.Begin);
-					icons[i] = new Icon(writer.BaseStream);
-				}
-			}
-
-			return icons.OrderBy(i => i.Width).ToArray();
-		}
-
 		/// <summary>
 		/// Saves this <see cref="Icon" /> to the specified file.
 		/// </summary>

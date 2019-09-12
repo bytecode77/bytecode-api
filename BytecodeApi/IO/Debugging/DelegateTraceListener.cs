@@ -120,7 +120,7 @@ namespace BytecodeApi.IO.Debugging
 		/// Raises the <see cref="EventReceived" /> event.
 		/// </summary>
 		/// <param name="traceEvent">The event data for the <see cref="EventReceived" /> event.</param>
-		protected void OnEventReceived(TraceEventInfo traceEvent)
+		protected virtual void OnEventReceived(TraceEventInfo traceEvent)
 		{
 			EventReceived?.Invoke(this, traceEvent);
 		}
@@ -128,7 +128,7 @@ namespace BytecodeApi.IO.Debugging
 		/// Raises the <see cref="DataReceived" /> event.
 		/// </summary>
 		/// <param name="traceData">The event data for the <see cref="DataReceived" /> event.</param>
-		protected void OnDataReceived(TraceDataInfo traceData)
+		protected virtual void OnDataReceived(TraceDataInfo traceData)
 		{
 			DataReceived?.Invoke(this, traceData);
 		}
@@ -136,7 +136,7 @@ namespace BytecodeApi.IO.Debugging
 		/// Raises the <see cref="TransferReceived" /> event.
 		/// </summary>
 		/// <param name="traceTransfer">The event data for the <see cref="TransferReceived" /> event.</param>
-		protected void OnTransferReceived(TraceTransferInfo traceTransfer)
+		protected virtual void OnTransferReceived(TraceTransferInfo traceTransfer)
 		{
 			TransferReceived?.Invoke(this, traceTransfer);
 		}

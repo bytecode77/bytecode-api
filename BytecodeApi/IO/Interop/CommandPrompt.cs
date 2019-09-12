@@ -99,7 +99,7 @@ namespace BytecodeApi.IO.Interop
 		/// Raises the <see cref="MessageReceived" /> event.
 		/// </summary>
 		/// <param name="e">The event data for the <see cref="MessageReceived" /> event.</param>
-		protected void OnMessageReceived(CommandPromptEventArgs e)
+		protected virtual void OnMessageReceived(CommandPromptEventArgs e)
 		{
 			MessageReceived?.Invoke(this, e);
 		}

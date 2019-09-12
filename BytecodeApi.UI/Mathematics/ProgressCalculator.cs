@@ -98,7 +98,7 @@ namespace BytecodeApi.UI.Mathematics
 		/// Raises the <see cref="ValueChanged" /> event.
 		/// </summary>
 		/// <param name="e">The event data for the <see cref="ValueChanged" /> event.</param>
-		protected void OnValueChanged(ProgressCalculatorEventArgs e)
+		protected virtual void OnValueChanged(ProgressCalculatorEventArgs e)
 		{
 			ValueChanged?.Invoke(this, e);
 		}
@@ -106,7 +106,7 @@ namespace BytecodeApi.UI.Mathematics
 		/// Raises the <see cref="Measured" /> event.
 		/// </summary>
 		/// <param name="e">The event data for the <see cref="Measured" /> event.</param>
-		protected void OnMeasured(ProgressCalculatorEventArgs e)
+		protected virtual void OnMeasured(ProgressCalculatorEventArgs e)
 		{
 			Measured?.Invoke(this, e);
 		}

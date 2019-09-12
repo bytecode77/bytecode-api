@@ -110,6 +110,22 @@ namespace BytecodeApi
 		public static extern bool FindNextStreamW(SafeFindHandle findFile, [In, Out, MarshalAs(UnmanagedType.LPStruct)] Win32FindStreamData findStreamData);
 		[DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
 		public static extern bool GlobalMemoryStatusEx([In, Out] MemoryStatusEx buffer);
+		[DllImport("kernel32.dll", CharSet = CharSet.Auto)]
+		public static extern uint GlobalGetAtomName(ushort atom, StringBuilder buffer, int size);
+		[DllImport("kernel32.dll", CharSet = CharSet.Auto)]
+		public static extern ushort GlobalFindAtom(string name);
+		[DllImport("kernel32.dll", CharSet = CharSet.Auto)]
+		public static extern ushort GlobalAddAtom(string name);
+		[DllImport("kernel32.dll", ExactSpelling = true)]
+		public static extern ushort GlobalDeleteAtom(ushort atom);
+		[DllImport("kernel32.dll", CharSet = CharSet.Auto)]
+		public static extern uint GetAtomName(ushort atom, StringBuilder buffer, int size);
+		[DllImport("kernel32.dll", CharSet = CharSet.Auto)]
+		public static extern ushort FindAtom(string name);
+		[DllImport("kernel32.dll", CharSet = CharSet.Auto)]
+		public static extern ushort AddAtom(string name);
+		[DllImport("kernel32.dll", ExactSpelling = true)]
+		public static extern ushort DeleteAtom(ushort atom);
 		[DllImport("user32.dll")]
 		public static extern IntPtr GetDC(IntPtr handle);
 		[DllImport("user32.dll")]

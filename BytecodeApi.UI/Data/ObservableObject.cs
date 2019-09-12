@@ -143,7 +143,7 @@ namespace BytecodeApi.UI.Data
 		/// Raises the <see cref="PropertyChanging" /> event.
 		/// </summary>
 		/// <param name="e">The event data for the <see cref="PropertyChangingEventArgs" /> event.</param>
-		protected void OnPropertyChanging(PropertyChangingEventArgs e)
+		protected virtual void OnPropertyChanging(PropertyChangingEventArgs e)
 		{
 			PropertyChanging?.Invoke(this, e);
 		}
@@ -151,7 +151,7 @@ namespace BytecodeApi.UI.Data
 		/// Raises the <see cref="PropertyChanged" /> event.
 		/// </summary>
 		/// <param name="e">The event data for the <see cref="PropertyChangedEventArgs" /> event.</param>
-		protected void OnPropertyChanged(PropertyChangedEventArgs e)
+		protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
 		{
 			PropertyChanged?.Invoke(this, e);
 		}

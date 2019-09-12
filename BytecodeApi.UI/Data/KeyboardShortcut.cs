@@ -8,7 +8,7 @@ namespace BytecodeApi.UI.Data
 	/// <summary>
 	/// Represents a keyboard shortcut composed of a key and a set of modifiers (Ctrl, Shift, Alt).
 	/// </summary>
-	public class KeyboardShortcut : ObservableObject, IEquatable<KeyboardShortcut>
+	public sealed class KeyboardShortcut : ObservableObject, IEquatable<KeyboardShortcut>
 	{
 		/// <summary>
 		/// Gets or sets a value indicating whether this <see cref="KeyboardShortcut" /> uses the Ctrl modifier.
@@ -131,7 +131,7 @@ namespace BytecodeApi.UI.Data
 		/// </returns>
 		public bool Equals(KeyboardShortcut other)
 		{
-			return other != null && GetType() == other.GetType() && IsCtrl == other.IsCtrl && IsShift == other.IsShift && IsAlt == other.IsAlt && Key == other.Key;
+			return other != null && CSharp.TypeEquals(this, other) && IsCtrl == other.IsCtrl && IsShift == other.IsShift && IsAlt == other.IsAlt && Key == other.Key;
 		}
 		/// <summary>
 		/// Returns a hash code for this <see cref="KeyboardShortcut" />.

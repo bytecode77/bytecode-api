@@ -43,7 +43,7 @@ namespace BytecodeApi.IO.Debugging
 		/// Raises the <see cref="EventReceived" /> event.
 		/// </summary>
 		/// <param name="message">The message for the <see cref="EventReceived" /> event.</param>
-		protected void OnEventReceived(string message)
+		protected virtual void OnEventReceived(string message)
 		{
 			EventReceived?.Invoke(this, message);
 		}
