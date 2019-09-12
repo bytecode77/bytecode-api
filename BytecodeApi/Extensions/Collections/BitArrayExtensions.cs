@@ -1,5 +1,6 @@
-using BytecodeApi.Mathematics;
+﻿using BytecodeApi.Mathematics;
 using System.Collections;
+using System.Linq;
 
 namespace BytecodeApi.Extensions
 {
@@ -264,6 +265,56 @@ namespace BytecodeApi.Extensions
 					}
 				}
 			}
+		}
+
+		/// <summary>
+		/// Copies a specified number of elements from this <see cref="BitArray" /> to <paramref name="dest" />, beginning at the specified source offset, written to the specified destination offset.
+		/// </summary>
+		/// <param name="array">The <see cref="BitArray" /> to be written to <paramref name="dest" />.</param>
+		/// <param name="sourceOffset">The offset, at which to start reading from this <see cref="BitArray" />.</param>
+		/// <param name="dest">The <see cref="BitArray" /> that is written to.</param>
+		/// <param name="destOffset">The offset, at which to start writing to <paramref name="dest" />.</param>
+		/// <param name="count">The number of <see cref="bool" /> values to copy.</param>
+		public static void CopyTo(this BitArray array, int sourceOffset, BitArray dest, int destOffset, int count)
+		{
+			Check.ArgumentNull(array, nameof(array));
+			Check.ArgumentOutOfRangeEx.GreaterEqual0(sourceOffset, nameof(sourceOffset));
+			Check.ArgumentNull(dest, nameof(dest));
+			Check.ArgumentOutOfRangeEx.GreaterEqual0(destOffset, nameof(destOffset));
+			Check.ArgumentOutOfRangeEx.GreaterEqual0(count, nameof(count));
+			Check.ArgumentEx.OffsetAndLengthOutOfBounds(sourceOffset, count, array.Length);
+			Check.ArgumentEx.OffsetAndLengthOutOfBounds(destOffset, count, dest.Length);
+
+			for (int i = 0; i < count; i++)
+			{
+				dest[i + destOffset] = array[i + sourceOffset];
+			}
+		}
+		/// <summary>
+		/// Merges all <see cref="BitArray" /> objects and returns a new <see cref="BitArray" />, where <paramref name="otherArrays" /> are concatenated after this array.
+		/// </summary>
+		/// <param name="array">The first <see cref="BitArray" /> object.</param>
+		/// <param name="otherArrays">An array of <see cref="BitArray" /> objects to append.</param>
+		/// <returns>
+		/// A new <see cref="BitArray" /> starting with <paramref name="array" />, followed by all elements from <paramref name="otherArrays" />.
+		/// </returns>
+		public static BitArray Concat(this BitArray array, params BitArray[] otherArrays)
+		{
+			Check.ArgumentNull(array, nameof(array));
+			Check.ArgumentNull(otherArrays, nameof(otherArrays));
+			Check.ArgumentEx.ArrayValuesNotNull(otherArrays, nameof(otherArrays));
+
+			BitArray result = new BitArray(array.Length + otherArrays.Sum(other => other.Length));
+			array.CopyTo(0, result, 0, array.Length);
+
+			int offset = array.Length;
+			foreach (BitArray other in otherArrays)
+			{
+				other.CopyTo(0, result, offset, other.Length);
+				offset += other.Length;
+			}
+
+			return result;
 		}
 	}
 }
