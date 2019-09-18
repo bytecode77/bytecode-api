@@ -297,7 +297,6 @@ namespace BytecodeApi
 		public static int From7BitEncodedInt(byte[] value)
 		{
 			Check.ArgumentNull(value, nameof(value));
-			Check.Argument(value.Length <= 4, nameof(value), "Array must be a 32-bit sized byte array (4 bytes).");
 
 			int returnValue = 0;
 			int bitIndex = 0;
