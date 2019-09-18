@@ -32,6 +32,7 @@ namespace BytecodeApi.FileFormats.Ini
 		{
 			GlobalProperties = new IniSection(null);
 			Sections = new IniSectionCollection();
+			ErrorLines = new IniErrorLine[0].ToReadOnlyCollection();
 		}
 		/// <summary>
 		/// Creates an <see cref="IniFile" /> object from the specified file.
