@@ -21,9 +21,9 @@ namespace BytecodeApi
 			// 00-00-00-00-00-00
 			new Regex("^([0-9a-f]{2}-){5}[0-9a-f]{2}$", RegexOptions.IgnoreCase),
 			// 0000.0000.0000
-			new Regex("^([0-9a-f]{4}.){2}[0-9a-f]{4}$", RegexOptions.IgnoreCase),
+			new Regex("^([0-9a-f]{4}\\.){2}[0-9a-f]{4}$", RegexOptions.IgnoreCase),
 			// 000.000.000.000
-			new Regex("^([0-9a-f]{3}.){3}[0-9a-f]{3}$", RegexOptions.IgnoreCase),
+			new Regex("^([0-9a-f]{3}\\.){3}[0-9a-f]{3}$", RegexOptions.IgnoreCase),
 
 			// 0000000000000000
 			new Regex("^[0-9a-f]{16}$", RegexOptions.IgnoreCase),
@@ -32,7 +32,7 @@ namespace BytecodeApi
 			// 00-00-00-00-00-00-00-00
 			new Regex("^([0-9a-f]{2}-){7}[0-9a-f]{2}$", RegexOptions.IgnoreCase),
 			// 0000.0000.0000.0000
-			new Regex("^([0-9a-f]{4}.){3}[0-9a-f]{4}$", RegexOptions.IgnoreCase)
+			new Regex("^([0-9a-f]{4}\\.){3}[0-9a-f]{4}$", RegexOptions.IgnoreCase)
 		};
 
 		/// <summary>
@@ -84,18 +84,6 @@ namespace BytecodeApi
 			return str?.All(CharExtensions.IsHexadecimal) == true;
 		}
 		/// <summary>
-		/// Validates a <see cref="string" /> that is a path.
-		/// </summary>
-		/// <param name="str">The <see cref="string" /> to be validated.</param>
-		/// <returns>
-		/// <see langword="true" />, if validation of <paramref name="str" /> succeeded;
-		/// otherwise, <see langword="false" />.
-		/// </returns>
-		public static bool Path(string str)
-		{
-			return str != null && CSharp.Try(() => new FileIOPermission(FileIOPermissionAccess.Read, SingletonCollection.Array(str)).Demand());
-		}
-		/// <summary>
 		/// Validates a <see cref="string" /> that is a base64 string, only containing the characters a-zA-Z0-9+/= and has the correct amount of padding characters.
 		/// </summary>
 		/// <param name="str">The <see cref="string" /> to be validated.</param>
@@ -136,6 +124,18 @@ namespace BytecodeApi
 					contentLength == 2 && paddingLength == 2 ||
 					contentLength == 3 && (paddingLength == 1 || paddingLength == 2);
 			}
+		}
+		/// <summary>
+		/// Validates a <see cref="string" /> that is a path.
+		/// </summary>
+		/// <param name="str">The <see cref="string" /> to be validated.</param>
+		/// <returns>
+		/// <see langword="true" />, if validation of <paramref name="str" /> succeeded;
+		/// otherwise, <see langword="false" />.
+		/// </returns>
+		public static bool Path(string str)
+		{
+			return str != null && CSharp.Try(() => new FileIOPermission(FileIOPermissionAccess.Read, SingletonCollection.Array(str)).Demand());
 		}
 		/// <summary>
 		/// Validates a <see cref="string" /> that is a filename.
