@@ -379,17 +379,17 @@ namespace BytecodeApi.Mathematics
 		/// </returns>
 		public double GetNumberForUnit(ByteSizeUnit unit)
 		{
-			switch (unit)
+			return unit switch
 			{
-				case ByteSizeUnit.Byte: return Bytes;
-				case ByteSizeUnit.KiloByte: return KiloBytes;
-				case ByteSizeUnit.MegaByte: return MegaBytes;
-				case ByteSizeUnit.GigaByte: return GigaBytes;
-				case ByteSizeUnit.TeraByte: return TeraBytes;
-				case ByteSizeUnit.PetaByte: return PetaBytes;
-				case ByteSizeUnit.ExaByte: return ExaBytes;
-				default: throw Throw.InvalidEnumArgument(nameof(unit), unit);
-			}
+				ByteSizeUnit.Byte => Bytes,
+				ByteSizeUnit.KiloByte => KiloBytes,
+				ByteSizeUnit.MegaByte => MegaBytes,
+				ByteSizeUnit.GigaByte => GigaBytes,
+				ByteSizeUnit.TeraByte => TeraBytes,
+				ByteSizeUnit.PetaByte => PetaBytes,
+				ByteSizeUnit.ExaByte => ExaBytes,
+				_ => throw Throw.InvalidEnumArgument(nameof(unit), unit)
+			};
 		}
 		/// <summary>
 		/// Returns a <see cref="string" /> that represents this instance.

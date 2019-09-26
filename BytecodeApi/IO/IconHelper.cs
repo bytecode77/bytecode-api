@@ -75,14 +75,12 @@ namespace BytecodeApi.IO
 					{
 						frameBytes[i] = images[i].ToArray(ImageFormat.Png);
 
-						int bitsPerPixel;
-
-						switch (frameBytes[i][25])
+						int bitsPerPixel = frameBytes[i][25] switch
 						{
-							case 2: bitsPerPixel = 3 * frameBytes[i][24]; break;
-							case 6: bitsPerPixel = 4 * frameBytes[i][24]; break;
-							default: bitsPerPixel = frameBytes[i][24]; break;
-						}
+							2 => bitsPerPixel = 3 * frameBytes[i][24],
+							6 => bitsPerPixel = 4 * frameBytes[i][24],
+							_ => bitsPerPixel = frameBytes[i][24]
+						};
 
 						iconWriter.Write((byte)images[i].Width);
 						iconWriter.Write((byte)images[i].Height);

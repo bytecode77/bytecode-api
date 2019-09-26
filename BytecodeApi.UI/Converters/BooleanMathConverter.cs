@@ -29,13 +29,13 @@
 		/// </returns>
 		public override bool Convert(bool? value, bool? parameter)
 		{
-			switch (Method)
+			return Method switch
 			{
-				case BooleanMathConverterMethod.And: return (value ?? false) && (parameter ?? false);
-				case BooleanMathConverterMethod.Or: return (value ?? false) || (parameter ?? false);
-				case BooleanMathConverterMethod.Xor: return (value ?? false) ^ (parameter ?? false);
-				default: throw Throw.InvalidEnumArgument(nameof(Method), Method);
-			}
+				BooleanMathConverterMethod.And => (value ?? false) && (parameter ?? false),
+				BooleanMathConverterMethod.Or => (value ?? false) || (parameter ?? false),
+				BooleanMathConverterMethod.Xor => (value ?? false) ^ (parameter ?? false),
+				_ => throw Throw.InvalidEnumArgument(nameof(Method), Method)
+			};
 		}
 	}
 }

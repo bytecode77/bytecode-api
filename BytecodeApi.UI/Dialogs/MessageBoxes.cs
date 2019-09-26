@@ -108,12 +108,12 @@ namespace BytecodeApi.UI.Dialogs
 		/// </returns>
 		public static bool? ConfirmationWithCancel(string message, bool isWarning)
 		{
-			switch (ShowMessageBox(message, CaptionForConfirmation, MessageBoxButton.YesNoCancel, isWarning ? MessageBoxImage.Warning : MessageBoxImage.Question))
+			return ShowMessageBox(message, CaptionForConfirmation, MessageBoxButton.YesNoCancel, isWarning ? MessageBoxImage.Warning : MessageBoxImage.Question) switch
 			{
-				case MessageBoxResult.Yes: return true;
-				case MessageBoxResult.No: return false;
-				default: return null;
-			}
+				MessageBoxResult.Yes => true,
+				MessageBoxResult.No => false,
+				_ => (bool?)null
+			};
 		}
 		/// <summary>
 		/// Shows a <see cref="MessageBox" /> dialog with the specified message, using <see cref="CaptionForWarning" /> as title and an "OK" button. The title is a static <see cref="string" /> value, set to "Warning" by default.

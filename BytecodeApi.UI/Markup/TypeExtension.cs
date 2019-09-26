@@ -41,13 +41,13 @@ namespace BytecodeApi.UI.Markup
 		{
 			Check.ArgumentNull(Type, nameof(Type));
 
-			switch (Method)
+			return Method switch
 			{
-				case TypeExtensionMethod.EnumValues: return EnumEx.GetValues(Type);
-				case TypeExtensionMethod.EnumDescriptions: return EnumEx.GetValues(Type).Select(value => value.GetDescription()).ToArray();
-				case TypeExtensionMethod.EnumDescriptionLookup: return EnumEx.GetDescriptionLookup(Type);
-				default: throw Throw.InvalidEnumArgument(nameof(Method), Method);
-			}
+				TypeExtensionMethod.EnumValues => EnumEx.GetValues(Type),
+				TypeExtensionMethod.EnumDescriptions => EnumEx.GetValues(Type).Select(value => value.GetDescription()).ToArray(),
+				TypeExtensionMethod.EnumDescriptionLookup => EnumEx.GetDescriptionLookup(Type),
+				_ => throw Throw.InvalidEnumArgument(nameof(Method), Method)
+			};
 		}
 	}
 }

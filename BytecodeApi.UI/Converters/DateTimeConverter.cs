@@ -38,21 +38,21 @@ namespace BytecodeApi.UI.Converters
 			}
 			else
 			{
-				switch (Method)
+				return Method switch
 				{
-					case DateTimeConverterMethod.ShortDate: return value.Value.ToShortDateString();
-					case DateTimeConverterMethod.ShortTime: return value.Value.ToShortTimeString();
-					case DateTimeConverterMethod.LongDate: return value.Value.ToLongDateString();
-					case DateTimeConverterMethod.LongTime: return value.Value.ToLongTimeString();
-					case DateTimeConverterMethod.Year: return value.Value.Year.ToString();
-					case DateTimeConverterMethod.Month: return value.Value.Month.ToString();
-					case DateTimeConverterMethod.Day: return value.Value.Day.ToString();
-					case DateTimeConverterMethod.Hour: return value.Value.Hour.ToString();
-					case DateTimeConverterMethod.Minute: return value.Value.Minute.ToString();
-					case DateTimeConverterMethod.Second: return value.Value.Second.ToString();
-					case DateTimeConverterMethod.Format: return value.Value.ToStringInvariant(parameter);
-					default: throw Throw.InvalidEnumArgument(nameof(Method), Method);
-				}
+					DateTimeConverterMethod.ShortDate => value.Value.ToShortDateString(),
+					DateTimeConverterMethod.ShortTime => value.Value.ToShortTimeString(),
+					DateTimeConverterMethod.LongDate => value.Value.ToLongDateString(),
+					DateTimeConverterMethod.LongTime => value.Value.ToLongTimeString(),
+					DateTimeConverterMethod.Year => value.Value.Year.ToString(),
+					DateTimeConverterMethod.Month => value.Value.Month.ToString(),
+					DateTimeConverterMethod.Day => value.Value.Day.ToString(),
+					DateTimeConverterMethod.Hour => value.Value.Hour.ToString(),
+					DateTimeConverterMethod.Minute => value.Value.Minute.ToString(),
+					DateTimeConverterMethod.Second => value.Value.Second.ToString(),
+					DateTimeConverterMethod.Format => value.Value.ToStringInvariant(parameter),
+					_ => throw Throw.InvalidEnumArgument(nameof(Method), Method)
+				};
 			}
 		}
 	}
