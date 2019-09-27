@@ -255,77 +255,75 @@ namespace Build.GeoIP
 		}
 		private static void WriteCountries()
 		{
-			using (MemoryStream memoryStream = new MemoryStream())
+			using MemoryStream memoryStream = new MemoryStream();
+
+			using (BinaryWriter writer = new BinaryWriter(memoryStream, Encoding.UTF8))
 			{
-				using (BinaryWriter writer = new BinaryWriter(memoryStream, Encoding.UTF8))
+				writer.Write(DateTime.Now.Ticks);
+				writer.Write((byte)Countries.Length);
+				writer.Write(IPRanges.Length);
+				writer.Write(IPRanges6.Length);
+
+				foreach (Country country in Countries)
 				{
-					writer.Write(DateTime.Now.Ticks);
-					writer.Write((byte)Countries.Length);
-					writer.Write(IPRanges.Length);
-					writer.Write(IPRanges6.Length);
-
-					foreach (Country country in Countries)
-					{
-						writer.Write(country.Name);
-						writer.Write((byte)country.IsoCode[0]);
-						writer.Write((byte)country.IsoCode[1]);
-						writer.Write(country.Continent);
-						writer.Write((byte)country.ContinentIsoCode[0]);
-						writer.Write((byte)country.ContinentIsoCode[1]);
-						writer.Write(country.EuropeanUnion);
-					}
-					foreach (IPRange range in IPRanges)
-					{
-						writer.Write(range.CountryIndex);
-						writer.Write(range.From);
-						writer.Write(range.To);
-					}
-					foreach (IPRange6 range in IPRanges6)
-					{
-						writer.Write(range.CountryIndex);
-						writer.Write(range.From);
-						writer.Write(range.To);
-					}
+					writer.Write(country.Name);
+					writer.Write((byte)country.IsoCode[0]);
+					writer.Write((byte)country.IsoCode[1]);
+					writer.Write(country.Continent);
+					writer.Write((byte)country.ContinentIsoCode[0]);
+					writer.Write((byte)country.ContinentIsoCode[1]);
+					writer.Write(country.EuropeanUnion);
 				}
-
-				File.WriteAllBytes(@"..\..\..\BytecodeApi.GeoIP\Resources\GeoIP.db", Compression.Compress(memoryStream.ToArray()));
+				foreach (IPRange range in IPRanges)
+				{
+					writer.Write(range.CountryIndex);
+					writer.Write(range.From);
+					writer.Write(range.To);
+				}
+				foreach (IPRange6 range in IPRanges6)
+				{
+					writer.Write(range.CountryIndex);
+					writer.Write(range.From);
+					writer.Write(range.To);
+				}
 			}
+
+			File.WriteAllBytes(@"..\..\..\BytecodeApi.GeoIP\Resources\GeoIP.db", Compression.Compress(memoryStream.ToArray()));
 		}
 		private static void WriteAsn()
 		{
 			int[] asnIndices = Create.Array(Asns.Max(asn => asn.Number) + 1, -1);
 			for (ushort i = 0; i < Asns.Count; i++) asnIndices[Asns[i].Number] = i;
 
-			using (MemoryStream memoryStream = new MemoryStream())
+			using MemoryStream memoryStream = new MemoryStream();
+
+			using (BinaryWriter writer = new BinaryWriter(memoryStream, Encoding.UTF8))
 			{
-				using (BinaryWriter writer = new BinaryWriter(memoryStream, Encoding.UTF8))
+				writer.Write(DateTime.Now.Ticks);
+				writer.Write((ushort)Asns.Count);
+				writer.Write(AsnRanges.Length);
+				writer.Write(AsnRanges6.Length);
+
+				foreach (Asn asn in Asns)
 				{
-					writer.Write(DateTime.Now.Ticks);
-					writer.Write((ushort)Asns.Count);
-					writer.Write(AsnRanges.Length);
-					writer.Write(AsnRanges6.Length);
-
-					foreach (Asn asn in Asns)
-					{
-						writer.Write(asn.Number);
-						writer.Write(asn.Organization);
-					}
-					foreach (AsnRange range in AsnRanges)
-					{
-						writer.Write(GetAsnIndex(range.Asn));
-						writer.Write(range.From);
-						writer.Write(range.To);
-					}
-					foreach (AsnRange6 range in AsnRanges6)
-					{
-						writer.Write(GetAsnIndex(range.Asn));
-						writer.Write(range.From);
-						writer.Write(range.To);
-					}
+					writer.Write(asn.Number);
+					writer.Write(asn.Organization);
 				}
-
-				File.WriteAllBytes(@"..\..\..\BytecodeApi.GeoIP.ASN\Resources\GeoIP.ASN.db", Compression.Compress(memoryStream.ToArray()));
+				foreach (AsnRange range in AsnRanges)
+				{
+					writer.Write(GetAsnIndex(range.Asn));
+					writer.Write(range.From);
+					writer.Write(range.To);
+				}
+				foreach (AsnRange6 range in AsnRanges6)
+				{
+					writer.Write(GetAsnIndex(range.Asn));
+					writer.Write(range.From);
+					writer.Write(range.To);
+				}
 			}
+
+			File.WriteAllBytes(@"..\..\..\BytecodeApi.GeoIP.ASN\Resources\GeoIP.ASN.db", Compression.Compress(memoryStream.ToArray()));
 
 			ushort GetAsnIndex(int number)
 			{
@@ -335,49 +333,48 @@ namespace Build.GeoIP
 		}
 		private static void WriteCities()
 		{
-			using (MemoryStream memoryStream = new MemoryStream())
+			using MemoryStream memoryStream = new MemoryStream();
+
+			using (BinaryWriter writer = new BinaryWriter(memoryStream, Encoding.UTF8))
 			{
-				using (BinaryWriter writer = new BinaryWriter(memoryStream, Encoding.UTF8))
+				writer.Write(DateTime.Now.Ticks);
+				writer.Write(Cities.Length);
+				writer.Write(CityRanges.Length);
+				writer.Write(CityRanges6.Length);
+
+				foreach (City city in Cities)
 				{
-					writer.Write(DateTime.Now.Ticks);
-					writer.Write(Cities.Length);
-					writer.Write(CityRanges.Length);
-					writer.Write(CityRanges6.Length);
-
-					foreach (City city in Cities)
-					{
-						writer.Write(city.CountryIndex);
-						writer.Write(city.Name);
-						writer.Write(city.Subdivision1Name);
-						writer.Write(city.Subdivision1IsoCode);
-						writer.Write(city.Subdivision2Name);
-						writer.Write(city.Subdivision2IsoCode);
-						writer.Write(city.TimeZone);
-					}
-					foreach (CityRange range in CityRanges)
-					{
-						writer.Write(range.CityIndex);
-						writer.Write(range.PostalCode);
-						writer.Write(range.Latitude);
-						writer.Write(range.Longitude);
-						writer.Write(range.AccuracyRadius);
-						writer.Write(range.From);
-						writer.Write(range.To);
-					}
-					foreach (CityRange6 range in CityRanges6)
-					{
-						writer.Write(range.CityIndex);
-						writer.Write(range.PostalCode);
-						writer.Write(range.Latitude);
-						writer.Write(range.Longitude);
-						writer.Write(range.AccuracyRadius);
-						writer.Write(range.From);
-						writer.Write(range.To);
-					}
+					writer.Write(city.CountryIndex);
+					writer.Write(city.Name);
+					writer.Write(city.Subdivision1Name);
+					writer.Write(city.Subdivision1IsoCode);
+					writer.Write(city.Subdivision2Name);
+					writer.Write(city.Subdivision2IsoCode);
+					writer.Write(city.TimeZone);
 				}
-
-				File.WriteAllBytes(@"..\..\..\BytecodeApi.GeoIP.City\Resources\GeoIP.City.db", Compression.Compress(memoryStream.ToArray()));
+				foreach (CityRange range in CityRanges)
+				{
+					writer.Write(range.CityIndex);
+					writer.Write(range.PostalCode);
+					writer.Write(range.Latitude);
+					writer.Write(range.Longitude);
+					writer.Write(range.AccuracyRadius);
+					writer.Write(range.From);
+					writer.Write(range.To);
+				}
+				foreach (CityRange6 range in CityRanges6)
+				{
+					writer.Write(range.CityIndex);
+					writer.Write(range.PostalCode);
+					writer.Write(range.Latitude);
+					writer.Write(range.Longitude);
+					writer.Write(range.AccuracyRadius);
+					writer.Write(range.From);
+					writer.Write(range.To);
+				}
 			}
+
+			File.WriteAllBytes(@"..\..\..\BytecodeApi.GeoIP.City\Resources\GeoIP.City.db", Compression.Compress(memoryStream.ToArray()));
 		}
 
 		private static void ConvertCidr(string cidr, out uint from, out uint to)

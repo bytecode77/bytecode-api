@@ -59,14 +59,13 @@ namespace BytecodeApi.IO.Wmi
 			{
 				try
 				{
-					using (ManagementClass managementClass = GetManagementClass())
-					using (ManagementObjectCollection objectCollection = managementClass.GetInstances())
-					{
-						Namespaces = objectCollection
-							.Cast<ManagementObject>()
-							.Select(item => new WmiNamespace(System.IO.Path.Combine(Path, item["Name"].ToString()), true))
-							.ToReadOnlyCollection();
-					}
+					using ManagementClass managementClass = GetManagementClass();
+					using ManagementObjectCollection objectCollection = managementClass.GetInstances();
+
+					Namespaces = objectCollection
+						.Cast<ManagementObject>()
+						.Select(item => new WmiNamespace(System.IO.Path.Combine(Path, item["Name"].ToString()), true))
+						.ToReadOnlyCollection();
 				}
 				catch
 				{
@@ -75,18 +74,17 @@ namespace BytecodeApi.IO.Wmi
 			}
 			else if (checkIfExists)
 			{
-				using (ManagementClass managementClass = GetManagementClass())
+				using ManagementClass managementClass = GetManagementClass();
+
+				try
 				{
-					try
+					using (managementClass.GetInstances())
 					{
-						using (managementClass.GetInstances())
-						{
-						}
 					}
-					catch
-					{
-						throw CreateManagementException();
-					}
+				}
+				catch
+				{
+					throw CreateManagementException();
 				}
 			}
 
@@ -118,15 +116,14 @@ namespace BytecodeApi.IO.Wmi
 		/// </returns>
 		public WmiClass[] GetClasses()
 		{
-			using (ManagementObjectSearcher objectSearcher = new ManagementObjectSearcher(new ManagementScope(FullName), new WqlObjectQuery("SELECT * FROM meta_class")))
-			using (ManagementObjectCollection objectCollection = objectSearcher.Get())
-			{
-				return objectCollection
-					.Cast<ManagementObject>()
-					.Select(item => item.ToString().SubstringFrom(":"))
-					.Select(className => new WmiClass(this, className, false))
-					.ToArray();
-			}
+			using ManagementObjectSearcher objectSearcher = new ManagementObjectSearcher(new ManagementScope(FullName), new WqlObjectQuery("SELECT * FROM meta_class"));
+			using ManagementObjectCollection objectCollection = objectSearcher.Get();
+
+			return objectCollection
+				.Cast<ManagementObject>()
+				.Select(item => item.ToString().SubstringFrom(":"))
+				.Select(className => new WmiClass(this, className, false))
+				.ToArray();
 		}
 		/// <summary>
 		/// Finds a class of this <see cref="WmiNamespace" /> by the specified name. An exception is thrown, if the class could not be created.

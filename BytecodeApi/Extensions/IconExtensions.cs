@@ -19,10 +19,8 @@ namespace BytecodeApi.Extensions
 			Check.ArgumentNull(icon, nameof(icon));
 			Check.ArgumentNull(path, nameof(path));
 
-			using (FileStream file = File.Create(path))
-			{
-				icon.Save(file);
-			}
+			using FileStream file = File.Create(path);
+			icon.Save(file);
 		}
 		/// <summary>
 		/// Converts this <see cref="Icon" /> to its <see cref="byte" />[] representation.
@@ -35,11 +33,9 @@ namespace BytecodeApi.Extensions
 		{
 			Check.ArgumentNull(icon, nameof(icon));
 
-			using (MemoryStream memoryStream = new MemoryStream())
-			{
-				icon.Save(memoryStream);
-				return memoryStream.ToArray();
-			}
+			using MemoryStream memoryStream = new MemoryStream();
+			icon.Save(memoryStream);
+			return memoryStream.ToArray();
 		}
 
 		/// <summary>

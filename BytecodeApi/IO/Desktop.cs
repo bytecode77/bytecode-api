@@ -43,10 +43,8 @@ namespace BytecodeApi.IO
 			int height = (int)((allScreens ? SystemParameters.VirtualScreenHeight : SystemParameters.PrimaryScreenHeight) * dpi.Height / 96);
 
 			Bitmap bitmap = new Bitmap(width, height, PixelFormat.Format32bppArgb);
-			using (Graphics graphics = Graphics.FromImage(bitmap))
-			{
-				graphics.CopyFromScreen(left, top, 0, 0, bitmap.Size);
-			}
+			using Graphics graphics = Graphics.FromImage(bitmap);
+			graphics.CopyFromScreen(left, top, 0, 0, bitmap.Size);
 			return bitmap;
 		}
 		/// <summary>
@@ -83,8 +81,7 @@ namespace BytecodeApi.IO
 
 			if (notificationArea != IntPtr.Zero)
 			{
-				Native.Rect rect;
-				if (Native.GetClientRect(notificationArea, out rect))
+				if (Native.GetClientRect(notificationArea, out Native.Rect rect))
 				{
 					for (int x = 0; x < rect.Right; x += 5)
 					{

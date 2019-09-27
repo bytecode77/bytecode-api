@@ -227,10 +227,8 @@ namespace BytecodeApi.IO.Interop
 			}
 			if (medium.tymed == TYMED.TYMED_HGLOBAL)
 			{
-				using (MemoryStream memoryStream = GetDataFromHGlobalMethod.Invoke<MemoryStream>(OleDataObject, new object[] { DataFormats.GetFormat(formatEtc.cfFormat).Name, medium.unionmember }))
-				{
-					return memoryStream.ToArray();
-				}
+				using MemoryStream memoryStream = GetDataFromHGlobalMethod.Invoke<MemoryStream>(OleDataObject, new object[] { DataFormats.GetFormat(formatEtc.cfFormat).Name, medium.unionmember });
+				return memoryStream.ToArray();
 			}
 			else
 			{

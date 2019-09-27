@@ -138,10 +138,8 @@ namespace BytecodeApi
 				() => Id,
 				() =>
 				{
-					using (System.Diagnostics.Process process = System.Diagnostics.Process.GetCurrentProcess())
-					{
-						return process.Id;
-					}
+					using System.Diagnostics.Process process = System.Diagnostics.Process.GetCurrentProcess();
+					return process.Id;
 				}
 			);
 			/// <summary>
@@ -152,10 +150,8 @@ namespace BytecodeApi
 				() => SessionId,
 				() =>
 				{
-					using (System.Diagnostics.Process process = System.Diagnostics.Process.GetCurrentProcess())
-					{
-						return process.SessionId;
-					}
+					using System.Diagnostics.Process process = System.Diagnostics.Process.GetCurrentProcess();
+					return process.SessionId;
 				}
 			);
 			/// <summary>
@@ -166,10 +162,8 @@ namespace BytecodeApi
 				() => IntegrityLevel,
 				() =>
 				{
-					using (System.Diagnostics.Process process = System.Diagnostics.Process.GetCurrentProcess())
-					{
-						return process.GetIntegrityLevel();
-					}
+					using System.Diagnostics.Process process = System.Diagnostics.Process.GetCurrentProcess();
+					return process.GetIntegrityLevel();
 				}
 			);
 			/// <summary>
@@ -180,10 +174,8 @@ namespace BytecodeApi
 				() => IsElevated,
 				() =>
 				{
-					using (WindowsIdentity windowsIdentity = WindowsIdentity.GetCurrent())
-					{
-						return new WindowsPrincipal(windowsIdentity).IsInRole(WindowsBuiltInRole.Administrator);
-					}
+					using WindowsIdentity windowsIdentity = WindowsIdentity.GetCurrent();
+					return new WindowsPrincipal(windowsIdentity).IsInRole(WindowsBuiltInRole.Administrator);
 				}
 			);
 			/// <summary>
@@ -234,10 +226,8 @@ namespace BytecodeApi
 			{
 				get
 				{
-					using (System.Diagnostics.Process process = System.Diagnostics.Process.GetCurrentProcess())
-					{
-						return process.PrivateMemorySize64;
-					}
+					using System.Diagnostics.Process process = System.Diagnostics.Process.GetCurrentProcess();
+					return process.PrivateMemorySize64;
 				}
 			}
 		}
@@ -316,10 +306,8 @@ namespace BytecodeApi
 					try
 					{
 						desktop = Native.GetDC(IntPtr.Zero);
-						using (Graphics graphics = Graphics.FromHdc(desktop))
-						{
-							return new SizeF(graphics.DpiX, graphics.DpiY);
-						}
+						using Graphics graphics = Graphics.FromHdc(desktop);
+						return new SizeF(graphics.DpiX, graphics.DpiY);
 					}
 					finally
 					{
@@ -357,12 +345,11 @@ namespace BytecodeApi
 				() => InstallDate,
 				() =>
 				{
-					using (RegistryKey baseKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64))
-					using (RegistryKey key = baseKey.OpenSubKey(@"Software\Microsoft\Windows NT\CurrentVersion"))
-					{
-						int installDate = key.GetInt32Value("InstallDate", 0);
-						return installDate == 0 ? (DateTime?)null : DateTimeEx.ConvertUnixTimeStamp((uint)installDate);
-					}
+					using RegistryKey baseKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64);
+					using RegistryKey key = baseKey.OpenSubKey(@"Software\Microsoft\Windows NT\CurrentVersion");
+
+					int installDate = key.GetInt32Value("InstallDate", 0);
+					return installDate == 0 ? (DateTime?)null : DateTimeEx.ConvertUnixTimeStamp((uint)installDate);
 				}
 			);
 			/// <summary>
@@ -436,32 +423,30 @@ namespace BytecodeApi
 				() => FrameworkVersion,
 				() =>
 				{
-					using (RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full"))
-					{
-						int? version = key.GetInt32Value("Release");
+					using RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full");
+					int? version = key.GetInt32Value("Release");
 
-						return version switch
-						{
-							378389 => "4.5",
-							378675 => "4.5.1",
-							378758 => "4.5.1",
-							379893 => "4.5.2",
-							393295 => "4.6",
-							393297 => "4.6",
-							394254 => "4.6.1",
-							394271 => "4.6.1",
-							394802 => "4.6.2",
-							394806 => "4.6.2",
-							460798 => "4.7",
-							460805 => "4.7",
-							461308 => "4.7.1",
-							461310 => "4.7.1",
-							461808 => "4.7.2",
-							461814 => "4.7.2",
-							528040 => "4.8",
-							_ => version.ToString()
-						};
-					}
+					return version switch
+					{
+						378389 => "4.5",
+						378675 => "4.5.1",
+						378758 => "4.5.1",
+						379893 => "4.5.2",
+						393295 => "4.6",
+						393297 => "4.6",
+						394254 => "4.6.1",
+						394271 => "4.6.1",
+						394802 => "4.6.2",
+						394806 => "4.6.2",
+						460798 => "4.7",
+						460805 => "4.7",
+						461308 => "4.7.1",
+						461310 => "4.7.1",
+						461808 => "4.7.2",
+						461814 => "4.7.2",
+						528040 => "4.8",
+						_ => version.ToString()
+					};
 				}
 			);
 		}

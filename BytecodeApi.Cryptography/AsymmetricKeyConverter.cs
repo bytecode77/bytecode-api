@@ -54,73 +54,72 @@ namespace BytecodeApi.Cryptography
 		/// </returns>
 		public static byte[] ConvertToDer(RSAParameters key, AsymmetricKeyType keyType)
 		{
-			using (MemoryStream memoryStream = new MemoryStream())
+			using MemoryStream memoryStream = new MemoryStream();
+
+			using (BinaryWriter writer = new BinaryWriter(memoryStream))
 			{
-				using (BinaryWriter writer = new BinaryWriter(memoryStream))
+				writer.Write((byte)0x30);
+
+				using (MemoryStream innerStream = new MemoryStream())
+				using (BinaryWriter innerWriter = new BinaryWriter(innerStream))
 				{
-					writer.Write((byte)0x30);
-
-					using (MemoryStream innerStream = new MemoryStream())
-					using (BinaryWriter innerWriter = new BinaryWriter(innerStream))
+					if (keyType == AsymmetricKeyType.Public)
 					{
-						if (keyType == AsymmetricKeyType.Public)
+						innerWriter.Write((byte)0x30);
+						EncodeLength(innerWriter, 13);
+						innerWriter.Write((byte)6);
+
+						byte[] oid = { 0x2a, 0x86, 0x48, 0x86, 0xf7, 0x0d, 0x01, 0x01, 0x01 };
+						EncodeLength(innerWriter, oid.Length);
+						innerWriter.Write(oid);
+
+						innerWriter.Write((byte)5);
+						EncodeLength(innerWriter, 0);
+						innerWriter.Write((byte)3);
+
+						using (MemoryStream bitStringStream = new MemoryStream())
+						using (BinaryWriter bitStringWriter = new BinaryWriter(bitStringStream))
 						{
-							innerWriter.Write((byte)0x30);
-							EncodeLength(innerWriter, 13);
-							innerWriter.Write((byte)6);
+							bitStringWriter.Write((byte)0);
+							bitStringWriter.Write((byte)0x30);
 
-							byte[] oid = { 0x2a, 0x86, 0x48, 0x86, 0xf7, 0x0d, 0x01, 0x01, 0x01 };
-							EncodeLength(innerWriter, oid.Length);
-							innerWriter.Write(oid);
-
-							innerWriter.Write((byte)5);
-							EncodeLength(innerWriter, 0);
-							innerWriter.Write((byte)3);
-
-							using (MemoryStream bitStringStream = new MemoryStream())
-							using (BinaryWriter bitStringWriter = new BinaryWriter(bitStringStream))
+							using (MemoryStream paramsStream = new MemoryStream())
+							using (BinaryWriter paramsWriter = new BinaryWriter(paramsStream))
 							{
-								bitStringWriter.Write((byte)0);
-								bitStringWriter.Write((byte)0x30);
+								EncodeIntegerBigEndian(paramsWriter, key.Modulus);
+								EncodeIntegerBigEndian(paramsWriter, key.Exponent);
 
-								using (MemoryStream paramsStream = new MemoryStream())
-								using (BinaryWriter paramsWriter = new BinaryWriter(paramsStream))
-								{
-									EncodeIntegerBigEndian(paramsWriter, key.Modulus);
-									EncodeIntegerBigEndian(paramsWriter, key.Exponent);
-
-									EncodeLength(bitStringWriter, (int)paramsStream.Length);
-									paramsStream.WriteTo(bitStringStream);
-								}
-
-								EncodeLength(innerWriter, (int)bitStringStream.Length);
-								bitStringStream.WriteTo(innerStream);
+								EncodeLength(bitStringWriter, (int)paramsStream.Length);
+								paramsStream.WriteTo(bitStringStream);
 							}
-						}
-						else if (keyType == AsymmetricKeyType.Private)
-						{
-							EncodeIntegerBigEndian(innerWriter, new byte[] { 0 });
-							EncodeIntegerBigEndian(innerWriter, key.Modulus);
-							EncodeIntegerBigEndian(innerWriter, key.Exponent);
-							EncodeIntegerBigEndian(innerWriter, key.D);
-							EncodeIntegerBigEndian(innerWriter, key.P);
-							EncodeIntegerBigEndian(innerWriter, key.Q);
-							EncodeIntegerBigEndian(innerWriter, key.DP);
-							EncodeIntegerBigEndian(innerWriter, key.DQ);
-							EncodeIntegerBigEndian(innerWriter, key.InverseQ);
-						}
-						else
-						{
-							throw Throw.InvalidEnumArgument(nameof(keyType), keyType);
-						}
 
-						EncodeLength(writer, (int)innerStream.Length);
-						innerStream.WriteTo(memoryStream);
+							EncodeLength(innerWriter, (int)bitStringStream.Length);
+							bitStringStream.WriteTo(innerStream);
+						}
 					}
-				}
+					else if (keyType == AsymmetricKeyType.Private)
+					{
+						EncodeIntegerBigEndian(innerWriter, new byte[] { 0 });
+						EncodeIntegerBigEndian(innerWriter, key.Modulus);
+						EncodeIntegerBigEndian(innerWriter, key.Exponent);
+						EncodeIntegerBigEndian(innerWriter, key.D);
+						EncodeIntegerBigEndian(innerWriter, key.P);
+						EncodeIntegerBigEndian(innerWriter, key.Q);
+						EncodeIntegerBigEndian(innerWriter, key.DP);
+						EncodeIntegerBigEndian(innerWriter, key.DQ);
+						EncodeIntegerBigEndian(innerWriter, key.InverseQ);
+					}
+					else
+					{
+						throw Throw.InvalidEnumArgument(nameof(keyType), keyType);
+					}
 
-				return memoryStream.ToArray();
+					EncodeLength(writer, (int)innerStream.Length);
+					innerStream.WriteTo(memoryStream);
+				}
 			}
+
+			return memoryStream.ToArray();
 
 			void EncodeLength(BinaryWriter writer, int length)
 			{
@@ -229,90 +228,86 @@ namespace BytecodeApi.Cryptography
 			bool ImportPublicKey(out RSAParameters key)
 			{
 				key = new RSAParameters();
+				using BinaryReader reader = new BinaryReader(new MemoryStream(derKey));
 
-				using (BinaryReader reader = new BinaryReader(new MemoryStream(derKey)))
+				if (!ReadDataSequence(reader)) return false;
+
+				if (!reader.ReadBytes(15).Compare(new byte[] { 0x30, 0x0d, 0x06, 0x09, 0x2a, 0x86, 0x48, 0x86, 0xf7, 0x0d, 0x01, 0x01, 0x01, 0x05, 0x00 }))
 				{
-					if (!ReadDataSequence(reader)) return false;
-
-					if (!reader.ReadBytes(15).Compare(new byte[] { 0x30, 0x0d, 0x06, 0x09, 0x2a, 0x86, 0x48, 0x86, 0xf7, 0x0d, 0x01, 0x01, 0x01, 0x05, 0x00 }))
-					{
-						return false;
-					}
-
-					switch (reader.ReadUInt16())
-					{
-						case 0x8103: reader.ReadByte(); break;
-						case 0x8203: reader.ReadInt16(); break;
-						default: return false;
-					}
-
-					if (reader.ReadByte() != 0) return false;
-					if (!ReadDataSequence(reader)) return false;
-
-					int moduluSize;
-					switch (reader.ReadUInt16())
-					{
-						case 0x8102: moduluSize = reader.ReadByte(); break;
-						case 0x8202: moduluSize = reader.ReadByte() << 8 | reader.ReadByte(); break;
-						default: return false;
-					}
-
-					byte firstByte = reader.ReadByte();
-					reader.BaseStream.Seek(-1, SeekOrigin.Current);
-
-					if (firstByte == 0)
-					{
-						reader.ReadByte();
-						moduluSize -= 1;
-					}
-
-					byte[] modulus = reader.ReadBytes(moduluSize);
-					if (reader.ReadByte() != 2) return false;
-
-					key = new RSAParameters
-					{
-						Modulus = modulus,
-						Exponent = reader.ReadBytes(reader.ReadByte())
-					};
-					return true;
+					return false;
 				}
+
+				switch (reader.ReadUInt16())
+				{
+					case 0x8103: reader.ReadByte(); break;
+					case 0x8203: reader.ReadInt16(); break;
+					default: return false;
+				}
+
+				if (reader.ReadByte() != 0) return false;
+				if (!ReadDataSequence(reader)) return false;
+
+				int moduluSize;
+				switch (reader.ReadUInt16())
+				{
+					case 0x8102: moduluSize = reader.ReadByte(); break;
+					case 0x8202: moduluSize = reader.ReadByte() << 8 | reader.ReadByte(); break;
+					default: return false;
+				}
+
+				byte firstByte = reader.ReadByte();
+				reader.BaseStream.Seek(-1, SeekOrigin.Current);
+
+				if (firstByte == 0)
+				{
+					reader.ReadByte();
+					moduluSize -= 1;
+				}
+
+				byte[] modulus = reader.ReadBytes(moduluSize);
+				if (reader.ReadByte() != 2) return false;
+
+				key = new RSAParameters
+				{
+					Modulus = modulus,
+					Exponent = reader.ReadBytes(reader.ReadByte())
+				};
+				return true;
 			}
 			bool ImportPrivateKey(out RSAParameters key)
 			{
 				key = new RSAParameters();
+				using BinaryReader reader = new BinaryReader(new MemoryStream(derKey));
 
-				using (BinaryReader reader = new BinaryReader(new MemoryStream(derKey)))
+				if (!ReadDataSequence(reader)) return false;
+				if (reader.ReadUInt16() != 0x102 || reader.ReadByte() != 0) return false;
+
+				key = new RSAParameters
 				{
-					if (!ReadDataSequence(reader)) return false;
-					if (reader.ReadUInt16() != 0x102 || reader.ReadByte() != 0) return false;
+					Modulus = ReadParameter(),
+					Exponent = ReadParameter(),
+					D = ReadParameter(),
+					P = ReadParameter(),
+					Q = ReadParameter(),
+					DP = ReadParameter(),
+					DQ = ReadParameter(),
+					InverseQ = ReadParameter()
+				};
+				return true;
 
-					key = new RSAParameters
-					{
-						Modulus = ReadParameter(),
-						Exponent = ReadParameter(),
-						D = ReadParameter(),
-						P = ReadParameter(),
-						Q = ReadParameter(),
-						DP = ReadParameter(),
-						DQ = ReadParameter(),
-						InverseQ = ReadParameter()
-					};
-					return true;
+				byte[] ReadParameter()
+				{
+					if (reader.ReadByte() != 2) return new byte[0];
 
-					byte[] ReadParameter()
-					{
-						if (reader.ReadByte() != 2) return new byte[0];
+					int size = reader.ReadByte();
 
-						int size = reader.ReadByte();
+					if (size == 0x81) size = reader.ReadByte();
+					else if (size == 0x82) size = reader.ReadByte() << 8 | reader.ReadByte();
 
-						if (size == 0x81) size = reader.ReadByte();
-						else if (size == 0x82) size = reader.ReadByte() << 8 | reader.ReadByte();
+					while (reader.ReadByte() == 0) size--;
+					reader.BaseStream.Seek(-1, SeekOrigin.Current);
 
-						while (reader.ReadByte() == 0) size--;
-						reader.BaseStream.Seek(-1, SeekOrigin.Current);
-
-						return reader.ReadBytes(size);
-					}
+					return reader.ReadBytes(size);
 				}
 			}
 			bool ReadDataSequence(BinaryReader reader)

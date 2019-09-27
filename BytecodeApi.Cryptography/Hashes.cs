@@ -75,11 +75,10 @@ namespace BytecodeApi.Cryptography
 			}
 			else
 			{
-				using (HashAlgorithm hash = HashAlgorithm.Create(type.ToString()))
-				{
-					if (hash == null) throw Throw.InvalidEnumArgument(nameof(type), type);
-					Repeat(ref data, hash.ComputeHash);
-				}
+				using HashAlgorithm hash = HashAlgorithm.Create(type.ToString());
+
+				if (hash == null) throw Throw.InvalidEnumArgument(nameof(type), type);
+				else Repeat(ref data, hash.ComputeHash);
 			}
 
 			return data;

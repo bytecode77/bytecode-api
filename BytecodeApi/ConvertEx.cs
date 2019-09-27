@@ -374,10 +374,8 @@ namespace BytecodeApi
 		{
 			Check.ArgumentNull(array, nameof(array));
 
-			using (MemoryStream memoryStream = new MemoryStream(array))
-			{
-				return new Icon(memoryStream);
-			}
+			using MemoryStream memoryStream = new MemoryStream(array);
+			return new Icon(memoryStream);
 		}
 		/// <summary>
 		/// Converts a <see cref="byte" />[] to an <see cref="Bitmap" />. The <paramref name="array" /> object should represent the binary of a valid image file.
@@ -390,10 +388,8 @@ namespace BytecodeApi
 		{
 			Check.ArgumentNull(array, nameof(array));
 
-			using (MemoryStream memoryStream = new MemoryStream(array))
-			{
-				return new Bitmap(memoryStream);
-			}
+			using MemoryStream memoryStream = new MemoryStream(array);
+			return new Bitmap(memoryStream);
 		}
 	}
 }

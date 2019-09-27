@@ -51,11 +51,9 @@ namespace BytecodeApi.IO
 				.Concat(password ?? new byte[0])
 				.ToArray();
 
-			using (UdpClient client = new UdpClient())
-			{
-				client.Connect(IPAddress.Broadcast, 9);
-				client.Send(packet, packet.Length);
-			}
+			using UdpClient client = new UdpClient();
+			client.Connect(IPAddress.Broadcast, 9);
+			client.Send(packet, packet.Length);
 		}
 	}
 }

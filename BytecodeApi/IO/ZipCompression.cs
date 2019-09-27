@@ -22,11 +22,9 @@ namespace BytecodeApi.IO
 		{
 			Check.ArgumentNull(blob, nameof(blob));
 
-			using (MemoryStream memoryStream = new MemoryStream())
-			{
-				Compress(blob, memoryStream);
-				return memoryStream.ToArray();
-			}
+			using MemoryStream memoryStream = new MemoryStream();
+			Compress(blob, memoryStream);
+			return memoryStream.ToArray();
 		}
 		/// <summary>
 		/// Creates a ZIP archive from a single <see cref="Blob" /> object and writes the compressed archive to <paramref name="stream" />.
@@ -48,10 +46,8 @@ namespace BytecodeApi.IO
 			Check.ArgumentNull(blob, nameof(blob));
 			Check.ArgumentNull(stream, nameof(stream));
 
-			using (ZipArchive archive = new ZipArchive(stream, ZipArchiveMode.Create, leaveOpen))
-			{
-				archive.CreateEntry(blob.Name, blob.Content);
-			}
+			using ZipArchive archive = new ZipArchive(stream, ZipArchiveMode.Create, leaveOpen);
+			archive.CreateEntry(blob.Name, blob.Content);
 		}
 		/// <summary>
 		/// Creates a ZIP archive from the specified collection of <see cref="Blob" /> objects and returns a <see cref="byte" />[] representing the compressed archive.
@@ -64,11 +60,9 @@ namespace BytecodeApi.IO
 		{
 			Check.ArgumentNull(blobs, nameof(blobs));
 
-			using (MemoryStream memoryStream = new MemoryStream())
-			{
-				Compress(blobs, memoryStream);
-				return memoryStream.ToArray();
-			}
+			using MemoryStream memoryStream = new MemoryStream();
+			Compress(blobs, memoryStream);
+			return memoryStream.ToArray();
 		}
 		/// <summary>
 		/// Creates a ZIP archive from the specified collection of <see cref="Blob" /> objects and writes the compressed archive to <paramref name="stream" />.
@@ -90,13 +84,8 @@ namespace BytecodeApi.IO
 			Check.ArgumentNull(blobs, nameof(blobs));
 			Check.ArgumentNull(stream, nameof(stream));
 
-			using (ZipArchive archive = new ZipArchive(stream, ZipArchiveMode.Create, leaveOpen))
-			{
-				foreach (Blob blob in blobs)
-				{
-					archive.CreateEntry(blob.Name, blob.Content);
-				}
-			}
+			using ZipArchive archive = new ZipArchive(stream, ZipArchiveMode.Create, leaveOpen);
+			foreach (Blob blob in blobs) archive.CreateEntry(blob.Name, blob.Content);
 		}
 		/// <summary>
 		/// Creates a ZIP archive from the specified <see cref="BlobTree" /> and returns a <see cref="byte" />[] representing the compressed archive.
@@ -109,11 +98,9 @@ namespace BytecodeApi.IO
 		{
 			Check.ArgumentNull(blobs, nameof(blobs));
 
-			using (MemoryStream memoryStream = new MemoryStream())
-			{
-				Compress(blobs, memoryStream);
-				return memoryStream.ToArray();
-			}
+			using MemoryStream memoryStream = new MemoryStream();
+			Compress(blobs, memoryStream);
+			return memoryStream.ToArray();
 		}
 		/// <summary>
 		/// Creates a ZIP archive from the specified <see cref="BlobTree" /> and writes the compressed archive to <paramref name="stream" />.
@@ -135,21 +122,19 @@ namespace BytecodeApi.IO
 			Check.ArgumentNull(blobs, nameof(blobs));
 			Check.ArgumentNull(stream, nameof(stream));
 
-			using (ZipArchive archive = new ZipArchive(stream, ZipArchiveMode.Create, leaveOpen))
+			using ZipArchive archive = new ZipArchive(stream, ZipArchiveMode.Create, leaveOpen);
+			CreateEntries("", blobs.Root);
+
+			void CreateEntries(string path, BlobTreeNode node)
 			{
-				CreateEntries("", blobs.Root);
-
-				void CreateEntries(string path, BlobTreeNode node)
+				foreach (BlobTreeNode childNode in node.Nodes)
 				{
-					foreach (BlobTreeNode childNode in node.Nodes)
-					{
-						CreateEntries(Path.Combine(path, childNode.Name), childNode);
-					}
+					CreateEntries(Path.Combine(path, childNode.Name), childNode);
+				}
 
-					foreach (Blob blob in node.Blobs)
-					{
-						archive.CreateEntry(Path.Combine(path, blob.Name), blob.Content);
-					}
+				foreach (Blob blob in node.Blobs)
+				{
+					archive.CreateEntry(Path.Combine(path, blob.Name), blob.Content);
 				}
 			}
 		}
@@ -165,10 +150,8 @@ namespace BytecodeApi.IO
 			Check.ArgumentNull(path, nameof(path));
 			Check.FileNotFound(path);
 
-			using (FileStream file = File.OpenRead(path))
-			{
-				return Decompress(file);
-			}
+			using FileStream file = File.OpenRead(path);
+			return Decompress(file);
 		}
 		/// <summary>
 		/// Creates a <see cref="BlobTree" /> from the ZIP archive in the specified <see cref="byte" />[].
@@ -181,10 +164,8 @@ namespace BytecodeApi.IO
 		{
 			Check.ArgumentNull(file, nameof(file));
 
-			using (MemoryStream memoryStream = new MemoryStream(file))
-			{
-				return Decompress(memoryStream);
-			}
+			using MemoryStream memoryStream = new MemoryStream(file);
+			return Decompress(memoryStream);
 		}
 		/// <summary>
 		/// Creates a <see cref="BlobTree" /> from the ZIP archive read from the specified <see cref="Stream" />.
@@ -210,21 +191,19 @@ namespace BytecodeApi.IO
 			Check.ArgumentNull(stream, nameof(stream));
 
 			BlobTree tree = new BlobTree();
+			using ZipArchive archive = new ZipArchive(stream, ZipArchiveMode.Read, leaveOpen);
 
-			using (ZipArchive archive = new ZipArchive(stream, ZipArchiveMode.Read, leaveOpen))
+			foreach (ZipArchiveEntry entry in archive.Entries)
 			{
-				foreach (ZipArchiveEntry entry in archive.Entries)
+				BlobTreeNode node = tree.Root;
+
+				foreach (string path in entry.FullName.TrimEndString(entry.Name, true, true).TrimEnd('\\').Split(new[] { '\\' }, StringSplitOptions.RemoveEmptyEntries))
 				{
-					BlobTreeNode node = tree.Root;
-
-					foreach (string path in entry.FullName.TrimEndString(entry.Name, true, true).TrimEnd('\\').Split(new[] { '\\' }, StringSplitOptions.RemoveEmptyEntries))
-					{
-						if (!node.Nodes.HasNode(path, true)) node.Nodes.Add(new BlobTreeNode(path));
-						node = node.Nodes[path, true];
-					}
-
-					node.Blobs.Add(new Blob(entry.Name, entry.GetContent()));
+					if (!node.Nodes.HasNode(path, true)) node.Nodes.Add(new BlobTreeNode(path));
+					node = node.Nodes[path, true];
 				}
+
+				node.Blobs.Add(new Blob(entry.Name, entry.GetContent()));
 			}
 
 			return tree;

@@ -47,11 +47,9 @@ namespace BytecodeApi.IO.Http
 		{
 			return Try(() =>
 			{
-				using (WebResponse response = GetWebRequest().GetResponse())
-				using (StreamReader reader = new StreamReader(response.GetResponseStream()))
-				{
-					return reader.ReadToEnd();
-				}
+				using WebResponse response = GetWebRequest().GetResponse();
+				using StreamReader reader = new StreamReader(response.GetResponseStream());
+				return reader.ReadToEnd();
 			});
 		}
 		/// <summary>
@@ -75,38 +73,37 @@ namespace BytecodeApi.IO.Http
 		{
 			return Try(() =>
 			{
-				using (WebResponse response = GetWebRequest().GetResponse())
-				using (Stream stream = response.GetResponseStream())
-				using (MemoryStream memoryStream = new MemoryStream())
+				using WebResponse response = GetWebRequest().GetResponse();
+				using Stream stream = response.GetResponseStream();
+				using MemoryStream memoryStream = new MemoryStream();
+
+				byte[] buffer = new byte[4096];
+				int bytesRead;
+				long totalBytesRead = 0;
+				long callbackBytesRead = 0;
+				Stopwatch stopwatch = ThreadFactory.StartStopwatch();
+
+				do
 				{
-					byte[] buffer = new byte[4096];
-					int bytesRead;
-					long totalBytesRead = 0;
-					long callbackBytesRead = 0;
-					Stopwatch stopwatch = ThreadFactory.StartStopwatch();
+					bytesRead = stream.Read(buffer);
+					totalBytesRead += bytesRead;
+					memoryStream.Write(buffer, 0, bytesRead);
 
-					do
+					if (callback != null)
 					{
-						bytesRead = stream.Read(buffer);
-						totalBytesRead += bytesRead;
-						memoryStream.Write(buffer, 0, bytesRead);
-
-						if (callback != null)
+						callbackBytesRead += bytesRead;
+						if (stopwatch.Elapsed > TimeSpan.FromMilliseconds(100))
 						{
-							callbackBytesRead += bytesRead;
-							if (stopwatch.Elapsed > TimeSpan.FromMilliseconds(100))
-							{
-								stopwatch.Restart();
-								callback(callbackBytesRead, totalBytesRead);
-								callbackBytesRead = 0;
-							}
+							stopwatch.Restart();
+							callback(callbackBytesRead, totalBytesRead);
+							callbackBytesRead = 0;
 						}
 					}
-					while (bytesRead > 0);
-
-					if (callback != null && callbackBytesRead > 0) callback(callbackBytesRead, totalBytesRead);
-					return memoryStream.ToArray();
 				}
+				while (bytesRead > 0);
+
+				if (callback != null && callbackBytesRead > 0) callback(callbackBytesRead, totalBytesRead);
+				return memoryStream.ToArray();
 			});
 		}
 
@@ -146,10 +143,8 @@ namespace BytecodeApi.IO.Http
 				{
 					try
 					{
-						using (StreamReader reader = new StreamReader(ex.Response.GetResponseStream()))
-						{
-							htmlBody = reader.ReadToEnd();
-						}
+						using StreamReader reader = new StreamReader(ex.Response.GetResponseStream());
+						htmlBody = reader.ReadToEnd();
 					}
 					catch { }
 				}
