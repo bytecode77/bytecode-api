@@ -121,7 +121,7 @@ namespace BytecodeApi.Cryptography
 
 			return memoryStream.ToArray();
 
-			void EncodeLength(BinaryWriter writer, int length)
+			static void EncodeLength(BinaryWriter writer, int length)
 			{
 				if (length < 128)
 				{
@@ -142,7 +142,7 @@ namespace BytecodeApi.Cryptography
 					}
 				}
 			}
-			void EncodeIntegerBigEndian(BinaryWriter writer, byte[] value)
+			static void EncodeIntegerBigEndian(BinaryWriter writer, byte[] value)
 			{
 				writer.Write((byte)2);
 

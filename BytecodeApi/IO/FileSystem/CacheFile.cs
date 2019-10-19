@@ -79,10 +79,8 @@ namespace BytecodeApi.IO.FileSystem
 		{
 			if (!File.Exists(Path) || Age > Timeout || RequestCallback?.Invoke(new FileInfo(Path)) == false)
 			{
-				using (FileStream file = File.Create(Path))
-				{
-					UpdateCallback(file);
-				}
+				using FileStream file = File.Create(Path);
+				UpdateCallback(file);
 
 				updated = true;
 			}
