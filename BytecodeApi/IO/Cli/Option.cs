@@ -46,10 +46,10 @@ namespace BytecodeApi.IO.Cli
 
 			if (alternatives != null)
 			{
-				Check.ArgumentEx.ArrayElementsRequired(arguments, nameof(arguments));
-				Check.ArgumentEx.ArrayValuesNotNull(arguments, nameof(arguments));
-				Check.ArgumentEx.ArrayValuesNotStringEmpty(arguments, nameof(arguments));
-				Check.Argument(arguments.All(item => Validate.AlphaNumeric(item)), nameof(arguments), "String must be alphanumeric.");
+				Check.ArgumentEx.ArrayElementsRequired(alternatives, nameof(alternatives));
+				Check.ArgumentEx.ArrayValuesNotNull(alternatives, nameof(alternatives));
+				Check.ArgumentEx.ArrayValuesNotStringEmpty(alternatives, nameof(alternatives));
+				Check.Argument(alternatives.All(item => Validate.AlphaNumeric(item)), nameof(alternatives), "String must be alphanumeric.");
 			}
 
 			Arguments = arguments.ToReadOnlyCollection();
