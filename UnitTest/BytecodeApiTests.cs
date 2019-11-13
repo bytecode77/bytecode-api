@@ -13,10 +13,14 @@ namespace UnitTest
 	public class BytecodeApiTests
 	{
 		[TestMethod]
-		public void BytecodeApi_ApplicationBase_OperatingSystem_FrameworkVersion_UpToDate()
+		public void BytecodeApi_ApplicationBase_OperatingSystem_FrameworkVersionNumber_UpToDate()
 		{
-			// If convertible to Int32, indicates a fallback version number. Example: "461310" instead of "4.7.1".
-			Assert.IsNull(ApplicationBase.OperatingSystem.FrameworkVersion.ToInt32OrNull());
+			Assert.IsNotNull(ApplicationBase.OperatingSystem.FrameworkVersionNumber);
+		}
+		[TestMethod]
+		public void BytecodeApi_ApplicationBase_OperatingSystem_FrameworkVersionName_UpToDate()
+		{
+			Assert.IsNotNull(ApplicationBase.OperatingSystem.FrameworkVersionName);
 		}
 		[TestMethod]
 		public void BytecodeApi_ConvertEx()

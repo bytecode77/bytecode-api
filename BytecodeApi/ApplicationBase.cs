@@ -414,19 +414,29 @@ namespace BytecodeApi
 				}
 			}
 			/// <summary>
-			/// Gets the latest version of the .NET Framework and returns the version number as a fallback, if the version could not be looked up. Works only for .NET 4.0+.
-			/// <para>Examples: 4.6, 4.7, 4.7.1</para>
-			/// <para>Example of a fallback version number: 461310</para>
+			/// Gets the currently installed version of the .NET Framework and returns the version number. Works for .NET 4.5+.
+			/// <para>Examples: 528049, 528040, 461814</para>
 			/// </summary>
-			public static string FrameworkVersion => GetProperty
+			public static int? FrameworkVersionNumber => GetProperty
 			(
-				() => FrameworkVersion,
+				() => FrameworkVersionNumber,
 				() =>
 				{
 					using RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full");
-					int? version = key.GetInt32Value("Release");
-
-					return version switch
+					return key.GetInt32Value("Release");
+				}
+			);
+			/// <summary>
+			/// Gets the currently installed version of the .NET Framework, deduced from the <see cref="FrameworkVersionNumber" /> property and <see langword="null" />, if the version name could not be determined. Works for .NET 4.5+.
+			/// <para>Examples: 4.5, 4.6, 4.7, 4.7.1, 4.7.2, 4.8</para>
+			/// </summary>
+			public static string FrameworkVersionName => GetProperty
+			(
+				() => FrameworkVersionName,
+				() =>
+				{
+					// Version numbers: https://docs.microsoft.com/en-us/dotnet/framework/migration-guide/versions-and-dependencies
+					return FrameworkVersionNumber switch
 					{
 						378389 => "4.5",
 						378675 => "4.5.1",
@@ -446,7 +456,7 @@ namespace BytecodeApi
 						461814 => "4.7.2",
 						528040 => "4.8",
 						528049 => "4.8",
-						_ => version.ToString()
+						_ => null
 					};
 				}
 			);
