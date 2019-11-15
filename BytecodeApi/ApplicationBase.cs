@@ -84,10 +84,10 @@ namespace BytecodeApi
 			while (condition());
 		}
 		/// <summary>
-		/// Restarts the current <see cref="Process" /> with elevated privileges. Returns <see langword="null" />, if the process is already elevated; <see langword="false" />, if elevation failed; <see langword="true" /> if the restart was successful.
+		/// Restarts the current <see cref="System.Diagnostics.Process" /> with elevated privileges. Returns <see langword="null" />, if the process is already elevated; <see langword="false" />, if elevation failed; <see langword="true" /> if the restart was successful.
 		/// </summary>
-		/// <param name="commandLine">A <see cref="string" /> specifying the commandline for the new <see cref="Process" />.</param>
-		/// <param name="shutdownCallback">A callback that is invoked after the new <see cref="Process" /> was successfully started with elevated privileges. Depending on application type, this is typically <see cref="Environment.Exit(int)" /> or <see cref="Application.Shutdown()" />.</param>
+		/// <param name="commandLine">A <see cref="string" /> specifying the commandline for the new <see cref="System.Diagnostics.Process" />.</param>
+		/// <param name="shutdownCallback">A callback that is invoked after the new <see cref="System.Diagnostics.Process" /> was successfully started with elevated privileges. Depending on application type, this is typically <see cref="Environment.Exit(int)" /> or <see cref="Application.Shutdown()" />.</param>
 		/// <returns>
 		/// <see langword="null" />, if the process is already elevated;
 		/// <see langword="false" />, if elevation failed;
@@ -131,7 +131,7 @@ namespace BytecodeApi
 		public static class Process
 		{
 			/// <summary>
-			/// Gets the ProcessID of the current <see cref="Process" />.
+			/// Gets the ProcessID of the current <see cref="System.Diagnostics.Process" />.
 			/// </summary>
 			public static int Id => GetProperty
 			(
@@ -143,7 +143,7 @@ namespace BytecodeApi
 				}
 			);
 			/// <summary>
-			/// Gets the SessionID of the current <see cref="Process" />.
+			/// Gets the SessionID of the current <see cref="System.Diagnostics.Process" />.
 			/// </summary>
 			public static int SessionId => GetProperty
 			(
@@ -155,7 +155,7 @@ namespace BytecodeApi
 				}
 			);
 			/// <summary>
-			/// Gets the mandatory integrity level for the current <see cref="Process" />, or <see langword="null" />, if it could not be determined.
+			/// Gets the mandatory integrity level for the current <see cref="System.Diagnostics.Process" />, or <see langword="null" />, if it could not be determined.
 			/// </summary>
 			public static ProcessIntegrityLevel? IntegrityLevel => GetProperty
 			(
@@ -167,7 +167,7 @@ namespace BytecodeApi
 				}
 			);
 			/// <summary>
-			/// Gets a <see cref="bool" /> value indicating whether the current <see cref="Process" /> is elevated or not.
+			/// Gets a <see cref="bool" /> value indicating whether the current <see cref="System.Diagnostics.Process" /> is elevated or not.
 			/// </summary>
 			public static bool IsElevated => GetProperty
 			(
@@ -179,7 +179,7 @@ namespace BytecodeApi
 				}
 			);
 			/// <summary>
-			/// Gets the <see cref="ElevationType" /> for the current <see cref="Process" />, or <see langword="null" />, if it could not be determined.
+			/// Gets the <see cref="ElevationType" /> for the current <see cref="System.Diagnostics.Process" />, or <see langword="null" />, if it could not be determined.
 			/// </summary>
 			public static ElevationType? ElevationType => GetProperty
 			(
@@ -220,7 +220,7 @@ namespace BytecodeApi
 				}
 			);
 			/// <summary>
-			/// Gets the amount of private memory, in bytes, allocated for the current <see cref="Process" />.
+			/// Gets the amount of private memory, in bytes, allocated for the current <see cref="System.Diagnostics.Process" />.
 			/// </summary>
 			public static long Memory
 			{
@@ -230,6 +230,14 @@ namespace BytecodeApi
 					return process.PrivateMemorySize64;
 				}
 			}
+			/// <summary>
+			/// Gets the <see cref="System.Version" /> of the .NET Framework that the current <see cref="System.Diagnostics.Process" /> is running with.
+			/// </summary>
+			public static Version FrameworkVersion = GetProperty
+			(
+				() => FrameworkVersion,
+				() => new Version(typeof(object).Assembly.GetCustomAttribute<AssemblyFileVersionAttribute>().Version)
+			);
 		}
 		/// <summary>
 		/// Provides information about the current logon session and related information.
