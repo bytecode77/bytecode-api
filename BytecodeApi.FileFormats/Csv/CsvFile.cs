@@ -276,7 +276,7 @@ namespace BytecodeApi.FileFormats.Csv
 			Check.FileNotFound(path);
 			Check.ArgumentEx.StringNotEmpty(delimiter, nameof(delimiter));
 
-			using FileStream file = File.OpenRead(path); //CURRENT: Test if file is in scope if EnumerateStream is called!!
+			using FileStream file = File.OpenRead(path);
 			foreach (CsvRow row in EnumerateStream(file, delimiter, hasHeaderRow, ignoreEmptyLines, encoding))
 			{
 				yield return row;

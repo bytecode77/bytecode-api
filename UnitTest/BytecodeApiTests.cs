@@ -35,6 +35,11 @@ namespace UnitTest
 				Assert.AreEqual(ConvertEx.From7BitEncodedInt(ConvertEx.To7BitEncodedInt(i)), i);
 			}
 
+			for (int i = 1; i <= 3999; i++)
+			{
+				Assert.AreEqual(ConvertEx.FromRomanNumber(ConvertEx.ToRomanNumber(i)), i);
+			}
+
 			Point point = ConvertEx.ToStructure<Point>(ConvertEx.FromStructure(new Point(1337, 4242)));
 			Assert.IsTrue(point.X == 1337 && point.Y == 4242);
 		}

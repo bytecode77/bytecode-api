@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace BytecodeApi
 {
@@ -16,6 +17,7 @@ namespace BytecodeApi
 	{
 		private const string Base32RFC4648 = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
 		private const string Base32Crockford = "0123456789ABCDEFGHJKMNPQRSTVWXYZ";
+		private static readonly Regex RomanNumberRegex = new Regex("^M{0,3}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$", RegexOptions.IgnoreCase);
 
 		/// <summary>
 		/// Converts the specified <see cref="byte" />[] into into its hexadecimal <see cref="string" /> representation.
@@ -310,6 +312,198 @@ namespace BytecodeApi
 			}
 
 			throw Throw.Format("The value format is invalid.");
+		}
+		/// <summary>
+		/// Converts an integer to a roman numeral. If <paramref name="value" /> is not between 1 and 3999, an exception is thrown.
+		/// <para>Examples: I, II, III, IV, V, VI, VII, VIII, IX, X</para>
+		/// </summary>
+		/// <param name="value">A <see cref="int" /> value to convert to a roman numeral.</param>
+		/// <returns>
+		/// A roman number <see cref="string" /> that was converted from the specified integer.
+		/// </returns>
+		public static string ToRomanNumber(int value)
+		{
+			Check.ArgumentOutOfRange(value >= 1 && value <= 3999, nameof(value), "Number must be in range of 1...3999.");
+
+			// 1	I
+			// 5	V
+			// 10	X
+			// 50	L
+			// 100	C
+			// 500	D
+			// 1000	M
+
+			string result = null;
+
+			while (value > 0)
+			{
+				if (value >= 1000)
+				{
+					result += "M";
+					value -= 1000;
+				}
+				else if (value >= 900)
+				{
+					result += "CM";
+					value -= 900;
+				}
+				else if (value >= 500)
+				{
+					result += "D";
+					value -= 500;
+				}
+				else if (value >= 400)
+				{
+					result += "CD";
+					value -= 400;
+				}
+				else if (value >= 100)
+				{
+					result += "C";
+					value -= 100;
+				}
+				else if (value >= 90)
+				{
+					result += "XC";
+					value -= 90;
+				}
+				else if (value >= 50)
+				{
+					result += "L";
+					value -= 50;
+				}
+				else if (value >= 40)
+				{
+					result += "XL";
+					value -= 40;
+				}
+				else if (value >= 10)
+				{
+					result += "X";
+					value -= 10;
+				}
+				else if (value >= 9)
+				{
+					result += "IX";
+					value -= 9;
+				}
+				else if (value >= 5)
+				{
+					result += "V";
+					value -= 5;
+				}
+				else if (value >= 4)
+				{
+					result += "IV";
+					value -= 4;
+				}
+				else if (value >= 1)
+				{
+					result += "I";
+					value -= 1;
+				}
+			}
+
+			return result;
+		}
+		/// <summary>
+		/// Converts a roman number <see cref="string" /> to an integer.
+		/// <para>Examples: I, II, III, IV, V, VI, VII, VIII, IX, X</para>
+		/// </summary>
+		/// <param name="value">A roman number <see cref="string" />.</param>
+		/// <returns>
+		/// A <see cref="int" /> value that was converted from the roman number <see cref="string" />.
+		/// </returns>
+		public static int FromRomanNumber(string value)
+		{
+			Check.ArgumentNull(value, nameof(value));
+			Check.Format(RomanNumberRegex.IsMatch(value), "String is not a valid roman number.");
+
+			// 1	I
+			// 5	V
+			// 10	X
+			// 50	L
+			// 100	C
+			// 500	D
+			// 1000	M
+
+			int result = 0;
+			value = value.ToUpper();
+
+			while (value.Length > 0)
+			{
+				if (value.StartsWith("M"))
+				{
+					result += 1000;
+					value = value.Substring(1);
+				}
+				else if (value.StartsWith("CM"))
+				{
+					result += 900;
+					value = value.Substring(2);
+				}
+				else if (value.StartsWith("D"))
+				{
+					result += 500;
+					value = value.Substring(1);
+				}
+				else if (value.StartsWith("CD"))
+				{
+					result += 400;
+					value = value.Substring(2);
+				}
+				else if (value.StartsWith("C"))
+				{
+					result += 100;
+					value = value.Substring(1);
+				}
+				else if (value.StartsWith("XC"))
+				{
+					result += 90;
+					value = value.Substring(2);
+				}
+				else if (value.StartsWith("L"))
+				{
+					result += 50;
+					value = value.Substring(1);
+				}
+				else if (value.StartsWith("XL"))
+				{
+					result += 40;
+					value = value.Substring(2);
+				}
+				else if (value.StartsWith("X"))
+				{
+					result += 10;
+					value = value.Substring(1);
+				}
+				else if (value.StartsWith("IX"))
+				{
+					result += 9;
+					value = value.Substring(2);
+				}
+				else if (value.StartsWith("V"))
+				{
+					result += 5;
+					value = value.Substring(1);
+				}
+				else if (value.StartsWith("IV"))
+				{
+					result += 4;
+					value = value.Substring(2);
+				}
+				else if (value.StartsWith("I"))
+				{
+					result++;
+					value = value.Substring(1);
+				}
+				else
+				{
+					throw Throw.Argument(nameof(value), "String is not a valid roman number.");
+				}
+			}
+
+			return result;
 		}
 
 		/// <summary>
