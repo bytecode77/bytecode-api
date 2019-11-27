@@ -55,7 +55,7 @@ namespace BytecodeApi
 		public static bool DebugMode => GetProperty
 		(
 			() => DebugMode,
-			() => Debugger.IsAttached || new[] { @"\bin\Debug\", @"\bin\x86\Debug\", @"\bin\x64\Debug\" }.Any(path => Path.Contains(path, SpecialStringComparisons.IgnoreCase))
+			() => Debugger.IsAttached || new[] { @"\bin\Debug", @"\bin\x86\Debug", @"\bin\x64\Debug" }.Any(path => Path.Contains(path + @"\", SpecialStringComparisons.IgnoreCase) || Path.EndsWith(path, SpecialStringComparisons.IgnoreCase))
 		);
 
 		/// <summary>
