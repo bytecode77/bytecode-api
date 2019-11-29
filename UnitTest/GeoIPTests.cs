@@ -1,4 +1,6 @@
 ﻿using BytecodeApi.GeoIP;
+using BytecodeApi.GeoIP.ASN;
+using BytecodeApi.GeoIP.City;
 using BytecodeApi.IO.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Net;
@@ -8,33 +10,26 @@ namespace UnitTest
 	[TestClass]
 	public class GeoIPTests
 	{
+		private static readonly IPAddress IpAddress4 = IPAddress.Parse("95.223.73.131");
+		private static readonly IPAddress IpAddress6 = IPAddress.Parse("2a02:908:1d3:c080:94b7:3743:d4c0:1dfa");
+
 		[TestMethod]
-		public void BytecodeApi_GeoIP_GeoIPLookup_Lookup_IPv4()
+		public void BytecodeApi_GeoIP_GeoIPLookup_Lookup()
 		{
-			Assert.AreEqual("KR", GeoIPLookup.Lookup(IPAddress.Parse("123.45.67.89"))?.IsoCode);
-			Assert.AreEqual("US", GeoIPLookup.Lookup(IPAddress.Parse("56.78.90.123"))?.IsoCode);
-			Assert.AreEqual("ES", GeoIPLookup.Lookup(IPAddress.Parse("78.30.58.111"))?.IsoCode);
-			Assert.AreEqual("US", GeoIPLookup.Lookup(IPAddress.Parse("23.9.50.250"))?.IsoCode);
-			Assert.AreEqual("US", GeoIPLookup.Lookup(IPAddress.Parse("12.31.222.56"))?.IsoCode);
-			Assert.AreEqual("CN", GeoIPLookup.Lookup(IPAddress.Parse("139.205.190.243"))?.IsoCode);
-			Assert.AreEqual("US", GeoIPLookup.Lookup(IPAddress.Parse("170.23.68.67"))?.IsoCode);
-			Assert.AreEqual("US", GeoIPLookup.Lookup(IPAddress.Parse("17.25.79.120"))?.IsoCode);
-			Assert.AreEqual("JP", GeoIPLookup.Lookup(IPAddress.Parse("60.89.183.10"))?.IsoCode);
-			Assert.AreEqual("VE", GeoIPLookup.Lookup(IPAddress.Parse("190.97.231.17"))?.IsoCode);
+			Assert.AreEqual("DE", GeoIPLookup.Lookup(IpAddress4)?.IsoCode);
+			Assert.AreEqual("DE", GeoIPLookup.Lookup(IpAddress6)?.IsoCode);
 		}
 		[TestMethod]
-		public void BytecodeApi_GeoIP_GeoIPLookup_Lookup_IPv6()
+		public void BytecodeApi_GeoIP_Asn_GeoIPLookup_Lookup()
 		{
-			Assert.AreEqual("DE", GeoIPLookup.Lookup(IPAddress.Parse("2a00:1450:4001:816::200e"))?.IsoCode);
-			Assert.AreEqual("BR", GeoIPLookup.Lookup(IPAddress.Parse("2804:21d4:4001:816::200e"))?.IsoCode);
-			Assert.AreEqual("BE", GeoIPLookup.Lookup(IPAddress.Parse("2a00:c920:8000:816::200e"))?.IsoCode);
-			Assert.AreEqual("FR", GeoIPLookup.Lookup(IPAddress.Parse("2a01:73a0:4001:816::200e"))?.IsoCode);
-			Assert.AreEqual("US", GeoIPLookup.Lookup(IPAddress.Parse("2a03:b600:241:0:20:1337::"))?.IsoCode);
-			Assert.AreEqual("US", GeoIPLookup.Lookup(IPAddress.Parse("2a03:b600:357:1337::20"))?.IsoCode);
-			Assert.AreEqual("IE", GeoIPLookup.Lookup(IPAddress.Parse("2a05:d016:1337:1337::"))?.IsoCode);
-			Assert.AreEqual("US", GeoIPLookup.Lookup(IPAddress.Parse("2a0b:1306:2:1337:1337:1337::"))?.IsoCode);
-			Assert.AreEqual("DE", GeoIPLookup.Lookup(IPAddress.Parse("2a00:1450:4001:816:1337::200e"))?.IsoCode);
-			Assert.AreEqual("GB", GeoIPLookup.Lookup(IPAddress.Parse("2a0c:7782:4000:1337::"))?.IsoCode);
+			Assert.AreEqual("Liberty Global B.V.", GeoIPAsnLookup.Lookup(IpAddress4)?.Organization);
+			Assert.AreEqual("Liberty Global B.V.", GeoIPAsnLookup.Lookup(IpAddress6)?.Organization);
+		}
+		[TestMethod]
+		public void BytecodeApi_GeoIP_City_GeoIPLookup_Lookup()
+		{
+			Assert.AreEqual("Frankfurt am Main", GeoIPCityLookup.Lookup(IpAddress4)?.City.Name);
+			Assert.AreEqual("Frankfurt am Main", GeoIPCityLookup.Lookup(IpAddress6)?.City.Name);
 		}
 		[TestMethod]
 		public void BytecodeApi_GeoIP_DatabaseUpToDate()

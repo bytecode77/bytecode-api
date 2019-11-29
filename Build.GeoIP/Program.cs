@@ -165,7 +165,6 @@ namespace Build.GeoIP
 				})
 				.ToArray();
 
-			if (Asns.Count > 65535) throw new OverflowException("The limit of 65535 ASN's has been exceeded.");
 			Asns = Asns.OrderBy(asn => asn.Organization, StringComparer.OrdinalIgnoreCase).ToList();
 
 			void AddAsn(int number, string organization)
@@ -293,14 +292,14 @@ namespace Build.GeoIP
 		private static void WriteAsn()
 		{
 			int[] asnIndices = Create.Array(Asns.Max(asn => asn.Number) + 1, -1);
-			for (ushort i = 0; i < Asns.Count; i++) asnIndices[Asns[i].Number] = i;
+			for (int i = 0; i < Asns.Count; i++) asnIndices[Asns[i].Number] = i;
 
 			using MemoryStream memoryStream = new MemoryStream();
 
 			using (BinaryWriter writer = new BinaryWriter(memoryStream, Encoding.UTF8))
 			{
 				writer.Write(DateTime.Now.Ticks);
-				writer.Write((ushort)Asns.Count);
+				writer.Write(Asns.Count);
 				writer.Write(AsnRanges.Length);
 				writer.Write(AsnRanges6.Length);
 
@@ -325,10 +324,10 @@ namespace Build.GeoIP
 
 			File.WriteAllBytes(@"..\..\..\BytecodeApi.GeoIP.ASN\Resources\GeoIP.ASN.db", Compression.Compress(memoryStream.ToArray()));
 
-			ushort GetAsnIndex(int number)
+			int GetAsnIndex(int number)
 			{
 				int index = asnIndices[number];
-				return index != -1 ? (ushort)index : throw new FormatException("ASN ID '" + number + "' not found.");
+				return index != -1 ? index : throw new FormatException("ASN ID '" + number + "' not found.");
 			}
 		}
 		private static void WriteCities()

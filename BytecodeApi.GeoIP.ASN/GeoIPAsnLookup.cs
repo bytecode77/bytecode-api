@@ -31,7 +31,7 @@ namespace BytecodeApi.GeoIP.ASN
 			using BinaryReader reader = new BinaryReader(new MemoryStream(Compression.Decompress(Resources.GeoIP_ASN)), Encoding.UTF8);
 
 			DatabaseTimeStamp = new DateTime(reader.ReadInt64());
-			Asn[] asns = new Asn[reader.ReadUInt16()];
+			Asn[] asns = new Asn[reader.ReadInt32()];
 			Ranges = new AsnRange[reader.ReadInt32()];
 			Ranges6 = new AsnRange6[reader.ReadInt32()];
 
@@ -41,11 +41,11 @@ namespace BytecodeApi.GeoIP.ASN
 			}
 			for (int i = 0; i < Ranges.Length; i++)
 			{
-				Ranges[i] = new AsnRange(asns[reader.ReadUInt16()], reader.ReadUInt32(), reader.ReadUInt32());
+				Ranges[i] = new AsnRange(asns[reader.ReadUInt32()], reader.ReadUInt32(), reader.ReadUInt32());
 			}
 			for (int i = 0; i < Ranges6.Length; i++)
 			{
-				Ranges6[i] = new AsnRange6(asns[reader.ReadUInt16()], reader.ReadBytes(16), reader.ReadBytes(16));
+				Ranges6[i] = new AsnRange6(asns[reader.ReadUInt32()], reader.ReadBytes(16), reader.ReadBytes(16));
 			}
 
 			Asns = asns.ToReadOnlyCollection();
