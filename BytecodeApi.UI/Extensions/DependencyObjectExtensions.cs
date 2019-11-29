@@ -43,6 +43,21 @@ namespace BytecodeApi.UI.Extensions
 		/// </returns>
 		public static T FindParent<T>(this DependencyObject dependencyObject, UITreeType treeType) where T : DependencyObject
 		{
+			return dependencyObject.FindParent<T>(treeType, null);
+		}
+		/// <summary>
+		/// Tries to find the closest parent of this <see cref="DependencyObject" /> matching the specified type and satisfying a specified condition by traversing either the visual or the logical tree.
+		/// </summary>
+		/// <typeparam name="T">The explicit type of the parent to search for.</typeparam>
+		/// <param name="dependencyObject">The <see cref="DependencyObject" /> to traverse the tree from.</param>
+		/// <param name="treeType">A <see cref="UITreeType" /> value indicating whether to use the <see cref="LogicalTreeHelper" /> or the <see cref="VisualTreeHelper" />.</param>
+		/// <param name="predicate">The <see cref="Predicate{T}" /> that determines whether the parent of the specified type is returned.</param>
+		/// <returns>
+		/// The closest visual or logical parent of this <see cref="DependencyObject" />, depending on <paramref name="treeType" /> and <paramref name="predicate" />, that is of type <typeparamref name="T" />, if found;
+		/// otherwise, <see langword="null" />.
+		/// </returns>
+		public static T FindParent<T>(this DependencyObject dependencyObject, UITreeType treeType, Predicate<T> predicate) where T : DependencyObject
+		{
 			Check.ArgumentNull(dependencyObject, nameof(dependencyObject));
 
 			if (dependencyObject is Visual)
@@ -54,7 +69,7 @@ namespace BytecodeApi.UI.Extensions
 					_ => throw Throw.InvalidEnumArgument(nameof(treeType), treeType)
 				};
 
-				return parent is T visualParent ? visualParent : parent?.FindParent<T>(treeType);
+				return parent is T visualParent && predicate?.Invoke(visualParent) != false ? visualParent : parent?.FindParent<T>(treeType, predicate);
 			}
 			else
 			{
