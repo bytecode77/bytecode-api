@@ -15,6 +15,7 @@ namespace BytecodeApi.IO.Cli
 	[DebuggerDisplay(CSharp.DebuggerDisplayString)]
 	public sealed class OptionSet : ICollection<Option>
 	{
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string DebuggerDisplay => CSharp.DebuggerDisplay<OptionSet>("OptionPrefix = {0}, OptionAlternativePrefix = {1}, Options: {2}", new QuotedString(OptionPrefix), new QuotedString(OptionAlternativePrefix), Count);
 		private readonly List<Option> Options;
 		/// <summary>

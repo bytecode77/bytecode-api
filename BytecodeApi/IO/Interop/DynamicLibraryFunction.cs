@@ -13,8 +13,9 @@ namespace BytecodeApi.IO.Interop
 	[DebuggerDisplay(CSharp.DebuggerDisplayString)]
 	public sealed class DynamicLibraryFunction
 	{
-		private readonly MethodInfo Method;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string DebuggerDisplay => CSharp.DebuggerDisplay<DynamicLibraryFunction>("Name = {0} ({1}), Parameters: {2}", new QuotedString(Name), Path.GetFileName(Library.DllName), Method.GetParameters().Select(parameter => parameter.ParameterType).ToArray());
+		private readonly MethodInfo Method;
 		/// <summary>
 		/// Gets the <see cref="DynamicLibrary" /> that was used to create this <see cref="DynamicLibraryFunction" />.
 		/// </summary>
@@ -60,8 +61,9 @@ namespace BytecodeApi.IO.Interop
 	[DebuggerDisplay(CSharp.DebuggerDisplayString)]
 	public sealed class DynamicLibraryFunction<T>
 	{
-		private readonly MethodInfo Method;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string DebuggerDisplay => CSharp.DebuggerDisplay<DynamicLibraryFunction<T>>("Name = {0} ({1}), Parameters: {2}", new QuotedString(Name), Path.GetFileName(Library.DllName), Method.GetParameters().Select(parameter => parameter.ParameterType).ToArray());
+		private readonly MethodInfo Method;
 		/// <summary>
 		/// Gets the <see cref="DynamicLibrary" /> that was used to create this <see cref="DynamicLibraryFunction{T}" />.
 		/// </summary>

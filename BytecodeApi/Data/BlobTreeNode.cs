@@ -12,6 +12,7 @@ namespace BytecodeApi.Data
 	[DebuggerDisplay(CSharp.DebuggerDisplayString)]
 	public sealed class BlobTreeNode
 	{
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string DebuggerDisplay => CSharp.DebuggerDisplay<BlobTreeNode>("Name = {0}, Nodes: {1}, Blobs: {2}, Tag = {3}", new QuotedString(Name), Nodes.Count, Blobs.Count, Tag);
 		/// <summary>
 		/// Gets or sets the name of the <see cref="BlobTreeNode" />.

@@ -17,8 +17,9 @@ namespace BytecodeApi.IO.SystemInfo
 	[DebuggerDisplay(CSharp.DebuggerDisplayString)]
 	public sealed class TcpViewEntry
 	{
-		private static ProtocolMappingEntry[] ProtocolMap;
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string DebuggerDisplay => CSharp.DebuggerDisplay<TcpViewEntry>("Protocol = {0}, Local: {1}, Remote: {2}", Protocol, new QuotedString(LocalAddress + ":" + (LocalProtocolName ?? LocalPort.ToString())), new QuotedString(RemoteAddress == null ? null : RemoteAddress + ":" + (RemoteProtocolName ?? RemotePort?.ToString())));
+		private static ProtocolMappingEntry[] ProtocolMap;
 		/// <summary>
 		/// Gets the protocol that is associated with this instance.
 		/// </summary>

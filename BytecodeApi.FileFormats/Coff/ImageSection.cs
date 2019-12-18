@@ -8,6 +8,7 @@ namespace BytecodeApi.FileFormats.Coff
 	[DebuggerDisplay(CSharp.DebuggerDisplayString)]
 	public sealed class ImageSection
 	{
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string DebuggerDisplay => CSharp.DebuggerDisplay<ImageSection>("Header: {0}, Size: {1}", Header.Name, Data.Length);
 		/// <summary>
 		/// Gets or sets the section header.

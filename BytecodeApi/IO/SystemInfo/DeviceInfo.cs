@@ -12,6 +12,7 @@ namespace BytecodeApi.IO.SystemInfo
 	[DebuggerDisplay(CSharp.DebuggerDisplayString)]
 	public sealed class DeviceInfo
 	{
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string DebuggerDisplay => CSharp.DebuggerDisplay<DeviceInfo>("Name = {0}, Description = {1}, Attributes: {2}", new QuotedString(Name), new QuotedString(Description), Attributes.Count);
 		/// <summary>
 		/// Gets the collection of attributes associated with this device.

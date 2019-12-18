@@ -13,6 +13,7 @@ namespace BytecodeApi.IO.SystemInfo
 	[DebuggerDisplay(CSharp.DebuggerDisplayString)]
 	public sealed class HostsFileEntry
 	{
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string DebuggerDisplay => CSharp.DebuggerDisplay<HostsFileEntry>("IPAddress = {0}, HostName = {1}", new QuotedString(IPAddress), new QuotedString(HostName));
 		/// <summary>
 		/// Gets or sets the IP address of the hosts file entry.

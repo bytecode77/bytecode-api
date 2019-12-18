@@ -8,6 +8,7 @@ namespace BytecodeApi.FileFormats.Coff
 	[DebuggerDisplay(CSharp.DebuggerDisplayString)]
 	public sealed class ImageDataDirectory
 	{
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string DebuggerDisplay => CSharp.DebuggerDisplay<ImageDataDirectory>("Name = {0}", Name);
 		/// <summary>
 		/// Gets the name of the data directory. This may not be a valid enum value of <see cref="ImageDataDirectoryName" />, if the image has more than 14 data directories.

@@ -11,6 +11,7 @@ namespace BytecodeApi.FileFormats.Csv
 	[DebuggerDisplay(CSharp.DebuggerDisplayString)]
 	public sealed class CsvRow : IReadOnlyCollection<CsvCell>
 	{
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string DebuggerDisplay => CSharp.DebuggerDisplay<CsvRow>("LineNumber = {0}, Cells: {1}, ErrorLine = {2}", LineNumber, Count, ErrorLine);
 		private readonly List<CsvCell> Cells;
 		/// <summary>

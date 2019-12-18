@@ -14,6 +14,7 @@ namespace BytecodeApi.IO.Wmi
 	[DebuggerDisplay(CSharp.DebuggerDisplayString)]
 	public class WmiNamespace
 	{
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string DebuggerDisplay => CSharp.DebuggerDisplay<WmiNamespace>("{0}", new QuotedString(FullName));
 		/// <summary>
 		/// Gets the name of the <see cref="WmiNamespace" />. The "ROOT" namespace name is represented as <see cref="string.Empty" />.

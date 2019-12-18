@@ -10,6 +10,7 @@ namespace BytecodeApi.GeoIP.ASN
 	[DebuggerDisplay(CSharp.DebuggerDisplayString)]
 	public sealed class Asn : IEquatable<Asn>
 	{
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string DebuggerDisplay => CSharp.DebuggerDisplay<Asn>("Number = {0}, Organization = {1}", Number, new QuotedString(Organization));
 		/// <summary>
 		/// Gets the Autonomous System Number.

@@ -10,6 +10,7 @@ namespace BytecodeApi.IO.Wmi
 	[DebuggerDisplay(CSharp.DebuggerDisplayString)]
 	public struct WmiProperty : IEquatable<WmiProperty>
 	{
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string DebuggerDisplay => CSharp.DebuggerDisplay<WmiProperty>("Name = {0}, Value = {1}", new QuotedString(Name), Value is string stringValue ? new QuotedString(stringValue) : Value);
 		/// <summary>
 		/// Gets the name of the <see cref="WmiProperty" />.

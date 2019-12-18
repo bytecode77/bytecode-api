@@ -14,6 +14,7 @@ namespace BytecodeApi.IO.Cli
 	[DebuggerDisplay(CSharp.DebuggerDisplayString)]
 	public sealed class Option : IEquatable<Option>
 	{
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string DebuggerDisplay => CSharp.DebuggerDisplay<Option>("Arguments = {0}, Alternatives = {1}", new QuotedString(Arguments.AsString("|")), new QuotedString(Alternatives.AsString("|")));
 		/// <summary>
 		/// Gets a collection of strings that defines what arguments apply to this commandline option.

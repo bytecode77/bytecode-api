@@ -11,6 +11,7 @@ namespace BytecodeApi.Data
 	[DebuggerDisplay(CSharp.DebuggerDisplayString)]
 	public class Blob
 	{
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string DebuggerDisplay => CSharp.DebuggerDisplay<Blob>("Name = {0}, Content = {1}, Tag = {2}", new QuotedString(Name), Content, Tag);
 		/// <summary>
 		/// Gets or sets the name of the <see cref="Blob" />.

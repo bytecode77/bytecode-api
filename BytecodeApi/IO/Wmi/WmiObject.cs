@@ -12,6 +12,7 @@ namespace BytecodeApi.IO.Wmi
 	[DebuggerDisplay(CSharp.DebuggerDisplayString)]
 	public class WmiObject
 	{
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string DebuggerDisplay => CSharp.DebuggerDisplay<WmiObject>("Class = {0}, Properties: {1}", new QuotedString(Class.Name), Properties.Count);
 		/// <summary>
 		/// Gets the <see cref="WmiClass" /> that this <see cref="WmiObject" /> was created from.
