@@ -14,6 +14,7 @@ namespace BytecodeApi.IO.Cli
 	[DebuggerDisplay(CSharp.DebuggerDisplayString)]
 	public sealed class Option : IEquatable<Option>
 	{
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string DebuggerDisplay => CSharp.DebuggerDisplay<Option>("Arguments = {0}, Alternatives = {1}", new QuotedString(Arguments.AsString("|")), new QuotedString(Alternatives.AsString("|")));
 		/// <summary>
 		/// Gets a collection of strings that defines what arguments apply to this commandline option.
@@ -46,10 +47,10 @@ namespace BytecodeApi.IO.Cli
 
 			if (alternatives != null)
 			{
-				Check.ArgumentEx.ArrayElementsRequired(arguments, nameof(arguments));
-				Check.ArgumentEx.ArrayValuesNotNull(arguments, nameof(arguments));
-				Check.ArgumentEx.ArrayValuesNotStringEmpty(arguments, nameof(arguments));
-				Check.Argument(arguments.All(item => Validate.AlphaNumeric(item)), nameof(arguments), "String must be alphanumeric.");
+				Check.ArgumentEx.ArrayElementsRequired(alternatives, nameof(alternatives));
+				Check.ArgumentEx.ArrayValuesNotNull(alternatives, nameof(alternatives));
+				Check.ArgumentEx.ArrayValuesNotStringEmpty(alternatives, nameof(alternatives));
+				Check.Argument(alternatives.All(item => Validate.AlphaNumeric(item)), nameof(alternatives), "String must be alphanumeric.");
 			}
 
 			Arguments = arguments.ToReadOnlyCollection();

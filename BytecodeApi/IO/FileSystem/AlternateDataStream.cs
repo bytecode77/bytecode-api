@@ -9,6 +9,7 @@ namespace BytecodeApi.IO.FileSystem
 	[DebuggerDisplay(CSharp.DebuggerDisplayString)]
 	public sealed class AlternateDataStream
 	{
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string DebuggerDisplay => CSharp.DebuggerDisplay<AlternateDataStream>("Name = {0}, Size = {1}", new QuotedString(Name), Size);
 		/// <summary>
 		/// Gets the name of the alternate data stream without the leading colon.

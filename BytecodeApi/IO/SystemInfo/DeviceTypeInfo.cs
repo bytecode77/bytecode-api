@@ -12,6 +12,7 @@ namespace BytecodeApi.IO.SystemInfo
 	[DebuggerDisplay(CSharp.DebuggerDisplayString)]
 	public sealed class DeviceTypeInfo
 	{
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string DebuggerDisplay => CSharp.DebuggerDisplay<DeviceTypeInfo>("Name = {0}, ClassName = {1}, Devices: {2}", new QuotedString(Name), new QuotedString(ClassName), Devices.Count);
 		/// <summary>
 		/// Gets the class GUID of this device type.

@@ -10,6 +10,7 @@ namespace BytecodeApi.Mathematics
 	[DebuggerDisplay(CSharp.DebuggerDisplayString)]
 	public struct Range<T> : IEquatable<Range<T>> where T : struct, IComparable
 	{
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string DebuggerDisplay => CSharp.DebuggerDisplay<Range<T>>("Min = {0}, Max = {1}", Min, Max);
 		/// <summary>
 		/// Gets or sets the minimum value of this <see cref="Range{T}" />.

@@ -590,6 +590,20 @@ namespace BytecodeApi.Extensions
 			return source.Where(itm => itm != null);
 		}
 		/// <summary>
+		/// Filters a sequence of values and returns only values which are not <see langword="null" />.
+		/// </summary>
+		/// <typeparam name="TSource">The type of the elements of <paramref name="source" />.</typeparam>
+		/// <param name="source">An <see cref="IEnumerable{T}" /> to return elements from.</param>
+		/// <returns>
+		/// An <see cref="IEnumerable{T}" /> that contains elements from the input sequence that are not <see langword="null" />.
+		/// </returns>
+		public static IEnumerable<TSource> ExceptNull<TSource>(this IEnumerable<TSource?> source) where TSource : struct
+		{
+			Check.ArgumentNull(source, nameof(source));
+
+			return source.Where(itm => itm != null).Select(itm => itm.Value);
+		}
+		/// <summary>
 		/// Returns all distinct elements of a sequence according to a specified key selector function.
 		/// </summary>
 		/// <typeparam name="TSource">The type of the elements of <paramref name="source" />.</typeparam>

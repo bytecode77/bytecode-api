@@ -12,6 +12,7 @@ namespace BytecodeApi.IO.Wmi
 	[DebuggerDisplay(CSharp.DebuggerDisplayString)]
 	public class WmiClass
 	{
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string DebuggerDisplay => CSharp.DebuggerDisplay<WmiClass>("Name = {0}, Namespace = {1}", new QuotedString(Name), new QuotedString(Namespace.FullName));
 		/// <summary>
 		/// Gets the <see cref="WmiNamespace" /> that this <see cref="WmiClass" /> was created from.
@@ -79,22 +80,21 @@ namespace BytecodeApi.IO.Wmi
 			string columnsString = columns.IsNullOrEmpty() ? "*" : columns.AsString(", ");
 			string whereString = where.IsNullOrEmpty() ? null : " WHERE " + where;
 
-			using (ManagementObjectSearcher searcher = new ManagementObjectSearcher(Namespace.FullName, "SELECT " + columnsString + " FROM " + Name + whereString))
-			{
-				return searcher
-					.Get()
-					.Cast<ManagementObject>()
-					.Select(item => new WmiObject
-					(
-						this,
-						item.Properties
-							.Cast<PropertyData>()
-							.OrderBy(property => property.Name)
-							.Select(property => new WmiProperty(property.Name, property.Value))
-							.ToArray()
-					))
-					.ToArray();
-			}
+			using ManagementObjectSearcher searcher = new ManagementObjectSearcher(Namespace.FullName, "SELECT " + columnsString + " FROM " + Name + whereString);
+
+			return searcher
+				.Get()
+				.Cast<ManagementObject>()
+				.Select(item => new WmiObject
+				(
+					this,
+					item.Properties
+						.Cast<PropertyData>()
+						.OrderBy(property => property.Name)
+						.Select(property => new WmiProperty(property.Name, property.Value))
+						.ToArray()
+				))
+				.ToArray();
 		}
 		/// <summary>
 		/// Invokes a method on this <see cref="WmiClass" />.

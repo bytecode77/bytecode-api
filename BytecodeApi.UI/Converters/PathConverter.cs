@@ -38,19 +38,19 @@ namespace BytecodeApi.UI.Converters
 			}
 			else
 			{
-				switch (Method)
+				return Method switch
 				{
-					case PathConverterMethod.FileName: return Path.GetFileName(value);
-					case PathConverterMethod.FileNameWithoutExtension: return Path.GetFileNameWithoutExtension(value);
-					case PathConverterMethod.Extension: return Path.GetExtension(value);
-					case PathConverterMethod.ExtensionWithoutDot: return Path.GetExtension(value).TrimStart('.');
-					case PathConverterMethod.DirectoryName: return Path.GetDirectoryName(value);
-					case PathConverterMethod.Root: return Path.GetPathRoot(value);
-					case PathConverterMethod.Combine: return Path.Combine(value, parameter);
-					case PathConverterMethod.ChangeExtension: return Path.ChangeExtension(value, parameter);
-					case PathConverterMethod.OriginalPath: return PathEx.GetOriginalPath(value);
-					default: throw Throw.InvalidEnumArgument(nameof(Method), Method);
-				}
+					PathConverterMethod.FileName => Path.GetFileName(value),
+					PathConverterMethod.FileNameWithoutExtension => Path.GetFileNameWithoutExtension(value),
+					PathConverterMethod.Extension => Path.GetExtension(value),
+					PathConverterMethod.ExtensionWithoutDot => Path.GetExtension(value).TrimStart('.'),
+					PathConverterMethod.DirectoryName => Path.GetDirectoryName(value),
+					PathConverterMethod.Root => Path.GetPathRoot(value),
+					PathConverterMethod.Combine => Path.Combine(value, parameter),
+					PathConverterMethod.ChangeExtension => Path.ChangeExtension(value, parameter),
+					PathConverterMethod.OriginalPath => PathEx.GetOriginalPath(value),
+					_ => throw Throw.InvalidEnumArgument(nameof(Method), Method)
+				};
 			}
 		}
 	}

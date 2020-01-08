@@ -196,24 +196,23 @@ namespace BytecodeApi.Extensions
 
 			if (a.Length == b.Length)
 			{
-				using (FileStream streamA = a.OpenRead())
-				using (FileStream streamB = b.OpenRead())
+				using FileStream streamA = a.OpenRead();
+				using FileStream streamB = b.OpenRead();
+
+				byte[] bufferA = new byte[4096];
+				byte[] bufferB = new byte[4096];
+				int bytesReadA;
+				int bytesReadB;
+
+				do
 				{
-					byte[] bufferA = new byte[4096];
-					byte[] bufferB = new byte[4096];
-					int bytesReadA;
-					int bytesReadB;
-
-					do
-					{
-						bytesReadA = streamA.Read(bufferA);
-						bytesReadB = streamB.Read(bufferB);
-						if (bytesReadA != bytesReadB || !bufferA.Compare(bufferB)) return false;
-					}
-					while (bytesReadA > 0 || bytesReadB > 0);
-
-					return true;
+					bytesReadA = streamA.Read(bufferA);
+					bytesReadB = streamB.Read(bufferB);
+					if (bytesReadA != bytesReadB || !bufferA.Compare(bufferB)) return false;
 				}
+				while (bytesReadA > 0 || bytesReadB > 0);
+
+				return true;
 			}
 			else
 			{
@@ -249,12 +248,11 @@ namespace BytecodeApi.Extensions
 			Check.ArgumentEx.ArrayElementsRequired(sequence, nameof(sequence));
 			Check.ArgumentOutOfRangeEx.GreaterEqual0(startIndex, nameof(startIndex));
 
-			using (FileStream stream = file.OpenRead())
-			{
-				stream.Seek(startIndex, SeekOrigin.Begin);
-				long index = stream.FindSequence(sequence);
-				return index == -1 ? -1 : index + startIndex;
-			}
+			using FileStream stream = file.OpenRead();
+
+			stream.Seek(startIndex, SeekOrigin.Begin);
+			long index = stream.FindSequence(sequence);
+			return index == -1 ? -1 : index + startIndex;
 		}
 	}
 }

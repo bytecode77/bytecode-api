@@ -28,29 +28,28 @@ namespace BytecodeApi.GeoIP.City
 
 		static GeoIPCityLookup()
 		{
-			using (BinaryReader reader = new BinaryReader(new MemoryStream(Compression.Decompress(Resources.GeoIP_City)), Encoding.UTF8))
+			using BinaryReader reader = new BinaryReader(new MemoryStream(Compression.Decompress(Resources.GeoIP_City)), Encoding.UTF8);
+
+			DatabaseTimeStamp = new DateTime(reader.ReadInt64());
+			City[] cities = new City[reader.ReadInt32()];
+			Ranges = new CityRange[reader.ReadInt32()];
+			Ranges6 = new CityRange6[reader.ReadInt32()];
+
+			for (int i = 0; i < cities.Length; i++)
 			{
-				DatabaseTimeStamp = new DateTime(reader.ReadInt64());
-				City[] cities = new City[reader.ReadInt32()];
-				Ranges = new CityRange[reader.ReadInt32()];
-				Ranges6 = new CityRange6[reader.ReadInt32()];
-
-				for (int i = 0; i < cities.Length; i++)
-				{
-					byte country = reader.ReadByte();
-					cities[i] = new City(country == byte.MaxValue ? null : GeoIPLookup.Countries[country], reader.ReadString().ToNullIfEmpty(), reader.ReadString().ToNullIfEmpty(), reader.ReadString().ToNullIfEmpty(), reader.ReadString().ToNullIfEmpty(), reader.ReadString().ToNullIfEmpty(), reader.ReadString().ToNullIfEmpty());
-				}
-				for (int i = 0; i < Ranges.Length; i++)
-				{
-					Ranges[i] = new CityRange(cities[reader.ReadInt32()], reader.ReadString().ToNullIfEmpty(), reader.ReadSingle(), reader.ReadSingle(), reader.ReadInt16(), reader.ReadUInt32(), reader.ReadUInt32());
-				}
-				for (int i = 0; i < Ranges6.Length; i++)
-				{
-					Ranges6[i] = new CityRange6(cities[reader.ReadInt32()], reader.ReadString().ToNullIfEmpty(), reader.ReadSingle(), reader.ReadSingle(), reader.ReadInt16(), reader.ReadBytes(16), reader.ReadBytes(16));
-				}
-
-				Cities = cities.ToReadOnlyCollection();
+				byte country = reader.ReadByte();
+				cities[i] = new City(country == byte.MaxValue ? null : GeoIPLookup.Countries[country], reader.ReadString().ToNullIfEmpty(), reader.ReadString().ToNullIfEmpty(), reader.ReadString().ToNullIfEmpty(), reader.ReadString().ToNullIfEmpty(), reader.ReadString().ToNullIfEmpty(), reader.ReadString().ToNullIfEmpty());
 			}
+			for (int i = 0; i < Ranges.Length; i++)
+			{
+				Ranges[i] = new CityRange(cities[reader.ReadInt32()], reader.ReadString().ToNullIfEmpty(), reader.ReadSingle(), reader.ReadSingle(), reader.ReadInt16(), reader.ReadUInt32(), reader.ReadUInt32());
+			}
+			for (int i = 0; i < Ranges6.Length; i++)
+			{
+				Ranges6[i] = new CityRange6(cities[reader.ReadInt32()], reader.ReadString().ToNullIfEmpty(), reader.ReadSingle(), reader.ReadSingle(), reader.ReadInt16(), reader.ReadBytes(16), reader.ReadBytes(16));
+			}
+
+			Cities = cities.ToReadOnlyCollection();
 		}
 
 		/// <summary>

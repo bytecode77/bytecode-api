@@ -175,7 +175,7 @@ namespace BytecodeApi
 				}
 			}
 
-			void Process(Type sourceType, Type destType, Func<object> getValue, Action<object> setValue)
+			static void Process(Type sourceType, Type destType, Func<object> getValue, Action<object> setValue)
 			{
 				GetEffectiveType(ref sourceType);
 				GetEffectiveType(ref destType);
@@ -198,7 +198,7 @@ namespace BytecodeApi
 
 				if (!changed) setValue(null);
 			}
-			void GetEffectiveType(ref Type type)
+			static void GetEffectiveType(ref Type type)
 			{
 				if (Nullable.GetUnderlyingType(type) is Type nullable) type = nullable;
 				if (type.IsEnum) type = type.GetEnumUnderlyingType();
@@ -227,13 +227,13 @@ namespace BytecodeApi
 		/// <summary>
 		/// Builds a <see cref="string" /> for the <see cref="DebuggerDisplayAttribute" /> from a set of objects.
 		/// </summary>
-		/// <typeparam name="T">The type of the class or structure where the <see cref="DebuggerDisplayAttribute" /> is used.</typeparam>
+		/// <param name="type">The type of the class or structure where the <see cref="DebuggerDisplayAttribute" /> is used.</param>
 		/// <param name="str">A composite format <see cref="string" />.</param>
 		/// <param name="objects">An <see cref="object" /> array that contains zero or more objects to format.</param>
 		/// <returns>
 		/// A formatted <see cref="string" /> that displays debug information. Each <see cref="object" /> is treated individually, depending on its type.
 		/// </returns>
-		public static string DebuggerDisplay<T>(string str, params object[] objects)
+		public static string DebuggerDisplay(Type type, string str, params object[] objects)
 		{
 			Check.ArgumentNull(str, nameof(str));
 			Check.ArgumentNull(objects, nameof(objects));
@@ -248,7 +248,20 @@ namespace BytecodeApi
 				else args[i] = objects[i];
 			}
 
-			return typeof(T).ToCSharpName() + ": " + str.FormatInvariant(args);
+			return type.ToCSharpName() + ": " + str.FormatInvariant(args);
+		}
+		/// <summary>
+		/// Builds a <see cref="string" /> for the <see cref="DebuggerDisplayAttribute" /> from a set of objects.
+		/// </summary>
+		/// <typeparam name="T">The type of the class or structure where the <see cref="DebuggerDisplayAttribute" /> is used.</typeparam>
+		/// <param name="str">A composite format <see cref="string" />.</param>
+		/// <param name="objects">An <see cref="object" /> array that contains zero or more objects to format.</param>
+		/// <returns>
+		/// A formatted <see cref="string" /> that displays debug information. Each <see cref="object" /> is treated individually, depending on its type.
+		/// </returns>
+		public static string DebuggerDisplay<T>(string str, params object[] objects)
+		{
+			return DebuggerDisplay(typeof(T), str, objects);
 		}
 
 		/// <summary>

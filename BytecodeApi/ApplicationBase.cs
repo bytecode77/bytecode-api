@@ -55,7 +55,7 @@ namespace BytecodeApi
 		public static bool DebugMode => GetProperty
 		(
 			() => DebugMode,
-			() => Debugger.IsAttached || new[] { @"\bin\Debug", @"\bin\x86\Debug", @"\bin\x64\Debug" }.Any(path => Path.Contains(path, SpecialStringComparisons.IgnoreCase))
+			() => Debugger.IsAttached || new[] { @"\bin\Debug", @"\bin\x86\Debug", @"\bin\x64\Debug" }.Any(path => Path.Contains(path + @"\", SpecialStringComparisons.IgnoreCase) || Path.EndsWith(path, SpecialStringComparisons.IgnoreCase))
 		);
 
 		/// <summary>
@@ -84,10 +84,10 @@ namespace BytecodeApi
 			while (condition());
 		}
 		/// <summary>
-		/// Restarts the current <see cref="Process" /> with elevated privileges. Returns <see langword="null" />, if the process is already elevated; <see langword="false" />, if elevation failed; <see langword="true" /> if the restart was successful.
+		/// Restarts the current <see cref="System.Diagnostics.Process" /> with elevated privileges. Returns <see langword="null" />, if the process is already elevated; <see langword="false" />, if elevation failed; <see langword="true" /> if the restart was successful.
 		/// </summary>
-		/// <param name="commandLine">A <see cref="string" /> specifying the commandline for the new <see cref="Process" />.</param>
-		/// <param name="shutdownCallback">A callback that is invoked after the new <see cref="Process" /> was successfully started with elevated privileges. Depending on application type, this is typically <see cref="Environment.Exit(int)" /> or <see cref="Application.Shutdown()" />.</param>
+		/// <param name="commandLine">A <see cref="string" /> specifying the commandline for the new <see cref="System.Diagnostics.Process" />.</param>
+		/// <param name="shutdownCallback">A callback that is invoked after the new <see cref="System.Diagnostics.Process" /> was successfully started with elevated privileges. Depending on application type, this is typically <see cref="Environment.Exit(int)" /> or <see cref="Application.Shutdown()" />.</param>
 		/// <returns>
 		/// <see langword="null" />, if the process is already elevated;
 		/// <see langword="false" />, if elevation failed;
@@ -131,63 +131,55 @@ namespace BytecodeApi
 		public static class Process
 		{
 			/// <summary>
-			/// Gets the ProcessID of the current <see cref="Process" />.
+			/// Gets the ProcessID of the current <see cref="System.Diagnostics.Process" />.
 			/// </summary>
 			public static int Id => GetProperty
 			(
 				() => Id,
 				() =>
 				{
-					using (System.Diagnostics.Process process = System.Diagnostics.Process.GetCurrentProcess())
-					{
-						return process.Id;
-					}
+					using System.Diagnostics.Process process = System.Diagnostics.Process.GetCurrentProcess();
+					return process.Id;
 				}
 			);
 			/// <summary>
-			/// Gets the SessionID of the current <see cref="Process" />.
+			/// Gets the SessionID of the current <see cref="System.Diagnostics.Process" />.
 			/// </summary>
 			public static int SessionId => GetProperty
 			(
 				() => SessionId,
 				() =>
 				{
-					using (System.Diagnostics.Process process = System.Diagnostics.Process.GetCurrentProcess())
-					{
-						return process.SessionId;
-					}
+					using System.Diagnostics.Process process = System.Diagnostics.Process.GetCurrentProcess();
+					return process.SessionId;
 				}
 			);
 			/// <summary>
-			/// Gets the mandatory integrity level for the current <see cref="Process" />, or <see langword="null" />, if it could not be determined.
+			/// Gets the mandatory integrity level for the current <see cref="System.Diagnostics.Process" />, or <see langword="null" />, if it could not be determined.
 			/// </summary>
 			public static ProcessIntegrityLevel? IntegrityLevel => GetProperty
 			(
 				() => IntegrityLevel,
 				() =>
 				{
-					using (System.Diagnostics.Process process = System.Diagnostics.Process.GetCurrentProcess())
-					{
-						return process.GetIntegrityLevel();
-					}
+					using System.Diagnostics.Process process = System.Diagnostics.Process.GetCurrentProcess();
+					return process.GetIntegrityLevel();
 				}
 			);
 			/// <summary>
-			/// Gets a <see cref="bool" /> value indicating whether the current <see cref="Process" /> is elevated or not.
+			/// Gets a <see cref="bool" /> value indicating whether the current <see cref="System.Diagnostics.Process" /> is elevated or not.
 			/// </summary>
 			public static bool IsElevated => GetProperty
 			(
 				() => IsElevated,
 				() =>
 				{
-					using (WindowsIdentity windowsIdentity = WindowsIdentity.GetCurrent())
-					{
-						return new WindowsPrincipal(windowsIdentity).IsInRole(WindowsBuiltInRole.Administrator);
-					}
+					using WindowsIdentity windowsIdentity = WindowsIdentity.GetCurrent();
+					return new WindowsPrincipal(windowsIdentity).IsInRole(WindowsBuiltInRole.Administrator);
 				}
 			);
 			/// <summary>
-			/// Gets the <see cref="ElevationType" /> for the current <see cref="Process" />, or <see langword="null" />, if it could not be determined.
+			/// Gets the <see cref="ElevationType" /> for the current <see cref="System.Diagnostics.Process" />, or <see langword="null" />, if it could not be determined.
 			/// </summary>
 			public static ElevationType? ElevationType => GetProperty
 			(
@@ -228,18 +220,24 @@ namespace BytecodeApi
 				}
 			);
 			/// <summary>
-			/// Gets the amount of private memory, in bytes, allocated for the current <see cref="Process" />.
+			/// Gets the amount of private memory, in bytes, allocated for the current <see cref="System.Diagnostics.Process" />.
 			/// </summary>
 			public static long Memory
 			{
 				get
 				{
-					using (System.Diagnostics.Process process = System.Diagnostics.Process.GetCurrentProcess())
-					{
-						return process.PrivateMemorySize64;
-					}
+					using System.Diagnostics.Process process = System.Diagnostics.Process.GetCurrentProcess();
+					return process.PrivateMemorySize64;
 				}
 			}
+			/// <summary>
+			/// Gets the <see cref="System.Version" /> of the .NET Framework that the current <see cref="System.Diagnostics.Process" /> is running with.
+			/// </summary>
+			public static Version FrameworkVersion = GetProperty
+			(
+				() => FrameworkVersion,
+				() => new Version(typeof(object).Assembly.GetCustomAttribute<AssemblyFileVersionAttribute>().Version)
+			);
 		}
 		/// <summary>
 		/// Provides information about the current logon session and related information.
@@ -316,10 +314,8 @@ namespace BytecodeApi
 					try
 					{
 						desktop = Native.GetDC(IntPtr.Zero);
-						using (Graphics graphics = Graphics.FromHdc(desktop))
-						{
-							return new SizeF(graphics.DpiX, graphics.DpiY);
-						}
+						using Graphics graphics = Graphics.FromHdc(desktop);
+						return new SizeF(graphics.DpiX, graphics.DpiY);
 					}
 					finally
 					{
@@ -357,11 +353,11 @@ namespace BytecodeApi
 				() => InstallDate,
 				() =>
 				{
-					using (RegistryKey key = Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows NT\CurrentVersion"))
-					{
-						int installDate = key.GetInt32Value("InstallDate", 0);
-						return installDate == 0 ? (DateTime?)null : DateTimeEx.ConvertUnixTimeStamp((uint)installDate);
-					}
+					using RegistryKey baseKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64);
+					using RegistryKey key = baseKey.OpenSubKey(@"Software\Microsoft\Windows NT\CurrentVersion");
+
+					int installDate = key.GetInt32Value("InstallDate", 0);
+					return installDate == 0 ? (DateTime?)null : DateTimeEx.ConvertUnixTimeStamp((uint)installDate);
 				}
 			);
 			/// <summary>
@@ -410,13 +406,14 @@ namespace BytecodeApi
 								.Trim()
 								.ToLower();
 
-							switch (browser)
+							return browser switch
 							{
-								case "iexplore": return KnownBrowser.InternetExplorer;
-								case "chrome": return KnownBrowser.Chrome;
-								case "firefox": return KnownBrowser.Firefox;
-								case "launcher": return KnownBrowser.Opera;
-							}
+								"iexplore" => KnownBrowser.InternetExplorer,
+								"chrome" => KnownBrowser.Chrome,
+								"firefox" => KnownBrowser.Firefox,
+								"launcher" => KnownBrowser.Opera,
+								_ => (KnownBrowser?)null
+							};
 						}
 					}
 					catch { }
@@ -425,43 +422,50 @@ namespace BytecodeApi
 				}
 			}
 			/// <summary>
-			/// Gets the latest version of the .NET Framework and returns the version number as a fallback, if the version could not be looked up. Works only for .NET 4.0+.
-			/// <para>Examples: 4.6, 4.7, 4.7.1</para>
-			/// <para>Example of a fallback version number: 461310</para>
+			/// Gets the currently installed version of the .NET Framework and returns the version number. Works for .NET 4.5+.
+			/// <para>Examples: 528049, 528040, 461814</para>
 			/// </summary>
-			public static string FrameworkVersion => GetProperty
+			public static int? FrameworkVersionNumber => GetProperty
 			(
-				() => FrameworkVersion,
+				() => FrameworkVersionNumber,
 				() =>
 				{
-					using (RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full"))
+					using RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full");
+					return key.GetInt32Value("Release");
+				}
+			);
+			/// <summary>
+			/// Gets the currently installed version of the .NET Framework, deduced from the <see cref="FrameworkVersionNumber" /> property and <see langword="null" />, if the version name could not be determined. Works for .NET 4.5+.
+			/// <para>Examples: 4.5, 4.6, 4.7, 4.7.1, 4.7.2, 4.8</para>
+			/// </summary>
+			public static string FrameworkVersionName => GetProperty
+			(
+				() => FrameworkVersionName,
+				() =>
+				{
+					// Version numbers: https://docs.microsoft.com/en-us/dotnet/framework/migration-guide/versions-and-dependencies
+					return FrameworkVersionNumber switch
 					{
-						int? version = key.GetInt32Value("Release");
-						if (version != null)
-						{
-							return new Dictionary<int, string>
-							{
-								[378389] = "4.5",
-								[378675] = "4.5.1",
-								[378758] = "4.5.1",
-								[379893] = "4.5.2",
-								[393295] = "4.6",
-								[393297] = "4.6",
-								[394254] = "4.6.1",
-								[394271] = "4.6.1",
-								[394802] = "4.6.2",
-								[394806] = "4.6.2",
-								[460798] = "4.7",
-								[460805] = "4.7",
-								[461308] = "4.7.1",
-								[461310] = "4.7.1",
-								[461808] = "4.7.2",
-								[461814] = "4.7.2"
-							}.ValueOrDefault(version.Value, version.ToString());
-						}
-					}
-
-					return null;
+						378389 => "4.5",
+						378675 => "4.5.1",
+						378758 => "4.5.1",
+						379893 => "4.5.2",
+						393295 => "4.6",
+						393297 => "4.6",
+						394254 => "4.6.1",
+						394271 => "4.6.1",
+						394802 => "4.6.2",
+						394806 => "4.6.2",
+						460798 => "4.7",
+						460805 => "4.7",
+						461308 => "4.7.1",
+						461310 => "4.7.1",
+						461808 => "4.7.2",
+						461814 => "4.7.2",
+						528040 => "4.8",
+						528049 => "4.8",
+						_ => null
+					};
 				}
 			);
 		}

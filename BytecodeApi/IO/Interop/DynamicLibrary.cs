@@ -15,6 +15,7 @@ namespace BytecodeApi.IO.Interop
 	[DebuggerDisplay(CSharp.DebuggerDisplayString)]
 	public sealed class DynamicLibrary
 	{
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string DebuggerDisplay => CSharp.DebuggerDisplay<DynamicLibrary>("DllName = {0}", new QuotedString(DllName));
 		/// <summary>
 		/// Gets the name of the DLL that is supplied in the constructor of <see cref="DynamicLibrary" />.

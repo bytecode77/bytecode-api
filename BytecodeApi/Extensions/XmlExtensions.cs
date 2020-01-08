@@ -36,10 +36,8 @@ namespace BytecodeApi.Extensions
 			Check.ArgumentNull(path, nameof(path));
 			Check.ArgumentNull(settings, nameof(settings));
 
-			using (XmlWriter xmlWriter = XmlWriter.Create(path, settings))
-			{
-				xml.Save(xmlWriter);
-			}
+			using XmlWriter xmlWriter = XmlWriter.Create(path, settings);
+			xml.Save(xmlWriter);
 		}
 		/// <summary>
 		/// Serializes this <see cref="XDocument" /> to a <see cref="Stream" />.
@@ -53,10 +51,8 @@ namespace BytecodeApi.Extensions
 			Check.ArgumentNull(stream, nameof(stream));
 			Check.ArgumentNull(settings, nameof(settings));
 
-			using (XmlWriter xmlWriter = XmlWriter.Create(stream, settings))
-			{
-				xml.Save(xmlWriter);
-			}
+			using XmlWriter xmlWriter = XmlWriter.Create(stream, settings);
+			xml.Save(xmlWriter);
 		}
 		/// <summary>
 		/// Serializes this <see cref="XDocument" /> to a file with the specified filename using the formatting settings as specified in <see cref="FormattedXmlWriterSettings" />.

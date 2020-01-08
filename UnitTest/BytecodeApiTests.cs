@@ -13,10 +13,14 @@ namespace UnitTest
 	public class BytecodeApiTests
 	{
 		[TestMethod]
-		public void BytecodeApi_ApplicationBase_OperatingSystem_FrameworkVersion_UpToDate()
+		public void BytecodeApi_ApplicationBase_OperatingSystem_FrameworkVersionNumber_UpToDate()
 		{
-			// If convertible to Int32, indicates a fallback version number. Example: "461310" instead of "4.7.1".
-			Assert.IsNull(ApplicationBase.OperatingSystem.FrameworkVersion.ToInt32OrNull());
+			Assert.IsNotNull(ApplicationBase.OperatingSystem.FrameworkVersionNumber);
+		}
+		[TestMethod]
+		public void BytecodeApi_ApplicationBase_OperatingSystem_FrameworkVersionName_UpToDate()
+		{
+			Assert.IsNotNull(ApplicationBase.OperatingSystem.FrameworkVersionName);
 		}
 		[TestMethod]
 		public void BytecodeApi_ConvertEx()
@@ -29,6 +33,11 @@ namespace UnitTest
 			{
 				Assert.AreEqual(ConvertEx.FromExcelColumnString(ConvertEx.ToExcelColumnString(i)), i);
 				Assert.AreEqual(ConvertEx.From7BitEncodedInt(ConvertEx.To7BitEncodedInt(i)), i);
+			}
+
+			for (int i = 1; i <= 3999; i++)
+			{
+				Assert.AreEqual(ConvertEx.FromRomanNumber(ConvertEx.ToRomanNumber(i)), i);
 			}
 
 			Point point = ConvertEx.ToStructure<Point>(ConvertEx.FromStructure(new Point(1337, 4242)));

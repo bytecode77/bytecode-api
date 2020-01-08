@@ -126,6 +126,9 @@ namespace BytecodeApi
 		public static extern ushort AddAtom(string name);
 		[DllImport("kernel32.dll", ExactSpelling = true)]
 		public static extern ushort DeleteAtom(ushort atom);
+		[DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool GetDiskFreeSpaceEx(string path, out long free, out long totalFree, out long total);
 		[DllImport("user32.dll")]
 		public static extern IntPtr GetDC(IntPtr handle);
 		[DllImport("user32.dll")]

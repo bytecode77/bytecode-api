@@ -9,15 +9,44 @@ namespace BytecodeApi.IO.FileSystem
 	public static class DirectoryEx
 	{
 		/// <summary>
-		/// Sends this directory and all of its contents to recycle bin.
+		/// Retrieves the number of free bytes, available on the specified path.
 		/// </summary>
-		/// <param name="path">A <see cref="string" /> representing the path to a directory.</param>
-		public static void SendToRecycleBin(string path)
+		/// <param name="path">A <see cref="string" /> representing the path to a directory. This can also be a UNC path.</param>
+		/// <returns>
+		/// The number of free bytes, available on the specified path.
+		/// </returns>
+		public static long GetFreeDiskSpace(string path)
 		{
 			Check.ArgumentNull(path, nameof(path));
-			Check.DirectoryNotFound(path);
 
-			new DirectoryInfo(path).SendToRecycleBin();
+			if (Native.GetDiskFreeSpaceEx(path, out long free, out _, out _))
+			{
+				return free;
+			}
+			else
+			{
+				throw new IOException("Error retrieving disk space information.");
+			}
+		}
+		/// <summary>
+		/// Retrieves the number of total bytes on the specified path.
+		/// </summary>
+		/// <param name="path">A <see cref="string" /> representing the path to a directory. This can also be a UNC path.</param>
+		/// <returns>
+		/// The number of total bytes on the specified path.
+		/// </returns>
+		public static long GetTotalDiskSpace(string path)
+		{
+			Check.ArgumentNull(path, nameof(path));
+
+			if (Native.GetDiskFreeSpaceEx(path, out _, out long total, out _))
+			{
+				return total;
+			}
+			else
+			{
+				throw new IOException("Error retrieving disk space information.");
+			}
 		}
 		/// <summary>
 		/// Gets the UNC path of this directory. If the path cannot be converted to a UNC path, the original path is returned.
@@ -106,6 +135,17 @@ namespace BytecodeApi.IO.FileSystem
 			Check.ArgumentNull(path, nameof(path));
 
 			new DirectoryInfo(path).DeleteContents(create);
+		}
+		/// <summary>
+		/// Sends this directory and all of its contents to recycle bin.
+		/// </summary>
+		/// <param name="path">A <see cref="string" /> representing the path to a directory.</param>
+		public static void SendToRecycleBin(string path)
+		{
+			Check.ArgumentNull(path, nameof(path));
+			Check.DirectoryNotFound(path);
+
+			new DirectoryInfo(path).SendToRecycleBin();
 		}
 		/// <summary>
 		/// Shows the properties dialog for the directory.

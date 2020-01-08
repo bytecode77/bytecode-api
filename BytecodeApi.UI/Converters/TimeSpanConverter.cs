@@ -38,21 +38,21 @@ namespace BytecodeApi.UI.Converters
 			}
 			else
 			{
-				switch (Method)
+				return Method switch
 				{
-					case TimeSpanConverterMethod.Milliseconds: return value.Value.Milliseconds.ToString();
-					case TimeSpanConverterMethod.Seconds: return value.Value.Seconds.ToString();
-					case TimeSpanConverterMethod.Minutes: return value.Value.Minutes.ToString();
-					case TimeSpanConverterMethod.Hours: return value.Value.Hours.ToString();
-					case TimeSpanConverterMethod.Days: return value.Value.Days.ToString();
-					case TimeSpanConverterMethod.TotalMilliseconds: return ((int)value.Value.TotalMilliseconds).ToString();
-					case TimeSpanConverterMethod.TotalSeconds: return ((int)value.Value.TotalSeconds).ToString();
-					case TimeSpanConverterMethod.TotalMinutes: return ((int)value.Value.TotalMinutes).ToString();
-					case TimeSpanConverterMethod.TotalHours: return ((int)value.Value.TotalHours).ToString();
-					case TimeSpanConverterMethod.TotalDays: return ((int)value.Value.TotalDays).ToString();
-					case TimeSpanConverterMethod.Format: return value.Value.ToStringInvariant(parameter);
-					default: throw Throw.InvalidEnumArgument(nameof(Method), Method);
-				}
+					TimeSpanConverterMethod.Milliseconds => value.Value.Milliseconds.ToString(),
+					TimeSpanConverterMethod.Seconds => value.Value.Seconds.ToString(),
+					TimeSpanConverterMethod.Minutes => value.Value.Minutes.ToString(),
+					TimeSpanConverterMethod.Hours => value.Value.Hours.ToString(),
+					TimeSpanConverterMethod.Days => value.Value.Days.ToString(),
+					TimeSpanConverterMethod.TotalMilliseconds => ((int)value.Value.TotalMilliseconds).ToString(),
+					TimeSpanConverterMethod.TotalSeconds => ((int)value.Value.TotalSeconds).ToString(),
+					TimeSpanConverterMethod.TotalMinutes => ((int)value.Value.TotalMinutes).ToString(),
+					TimeSpanConverterMethod.TotalHours => ((int)value.Value.TotalHours).ToString(),
+					TimeSpanConverterMethod.TotalDays => ((int)value.Value.TotalDays).ToString(),
+					TimeSpanConverterMethod.Format => value.Value.ToStringInvariant(parameter),
+					_ => throw Throw.InvalidEnumArgument(nameof(Method), Method)
+				};
 			}
 		}
 	}

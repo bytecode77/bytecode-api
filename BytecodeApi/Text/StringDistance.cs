@@ -90,7 +90,7 @@ namespace BytecodeApi.Text
 						int cost = (strA[x - 1] == strB[y - 1]) ? 0 : 1;
 						int insertion = matrix[x, y - 1] + 1;
 						int deletion = matrix[x - 1, y] + 1;
-						int substitution = matrix[x - 1, y - 1] + cost;
+						int substitution = matrix[x - 1, y - 1];
 
 						if (damerau)
 						{

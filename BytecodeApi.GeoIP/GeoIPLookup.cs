@@ -28,30 +28,29 @@ namespace BytecodeApi.GeoIP
 
 		static GeoIPLookup()
 		{
-			using (BinaryReader reader = new BinaryReader(new MemoryStream(Compression.Decompress(Resources.GeoIP)), Encoding.UTF8))
+			using BinaryReader reader = new BinaryReader(new MemoryStream(Compression.Decompress(Resources.GeoIP)), Encoding.UTF8);
+
+			DatabaseTimeStamp = new DateTime(reader.ReadInt64());
+			Country[] countries = new Country[reader.ReadByte()];
+			Ranges = new IPRange[reader.ReadInt32()];
+			Ranges6 = new IPRange6[reader.ReadInt32()];
+
+			for (int i = 0; i < countries.Length; i++)
 			{
-				DatabaseTimeStamp = new DateTime(reader.ReadInt64());
-				Country[] countries = new Country[reader.ReadByte()];
-				Ranges = new IPRange[reader.ReadInt32()];
-				Ranges6 = new IPRange6[reader.ReadInt32()];
-
-				for (int i = 0; i < countries.Length; i++)
-				{
-					countries[i] = new Country(reader.ReadString(), ReadTwoCharacterCode(), reader.ReadString(), ReadTwoCharacterCode(), reader.ReadBoolean());
-				}
-				for (int i = 0; i < Ranges.Length; i++)
-				{
-					Ranges[i] = new IPRange(countries[reader.ReadByte()], reader.ReadUInt32(), reader.ReadUInt32());
-				}
-				for (int i = 0; i < Ranges6.Length; i++)
-				{
-					Ranges6[i] = new IPRange6(countries[reader.ReadByte()], reader.ReadBytes(16), reader.ReadBytes(16));
-				}
-
-				Countries = countries.ToReadOnlyCollection();
-
-				string ReadTwoCharacterCode() => new[] { (char)reader.ReadByte(), (char)reader.ReadByte() }.AsString();
+				countries[i] = new Country(reader.ReadString(), ReadTwoCharacterCode(), reader.ReadString(), ReadTwoCharacterCode(), reader.ReadBoolean());
 			}
+			for (int i = 0; i < Ranges.Length; i++)
+			{
+				Ranges[i] = new IPRange(countries[reader.ReadByte()], reader.ReadUInt32(), reader.ReadUInt32());
+			}
+			for (int i = 0; i < Ranges6.Length; i++)
+			{
+				Ranges6[i] = new IPRange6(countries[reader.ReadByte()], reader.ReadBytes(16), reader.ReadBytes(16));
+			}
+
+			Countries = countries.ToReadOnlyCollection();
+
+			string ReadTwoCharacterCode() => new[] { (char)reader.ReadByte(), (char)reader.ReadByte() }.AsString();
 		}
 
 		/// <summary>

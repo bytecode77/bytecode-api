@@ -12,6 +12,7 @@ namespace BytecodeApi.IO.Cli
 	[DebuggerDisplay(CSharp.DebuggerDisplayString)]
 	public sealed class ParsedOption
 	{
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string DebuggerDisplay => CSharp.DebuggerDisplay<ParsedOption>("Option = {0}, Values = {1}", new QuotedString(Option.Arguments.First()), Values.Count == 1 ? (object)new QuotedString(Values.First()) : Values.ToArray());
 		/// <summary>
 		/// Gets a reference to the associated <see cref="Cli.Option" /> this <see cref="ParsedOption" /> is associated with.

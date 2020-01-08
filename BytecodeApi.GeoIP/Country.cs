@@ -10,6 +10,7 @@ namespace BytecodeApi.GeoIP
 	[DebuggerDisplay(CSharp.DebuggerDisplayString)]
 	public sealed class Country : IEquatable<Country>
 	{
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string DebuggerDisplay => CSharp.DebuggerDisplay<Country>("Name = {0} ({1}), Continent = {2} ({3}), EuropeanUnion = {4}", new QuotedString(Name), IsoCode, new QuotedString(Continent), ContinentIsoCode, EuropeanUnion);
 		/// <summary>
 		/// Gets the name of the country.

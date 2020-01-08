@@ -13,6 +13,7 @@ namespace BytecodeApi.IO.SystemInfo
 	[DebuggerDisplay(CSharp.DebuggerDisplayString)]
 	public sealed class InstalledSoftwareInfo
 	{
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string DebuggerDisplay => CSharp.DebuggerDisplay<InstalledSoftwareInfo>("Name = {0}, Publisher = {1}, Version = {2}", new QuotedString(Name), new QuotedString(Publisher), new QuotedString(Version));
 		/// <summary>
 		/// Gets the name of the software, or <see langword="null" />, if it cannot be retrieved.

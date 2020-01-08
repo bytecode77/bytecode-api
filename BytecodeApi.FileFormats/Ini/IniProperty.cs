@@ -10,6 +10,7 @@ namespace BytecodeApi.FileFormats.Ini
 	[DebuggerDisplay(CSharp.DebuggerDisplayString)]
 	public sealed class IniProperty
 	{
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string DebuggerDisplay => CSharp.DebuggerDisplay<IniProperty>("Name = {0}, Value = {1}", new QuotedString(Name), new QuotedString(Value));
 		/// <summary>
 		/// Gets or sets the name of this INI property.

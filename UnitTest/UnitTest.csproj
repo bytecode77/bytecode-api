@@ -52,10 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BytecodeApiTests.cs" />
-    <Compile Include="FileFormatsTests.cs" />
     <Compile Include="CryptographyTests.cs" />
-    <Compile Include="GeoIPCityTests.cs" />
-    <Compile Include="GeoIPAsnTests.cs" />
     <Compile Include="GeoIPTests.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

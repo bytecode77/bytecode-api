@@ -10,6 +10,7 @@ namespace BytecodeApi.GeoIP.City
 	[DebuggerDisplay(CSharp.DebuggerDisplayString)]
 	public sealed class City : IEquatable<City>
 	{
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string DebuggerDisplay => CSharp.DebuggerDisplay<City>("Name = {0}, Subdivision1: {1} ({2})", new QuotedString(Name), new QuotedString(Subdivision1Name), Subdivision1IsoCode);
 		/// <summary>
 		/// Gets the <see cref="GeoIP.Country" /> reference associated with this <see cref="City" />.

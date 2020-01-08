@@ -14,6 +14,7 @@ namespace BytecodeApi.IO.Cli
 	[DebuggerDisplay(CSharp.DebuggerDisplayString)]
 	public sealed class ParsedOptionSet
 	{
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string DebuggerDisplay => CSharp.DebuggerDisplay<ParsedOptionSet>("Arguments: {0}, Options: {1}", Arguments.Count, Options.Count);
 		/// <summary>
 		/// Gets a <see cref="string" /> collection with arguments that are not associated to any <see cref="Option" />. These are the first arguments before any option parameter, e.g. anything before "-a".

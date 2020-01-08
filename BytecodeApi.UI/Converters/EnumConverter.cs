@@ -37,14 +37,14 @@ namespace BytecodeApi.UI.Converters
 			}
 			else
 			{
-				switch (Method)
+				return Method switch
 				{
-					case EnumConverterMethod.String: return value.ToString();
-					case EnumConverterMethod.Description: return value.GetDescription();
-					case EnumConverterMethod.DescriptionOrString: return value.GetDescriptionOrString();
-					case EnumConverterMethod.Value: return System.Convert.ToInt32(value);
-					default: throw Throw.InvalidEnumArgument(nameof(Method), Method);
-				}
+					EnumConverterMethod.String => value.ToString(),
+					EnumConverterMethod.Description => value.GetDescription(),
+					EnumConverterMethod.DescriptionOrString => value.GetDescriptionOrString(),
+					EnumConverterMethod.Value => System.Convert.ToInt32(value),
+					_ => throw Throw.InvalidEnumArgument(nameof(Method), Method)
+				};
 			}
 		}
 	}

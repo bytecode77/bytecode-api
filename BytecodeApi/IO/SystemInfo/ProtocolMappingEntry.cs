@@ -15,6 +15,7 @@ namespace BytecodeApi.IO.SystemInfo
 	[DebuggerDisplay(CSharp.DebuggerDisplayString)]
 	public sealed class ProtocolMappingEntry
 	{
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string DebuggerDisplay => CSharp.DebuggerDisplay<ProtocolMappingEntry>("Protocol = {0}, Port = {1}, Name = {2}", Protocol, Port, new QuotedString(Name));
 		private static readonly Regex ServicesFileRegex = new Regex(@"(.*) +([0-9]+)\/(tcp|udp)", RegexOptions.IgnoreCase);
 		/// <summary>
