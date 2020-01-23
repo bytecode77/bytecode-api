@@ -53,6 +53,8 @@
     <Compile Include="Controls\TreeViewItemService.cs" />
     <Compile Include="Controls\WatermarkAdorner.cs" />
     <Compile Include="Controls\WatermarkService.cs" />
+    <Compile Include="Converters\TypeConverterMethod.cs" />
+    <Compile Include="Converters\TypeConverter.cs" />
     <Compile Include="Converters\ByteSizeConverter.cs" />
     <Compile Include="Converters\BooleanMathConverter.cs" />
     <Compile Include="Converters\BooleanMathConverterMethod.cs" />
