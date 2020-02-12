@@ -10,7 +10,7 @@ namespace BytecodeApi.UI.Mathematics
 	/// </summary>
 	public class Deferrer : IDisposable
 	{
-		private readonly DispatcherTimer UpdateTimer;
+		private readonly DispatcherTimer Timer;
 		private DateTime LastInvocation;
 		private Action LastAction;
 		/// <summary>
@@ -35,7 +35,7 @@ namespace BytecodeApi.UI.Mathematics
 			Delay = delay;
 			IsEnabled = true;
 
-			UpdateTimer = ThreadFactory.StartDispatcherTimer(() =>
+			Timer = ThreadFactory.StartDispatcherTimer(() =>
 			{
 				if (IsEnabled && DateTime.Now - LastInvocation > Delay)
 				{
@@ -74,7 +74,7 @@ namespace BytecodeApi.UI.Mathematics
 		/// </summary>
 		public void Dispose()
 		{
-			UpdateTimer.Stop();
+			Timer.Stop();
 		}
 
 		/// <summary>
