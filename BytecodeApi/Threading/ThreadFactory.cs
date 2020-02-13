@@ -67,10 +67,12 @@ namespace BytecodeApi.Threading
 						exceptionHandler(ex);
 					}
 				}
-			});
+			})
+			{
+				IsBackground = true,
+				Priority = priority
+			};
 
-			thread.IsBackground = true;
-			thread.Priority = priority;
 			thread.SetApartmentState(ApartmentState.STA);
 			thread.Start();
 			return thread;

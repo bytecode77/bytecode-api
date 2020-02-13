@@ -32,6 +32,41 @@ namespace BytecodeApi.UI.Extensions
 			return (T)dependencyObject.GetValue(dependencyProperty);
 		}
 		/// <summary>
+		/// Returns an array with all parents of this <see cref="DependencyObject" /> matching the specified type by traversing either the visual or the logical tree.
+		/// </summary>
+		/// <param name="dependencyObject">The <see cref="DependencyObject" /> to traverse the tree from.</param>
+		/// <param name="treeType">A <see cref="UITreeType" /> value indicating whether to use the <see cref="LogicalTreeHelper" /> or the <see cref="VisualTreeHelper" />.</param>
+		/// <returns>
+		/// An array with all parents of this <see cref="DependencyObject" />, depending on <paramref name="treeType" />.
+		/// </returns>
+		public static DependencyObject[] GetParents(this DependencyObject dependencyObject, UITreeType treeType)
+		{
+			Check.ArgumentNull(dependencyObject, nameof(dependencyObject));
+
+			List<DependencyObject> result = new List<DependencyObject>();
+
+			while (dependencyObject != null)
+			{
+				DependencyObject parent;
+				switch (treeType)
+				{
+					case UITreeType.Logical:
+						parent = LogicalTreeHelper.GetParent(dependencyObject);
+						break;
+					case UITreeType.Visual:
+						parent = VisualTreeHelper.GetParent(dependencyObject);
+						break;
+					default:
+						throw Throw.InvalidEnumArgument(nameof(treeType), treeType);
+				}
+
+				if (parent != null) result.Add(parent);
+				dependencyObject = parent;
+			}
+
+			return result.ToArray();
+		}
+		/// <summary>
 		/// Tries to find the closest parent of this <see cref="DependencyObject" /> matching the specified type by traversing either the visual or the logical tree.
 		/// </summary>
 		/// <typeparam name="T">The explicit type of the parent to search for.</typeparam>
