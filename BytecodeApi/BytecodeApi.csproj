@@ -62,6 +62,8 @@
     <Compile Include="Comparers\DelegateEqualityComparer.cs" />
     <Compile Include="Comparers\DelegateComparer.cs" />
     <Compile Include="Comparers\SpecialStringComparer.cs" />
+    <Compile Include="Data\ObjectEventArgs.cs" />
+    <Compile Include="Data\ObjectEventHandler.cs" />
     <Compile Include="Extensions\Collections\BitArrayExtensions.cs" />
     <Compile Include="Extensions\IconExtensions.cs" />
     <Compile Include="Extensions\BitmapEncoderExtensions.cs" />
