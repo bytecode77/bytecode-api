@@ -39,7 +39,9 @@ namespace BytecodeApi.UI.Converters
 		/// </summary>
 		/// <param name="value">The <see cref="object" /> value, of which to convert its <see cref="Type" />.</param>
 		/// <param name="parameter">A parameter <see cref="Type" /> that specifies the parameter used in the <see cref="TypeConverterMethod" /> methods.</param>
-		/// <returns></returns>
+		/// <returns>
+		/// An <see cref="object" /> with the result of the conversion.
+		/// </returns>
 		public override object Convert(object value, Type parameter)
 		{
 			bool result;
