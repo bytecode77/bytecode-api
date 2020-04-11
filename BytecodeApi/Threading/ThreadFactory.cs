@@ -12,7 +12,7 @@ namespace BytecodeApi.Threading
 	public static class ThreadFactory
 	{
 		/// <summary>
-		/// Creates a new <see cref="Thread" /> with the STA apartment state and starts it. All <see cref="ThreadAbortException" /> exceptions are caught.
+		/// Creates a new background <see cref="Thread" /> with the STA apartment state and starts it. <see cref="ThreadAbortException" /> exceptions are swallowed.
 		/// </summary>
 		/// <param name="action">The <see cref="Action" /> to be invoked from the new <see cref="Thread" />.</param>
 		/// <returns>
@@ -23,7 +23,7 @@ namespace BytecodeApi.Threading
 			return StartThread(action, null);
 		}
 		/// <summary>
-		/// Creates a new <see cref="Thread" /> with the STA apartment state and starts it. All <see cref="ThreadAbortException" /> exceptions are caught.
+		/// Creates a new background <see cref="Thread" /> with the STA apartment state and starts it. <see cref="ThreadAbortException" /> exceptions are swallowed.
 		/// </summary>
 		/// <param name="action">The <see cref="Action" /> to be invoked from the new <see cref="Thread" />.</param>
 		/// <param name="exceptionHandler">An <see cref="Action{T}" /> that is called by the exception handler. If <see langword="null" />, the exception is rethrown. Use <see langword="delegate" /> { } to swallow exceptions. The stack trace prior to thread creation will be appended.</param>
@@ -31,6 +31,19 @@ namespace BytecodeApi.Threading
 		/// The <see cref="Thread" /> this method creates.
 		/// </returns>
 		public static Thread StartThread(Action action, Action<Exception> exceptionHandler)
+		{
+			return StartThread(action, exceptionHandler, ThreadPriority.Normal);
+		}
+		/// <summary>
+		/// Creates a new background <see cref="Thread" /> with the STA apartment state and starts it. <see cref="ThreadAbortException" /> exceptions are swallowed.
+		/// </summary>
+		/// <param name="action">The <see cref="Action" /> to be invoked from the new <see cref="Thread" />.</param>
+		/// <param name="exceptionHandler">An <see cref="Action{T}" /> that is called by the exception handler. If <see langword="null" />, the exception is rethrown. Use <see langword="delegate" /> { } to swallow exceptions. The stack trace prior to thread creation will be appended.</param>
+		/// <param name="priority">The <see cref="ThreadPriority" /> for the new <see cref="Thread" />.</param>
+		/// <returns>
+		/// The <see cref="Thread" /> this method creates.
+		/// </returns>
+		public static Thread StartThread(Action action, Action<Exception> exceptionHandler, ThreadPriority priority)
 		{
 			Check.ArgumentNull(action, nameof(action));
 
@@ -54,7 +67,11 @@ namespace BytecodeApi.Threading
 						exceptionHandler(ex);
 					}
 				}
-			});
+			})
+			{
+				IsBackground = true,
+				Priority = priority
+			};
 
 			thread.SetApartmentState(ApartmentState.STA);
 			thread.Start();

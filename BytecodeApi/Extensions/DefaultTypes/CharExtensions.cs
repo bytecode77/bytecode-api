@@ -55,6 +55,18 @@ namespace BytecodeApi.Extensions
 			return char.IsControl(value);
 		}
 		/// <summary>
+		/// Indicates whether this <see langword="char" /> is categorized as a decimal.
+		/// </summary>
+		/// <param name="value">The unicode character to evaluate.</param>
+		/// <returns>
+		/// <see langword="true" />, if <paramref name="value" /> is a decimal;
+		/// otherwise, <see langword="false" />.
+		/// </returns>
+		public static bool IsDigit(this char value)
+		{
+			return char.IsDigit(value);
+		}
+		/// <summary>
 		/// Indicates whether this <see langword="char" /> is a high surrogate.
 		/// </summary>
 		/// <param name="value">The unicode character to evaluate.</param>
