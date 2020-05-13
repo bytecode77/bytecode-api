@@ -120,7 +120,6 @@
     <Compile Include="IO\SystemInfo\HostsFileEntry.cs" />
     <Compile Include="IO\SystemInfo\InstalledSoftwareInfo.cs" />
     <Compile Include="IO\Compression.cs" />
-    <Compile Include="SingletonCollection.cs" />
     <Compile Include="KnownBrowser.cs" />
     <Compile Include="IO\Http\HttpException.cs" />
     <Compile Include="IO\TransferCallback.cs" />

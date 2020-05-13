@@ -82,7 +82,7 @@ namespace BytecodeApi.IO.Interop
 
 			typeBuilder
 				.DefinePInvokeMethod(name, DllName, name, MethodAttributes.Static | MethodAttributes.Public, CallingConventions.Standard, returnType, parameterTypes, callingConvention, charSet)
-				.SetCustomAttribute(new CustomAttributeBuilder(typeof(DllImportAttribute).GetConstructor(SingletonCollection.Array(typeof(string))), SingletonCollection.Array(DllName)));
+				.SetCustomAttribute(new CustomAttributeBuilder(typeof(DllImportAttribute).GetConstructor(new[] { typeof(string) }), new[] { DllName }));
 
 			return typeBuilder.CreateType().GetMethod(name, BindingFlags.Static | BindingFlags.Public);
 		}

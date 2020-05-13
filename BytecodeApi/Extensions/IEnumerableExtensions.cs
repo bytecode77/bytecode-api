@@ -662,7 +662,7 @@ namespace BytecodeApi.Extensions
 		{
 			Check.ArgumentNull(first, nameof(first));
 
-			return first.Except(SingletonCollection.List(second), comparer);
+			return first.Except(new List<TSource> { second }, comparer);
 		}
 		/// <summary>
 		/// Splits up a sequence into chunks with the specified size. Each chunk is an <see cref="IEnumerable{T}" />, containing a maximum number of elements according to <paramref name="chunkSize" />. The last chunk may contain less elements than specified <paramref name="chunkSize" />.

@@ -805,7 +805,7 @@ namespace BytecodeApi.Extensions
 
 			if (str.Length <= chunkSize)
 			{
-				return SingletonCollection.Array(str);
+				return new[] { str };
 			}
 			else
 			{
