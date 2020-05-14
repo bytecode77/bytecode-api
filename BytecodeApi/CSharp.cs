@@ -591,5 +591,21 @@ namespace BytecodeApi
 		{
 			return objA?.GetType() == objB?.GetType();
 		}
+
+		/// <summary>
+		/// Invokes an <see cref="Action" /> and measures the time until <paramref name="action" /> returned.
+		/// </summary>
+		/// <param name="action">The <see cref="Action" /> to be invoked.</param>
+		/// <returns>
+		/// A <see cref="TimeSpan" /> value with the time <paramref name="action" /> took to return.
+		/// </returns>
+		public static TimeSpan MeasureTime(Action action)
+		{
+			Stopwatch stopwatch = ThreadFactory.StartStopwatch();
+			action();
+			stopwatch.Stop();
+
+			return stopwatch.Elapsed;
+		}
 	}
 }

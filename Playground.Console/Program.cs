@@ -56,12 +56,9 @@ namespace Playground.Console
 		[STAThread]
 		public static void Main(string[] args)
 		{
-			Stopwatch stopwatch = ThreadFactory.StartStopwatch();
+			Action test = Test1;
 
-			Test1();
-
-			stopwatch.Stop();
-			WriteLine("Time elapsed: " + stopwatch.ElapsedMilliseconds);
+			WriteLine("Time elapsed: " + (int)CSharp.MeasureTime(test).TotalMilliseconds);
 			ReadKey();
 		}
 
