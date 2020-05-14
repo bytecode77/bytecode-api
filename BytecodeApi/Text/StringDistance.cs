@@ -94,7 +94,7 @@ namespace BytecodeApi.Text
 
 						if (damerau)
 						{
-							int distance = Math.Min(insertion, Math.Min(deletion, substitution));
+							int distance = Math.Min(insertion, Math.Min(deletion, substitution + cost));
 
 							if (x > 1 && y > 1 && strA[x - 1] == strB[y - 2] && strA[x - 2] == strB[y - 1])
 							{
