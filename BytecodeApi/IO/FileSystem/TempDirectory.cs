@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 
-namespace BytecodeApi.IO.SystemInfo
+namespace BytecodeApi.IO.FileSystem
 {
 	/// <summary>
 	/// Helper class for interoperability with the current user's temporary folder.
