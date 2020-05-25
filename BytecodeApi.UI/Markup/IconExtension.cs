@@ -8,6 +8,7 @@ namespace BytecodeApi.UI.Markup
 	/// <summary>
 	/// Implements icon support for .NET Framework XAML Services.
 	/// </summary>
+	[MarkupExtensionReturnType(typeof(BitmapFrame))]
 	public sealed class IconExtension : MarkupExtension
 	{
 		/// <summary>

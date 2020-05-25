@@ -6,6 +6,7 @@ namespace BytecodeApi.UI.Markup
 	/// <summary>
 	/// Implements <see cref="uint" /> support for .NET Framework XAML Services.
 	/// </summary>
+	[MarkupExtensionReturnType(typeof(uint))]
 	public sealed class UInt32Extension : MarkupExtension
 	{
 		/// <summary>

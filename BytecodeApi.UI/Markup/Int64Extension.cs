@@ -6,6 +6,7 @@ namespace BytecodeApi.UI.Markup
 	/// <summary>
 	/// Implements <see cref="long" /> support for .NET Framework XAML Services.
 	/// </summary>
+	[MarkupExtensionReturnType(typeof(long))]
 	public sealed class Int64Extension : MarkupExtension
 	{
 		/// <summary>

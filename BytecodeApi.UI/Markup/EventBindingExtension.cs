@@ -10,6 +10,7 @@ namespace BytecodeApi.UI.Markup
 	/// <summary>
 	/// Implements event binding to <see cref="ICommand" /> objects support for .NET Framework XAML Services.
 	/// </summary>
+	[MarkupExtensionReturnType(typeof(Delegate))]
 	public sealed class EventBindingExtension : MarkupExtension
 	{
 		private static readonly MethodInfo EventHandlerImplMethod = typeof(EventBindingExtension).GetMethod(nameof(EventHandlerImpl), new[] { typeof(object), typeof(string) });

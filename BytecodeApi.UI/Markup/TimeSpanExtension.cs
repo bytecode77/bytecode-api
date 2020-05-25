@@ -6,6 +6,7 @@ namespace BytecodeApi.UI.Markup
 	/// <summary>
 	/// Implements <see cref="TimeSpan" /> support for .NET Framework XAML Services.
 	/// </summary>
+	[MarkupExtensionReturnType(typeof(TimeSpan))]
 	public sealed class TimeSpanExtension : MarkupExtension
 	{
 		/// <summary>

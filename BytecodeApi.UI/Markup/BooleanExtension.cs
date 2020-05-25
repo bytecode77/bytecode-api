@@ -6,6 +6,7 @@ namespace BytecodeApi.UI.Markup
 	/// <summary>
 	/// Implements <see cref="bool" /> support for .NET Framework XAML Services.
 	/// </summary>
+	[MarkupExtensionReturnType(typeof(bool))]
 	public sealed class BooleanExtension : MarkupExtension
 	{
 		/// <summary>

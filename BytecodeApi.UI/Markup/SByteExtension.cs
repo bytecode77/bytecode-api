@@ -6,6 +6,7 @@ namespace BytecodeApi.UI.Markup
 	/// <summary>
 	/// Implements <see cref="sbyte" /> support for .NET Framework XAML Services.
 	/// </summary>
+	[MarkupExtensionReturnType(typeof(sbyte))]
 	public sealed class SByteExtension : MarkupExtension
 	{
 		/// <summary>

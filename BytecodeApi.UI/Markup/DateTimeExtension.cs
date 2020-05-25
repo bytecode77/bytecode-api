@@ -6,6 +6,7 @@ namespace BytecodeApi.UI.Markup
 	/// <summary>
 	/// Implements <see cref="DateTime" /> support for .NET Framework XAML Services.
 	/// </summary>
+	[MarkupExtensionReturnType(typeof(DateTime))]
 	public sealed class DateTimeExtension : MarkupExtension
 	{
 		/// <summary>
