@@ -10,6 +10,18 @@ namespace BytecodeApi.IO.FileSystem
 	public static class TempDirectory
 	{
 		/// <summary>
+		/// Creates a subdirectory in the current user's temporary folder named by a <see cref="Guid" /> with the <see cref="GuidFormat.Braces" /> format. The subdirectory is created with <see cref="FileAttributes.NotContentIndexed" />.
+		/// </summary>
+		/// <returns>
+		/// A <see cref="string" /> value with the full path to the created directory.
+		/// </returns>
+		public static string CreateDirectory()
+		{
+			string path = Path.Combine(Path.GetTempPath(), Create.Guid(GuidFormat.Braces));
+			Directory.CreateDirectory(path).Attributes |= FileAttributes.NotContentIndexed;
+			return path;
+		}
+		/// <summary>
 		/// Creates a file in the current user's temporary folder with the specified filename and writes the value of <paramref name="content" /> to it. The file is created in a subdirectory named by a <see cref="Guid" /> with the <see cref="GuidFormat.Braces" /> format. The subdirectory is created with <see cref="FileAttributes.NotContentIndexed" /> and the file's attributes are set to <see cref="FileAttributes.NotContentIndexed" /> | <see cref="FileAttributes.Temporary" />.
 		/// </summary>
 		/// <param name="fileName">A <see cref="string" /> value specifying the filename.</param>
@@ -22,10 +34,7 @@ namespace BytecodeApi.IO.FileSystem
 			Check.ArgumentNull(fileName, nameof(fileName));
 			Check.ArgumentNull(content, nameof(content));
 
-			string path = Path.Combine(Path.GetTempPath(), Create.Guid(GuidFormat.Braces));
-			Directory.CreateDirectory(path).Attributes |= FileAttributes.NotContentIndexed;
-
-			path = Path.Combine(path, fileName);
+			string path = Path.Combine(CreateDirectory(), fileName);
 			File.WriteAllBytes(path, content);
 			new FileInfo(path).Attributes |= FileAttributes.NotContentIndexed | FileAttributes.Temporary;
 			return path;
