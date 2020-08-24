@@ -147,16 +147,21 @@ namespace BytecodeApi.IO.Http
 		private protected abstract HttpWebRequest GetWebRequest();
 		private protected HttpWebRequest CreateRequest(string method)
 		{
-			string requestUrl = Url;
+			string requestUrl;
+
 			if (QueryParameters.Any())
 			{
-				UriBuilder builder = new UriBuilder(Url) { Port = -1 };
+				UriBuilder builder = new UriBuilder(Url);
 
 				NameValueCollection query = HttpUtility.ParseQueryString(builder.Query);
 				foreach (HttpParameter parameter in QueryParameters) query.Add(parameter.Key, parameter.Value);
 				builder.Query = query.ToString();
 
 				requestUrl = builder.ToString();
+			}
+			else
+			{
+				requestUrl = Url;
 			}
 
 			HttpWebRequest webRequest = WebRequest.CreateHttp(requestUrl);
