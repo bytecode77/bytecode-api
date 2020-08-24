@@ -38,6 +38,56 @@ namespace BytecodeApi.IO.Http
 		}
 
 		/// <summary>
+		/// Sends the HTTP request and writes the response into <paramref name="stream" />. Throws a <see cref="HttpException" />, if the request failed.
+		/// </summary>
+		/// <param name="stream">A <see cref="Stream" /> to write the response into.</param>
+		public void Read(Stream stream)
+		{
+			Read(stream, null);
+		}
+		/// <summary>
+		/// Sends the HTTP request and writes the response into <paramref name="stream" />. Throws a <see cref="HttpException" />, if the request failed.
+		/// </summary>
+		/// <param name="stream">A <see cref="Stream" /> to write the response into.</param>
+		/// <param name="callback">The method that is called periodically while binary data is transferred, or <see langword="null" />.</param>
+		public void Read(Stream stream, TransferCallback callback)
+		{
+			Try(() =>
+			{
+				using WebResponse response = GetWebRequest().GetResponse();
+				using Stream responseStream = response.GetResponseStream();
+
+				byte[] buffer = new byte[4096];
+				int bytesRead;
+				long totalBytesRead = 0;
+				long callbackBytesRead = 0;
+				Stopwatch stopwatch = ThreadFactory.StartStopwatch();
+
+				do
+				{
+					bytesRead = responseStream.Read(buffer);
+					totalBytesRead += bytesRead;
+					stream.Write(buffer, 0, bytesRead);
+
+					if (callback != null)
+					{
+						callbackBytesRead += bytesRead;
+						if (stopwatch.Elapsed > TimeSpan.FromMilliseconds(100))
+						{
+							stopwatch.Restart();
+							callback(callbackBytesRead, totalBytesRead);
+							callbackBytesRead = 0;
+						}
+					}
+				}
+				while (bytesRead > 0);
+
+				if (callback != null && callbackBytesRead > 0) callback(callbackBytesRead, totalBytesRead);
+
+				return new object();
+			});
+		}
+		/// <summary>
 		/// Sends the HTTP request, reads the response and returns a <see cref="string" /> with the content. Throws a <see cref="HttpException" />, if the request failed.
 		/// </summary>
 		/// <returns>
@@ -71,40 +121,27 @@ namespace BytecodeApi.IO.Http
 		/// </returns>
 		public byte[] ReadBytes(TransferCallback callback)
 		{
-			return Try(() =>
-			{
-				using WebResponse response = GetWebRequest().GetResponse();
-				using Stream stream = response.GetResponseStream();
-				using MemoryStream memoryStream = new MemoryStream();
-
-				byte[] buffer = new byte[4096];
-				int bytesRead;
-				long totalBytesRead = 0;
-				long callbackBytesRead = 0;
-				Stopwatch stopwatch = ThreadFactory.StartStopwatch();
-
-				do
-				{
-					bytesRead = stream.Read(buffer);
-					totalBytesRead += bytesRead;
-					memoryStream.Write(buffer, 0, bytesRead);
-
-					if (callback != null)
-					{
-						callbackBytesRead += bytesRead;
-						if (stopwatch.Elapsed > TimeSpan.FromMilliseconds(100))
-						{
-							stopwatch.Restart();
-							callback(callbackBytesRead, totalBytesRead);
-							callbackBytesRead = 0;
-						}
-					}
-				}
-				while (bytesRead > 0);
-
-				if (callback != null && callbackBytesRead > 0) callback(callbackBytesRead, totalBytesRead);
-				return memoryStream.ToArray();
-			});
+			using MemoryStream memoryStream = new MemoryStream();
+			Read(memoryStream, callback);
+			return memoryStream.ToArray();
+		}
+		/// <summary>
+		/// Sends the HTTP request and writes the response into a file. Throws a <see cref="HttpException" />, if the request failed.
+		/// </summary>
+		/// <param name="path">A <see cref="string" /> specifying the path of a file to which the response is written to.</param>
+		public void ReadFile(string path)
+		{
+			ReadFile(path, null);
+		}
+		/// <summary>
+		/// Sends the HTTP request and writes the response into a file. Throws a <see cref="HttpException" />, if the request failed.
+		/// </summary>
+		/// <param name="path">A <see cref="string" /> specifying the path of a file to which the response is written to.</param>
+		/// <param name="callback">The method that is called periodically while binary data is transferred, or <see langword="null" />.</param>
+		public void ReadFile(string path, TransferCallback callback)
+		{
+			using FileStream stream = File.Create(path);
+			Read(stream, callback);
 		}
 
 		private protected abstract HttpWebRequest GetWebRequest();
