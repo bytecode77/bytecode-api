@@ -99,6 +99,19 @@ namespace BytecodeApi.IO.Http
 			return new HttpMultipartRequest(this, url);
 		}
 		/// <summary>
+		/// Creates a new HTTP HEAD request using the specified URL.
+		/// </summary>
+		/// <param name="url">The URL the request is sent to.</param>
+		/// <returns>
+		/// A new <see cref="HttpHeadRequest" /> object that represents the HTTP HEAD request.
+		/// </returns>
+		public HttpHeadRequest CreateHeadRequest(string url)
+		{
+			Check.ArgumentNull(url, nameof(url));
+
+			return new HttpHeadRequest(this, url);
+		}
+		/// <summary>
 		/// Removes all cookies from the underlying <see cref="System.Net.CookieContainer" />.
 		/// </summary>
 		public void ClearCookies()

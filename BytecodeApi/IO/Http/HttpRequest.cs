@@ -1,4 +1,4 @@
-﻿using BytecodeApi.Extensions;
+using BytecodeApi.Extensions;
 using BytecodeApi.Threading;
 using System;
 using System.Collections.Generic;
@@ -129,7 +129,7 @@ namespace BytecodeApi.IO.Http
 			webRequest.CookieContainer = Client.UseCookies ? Client.CookieContainer : null;
 			return webRequest;
 		}
-		private static T Try<T>(Func<T> func)
+		protected internal static T Try<T>(Func<T> func)
 		{
 			try
 			{

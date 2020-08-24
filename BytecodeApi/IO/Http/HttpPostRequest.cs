@@ -17,10 +17,10 @@ namespace BytecodeApi.IO.Http
 		}
 
 		/// <summary>
-		/// Adds an HTTP GET parameter with the specified name and value to the HTTP POST request.
+		/// Adds a query parameter with the specified name and value to the HTTP POST request.
 		/// </summary>
-		/// <param name="name">The name of the GET parameter.</param>
-		/// <param name="value">The value of the GET parameter.</param>
+		/// <param name="name">The name of the query parameter.</param>
+		/// <param name="value">The value of the query parameter.</param>
 		/// <returns>
 		/// A reference to this instance after the operation has completed.
 		/// </returns>

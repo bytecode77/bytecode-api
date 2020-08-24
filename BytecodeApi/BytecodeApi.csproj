@@ -79,6 +79,7 @@
     <Compile Include="IO\Debugging\TraceDataInfo.cs" />
     <Compile Include="IO\Debugging\DelegateTraceListener.cs" />
     <Compile Include="IO\FileSystem\CompareDirectoryOptions.cs" />
+    <Compile Include="IO\Http\HttpHeadRequest.cs" />
     <Compile Include="IO\Http\HttpMultipartRequest.cs" />
     <Compile Include="IO\Http\HttpPostRequest.cs" />
     <Compile Include="IO\Http\HttpGetRequest.cs" />
@@ -86,6 +87,7 @@
     <Compile Include="IO\Http\HttpFile.cs" />
     <Compile Include="IO\Http\HttpParameter.cs" />
     <Compile Include="IO\Http\HttpClient.cs" />
+    <Compile Include="IO\Http\HttpResponseHeaders.cs" />
     <Compile Include="IO\IconHelper.cs" />
     <Compile Include="IO\Interop\GlobalAtom.cs" />
     <Compile Include="IO\Interop\CommandPrompt.cs" />
