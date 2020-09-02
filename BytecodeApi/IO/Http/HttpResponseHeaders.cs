@@ -6,7 +6,7 @@ namespace BytecodeApi.IO.Http
 	/// <summary>
 	/// Represents the headers of a HTTP request.
 	/// </summary>
-	public class HttpResponseHeaders
+	public sealed class HttpResponseHeaders
 	{
 		/// <summary>
 		/// Gets a <see cref="bool" /> value that indicates whether headers are supported.
