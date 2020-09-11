@@ -67,7 +67,14 @@ namespace BytecodeApi.UI
 		/// </returns>
 		public bool CheckInstanceRunning()
 		{
-			return !Mutex.WaitOne(0, false);
+			try
+			{
+				return !Mutex.WaitOne(0, false);
+			}
+			catch (AbandonedMutexException)
+			{
+				return false;
+			}
 		}
 		/// <summary>
 		/// Sends a notification to other running instances. The <see cref="Activated" /> event will be triggered in all instances, except the current.
