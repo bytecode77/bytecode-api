@@ -1,4 +1,9 @@
-﻿using System;
+﻿using BytecodeApi.Extensions;
+using BytecodeApi.Mathematics;
+using BytecodeApi.Threading;
+using System;
+using System.IO;
+using System.IO.Pipes;
 using System.Threading;
 using System.Windows;
 
@@ -11,10 +16,18 @@ namespace BytecodeApi.UI
 	{
 		private readonly Mutex Mutex;
 		private readonly HwndBroadcast Broadcast;
+		private readonly string PipeName;
+		private readonly NamedPipeServerStream Pipe;
+		private readonly Thread PipeThread;
+		private readonly int PipeIdentifier;
 		/// <summary>
 		/// Occurs when <see cref="SendActivationMessage" /> is called by another running instance.
 		/// </summary>
 		public event EventHandler Activated;
+		/// <summary>
+		/// Occurs when <see cref="SendMessage" /> is called by another running instance.
+		/// </summary>
+		public event EventHandler<string> MessageReceived;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="SingleInstance" /> class and registers a <see cref="System.Threading.Mutex" /> and a WindowMessage using the specified identifier.
@@ -26,8 +39,13 @@ namespace BytecodeApi.UI
 			Check.ArgumentEx.StringNotEmpty(identifier, nameof(identifier));
 
 			Mutex = new Mutex(false, "BAPI_SINGLE_INSTANCE_" + identifier);
-			Broadcast = new HwndBroadcast("SINGLE_INSTANCE_" + identifier);
+			Broadcast = new HwndBroadcast("BAPI_SINGLE_INSTANCE_BROADCAST_" + identifier);
 			Broadcast.Notified += Broadcast_Notified;
+
+			PipeName = "BAPI_SINGLE_INSTANCE_PIPE_" + identifier;
+			Pipe = new NamedPipeServerStream(PipeName, PipeDirection.In, NamedPipeServerStream.MaxAllowedServerInstances);
+			PipeThread = ThreadFactory.StartThread(PipeThreadFunc);
+			PipeIdentifier = MathEx.RandomNumberGenerator.GetInt32();
 		}
 		/// <summary>
 		/// Releases all resources used by the current instance of the <see cref="SingleInstance" /> class.
@@ -35,7 +53,10 @@ namespace BytecodeApi.UI
 		public void Dispose()
 		{
 			Mutex.Dispose();
+			Broadcast.Notified -= Broadcast_Notified;
 			Broadcast.Dispose();
+			PipeThread.Abort();
+			Pipe.Dispose();
 		}
 
 		/// <summary>
@@ -83,9 +104,43 @@ namespace BytecodeApi.UI
 		{
 			Broadcast.Notify();
 		}
+		/// <summary>
+		/// Sends a message to other running instances. The <see cref="MessageReceived" /> event will be triggered in all instances, except the current.
+		/// </summary>
+		public void SendMessage(string message)
+		{
+			Check.ArgumentNull(message, nameof(message));
+
+			using (NamedPipeClientStream client = new NamedPipeClientStream(".", PipeName, PipeDirection.Out))
+			{
+				client.Connect();
+
+				using (StreamWriter stream = new StreamWriter(client))
+				{
+					stream.WriteLine(PipeIdentifier + ":" + message);
+				}
+			}
+		}
 		private void Broadcast_Notified(object sender, EventArgs e)
 		{
 			OnActivated(EventArgs.Empty);
+		}
+		private void PipeThreadFunc()
+		{
+			while (true)
+			{
+				Pipe.WaitForConnection();
+				string message = new StreamReader(Pipe).ReadToEnd();
+				Pipe.Disconnect();
+
+				if (message.Contains(":") && message.SubstringUntil(":").ToInt32OrDefault() is int identifier)
+				{
+					message = message.SubstringFrom(":").Trim();
+
+					if (identifier == PipeIdentifier) SendMessage(message);
+					else OnMessageReceived(message);
+				}
+			}
 		}
 
 		/// <summary>
@@ -95,6 +150,14 @@ namespace BytecodeApi.UI
 		protected virtual void OnActivated(EventArgs e)
 		{
 			Activated?.Invoke(this, e);
+		}
+		/// <summary>
+		/// Raises the <see cref="MessageReceived" /> event.
+		/// </summary>
+		/// <param name="message">The message for the <see cref="MessageReceived" /> event.</param>
+		protected virtual void OnMessageReceived(string message)
+		{
+			MessageReceived?.Invoke(this, message);
 		}
 	}
 }

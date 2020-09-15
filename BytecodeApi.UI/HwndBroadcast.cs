@@ -33,7 +33,7 @@ namespace BytecodeApi.UI
 		/// </summary>
 		public void Dispose()
 		{
-			HwndSource?.Dispose();
+			HwndSource?.RemoveHook(WndProc);
 		}
 
 		/// <summary>
