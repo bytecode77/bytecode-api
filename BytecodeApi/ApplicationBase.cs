@@ -323,6 +323,14 @@ namespace BytecodeApi
 					}
 				}
 			);
+			/// <summary>
+			/// Gets a <see cref="bool" /> value indicating whether the current session is an RDP session.
+			/// </summary>
+			public static bool IsRdp => GetProperty
+			(
+				() => IsRdp,
+				() => Environment.GetEnvironmentVariable("SESSIONNAME").StartsWith("RDP-", StringComparison.OrdinalIgnoreCase)
+			);
 		}
 		/// <summary>
 		/// Provides information about the installed operating system.

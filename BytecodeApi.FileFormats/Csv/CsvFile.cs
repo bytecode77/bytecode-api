@@ -847,7 +847,7 @@ namespace BytecodeApi.FileFormats.Csv
 			Check.ArgumentNull(Delimiter, nameof(Delimiter));
 			Check.ArgumentEx.StringNotEmpty(Delimiter, nameof(Delimiter));
 
-			if (Headers != null) SaveRows(stream, SingletonCollection.Array(new CsvRow(Headers)), Delimiter, alwaysQuote, encoding, true);
+			if (Headers != null) SaveRows(stream, new[] { new CsvRow(Headers) }, Delimiter, alwaysQuote, encoding, true);
 			SaveRows(stream, Rows, Delimiter, alwaysQuote, encoding, leaveOpen);
 		}
 
@@ -857,7 +857,7 @@ namespace BytecodeApi.FileFormats.Csv
 			{
 				TextFieldType = FieldType.Delimited,
 				TrimWhiteSpace = true,
-				Delimiters = SingletonCollection.Array(delimiter)
+				Delimiters = new[] { delimiter }
 			};
 		}
 		private static IEnumerable<CsvRow> EnumerateTextFieldParser(TextFieldParser parser, bool ignoreEmptyLines)

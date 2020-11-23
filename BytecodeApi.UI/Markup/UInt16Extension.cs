@@ -6,6 +6,7 @@ namespace BytecodeApi.UI.Markup
 	/// <summary>
 	/// Implements <see cref="ushort" /> support for .NET Framework XAML Services.
 	/// </summary>
+	[MarkupExtensionReturnType(typeof(ushort))]
 	public sealed class UInt16Extension : MarkupExtension
 	{
 		/// <summary>

@@ -6,6 +6,7 @@ namespace BytecodeApi.UI.Markup
 	/// <summary>
 	/// Implements <see cref="ulong" /> support for .NET Framework XAML Services.
 	/// </summary>
+	[MarkupExtensionReturnType(typeof(ulong))]
 	public sealed class UInt64Extension : MarkupExtension
 	{
 		/// <summary>

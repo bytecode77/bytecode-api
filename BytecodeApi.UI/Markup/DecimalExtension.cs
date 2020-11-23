@@ -6,6 +6,7 @@ namespace BytecodeApi.UI.Markup
 	/// <summary>
 	/// Implements <see cref="decimal" /> support for .NET Framework XAML Services.
 	/// </summary>
+	[MarkupExtensionReturnType(typeof(decimal))]
 	public sealed class DecimalExtension : MarkupExtension
 	{
 		/// <summary>

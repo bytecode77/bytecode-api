@@ -168,7 +168,7 @@ namespace BytecodeApi.IO
 			AssertCanRead();
 
 			char value = Reader.ReadChar();
-			BytesRead += Encoding.GetByteCount(SingletonCollection.Array(value));
+			BytesRead += Encoding.GetByteCount(new[] { value });
 			return value;
 		}
 		/// <summary>
@@ -438,7 +438,7 @@ namespace BytecodeApi.IO
 			AssertCanWrite();
 
 			Writer.Write(value);
-			BytesWritten += Encoding.GetByteCount(SingletonCollection.Array(value));
+			BytesWritten += Encoding.GetByteCount(new[] { value });
 		}
 		/// <summary>
 		/// Writes a <see cref="decimal" /> value to the underlying <see cref="Stream" />.

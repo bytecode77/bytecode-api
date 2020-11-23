@@ -1,8 +1,7 @@
-﻿using BytecodeApi.IO.Http;
-using System;
+﻿using System;
 using System.Net;
 
-namespace BytecodeApi.IO
+namespace BytecodeApi.IO.Http
 {
 	/// <summary>
 	/// The exception that is thrown when a <see cref="HttpRequest" /> instance fails to process a request.
