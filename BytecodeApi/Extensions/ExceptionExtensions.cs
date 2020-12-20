@@ -38,7 +38,7 @@ namespace BytecodeApi.Extensions
 
 			do
 			{
-				stackTrace.Append(exception.GetType() + ": " + exception.Message);
+				stackTrace.AppendLine(exception.GetType() + ": " + exception.Message);
 				stackTrace.AppendLine(exception.StackTrace);
 				stackTrace.AppendLine();
 				count++;
