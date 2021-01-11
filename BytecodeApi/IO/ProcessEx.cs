@@ -182,6 +182,21 @@ namespace BytecodeApi.IO
 		/// </returns>
 		public static string ReadProcessOutput(string fileName, string arguments, bool inclueErrorStream)
 		{
+			return ReadProcessOutput(fileName, arguments, inclueErrorStream, false);
+
+		}
+		/// <summary>
+		/// Creates a <see cref="Process" />, reads the standard output stream and waits until the process has exited.
+		/// </summary>
+		/// <param name="fileName">The name of an application file to run in the process.</param>
+		/// <param name="arguments">Command-line arguments to pass when starting the process.</param>
+		/// <param name="inclueErrorStream"><see langword="true" /> to include the standard error stream; <see langword="false" /> to exclude it.</param>
+		/// <param name="hidden"><see langword="true" /> to hide the window of the process; <see langword="false" /> to show it.</param>
+		/// <returns>
+		/// The result <see cref="string" /> from the standard output stream of the process after it has exited.
+		/// </returns>
+		public static string ReadProcessOutput(string fileName, string arguments, bool inclueErrorStream, bool hidden)
+		{
 			Check.ArgumentNull(fileName, nameof(fileName));
 
 			StringBuilder result = new StringBuilder();
@@ -194,7 +209,9 @@ namespace BytecodeApi.IO
 					Arguments = arguments,
 					UseShellExecute = false,
 					RedirectStandardOutput = true,
-					RedirectStandardError = true
+					RedirectStandardError = true,
+					CreateNoWindow = hidden,
+					WindowStyle = hidden ? ProcessWindowStyle.Hidden : ProcessWindowStyle.Normal
 				},
 				EnableRaisingEvents = true
 			})
