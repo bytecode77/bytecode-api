@@ -149,9 +149,51 @@ namespace BytecodeApi.IO
 			}
 		}
 		/// <summary>
+		/// Creates a <see cref="Process" />, waits for the process to exit and returns its exit code.
+		/// </summary>
+		/// <param name="fileName">The name of an application file to run.</param>
+		/// <returns>
+		/// The exit code of the process, after it has exited.
+		/// </returns>
+		public static int Execute(string fileName)
+		{
+			return Execute(fileName, null);
+		}
+		/// <summary>
+		/// Creates a <see cref="Process" /> with commandline arguments, waits for the process to exit and returns its exit code.
+		/// </summary>
+		/// <param name="fileName">The name of an application file to run.</param>
+		/// <param name="arguments">Command-line arguments to pass when starting the process.</param>
+		/// <returns>
+		/// The exit code of the process, after it has exited.
+		/// </returns>
+		public static int Execute(string fileName, string arguments)
+		{
+			return Execute(fileName, arguments, -1).Value;
+		}
+		/// <summary>
+		/// Creates a <see cref="Process" /> with commandline arguments, waits for the process to exit and returns its exit code. If the process did not exit within the specified timeout period, <see langword="null" /> is returned.
+		/// </summary>
+		/// <param name="fileName">The name of an application file to run.</param>
+		/// <param name="arguments">Command-line arguments to pass when starting the process.</param>
+		/// <param name="timeout">The amount of time, in milliseconds, to wait for the process to exit.</param>
+		/// <returns>
+		/// The exit code of the process, if it has exited within the specified timeout period;
+		/// and <see langword="null" />, if the process did not exit.
+		/// </returns>
+		public static int? Execute(string fileName, string arguments, int timeout)
+		{
+			Check.ArgumentNull(fileName, nameof(fileName));
+
+			using (Process process = Process.Start(fileName, arguments))
+			{
+				return process.WaitForExit(timeout) ? process.ExitCode : (int?)null;
+			}
+		}
+		/// <summary>
 		/// Creates a <see cref="Process" />, reads the standard output stream and waits until the process has exited.
 		/// </summary>
-		/// <param name="fileName">The name of an application file to run in the process.</param>
+		/// <param name="fileName">The name of an application file to run.</param>
 		/// <returns>
 		/// The result <see cref="string" /> from the standard output stream of the process after it has exited.
 		/// </returns>
@@ -162,7 +204,7 @@ namespace BytecodeApi.IO
 		/// <summary>
 		/// Creates a <see cref="Process" />, reads the standard output stream and waits until the process has exited.
 		/// </summary>
-		/// <param name="fileName">The name of an application file to run in the process.</param>
+		/// <param name="fileName">The name of an application file to run.</param>
 		/// <param name="arguments">Command-line arguments to pass when starting the process.</param>
 		/// <returns>
 		/// The result <see cref="string" /> from the standard output stream of the process after it has exited.
@@ -174,7 +216,7 @@ namespace BytecodeApi.IO
 		/// <summary>
 		/// Creates a <see cref="Process" />, reads the standard output stream and waits until the process has exited.
 		/// </summary>
-		/// <param name="fileName">The name of an application file to run in the process.</param>
+		/// <param name="fileName">The name of an application file to run.</param>
 		/// <param name="arguments">Command-line arguments to pass when starting the process.</param>
 		/// <param name="inclueErrorStream"><see langword="true" /> to include the standard error stream; <see langword="false" /> to exclude it.</param>
 		/// <returns>
@@ -188,7 +230,7 @@ namespace BytecodeApi.IO
 		/// <summary>
 		/// Creates a <see cref="Process" />, reads the standard output stream and waits until the process has exited.
 		/// </summary>
-		/// <param name="fileName">The name of an application file to run in the process.</param>
+		/// <param name="fileName">The name of an application file to run.</param>
 		/// <param name="arguments">Command-line arguments to pass when starting the process.</param>
 		/// <param name="inclueErrorStream"><see langword="true" /> to include the standard error stream; <see langword="false" /> to exclude it.</param>
 		/// <param name="hidden"><see langword="true" /> to hide the window of the process; <see langword="false" /> to show it.</param>
