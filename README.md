@@ -176,7 +176,7 @@ BytecodeApi is fully documented using XML tags. The [online documentation](https
 
 ## Downloads
 
-[![](http://bytecode77.com/public/fileicons/zip.png) BytecodeApi 1.4.1.zip](https://bytecode77.com/downloads/BytecodeApi%201.4.1.zip)
+[![](http://bytecode77.com/public/fileicons/zip.png) BytecodeApi 1.4.2.zip](https://bytecode77.com/downloads/BytecodeApi%201.4.2.zip)
 
 ## Project Page
 
