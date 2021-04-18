@@ -172,6 +172,19 @@ namespace BytecodeApi.IO
 			return Execute(fileName, arguments, -1).Value;
 		}
 		/// <summary>
+		/// Creates a <see cref="Process" /> with commandline arguments, waits for the process to exit and returns its exit code.
+		/// </summary>
+		/// <param name="fileName">The name of an application file to run.</param>
+		/// <param name="arguments">Command-line arguments to pass when starting the process.</param>
+		/// <param name="runas"><see langword="true" /> to execute this file with the "runas" verb.</param>
+		/// <returns>
+		/// The exit code of the process, after it has exited.
+		/// </returns>
+		public static int Execute(string fileName, string arguments, bool runas)
+		{
+			return Execute(fileName, arguments, runas, -1).Value;
+		}
+		/// <summary>
 		/// Creates a <see cref="Process" /> with commandline arguments, waits for the process to exit and returns its exit code. If the process did not exit within the specified timeout period, <see langword="null" /> is returned.
 		/// </summary>
 		/// <param name="fileName">The name of an application file to run.</param>
@@ -183,9 +196,24 @@ namespace BytecodeApi.IO
 		/// </returns>
 		public static int? Execute(string fileName, string arguments, int timeout)
 		{
+			return Execute(fileName, arguments, false, timeout);
+		}
+		/// <summary>
+		/// Creates a <see cref="Process" /> with commandline arguments, waits for the process to exit and returns its exit code. If the process did not exit within the specified timeout period, <see langword="null" /> is returned.
+		/// </summary>
+		/// <param name="fileName">The name of an application file to run.</param>
+		/// <param name="arguments">Command-line arguments to pass when starting the process.</param>
+		/// <param name="runas"><see langword="true" /> to execute this file with the "runas" verb.</param>
+		/// <param name="timeout">The amount of time, in milliseconds, to wait for the process to exit.</param>
+		/// <returns>
+		/// The exit code of the process, if it has exited within the specified timeout period;
+		/// and <see langword="null" />, if the process did not exit.
+		/// </returns>
+		public static int? Execute(string fileName, string arguments, bool runas, int timeout)
+		{
 			Check.ArgumentNull(fileName, nameof(fileName));
 
-			using (Process process = Process.Start(fileName, arguments))
+			using (Process process = Process.Start(new ProcessStartInfo(fileName, arguments) { Verb = runas ? "runas" : null }))
 			{
 				return process.WaitForExit(timeout) ? process.ExitCode : (int?)null;
 			}
