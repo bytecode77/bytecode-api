@@ -160,7 +160,6 @@
     <Compile Include="Mathematics\AngleType.cs" />
     <Compile Include="DateTimePart.cs" />
     <Compile Include="GuidFormat.cs" />
-    <Compile Include="IO\ProcessAnalyser.cs" />
     <Compile Include="IO\ProcessIntegrityLevel.cs" />
     <Compile Include="IO\ProcessLoadLibraryResult.cs" />
     <Compile Include="StringCasing.cs" />

@@ -9,7 +9,6 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading;
 
 namespace BytecodeApi.IO
 {
@@ -342,42 +341,6 @@ namespace BytecodeApi.IO
 
 			if (thread) ThreadFactory.StartThread(invoke);
 			else invoke();
-		}
-		/// <summary>
-		/// Detects process analysers, such as sandboxes, virtual environments, or specific debuggers or profilers.
-		/// </summary>
-		/// <param name="processAnalyser">The <see cref="ProcessAnalyser" /> to test.</param>
-		/// <returns>
-		/// <see langword="true" />, if the specified process analyser has been detected;
-		/// otherwise, <see langword="false" />.
-		/// </returns>
-		public static bool DetectProcessAnalyser(ProcessAnalyser processAnalyser)
-		{
-			//FEATURE: Sandboxes, virtual machines, CheatEngine (https://www.aspfree.com/c/a/braindump/virtualization-and-sandbox-detection/)		
-			if (processAnalyser == ProcessAnalyser.Sandboxie)
-			{
-				return Native.GetModuleHandle("SbieDll") != IntPtr.Zero;
-			}
-			else if (processAnalyser == ProcessAnalyser.Emulator)
-			{
-				int start = Environment.TickCount;
-				Stopwatch stopwatch = ThreadFactory.StartStopwatch();
-				Thread.Sleep(500);
-				int stop = Environment.TickCount;
-				return stop - start < 450 || stopwatch.Elapsed < TimeSpan.FromMilliseconds(450);
-			}
-			else if (processAnalyser == ProcessAnalyser.Wireshark)
-			{
-				return Process.GetProcessesByName("Wireshark").Any() || Process.GetProcesses().Any(process => CSharp.Try(() => process?.MainWindowTitle).Equals("The Wireshark Network Analyzer", SpecialStringComparisons.NullAndEmptyEqual | SpecialStringComparisons.IgnoreCase));
-			}
-			else if (processAnalyser == ProcessAnalyser.ProcessMonitor)
-			{
-				return Process.GetProcesses().Any(process => CSharp.Try(() => process?.MainWindowTitle).Contains("Process Monitor -", SpecialStringComparisons.IgnoreCase));
-			}
-			else
-			{
-				throw Throw.InvalidEnumArgument(nameof(processAnalyser), processAnalyser);
-			}
 		}
 		/// <summary>
 		/// If the current <see cref="Process" /> is running with elevated privileges, a blue screen is triggered and the operating system is terminated; otherwise, an exception is thrown.
