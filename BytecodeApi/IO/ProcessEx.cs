@@ -266,6 +266,21 @@ namespace BytecodeApi.IO
 		/// </returns>
 		public static string ReadProcessOutput(string fileName, string arguments, bool inclueErrorStream, bool hidden)
 		{
+			return ReadProcessOutput(fileName, arguments, inclueErrorStream, hidden, out _);
+		}
+		/// <summary>
+		/// Creates a <see cref="Process" />, reads the standard output stream and waits until the process has exited.
+		/// </summary>
+		/// <param name="fileName">The name of an application file to run.</param>
+		/// <param name="arguments">Command-line arguments to pass when starting the process.</param>
+		/// <param name="inclueErrorStream"><see langword="true" /> to include the standard error stream; <see langword="false" /> to exclude it.</param>
+		/// <param name="hidden"><see langword="true" /> to hide the window of the process; <see langword="false" /> to show it.</param>
+		/// <param name="exitCode">The exit code of the created process.</param>
+		/// <returns>
+		/// The result <see cref="string" /> from the standard output stream of the process after it has exited.
+		/// </returns>
+		public static string ReadProcessOutput(string fileName, string arguments, bool inclueErrorStream, bool hidden, out int exitCode)
+		{
 			Check.ArgumentNull(fileName, nameof(fileName));
 
 			StringBuilder result = new StringBuilder();
@@ -292,6 +307,7 @@ namespace BytecodeApi.IO
 				process.BeginOutputReadLine();
 				if (inclueErrorStream) process.BeginErrorReadLine();
 				process.WaitForExit();
+				exitCode = process.ExitCode;
 			}
 
 			return result.ToString();
