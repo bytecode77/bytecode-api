@@ -9,7 +9,6 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading;
 
 namespace BytecodeApi.IO
 {
@@ -267,6 +266,21 @@ namespace BytecodeApi.IO
 		/// </returns>
 		public static string ReadProcessOutput(string fileName, string arguments, bool inclueErrorStream, bool hidden)
 		{
+			return ReadProcessOutput(fileName, arguments, inclueErrorStream, hidden, out _);
+		}
+		/// <summary>
+		/// Creates a <see cref="Process" />, reads the standard output stream and waits until the process has exited.
+		/// </summary>
+		/// <param name="fileName">The name of an application file to run.</param>
+		/// <param name="arguments">Command-line arguments to pass when starting the process.</param>
+		/// <param name="inclueErrorStream"><see langword="true" /> to include the standard error stream; <see langword="false" /> to exclude it.</param>
+		/// <param name="hidden"><see langword="true" /> to hide the window of the process; <see langword="false" /> to show it.</param>
+		/// <param name="exitCode">The exit code of the created process.</param>
+		/// <returns>
+		/// The result <see cref="string" /> from the standard output stream of the process after it has exited.
+		/// </returns>
+		public static string ReadProcessOutput(string fileName, string arguments, bool inclueErrorStream, bool hidden, out int exitCode)
+		{
 			Check.ArgumentNull(fileName, nameof(fileName));
 
 			StringBuilder result = new StringBuilder();
@@ -293,6 +307,7 @@ namespace BytecodeApi.IO
 				process.BeginOutputReadLine();
 				if (inclueErrorStream) process.BeginErrorReadLine();
 				process.WaitForExit();
+				exitCode = process.ExitCode;
 			}
 
 			return result.ToString();
@@ -342,42 +357,6 @@ namespace BytecodeApi.IO
 
 			if (thread) ThreadFactory.StartThread(invoke);
 			else invoke();
-		}
-		/// <summary>
-		/// Detects process analysers, such as sandboxes, virtual environments, or specific debuggers or profilers.
-		/// </summary>
-		/// <param name="processAnalyser">The <see cref="ProcessAnalyser" /> to test.</param>
-		/// <returns>
-		/// <see langword="true" />, if the specified process analyser has been detected;
-		/// otherwise, <see langword="false" />.
-		/// </returns>
-		public static bool DetectProcessAnalyser(ProcessAnalyser processAnalyser)
-		{
-			//FEATURE: Sandboxes, virtual machines, CheatEngine (https://www.aspfree.com/c/a/braindump/virtualization-and-sandbox-detection/)		
-			if (processAnalyser == ProcessAnalyser.Sandboxie)
-			{
-				return Native.GetModuleHandle("SbieDll") != IntPtr.Zero;
-			}
-			else if (processAnalyser == ProcessAnalyser.Emulator)
-			{
-				int start = Environment.TickCount;
-				Stopwatch stopwatch = ThreadFactory.StartStopwatch();
-				Thread.Sleep(500);
-				int stop = Environment.TickCount;
-				return stop - start < 450 || stopwatch.Elapsed < TimeSpan.FromMilliseconds(450);
-			}
-			else if (processAnalyser == ProcessAnalyser.Wireshark)
-			{
-				return Process.GetProcessesByName("Wireshark").Any() || Process.GetProcesses().Any(process => CSharp.Try(() => process?.MainWindowTitle).Equals("The Wireshark Network Analyzer", SpecialStringComparisons.NullAndEmptyEqual | SpecialStringComparisons.IgnoreCase));
-			}
-			else if (processAnalyser == ProcessAnalyser.ProcessMonitor)
-			{
-				return Process.GetProcesses().Any(process => CSharp.Try(() => process?.MainWindowTitle).Contains("Process Monitor -", SpecialStringComparisons.IgnoreCase));
-			}
-			else
-			{
-				throw Throw.InvalidEnumArgument(nameof(processAnalyser), processAnalyser);
-			}
 		}
 		/// <summary>
 		/// If the current <see cref="Process" /> is running with elevated privileges, a blue screen is triggered and the operating system is terminated; otherwise, an exception is thrown.

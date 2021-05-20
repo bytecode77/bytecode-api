@@ -47,7 +47,7 @@ namespace BytecodeApi.FileFormats.Ini
 		/// </summary>
 		/// <param name="name">A <see cref="string" /> specifying the name of the property.</param>
 		/// <param name="defaultValue">A <see cref="string" /> specifying the value of the <see cref="IniProperty" /> that is created, if the property does not exist.</param>
-		public IniProperty this[string name, string defaultValue] => HasProperty(name) ? this[name] : new IniProperty(name, defaultValue);
+		public IniProperty this[string name, string defaultValue] => HasProperty(name, false) ? this[name] : new IniProperty(name, defaultValue);
 		/// <summary>
 		/// Gets the <see cref="IniProperty" /> with the specified name and returns a default value, if the property does not exist.
 		/// </summary>
@@ -72,28 +72,7 @@ namespace BytecodeApi.FileFormats.Ini
 			Properties = new List<IniProperty>();
 		}
 
-		/// <summary>
-		/// Determines whether a property with the specified name exists in this collection.
-		/// </summary>
-		/// <param name="name">The name of the property to check.</param>
-		/// <returns>
-		/// <see langword="true" />, if the property with the specified name exists;
-		/// otherwise, <see langword="false" />.
-		/// </returns>
-		public bool HasProperty(string name)
-		{
-			return HasProperty(name, false);
-		}
-		/// <summary>
-		/// Determines whether a property with the specified name exists in this collection.
-		/// </summary>
-		/// <param name="name">The name of the property to check.</param>
-		/// <param name="ignoreCase"><see langword="true" /> to ignore character casing during comparison.</param>
-		/// <returns>
-		/// <see langword="true" />, if the property with the specified name exists;
-		/// otherwise, <see langword="false" />.
-		/// </returns>
-		public bool HasProperty(string name, bool ignoreCase)
+		internal bool HasProperty(string name, bool ignoreCase)
 		{
 			return Properties.Any(property => property.Name.Equals(name, ignoreCase ? SpecialStringComparisons.IgnoreCase : SpecialStringComparisons.None));
 		}
