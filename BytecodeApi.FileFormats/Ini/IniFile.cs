@@ -386,5 +386,31 @@ namespace BytecodeApi.FileFormats.Ini
 				}
 			}
 		}
+
+		/// <summary>
+		/// Determines whether a section with the specified name exists.
+		/// </summary>
+		/// <param name="name">The name of the section to check.</param>
+		/// <returns>
+		/// <see langword="true" />, if the section with the specified name exists;
+		/// otherwise, <see langword="false" />.
+		/// </returns>
+		public bool HasSection(string name)
+		{
+			return HasSection(name, false);
+		}
+		/// <summary>
+		/// Determines whether a section with the specified name exists.
+		/// </summary>
+		/// <param name="name">The name of the section to check.</param>
+		/// <param name="ignoreCase"><see langword="true" /> to ignore character casing during comparison.</param>
+		/// <returns>
+		/// <see langword="true" />, if the section with the specified name exists;
+		/// otherwise, <see langword="false" />.
+		/// </returns>
+		public bool HasSection(string name, bool ignoreCase)
+		{
+			return Sections.HasSection(name, ignoreCase);
+		}
 	}
 }

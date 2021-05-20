@@ -29,5 +29,32 @@ namespace BytecodeApi.FileFormats.Ini
 			Name = name;
 			Properties = new IniPropertyCollection();
 		}
+
+		/// <summary>
+		/// Determines whether a property with the specified name exists in this section.
+		/// </summary>
+		/// <param name="name">The name of the property to check.</param>
+		/// <returns>
+		/// <see langword="true" />, if the property with the specified name exists;
+		/// otherwise, <see langword="false" />.
+		/// </returns>
+		public bool HasProperty(string name)
+		{
+			return HasProperty(name, false);
+		}
+		/// <summary>
+		/// Determines whether a property with the specified name exists in this section.
+		/// </summary>
+		/// <param name="name">The name of the property to check.</param>
+		/// <param name="ignoreCase"><see langword="true" /> to ignore character casing during comparison.</param>
+		/// <returns>
+		/// <see langword="true" />, if the property with the specified name exists;
+		/// otherwise, <see langword="false" />.
+		/// </returns>
+		public bool HasProperty(string name, bool ignoreCase)
+		{
+			return Properties.HasProperty(name, ignoreCase);
+		}
+
 	}
 }
