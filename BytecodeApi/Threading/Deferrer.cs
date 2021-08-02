@@ -1,5 +1,4 @@
-﻿using BytecodeApi.Threading;
-using System;
+﻿using System;
 using System.Windows.Threading;
 
 namespace BytecodeApi.Threading
