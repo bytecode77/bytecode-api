@@ -25,6 +25,215 @@ namespace BytecodeApi.Mathematics
 		public static readonly RandomNumberGenerator RandomNumberGenerator = RandomNumberGenerator.Create();
 
 		/// <summary>
+		/// Rotates the bits in the specified <see cref="byte" /> value to the right.
+		/// </summary>
+		/// <param name="value">The <see cref="byte" /> value to rotate right.</param>
+		/// <param name="bits">The number of bits to rotate <paramref name="value" />.</param>
+		/// <returns>
+		/// The result of <paramref name="value" /> ror <paramref name="bits" />.
+		/// </returns>
+		public static byte Ror(byte value, int bits)
+		{
+			bits &= 7;
+			return (byte)(value >> bits | value << (8 - bits));
+		}
+		/// <summary>
+		/// Rotates the bits in the specified <see cref="sbyte" /> value to the right.
+		/// </summary>
+		/// <param name="value">The <see cref="sbyte" /> value to rotate right.</param>
+		/// <param name="bits">The number of bits to rotate <paramref name="value" />.</param>
+		/// <returns>
+		/// The result of <paramref name="value" /> ror <paramref name="bits" />.
+		/// </returns>
+		public static sbyte Ror(sbyte value, int bits)
+		{
+			bits &= 7;
+			return (sbyte)(value >> bits | value << (8 - bits));
+		}
+		/// <summary>
+		/// Rotates the bits in the specified <see cref="int" /> value to the right.
+		/// </summary>
+		/// <param name="value">The <see cref="int" /> value to rotate right.</param>
+		/// <param name="bits">The number of bits to rotate <paramref name="value" />.</param>
+		/// <returns>
+		/// The result of <paramref name="value" /> ror <paramref name="bits" />.
+		/// </returns>
+		public static int Ror(int value, int bits)
+		{
+			bits &= 31;
+			return value >> bits | value << (32 - bits);
+		}
+		/// <summary>
+		/// Rotates the bits in the specified <see cref="uint" /> value to the right.
+		/// </summary>
+		/// <param name="value">The <see cref="uint" /> value to rotate right.</param>
+		/// <param name="bits">The number of bits to rotate <paramref name="value" />.</param>
+		/// <returns>
+		/// The result of <paramref name="value" /> ror <paramref name="bits" />.
+		/// </returns>
+		public static uint Ror(uint value, int bits)
+		{
+			bits &= 31;
+			return value >> bits | value << (32 - bits);
+		}
+		/// <summary>
+		/// Rotates the bits in the specified <see cref="long" /> value to the right.
+		/// </summary>
+		/// <param name="value">The <see cref="long" /> value to rotate right.</param>
+		/// <param name="bits">The number of bits to rotate <paramref name="value" />.</param>
+		/// <returns>
+		/// The result of <paramref name="value" /> ror <paramref name="bits" />.
+		/// </returns>
+		public static long Ror(long value, int bits)
+		{
+			bits &= 63;
+			return value >> bits | value << (64 - bits);
+		}
+		/// <summary>
+		/// Rotates the bits in the specified <see cref="ulong" /> value to the right.
+		/// </summary>
+		/// <param name="value">The <see cref="ulong" /> value to rotate right.</param>
+		/// <param name="bits">The number of bits to rotate <paramref name="value" />.</param>
+		/// <returns>
+		/// The result of <paramref name="value" /> ror <paramref name="bits" />.
+		/// </returns>
+		public static ulong Ror(ulong value, int bits)
+		{
+			bits &= 63;
+			return value >> bits | value << (64 - bits);
+		}
+		/// <summary>
+		/// Rotates the bits in the specified <see cref="short" /> value to the right.
+		/// </summary>
+		/// <param name="value">The <see cref="short" /> value to rotate right.</param>
+		/// <param name="bits">The number of bits to rotate <paramref name="value" />.</param>
+		/// <returns>
+		/// The result of <paramref name="value" /> ror <paramref name="bits" />.
+		/// </returns>
+		public static short Ror(short value, int bits)
+		{
+			bits &= 15;
+			return (short)(value >> bits | value << (16 - bits));
+		}
+		/// <summary>
+		/// Rotates the bits in the specified <see cref="ushort" /> value to the right.
+		/// </summary>
+		/// <param name="value">The <see cref="ushort" /> value to rotate right.</param>
+		/// <param name="bits">The number of bits to rotate <paramref name="value" />.</param>
+		/// <returns>
+		/// The result of <paramref name="value" /> ror <paramref name="bits" />.
+		/// </returns>
+		public static ushort Ror(ushort value, int bits)
+		{
+			bits &= 15;
+			return (ushort)(value >> bits | value << (16 - bits));
+		}
+		/// <summary>
+		/// Rotates the bits in the specified <see cref="byte" /> value to the left.
+		/// </summary>
+		/// <param name="value">The <see cref="byte" /> value to rotate left.</param>
+		/// <param name="bits">The number of bits to rotate <paramref name="value" />.</param>
+		/// <returns>
+		/// The result of <paramref name="value" /> ror <paramref name="bits" />.
+		/// </returns>
+		public static byte Rol(byte value, int bits)
+		{
+			bits &= 7;
+			return (byte)(value << bits | value >> (8 - bits));
+		}
+		/// <summary>
+		/// Rotates the bits in the specified <see cref="sbyte" /> value to the left.
+		/// </summary>
+		/// <param name="value">The <see cref="sbyte" /> value to rotate left.</param>
+		/// <param name="bits">The number of bits to rotate <paramref name="value" />.</param>
+		/// <returns>
+		/// The result of <paramref name="value" /> ror <paramref name="bits" />.
+		/// </returns>
+		public static sbyte Rol(sbyte value, int bits)
+		{
+			bits &= 7;
+			return (sbyte)(value << bits | value >> (8 - bits));
+		}
+		/// <summary>
+		/// Rotates the bits in the specified <see cref="int" /> value to the left.
+		/// </summary>
+		/// <param name="value">The <see cref="int" /> value to rotate left.</param>
+		/// <param name="bits">The number of bits to rotate <paramref name="value" />.</param>
+		/// <returns>
+		/// The result of <paramref name="value" /> ror <paramref name="bits" />.
+		/// </returns>
+		public static int Rol(int value, int bits)
+		{
+			bits &= 31;
+			return value << bits | value >> (32 - bits);
+		}
+		/// <summary>
+		/// Rotates the bits in the specified <see cref="uint" /> value to the left.
+		/// </summary>
+		/// <param name="value">The <see cref="uint" /> value to rotate left.</param>
+		/// <param name="bits">The number of bits to rotate <paramref name="value" />.</param>
+		/// <returns>
+		/// The result of <paramref name="value" /> ror <paramref name="bits" />.
+		/// </returns>
+		public static uint Rol(uint value, int bits)
+		{
+			bits &= 31;
+			return value << bits | value >> (32 - bits);
+		}
+		/// <summary>
+		/// Rotates the bits in the specified <see cref="long" /> value to the left.
+		/// </summary>
+		/// <param name="value">The <see cref="long" /> value to rotate left.</param>
+		/// <param name="bits">The number of bits to rotate <paramref name="value" />.</param>
+		/// <returns>
+		/// The result of <paramref name="value" /> ror <paramref name="bits" />.
+		/// </returns>
+		public static long Rol(long value, int bits)
+		{
+			bits &= 63;
+			return value << bits | value >> (64 - bits);
+		}
+		/// <summary>
+		/// Rotates the bits in the specified <see cref="ulong" /> value to the left.
+		/// </summary>
+		/// <param name="value">The <see cref="ulong" /> value to rotate left.</param>
+		/// <param name="bits">The number of bits to rotate <paramref name="value" />.</param>
+		/// <returns>
+		/// The result of <paramref name="value" /> ror <paramref name="bits" />.
+		/// </returns>
+		public static ulong Rol(ulong value, int bits)
+		{
+			bits &= 63;
+			return value << bits | value >> (64 - bits);
+		}
+		/// <summary>
+		/// Rotates the bits in the specified <see cref="short" /> value to the left.
+		/// </summary>
+		/// <param name="value">The <see cref="short" /> value to rotate left.</param>
+		/// <param name="bits">The number of bits to rotate <paramref name="value" />.</param>
+		/// <returns>
+		/// The result of <paramref name="value" /> ror <paramref name="bits" />.
+		/// </returns>
+		public static short Rol(short value, int bits)
+		{
+			bits &= 15;
+			return (short)(value << bits | value >> (16 - bits));
+		}
+		/// <summary>
+		/// Rotates the bits in the specified <see cref="ushort" /> value to the left.
+		/// </summary>
+		/// <param name="value">The <see cref="ushort" /> value to rotate left.</param>
+		/// <param name="bits">The number of bits to rotate <paramref name="value" />.</param>
+		/// <returns>
+		/// The result of <paramref name="value" /> ror <paramref name="bits" />.
+		/// </returns>
+		public static ushort Rol(ushort value, int bits)
+		{
+			bits &= 15;
+			return (ushort)(value << bits | value >> (16 - bits));
+		}
+
+		/// <summary>
 		/// Returns the sine of the specified angle, considering the specified <see cref="AngleType" />.
 		/// </summary>
 		/// <param name="value">A <see cref="double" /> value representing an angle, measured in the specified <see cref="AngleType" />.</param>
