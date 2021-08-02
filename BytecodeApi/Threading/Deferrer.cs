@@ -1,8 +1,7 @@
-﻿using BytecodeApi.Threading;
-using System;
+﻿using System;
 using System.Windows.Threading;
 
-namespace BytecodeApi.Mathematics
+namespace BytecodeApi.Threading
 {
 	/// <summary>
 	/// Provoides a wrapper for <see cref="Action" /> objects to be deferred.
