@@ -94,6 +94,10 @@
 		/// </summary>
 		EndsWithIgnoreCase,
 		/// <summary>
+		/// Reverses the sequence of all characters in the <see cref="string" /> value.
+		/// </summary>
+		Reverse,
+		/// <summary>
 		/// Returns a <see cref="bool" /> value indicating whether the <see cref="string" /> parameter occurs within the <see cref="string" /> value.
 		/// </summary>
 		Contains,

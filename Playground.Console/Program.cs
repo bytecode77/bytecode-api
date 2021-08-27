@@ -1,12 +1,12 @@
-﻿using BytecodeApi;
+using BytecodeApi;
 using BytecodeApi.Comparers;
 using BytecodeApi.Cryptography;
 using BytecodeApi.Data;
 using BytecodeApi.Extensions;
 using BytecodeApi.FileFormats;
-using BytecodeApi.FileFormats.Coff;
 using BytecodeApi.FileFormats.Csv;
 using BytecodeApi.FileFormats.Ini;
+using BytecodeApi.FileFormats.PE;
 using BytecodeApi.FileFormats.ResourceFile;
 using BytecodeApi.FileIcons;
 using BytecodeApi.GeoIP;

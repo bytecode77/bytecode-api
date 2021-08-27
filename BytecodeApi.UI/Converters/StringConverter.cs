@@ -57,6 +57,7 @@ namespace BytecodeApi.UI.Converters
 				StringConverterMethod.StartsWithIgnoreCase => value?.StartsWith(parameter?.ToString(), StringComparison.OrdinalIgnoreCase) == true,
 				StringConverterMethod.EndsWith => value?.EndsWith(parameter?.ToString()) == true,
 				StringConverterMethod.EndsWithIgnoreCase => value?.EndsWith(parameter?.ToString(), StringComparison.OrdinalIgnoreCase) == true,
+				StringConverterMethod.Reverse => value?.Reverse(),
 				StringConverterMethod.Contains => value?.Contains(parameter?.ToString()) == true,
 				StringConverterMethod.ContainsIgnoreCase => value?.Contains(parameter?.ToString(), SpecialStringComparisons.IgnoreCase) == true,
 				StringConverterMethod.ReplaceLineBreaks => value?.ReplaceLineBreaks(parameter?.ToString()),
