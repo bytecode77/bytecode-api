@@ -25,6 +25,23 @@ namespace BytecodeApi.IO
 			ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
 		}
 		/// <summary>
+		/// Globally enables all known security protocols.
+		/// </summary>
+		public static void EnableAllSecurityProtocols()
+		{
+			foreach (int protocol in new[]
+			{
+				48, // SecurityProtocolType.Ssl3
+				192, // SecurityProtocolType.Tls
+				768, // SecurityProtocolType.Tls11
+				3072, // SecurityProtocolType.Tls12
+				12288, // SecurityProtocolType.Tls13
+			})
+			{
+				CSharp.Try(() => ServicePointManager.SecurityProtocol |= (SecurityProtocolType)protocol);
+			}
+		}
+		/// <summary>
 		/// Sends a Wake-on-LAN magic packet containing the specified <see cref="PhysicalAddress" /> to UDP broadcast on port 9.
 		/// <para>Packet bytes: FF FF FF FF FF FF | 16 repetitions of <see cref="PhysicalAddress" /></para>
 		/// <para>Total number of bytes: 102.</para>
