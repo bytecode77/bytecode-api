@@ -29,7 +29,6 @@ namespace BytecodeApi.IO.Interop
 		public DynamicLibrary(string dllName)
 		{
 			Check.ArgumentNull(dllName, nameof(dllName));
-			Check.FileNotFound(dllName);
 
 			DllName = dllName;
 		}

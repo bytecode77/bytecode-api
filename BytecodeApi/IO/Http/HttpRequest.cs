@@ -82,7 +82,7 @@ namespace BytecodeApi.IO.Http
 				}
 				while (bytesRead > 0);
 
-				if (callback != null && callbackBytesRead > 0) callback(callbackBytesRead, totalBytesRead);
+				if (callbackBytesRead > 0) callback?.Invoke(callbackBytesRead, totalBytesRead);
 
 				return new object();
 			});
@@ -171,7 +171,7 @@ namespace BytecodeApi.IO.Http
 			webRequest.CookieContainer = Client.UseCookies ? Client.CookieContainer : null;
 			return webRequest;
 		}
-		protected internal static T Try<T>(Func<T> func)
+		internal static T Try<T>(Func<T> func)
 		{
 			try
 			{
@@ -188,7 +188,9 @@ namespace BytecodeApi.IO.Http
 						using StreamReader reader = new StreamReader(ex.Response.GetResponseStream());
 						htmlBody = reader.ReadToEnd();
 					}
-					catch { }
+					catch
+					{
+					}
 				}
 
 				throw new HttpException(ex.Status, ex.Response, htmlBody, ex);

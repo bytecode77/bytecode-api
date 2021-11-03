@@ -94,7 +94,7 @@ namespace BytecodeApi.Data
 			return node;
 		}
 		/// <summary>
-		/// Creates a new one-dimensional <see cref="BlobCollection" /> containing all <see cref="Blob" /> objects including all child nodes recursively.
+		/// Creates a new one-dimensional <see cref="BlobCollection" /> containing all <see cref="Blob" /> objects including the root node and all child nodes recursively.
 		/// </summary>
 		/// <returns>
 		/// The <see cref="BlobCollection" /> this method creates.

@@ -61,10 +61,10 @@ namespace BytecodeApi.IO
 		public static void WakeOnLan(PhysicalAddress physicalAddress, byte[] password)
 		{
 			Check.ArgumentNull(physicalAddress, nameof(physicalAddress));
-			Check.Argument(password == null || CSharp.EqualsAny(password.Length, 4, 6), nameof(password), "The password must be either 4 or 6 bytes long or null.");
+			Check.Argument(password == null || CSharp.EqualsAny(password.Length, 4, 6), nameof(password), "The password must be either 4 or 6 bytes long, or null.");
 
 			byte[] packet = Enumerable.Repeat<byte>(0xff, 6)
-				.Concat(Enumerable.Repeat(physicalAddress.GetAddressBytes(), 16).SelectMany(b => b))
+				.Concat(Enumerable.Repeat(physicalAddress.GetAddressBytes(), 16).SelectMany())
 				.Concat(password ?? new byte[0])
 				.ToArray();
 

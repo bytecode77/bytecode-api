@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>BytecodeApi</RootNamespace>
     <AssemblyName>BytecodeApi</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -98,9 +98,12 @@
     <Compile Include="IO\Interop\DynamicLibrary.cs" />
     <Compile Include="IO\FileSystem\PathEx.cs" />
     <Compile Include="IO\Cli\OptionSet.cs" />
+    <Compile Include="IO\SystemInfo\HostsFile.cs" />
+    <Compile Include="IO\SystemInfo\InstalledSoftware.cs" />
+    <Compile Include="IO\SystemInfo\ProtocolMapping.cs" />
+    <Compile Include="IO\SystemInfo\TcpView.cs" />
     <Compile Include="Mathematics\ByteSizeUnit.cs" />
     <Compile Include="Mathematics\ByteSize.cs" />
-    <Compile Include="SingletonBucketBase.cs" />
     <Compile Include="EnumEx.cs" />
     <Compile Include="Data\BlobTree.cs" />
     <Compile Include="Data\BlobTreeNodeCollection.cs" />
@@ -108,7 +111,6 @@
     <Compile Include="Data\BlobCollection.cs" />
     <Compile Include="Extensions\ColorExtensions.cs" />
     <Compile Include="Internal\ExceptionMessages.cs" />
-    <Compile Include="Internal\GeoIPHelper.cs" />
     <Compile Include="IO\ZipCompression.cs" />
     <Compile Include="IO\FileSystem\AlternateDataStreamAttributes.cs" />
     <Compile Include="IO\FileSystem\AlternateDataStreamType.cs" />
@@ -150,7 +152,6 @@
     <Compile Include="Threading\ThreadFactory.cs" />
     <Compile Include="ConvertObjectOptions.cs" />
     <Compile Include="Validate.cs" />
-    <Compile Include="Comparers\AlwaysEqualComparer.cs" />
     <Compile Include="Comparers\IEnumerableCountComparer.cs" />
     <Compile Include="Comparers\StringLengthTrimmedComparer.cs" />
     <Compile Include="Comparers\StringLengthComparer.cs" />
@@ -183,7 +184,7 @@
     <Compile Include="Extensions\DefaultTypes\Int32Extensions.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Extensions\ExceptionExtensions.cs" />
-    <Compile Include="Extensions\FileInfoExtension.cs" />
+    <Compile Include="Extensions\FileInfoExtensions.cs" />
     <Compile Include="Extensions\DirectoryInfoExtensions.cs" />
     <Compile Include="Extensions\FileSystemInfoExtensions.cs" />
     <Compile Include="Extensions\IEnumerableExtensions.cs" />

@@ -54,7 +54,9 @@ namespace BytecodeApi.Threading
 				{
 					action();
 				}
-				catch (ThreadAbortException) { }
+				catch (ThreadAbortException)
+				{
+				}
 				catch (Exception ex)
 				{
 					if (exceptionHandler == null)

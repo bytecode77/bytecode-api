@@ -1,77 +1,62 @@
 ﻿using BytecodeApi.Extensions;
 using System;
+using System.Diagnostics;
 
 namespace BytecodeApi.Mathematics
 {
 	/// <summary>
-	/// Represents a byte size value as a 64-bit unsigned integer value.
+	/// Represents a byte size value as a 64-bit integer value.
 	/// </summary>
+	[DebuggerDisplay(CSharp.DebuggerDisplayString)]
 	public struct ByteSize : IComparable, IComparable<ByteSize>, IEquatable<ByteSize>
 	{
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		private string DebuggerDisplay => CSharp.DebuggerDisplay<ByteSize>("Bytes = {0}, Format = {1}", Bytes, Format());
+		private const long BytesInKiloByte = 1024L;
+		private const long BytesInMegaByte = 1024L * 1024;
+		private const long BytesInGigaByte = 1024L * 1024 * 1024;
+		private const long BytesInTeraByte = 1024L * 1024 * 1024 * 1024;
+		private const long BytesInPetaByte = 1024L * 1024 * 1024 * 1024 * 1024;
+		private const long BytesInExaByte = 1024L * 1024 * 1024 * 1024 * 1024 * 1024;
 		internal const int DefaultFormatDecimals = 2;
-
-		/// <summary>
-		/// Represents the number of bytes in one kilobyte. This field is constant.
-		/// </summary>
-		public const ulong BytesInKiloByte = 1024UL;
-		/// <summary>
-		/// Represents the number of bytes in one megabyte. This field is constant.
-		/// </summary>
-		public const ulong BytesInMegaByte = 1024UL * 1024;
-		/// <summary>
-		/// Represents the number of bytes in one gigabyte. This field is constant.
-		/// </summary>
-		public const ulong BytesInGigaByte = 1024UL * 1024 * 1024;
-		/// <summary>
-		/// Represents the number of bytes in one terabyte. This field is constant.
-		/// </summary>
-		public const ulong BytesInTeraByte = 1024UL * 1024 * 1024 * 1024;
-		/// <summary>
-		/// Represents the number of bytes in one petabyte. This field is constant.
-		/// </summary>
-		public const ulong BytesInPetaByte = 1024UL * 1024 * 1024 * 1024 * 1024;
-		/// <summary>
-		/// Represents the number of bytes in one exabyte. This field is constant.
-		/// </summary>
-		public const ulong BytesInExaByte = 1024UL * 1024 * 1024 * 1024 * 1024 * 1024;
 
 		/// <summary>
 		/// Represents the zero <see cref="ByteSize" /> value. This field is read-only.
 		/// </summary>
-		public static readonly ByteSize Zero = new ByteSize();
+		public static readonly ByteSize Zero = 0;
 		/// <summary>
 		/// Represents the maximum <see cref="ByteSize" /> value. This field is read-only.
 		/// </summary>
-		public static readonly ByteSize MaxValue = new ByteSize(ulong.MaxValue);
+		public static readonly ByteSize MaxValue = long.MaxValue;
 		/// <summary>
 		/// Represents the 1 kilobyte <see cref="ByteSize" /> value. This field is read-only.
 		/// </summary>
-		public static readonly ByteSize KiloByte = new ByteSize(BytesInKiloByte);
+		public static readonly ByteSize KiloByte = BytesInKiloByte;
 		/// <summary>
 		/// Represents the 1 megabyte <see cref="ByteSize" /> value. This field is read-only.
 		/// </summary>
-		public static readonly ByteSize MegaByte = new ByteSize(BytesInMegaByte);
+		public static readonly ByteSize MegaByte = BytesInMegaByte;
 		/// <summary>
 		/// Represents the 1 gigabyte <see cref="ByteSize" /> value. This field is read-only.
 		/// </summary>
-		public static readonly ByteSize GigaByte = new ByteSize(BytesInGigaByte);
+		public static readonly ByteSize GigaByte = BytesInGigaByte;
 		/// <summary>
 		/// Represents the 1 terabyte <see cref="ByteSize" /> value. This field is read-only.
 		/// </summary>
-		public static readonly ByteSize TeraByte = new ByteSize(BytesInTeraByte);
+		public static readonly ByteSize TeraByte = BytesInTeraByte;
 		/// <summary>
 		/// Represents the 1 petabyte <see cref="ByteSize" /> value. This field is read-only.
 		/// </summary>
-		public static readonly ByteSize PetaByte = new ByteSize(BytesInPetaByte);
+		public static readonly ByteSize PetaByte = BytesInPetaByte;
 		/// <summary>
 		/// Represents the 1 exabyte <see cref="ByteSize" /> value. This field is read-only.
 		/// </summary>
-		public static readonly ByteSize ExaByte = new ByteSize(BytesInExaByte);
+		public static readonly ByteSize ExaByte = BytesInExaByte;
 
 		/// <summary>
 		/// Gets the number of bytes that represent the value of this instance.
 		/// </summary>
-		public ulong Bytes { get; private set; }
+		public long Bytes { get; private set; }
 		/// <summary>
 		/// Gets the number of kilobytes, calculated from the <see cref="Bytes" /> property.
 		/// </summary>
@@ -104,12 +89,14 @@ namespace BytecodeApi.Mathematics
 		{
 			get
 			{
-				if (Bytes < BytesInKiloByte) return ByteSizeUnit.Byte;
-				else if (Bytes < BytesInMegaByte) return ByteSizeUnit.KiloByte;
-				else if (Bytes < BytesInGigaByte) return ByteSizeUnit.MegaByte;
-				else if (Bytes < BytesInTeraByte) return ByteSizeUnit.GigaByte;
-				else if (Bytes < BytesInPetaByte) return ByteSizeUnit.TeraByte;
-				else if (Bytes < BytesInExaByte) return ByteSizeUnit.PetaByte;
+				long absBytes = Math.Abs(Bytes);
+
+				if (absBytes < BytesInKiloByte) return ByteSizeUnit.Byte;
+				else if (absBytes < BytesInMegaByte) return ByteSizeUnit.KiloByte;
+				else if (absBytes < BytesInGigaByte) return ByteSizeUnit.MegaByte;
+				else if (absBytes < BytesInTeraByte) return ByteSizeUnit.GigaByte;
+				else if (absBytes < BytesInPetaByte) return ByteSizeUnit.TeraByte;
+				else if (absBytes < BytesInExaByte) return ByteSizeUnit.PetaByte;
 				else return ByteSizeUnit.ExaByte;
 			}
 		}
@@ -121,76 +108,76 @@ namespace BytecodeApi.Mathematics
 		/// <summary>
 		/// Initializes a new instance of the <see cref="ByteSize" /> structure with the number of bytes.
 		/// </summary>
-		/// <param name="bytes">A <see cref="ulong" /> value specifying the number of bytes.</param>
-		public ByteSize(ulong bytes)
+		/// <param name="bytes">A <see cref="long" /> value specifying the number of bytes.</param>
+		public ByteSize(long bytes)
 		{
 			Bytes = bytes;
 		}
 		/// <summary>
 		/// Returns a <see cref="ByteSize" /> that represents a specified number kilobytes.
 		/// </summary>
-		/// <param name="value">A <see cref="ulong" /> value specifying the number of kilobytes.</param>
+		/// <param name="value">A <see cref="long" /> value specifying the number of kilobytes.</param>
 		/// <returns>
 		/// A <see cref="ByteSize" /> that represents <paramref name="value" />.
 		/// </returns>
-		public static ByteSize FromKiloBytes(ulong value)
+		public static ByteSize FromKiloBytes(long value)
 		{
-			return new ByteSize(value * BytesInKiloByte);
+			return value * BytesInKiloByte;
 		}
 		/// <summary>
 		/// Returns a <see cref="ByteSize" /> that represents a specified number megabytes.
 		/// </summary>
-		/// <param name="value">A <see cref="ulong" /> value specifying the number of megabytes.</param>
+		/// <param name="value">A <see cref="long" /> value specifying the number of megabytes.</param>
 		/// <returns>
 		/// A <see cref="ByteSize" /> that represents <paramref name="value" />.
 		/// </returns>
-		public static ByteSize FromMegaBytes(ulong value)
+		public static ByteSize FromMegaBytes(long value)
 		{
-			return new ByteSize(value * BytesInMegaByte);
+			return value * BytesInMegaByte;
 		}
 		/// <summary>
 		/// Returns a <see cref="ByteSize" /> that represents a specified number gigabytes.
 		/// </summary>
-		/// <param name="value">A <see cref="ulong" /> value specifying the number of gigabytes.</param>
+		/// <param name="value">A <see cref="long" /> value specifying the number of gigabytes.</param>
 		/// <returns>
 		/// A <see cref="ByteSize" /> that represents <paramref name="value" />.
 		/// </returns>
-		public static ByteSize FromGigaBytes(ulong value)
+		public static ByteSize FromGigaBytes(long value)
 		{
-			return new ByteSize(value * BytesInGigaByte);
+			return value * BytesInGigaByte;
 		}
 		/// <summary>
 		/// Returns a <see cref="ByteSize" /> that represents a specified number terabytes.
 		/// </summary>
-		/// <param name="value">A <see cref="ulong" /> value specifying the number of terabytes.</param>
+		/// <param name="value">A <see cref="long" /> value specifying the number of terabytes.</param>
 		/// <returns>
 		/// A <see cref="ByteSize" /> that represents <paramref name="value" />.
 		/// </returns>
-		public static ByteSize FromTeraBytes(ulong value)
+		public static ByteSize FromTeraBytes(long value)
 		{
-			return new ByteSize(value * BytesInTeraByte);
+			return value * BytesInTeraByte;
 		}
 		/// <summary>
 		/// Returns a <see cref="ByteSize" /> that represents a specified number petabytes.
 		/// </summary>
-		/// <param name="value">A <see cref="ulong" /> value specifying the number of petabytes.</param>
+		/// <param name="value">A <see cref="long" /> value specifying the number of petabytes.</param>
 		/// <returns>
 		/// A <see cref="ByteSize" /> that represents <paramref name="value" />.
 		/// </returns>
-		public static ByteSize FromPetaBytes(ulong value)
+		public static ByteSize FromPetaBytes(long value)
 		{
-			return new ByteSize(value * BytesInPetaByte);
+			return value * BytesInPetaByte;
 		}
 		/// <summary>
 		/// Returns a <see cref="ByteSize" /> that represents a specified number exabytes.
 		/// </summary>
-		/// <param name="value">A <see cref="ulong" /> value specifying the number of exabytes.</param>
+		/// <param name="value">A <see cref="long" /> value specifying the number of exabytes.</param>
 		/// <returns>
 		/// A <see cref="ByteSize" /> that represents <paramref name="value" />.
 		/// </returns>
-		public static ByteSize FromExaBytes(ulong value)
+		public static ByteSize FromExaBytes(long value)
 		{
-			return new ByteSize(value * BytesInExaByte);
+			return value * BytesInExaByte;
 		}
 
 		/// <summary>
@@ -202,71 +189,71 @@ namespace BytecodeApi.Mathematics
 		/// </returns>
 		public ByteSize Add(ByteSize value)
 		{
-			return new ByteSize(Bytes + value.Bytes);
+			return Bytes + value.Bytes;
 		}
 		/// <summary>
 		/// Returns a new <see cref="ByteSize" /> value that is the sum of this instance and the specified number of kilobytes.
 		/// </summary>
-		/// <param name="value">A <see cref="ulong" /> value specifying the number of kilobytes to add.</param>
+		/// <param name="value">A <see cref="long" /> value specifying the number of kilobytes to add.</param>
 		/// <returns>
 		/// A new <see cref="ByteSize" /> value that represents the sum of this instance and the specified number of kilobytes.
 		/// </returns>
-		public ByteSize AddKiloBytes(ulong value)
+		public ByteSize AddKiloBytes(long value)
 		{
 			return Add(FromKiloBytes(value));
 		}
 		/// <summary>
 		/// Returns a new <see cref="ByteSize" /> value that is the sum of this instance and the specified number of megabytes.
 		/// </summary>
-		/// <param name="value">A <see cref="ulong" /> value specifying the number of megabytes to add.</param>
+		/// <param name="value">A <see cref="long" /> value specifying the number of megabytes to add.</param>
 		/// <returns>
 		/// A new <see cref="ByteSize" /> value that represents the sum of this instance and the specified number of megabytes.
 		/// </returns>
-		public ByteSize AddMegaBytes(ulong value)
+		public ByteSize AddMegaBytes(long value)
 		{
 			return Add(FromMegaBytes(value));
 		}
 		/// <summary>
 		/// Returns a new <see cref="ByteSize" /> value that is the sum of this instance and the specified number of gigabytes.
 		/// </summary>
-		/// <param name="value">A <see cref="ulong" /> value specifying the number of gigabytes to add.</param>
+		/// <param name="value">A <see cref="long" /> value specifying the number of gigabytes to add.</param>
 		/// <returns>
 		/// A new <see cref="ByteSize" /> value that represents the sum of this instance and the specified number of gigabytes.
 		/// </returns>
-		public ByteSize AddGigaBytes(ulong value)
+		public ByteSize AddGigaBytes(long value)
 		{
 			return Add(FromGigaBytes(value));
 		}
 		/// <summary>
 		/// Returns a new <see cref="ByteSize" /> value that is the sum of this instance and the specified number of terabytes.
 		/// </summary>
-		/// <param name="value">A <see cref="ulong" /> value specifying the number of terabytes to add.</param>
+		/// <param name="value">A <see cref="long" /> value specifying the number of terabytes to add.</param>
 		/// <returns>
 		/// A new <see cref="ByteSize" /> value that represents the sum of this instance and the specified number of terabytes.
 		/// </returns>
-		public ByteSize AddTeraBytes(ulong value)
+		public ByteSize AddTeraBytes(long value)
 		{
 			return Add(FromTeraBytes(value));
 		}
 		/// <summary>
 		/// Returns a new <see cref="ByteSize" /> value that is the sum of this instance and the specified number of petabytes.
 		/// </summary>
-		/// <param name="value">A <see cref="ulong" /> value specifying the number of petabytes to add.</param>
+		/// <param name="value">A <see cref="long" /> value specifying the number of petabytes to add.</param>
 		/// <returns>
 		/// A new <see cref="ByteSize" /> value that represents the sum of this instance and the specified number of petabytes.
 		/// </returns>
-		public ByteSize AddPetaBytes(ulong value)
+		public ByteSize AddPetaBytes(long value)
 		{
 			return Add(FromPetaBytes(value));
 		}
 		/// <summary>
 		/// Returns a new <see cref="ByteSize" /> value that is the sum of this instance and the specified number of exabytes.
 		/// </summary>
-		/// <param name="value">A <see cref="ulong" /> value specifying the number of exabytes to add.</param>
+		/// <param name="value">A <see cref="long" /> value specifying the number of exabytes to add.</param>
 		/// <returns>
 		/// A new <see cref="ByteSize" /> value that represents the sum of this instance and the specified number of exabytes.
 		/// </returns>
-		public ByteSize AddExaBytes(ulong value)
+		public ByteSize AddExaBytes(long value)
 		{
 			return Add(FromExaBytes(value));
 		}
@@ -279,95 +266,95 @@ namespace BytecodeApi.Mathematics
 		/// </returns>
 		public ByteSize Subtract(ByteSize value)
 		{
-			return new ByteSize(Bytes - value.Bytes);
+			return Bytes - value.Bytes;
 		}
 		/// <summary>
 		/// Returns a new <see cref="ByteSize" /> value that is the difference of this instance and the specified number of kilobytes.
 		/// </summary>
-		/// <param name="value">A <see cref="ulong" /> value specifying the number of kilobytes to subtract.</param>
+		/// <param name="value">A <see cref="long" /> value specifying the number of kilobytes to subtract.</param>
 		/// <returns>
 		/// A new <see cref="ByteSize" /> value that represents the difference of this instance and the specified number of kilobytes.
 		/// </returns>
-		public ByteSize SubtractKiloBytes(ulong value)
+		public ByteSize SubtractKiloBytes(long value)
 		{
 			return Subtract(FromKiloBytes(value));
 		}
 		/// <summary>
 		/// Returns a new <see cref="ByteSize" /> value that is the difference of this instance and the specified number of megabytes.
 		/// </summary>
-		/// <param name="value">A <see cref="ulong" /> value specifying the number of megabytes to subtract.</param>
+		/// <param name="value">A <see cref="long" /> value specifying the number of megabytes to subtract.</param>
 		/// <returns>
 		/// A new <see cref="ByteSize" /> value that represents the difference of this instance and the specified number of megabytes.
 		/// </returns>
-		public ByteSize SubtractMegaBytes(ulong value)
+		public ByteSize SubtractMegaBytes(long value)
 		{
 			return Subtract(FromMegaBytes(value));
 		}
 		/// <summary>
 		/// Returns a new <see cref="ByteSize" /> value that is the difference of this instance and the specified number of gigabytes.
 		/// </summary>
-		/// <param name="value">A <see cref="ulong" /> value specifying the number of gigabytes to subtract.</param>
+		/// <param name="value">A <see cref="long" /> value specifying the number of gigabytes to subtract.</param>
 		/// <returns>
 		/// A new <see cref="ByteSize" /> value that represents the difference of this instance and the specified number of gigabytes.
 		/// </returns>
-		public ByteSize SubtractGigaBytes(ulong value)
+		public ByteSize SubtractGigaBytes(long value)
 		{
 			return Subtract(FromGigaBytes(value));
 		}
 		/// <summary>
 		/// Returns a new <see cref="ByteSize" /> value that is the difference of this instance and the specified number of terabytes.
 		/// </summary>
-		/// <param name="value">A <see cref="ulong" /> value specifying the number of terabytes to subtract.</param>
+		/// <param name="value">A <see cref="long" /> value specifying the number of terabytes to subtract.</param>
 		/// <returns>
 		/// A new <see cref="ByteSize" /> value that represents the difference of this instance and the specified number of terabytes.
 		/// </returns>
-		public ByteSize SubtractTeraBytes(ulong value)
+		public ByteSize SubtractTeraBytes(long value)
 		{
 			return Subtract(FromTeraBytes(value));
 		}
 		/// <summary>
 		/// Returns a new <see cref="ByteSize" /> value that is the difference of this instance and the specified number of petabytes.
 		/// </summary>
-		/// <param name="value">A <see cref="ulong" /> value specifying the number of petabytes to subtract.</param>
+		/// <param name="value">A <see cref="long" /> value specifying the number of petabytes to subtract.</param>
 		/// <returns>
 		/// A new <see cref="ByteSize" /> value that represents the difference of this instance and the specified number of petabytes.
 		/// </returns>
-		public ByteSize SubtractPetaBytes(ulong value)
+		public ByteSize SubtractPetaBytes(long value)
 		{
 			return Subtract(FromPetaBytes(value));
 		}
 		/// <summary>
 		/// Returns a new <see cref="ByteSize" /> value that is the difference of this instance and the specified number of exabytes.
 		/// </summary>
-		/// <param name="value">A <see cref="ulong" /> value specifying the number of exabytes to subtract.</param>
+		/// <param name="value">A <see cref="long" /> value specifying the number of exabytes to subtract.</param>
 		/// <returns>
 		/// A new <see cref="ByteSize" /> value that represents the difference of this instance and the specified number of exabytes.
 		/// </returns>
-		public ByteSize SubtractExaBytes(ulong value)
+		public ByteSize SubtractExaBytes(long value)
 		{
 			return Subtract(FromExaBytes(value));
 		}
 		/// <summary>
-		/// Returns a new <see cref="ByteSize" /> value that is the result of this instance, multiplied by the specified <see cref="ulong" /> value.
+		/// Returns a new <see cref="ByteSize" /> value that is the result of this instance, multiplied by the specified <see cref="long" /> value.
 		/// </summary>
 		/// <param name="value">The multiplier.</param>
 		/// <returns>
-		/// A new <see cref="ByteSize" /> value that represents the result of this instance, multiplied by the specified <see cref="ulong" /> value.
+		/// A new <see cref="ByteSize" /> value that represents the result of this instance, multiplied by the specified <see cref="long" /> value.
 		/// </returns>
-		public ByteSize Multiply(ulong value)
+		public ByteSize Multiply(long value)
 		{
-			return new ByteSize(Bytes * value);
+			return Bytes * value;
 		}
 		/// <summary>
-		/// Returns a new <see cref="ByteSize" /> value that is the result of this instance, divided by the specified <see cref="ulong" /> value.
+		/// Returns a new <see cref="ByteSize" /> value that is the result of this instance, divided by the specified <see cref="long" /> value.
 		/// </summary>
 		/// <param name="value">The divisor.</param>
 		/// <returns>
-		/// A new <see cref="ByteSize" /> value that represents the result of this instance, divided by the specified <see cref="ulong" /> value.
+		/// A new <see cref="ByteSize" /> value that represents the result of this instance, divided by the specified <see cref="long" /> value.
 		/// </returns>
-		public ByteSize Divide(ulong value)
+		public ByteSize Divide(long value)
 		{
-			return new ByteSize(Bytes / value);
+			return Bytes / value;
 		}
 
 		/// <summary>
@@ -452,7 +439,7 @@ namespace BytecodeApi.Mathematics
 			Check.ArgumentOutOfRangeEx.GreaterEqual0(decimals, nameof(decimals));
 			Check.ArgumentOutOfRange(decimals <= 15, nameof(decimals), "The number of decimals must be in range of 0...15.");
 
-			return FormatWithUnit(ClosestUnit, decimals, padDecimals, thousandsSeparator, roundUp);
+			return Format(ClosestUnit, decimals, padDecimals, thousandsSeparator, roundUp);
 		}
 		/// <summary>
 		/// Returns a <see cref="string" /> that represents this instance using a specified <see cref="ByteSizeUnit" />.
@@ -461,9 +448,9 @@ namespace BytecodeApi.Mathematics
 		/// <returns>
 		/// An equivalent <see cref="string" /> representing this instance.
 		/// </returns>
-		public string FormatWithUnit(ByteSizeUnit unit)
+		public string Format(ByteSizeUnit unit)
 		{
-			return FormatWithUnit(unit, DefaultFormatDecimals);
+			return Format(unit, DefaultFormatDecimals);
 		}
 		/// <summary>
 		/// Returns a <see cref="string" /> that represents this instance using a specified <see cref="ByteSizeUnit" /> and the specified formatting parameters.
@@ -473,9 +460,9 @@ namespace BytecodeApi.Mathematics
 		/// <returns>
 		/// An equivalent <see cref="string" /> representing this instance.
 		/// </returns>
-		public string FormatWithUnit(ByteSizeUnit unit, int decimals)
+		public string Format(ByteSizeUnit unit, int decimals)
 		{
-			return FormatWithUnit(unit, decimals, false);
+			return Format(unit, decimals, false);
 		}
 		/// <summary>
 		/// Returns a <see cref="string" /> that represents this instance using a specified <see cref="ByteSizeUnit" /> and the specified formatting parameters.
@@ -486,9 +473,9 @@ namespace BytecodeApi.Mathematics
 		/// <returns>
 		/// An equivalent <see cref="string" /> representing this instance.
 		/// </returns>
-		public string FormatWithUnit(ByteSizeUnit unit, int decimals, bool padDecimals)
+		public string Format(ByteSizeUnit unit, int decimals, bool padDecimals)
 		{
-			return FormatWithUnit(unit, decimals, padDecimals, false);
+			return Format(unit, decimals, padDecimals, false);
 		}
 		/// <summary>
 		/// Returns a <see cref="string" /> that represents this instance using a specified <see cref="ByteSizeUnit" /> and the specified formatting parameters.
@@ -500,9 +487,9 @@ namespace BytecodeApi.Mathematics
 		/// <returns>
 		/// An equivalent <see cref="string" /> representing this instance.
 		/// </returns>
-		public string FormatWithUnit(ByteSizeUnit unit, int decimals, bool padDecimals, bool thousandsSeparator)
+		public string Format(ByteSizeUnit unit, int decimals, bool padDecimals, bool thousandsSeparator)
 		{
-			return FormatWithUnit(unit, decimals, padDecimals, thousandsSeparator, false);
+			return Format(unit, decimals, padDecimals, thousandsSeparator, false);
 		}
 		/// <summary>
 		/// Returns a <see cref="string" /> that represents this instance using a specified <see cref="ByteSizeUnit" /> and the specified formatting parameters.
@@ -515,14 +502,19 @@ namespace BytecodeApi.Mathematics
 		/// <returns>
 		/// An equivalent <see cref="string" /> representing this instance.
 		/// </returns>
-		public string FormatWithUnit(ByteSizeUnit unit, int decimals, bool padDecimals, bool thousandsSeparator, bool roundUp)
+		public string Format(ByteSizeUnit unit, int decimals, bool padDecimals, bool thousandsSeparator, bool roundUp)
 		{
 			Check.ArgumentOutOfRangeEx.GreaterEqual0(decimals, nameof(decimals));
 			Check.ArgumentOutOfRange(decimals <= 15, nameof(decimals), "The number of decimals must be in range of 0...15.");
 
-			double bytes = GetNumberForUnit(unit);
+			double bytes = Math.Abs(GetNumberForUnit(unit));
 			bytes = roundUp ? Math.Ceiling(bytes) : Math.Round(bytes, decimals);
-			return bytes.ToStringInvariant((thousandsSeparator ? "#," : null) + "0." + (padDecimals ? '0' : '#').Repeat(decimals)).Swap('.', ',') + " " + unit.GetDescription();
+
+			return
+				(Bytes < 0 ? "-" : null) +
+				bytes.ToStringInvariant((thousandsSeparator ? "#," : null) + "0." + (padDecimals ? '0' : '#').Repeat(decimals)).Swap('.', ',') +
+				" " +
+				unit.GetDescription();
 		}
 
 		/// <summary>
@@ -719,42 +711,42 @@ namespace BytecodeApi.Mathematics
 			return value.Subtract(1);
 		}
 		/// <summary>
-		/// Multiplies a specified <see cref="ByteSize" /> value and a specified <see cref="ulong" /> value.
+		/// Multiplies a specified <see cref="ByteSize" /> value and a specified <see cref="long" /> value.
 		/// </summary>
 		/// <param name="a">The first value to multiply.</param>
 		/// <param name="b">The second value to multiply.</param>
 		/// <returns>
 		/// The result of multiplying <paramref name="a" /> by <paramref name="b" />.
 		/// </returns>
-		public static ByteSize operator *(ByteSize a, ulong b)
+		public static ByteSize operator *(ByteSize a, long b)
 		{
 			return a.Multiply(b);
 		}
 		/// <summary>
-		/// Divides a specified <see cref="ByteSize" /> value and a specified <see cref="ulong" /> value.
+		/// Divides a specified <see cref="ByteSize" /> value and a specified <see cref="long" /> value.
 		/// </summary>
 		/// <param name="a">The dividend.</param>
 		/// <param name="b">The divisor.</param>
 		/// <returns>
 		/// The result of dividing <paramref name="a" /> by <paramref name="b" />.
 		/// </returns>
-		public static ByteSize operator /(ByteSize a, ulong b)
+		public static ByteSize operator /(ByteSize a, long b)
 		{
 			return a.Divide(b);
 		}
 		/// <summary>
-		/// Defines an implicit conversion of a <see cref="ulong" /> to a <see cref="ByteSize" />.
+		/// Defines an implicit conversion of a <see cref="long" /> to a <see cref="ByteSize" />.
 		/// </summary>
-		/// <param name="value">The <see cref="ulong" /> to convert.</param>
-		public static implicit operator ByteSize(ulong value)
+		/// <param name="value">The <see cref="long" /> to convert.</param>
+		public static implicit operator ByteSize(long value)
 		{
 			return new ByteSize(value);
 		}
 		/// <summary>
-		/// Defines an explicit conversion of a <see cref="ByteSize" /> to a <see cref="ulong" />.
+		/// Defines an explicit conversion of a <see cref="ByteSize" /> to a <see cref="long" />.
 		/// </summary>
 		/// <param name="value">The <see cref="ByteSize" /> to convert.</param>
-		public static explicit operator ulong(ByteSize value)
+		public static explicit operator long(ByteSize value)
 		{
 			return value.Bytes;
 		}

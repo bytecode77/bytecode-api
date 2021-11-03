@@ -63,7 +63,7 @@ namespace BytecodeApi.IO.Interop
 					if (Native.ToAscii(input.KeyCode, input.ScanCode, keyState, translatedKey, input.Flags) == 1)
 					{
 						char key = (char)(translatedKey[0] | translatedKey[1] << 8);
-						if ((isCapslock ^ isShift) && key.IsLetter()) key = key.ToUpper();
+						if (isCapslock ^ isShift && key.IsLetter()) key = key.ToUpper();
 
 						KeyPressEventArgs e = new KeyPressEventArgs(key);
 						KeyboardPressed?.Invoke(this, e);

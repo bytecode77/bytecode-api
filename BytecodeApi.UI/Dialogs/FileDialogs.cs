@@ -137,7 +137,7 @@ namespace BytecodeApi.UI.Dialogs
 		/// </returns>
 		public static string Save(string fileName, string extension)
 		{
-			extension = extension ?? Path.GetExtension(fileName).ToNullIfEmpty()?.TrimStart('.');
+			extension ??= Path.GetExtension(fileName).ToNullIfEmpty()?.TrimStart('.');
 			SaveFileDialog dialog = new SaveFileDialog
 			{
 				FileName = fileName,

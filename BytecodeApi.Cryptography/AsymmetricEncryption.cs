@@ -31,7 +31,7 @@ namespace BytecodeApi.Cryptography
 			Check.ArgumentNull(data, nameof(data));
 			Check.ArgumentNull(derKey, nameof(derKey));
 
-			return Encrypt(data, AsymmetricKeyConverter.ConvertToKey(derKey));
+			return Encrypt(data, AsymmetricKeyConvert.ToKey(derKey));
 		}
 		/// <summary>
 		/// Encrypts the specified <see cref="byte" />[] using RSA and the specified public key.
@@ -46,7 +46,7 @@ namespace BytecodeApi.Cryptography
 			Check.ArgumentNull(data, nameof(data));
 			Check.ArgumentNull(pemKey, nameof(pemKey));
 
-			return Encrypt(data, AsymmetricKeyConverter.ConvertToKey(pemKey));
+			return Encrypt(data, AsymmetricKeyConvert.ToKey(pemKey));
 		}
 		/// <summary>
 		/// Encrypts the specified <see cref="byte" />[] using RSA and the specified public key.
@@ -77,7 +77,7 @@ namespace BytecodeApi.Cryptography
 			Check.ArgumentNull(data, nameof(data));
 			Check.ArgumentNull(derKey, nameof(derKey));
 
-			return Decrypt(data, AsymmetricKeyConverter.ConvertToKey(derKey));
+			return Decrypt(data, AsymmetricKeyConvert.ToKey(derKey));
 		}
 		/// <summary>
 		/// Decrypts the specified <see cref="byte" />[] using RSA and the specified private key.
@@ -92,7 +92,7 @@ namespace BytecodeApi.Cryptography
 			Check.ArgumentNull(data, nameof(data));
 			Check.ArgumentNull(pemKey, nameof(pemKey));
 
-			return Decrypt(data, AsymmetricKeyConverter.ConvertToKey(pemKey));
+			return Decrypt(data, AsymmetricKeyConvert.ToKey(pemKey));
 		}
 		/// <summary>
 		/// Decrypts the specified <see cref="byte" />[] using RSA and the specified private key.

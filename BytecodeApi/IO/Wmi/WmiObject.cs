@@ -10,7 +10,7 @@ namespace BytecodeApi.IO.Wmi
 	/// Represents a WMI object instance.
 	/// </summary>
 	[DebuggerDisplay(CSharp.DebuggerDisplayString)]
-	public class WmiObject
+	public sealed class WmiObject
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		private string DebuggerDisplay => CSharp.DebuggerDisplay<WmiObject>("Class = {0}, Properties: {1}", new QuotedString(Class.Name), Properties.Count);

@@ -60,7 +60,7 @@ namespace BytecodeApi.Comparers
 		/// </returns>
 		public int GetHashCode(T obj)
 		{
-			return HashCode?.Invoke(obj) ?? CSharp.GetHashCode(obj);
+			return HashCode?.Invoke(obj) ?? obj?.GetHashCode() ?? 0;
 		}
 	}
 }

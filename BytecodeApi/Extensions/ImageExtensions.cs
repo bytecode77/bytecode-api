@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 
@@ -144,7 +145,7 @@ namespace BytecodeApi.Extensions
 			IntPtr hBitmap = bitmap.GetHbitmap();
 			try
 			{
-				return Imaging.CreateBitmapSourceFromHBitmap(hBitmap, IntPtr.Zero, System.Windows.Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+				return Imaging.CreateBitmapSourceFromHBitmap(hBitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
 			}
 			finally
 			{

@@ -129,7 +129,7 @@ namespace BytecodeApi.IO.Cli
 
 			for (int i = 0; i < args.Length; i++)
 			{
-				SpecialStringComparisons comparison = OptionPrefixIgnoreCase ? SpecialStringComparisons.IgnoreCase : SpecialStringComparisons.None;
+				StringComparison comparison = OptionPrefixIgnoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal;
 				Option option = Options.FirstOrDefault(o =>
 					o.Arguments.Any(a => args[i].Equals(OptionPrefix + a, comparison)) ||
 					o.Alternatives.Any(a => args[i].Equals(OptionAlternativePrefix + a, comparison))
@@ -171,29 +171,6 @@ namespace BytecodeApi.IO.Cli
 			Check.ArgumentNull(commandLine, nameof(commandLine));
 
 			return Parse(ParseCommandLine(commandLine));
-		}
-		/// <summary>
-		/// Parses commandline arguments from a <see cref="string" /> and returns the equivalent <see cref="string" />[] with split commandline arguments.
-		/// </summary>
-		/// <param name="commandLine">A <see cref="string" /> specifying a commandline.</param>
-		/// <returns>
-		/// The equivalent <see cref="string" />[] with split commandline arguments from the given commandline.
-		/// </returns>
-		public static string[] ParseCommandLine(string commandLine)
-		{
-			Check.ArgumentNull(commandLine, nameof(commandLine));
-
-			IntPtr argumentsPtr = Native.CommandLineToArgvW(commandLine, out int count);
-			if (argumentsPtr == IntPtr.Zero) throw Throw.Win32();
-
-			try
-			{
-				return Create.Array(count, i => Marshal.PtrToStringUni(Marshal.ReadIntPtr(argumentsPtr, i * IntPtr.Size)));
-			}
-			finally
-			{
-				Native.LocalFree(argumentsPtr);
-			}
 		}
 
 		void ICollection<Option>.Add(Option item)
@@ -251,6 +228,30 @@ namespace BytecodeApi.IO.Cli
 		IEnumerator IEnumerable.GetEnumerator()
 		{
 			return Options.GetEnumerator();
+		}
+
+		/// <summary>
+		/// Parses commandline arguments from a <see cref="string" /> and returns the equivalent <see cref="string" />[] with split commandline arguments.
+		/// </summary>
+		/// <param name="commandLine">A <see cref="string" /> specifying a commandline.</param>
+		/// <returns>
+		/// The equivalent <see cref="string" />[] with split commandline arguments from the given commandline.
+		/// </returns>
+		public static string[] ParseCommandLine(string commandLine)
+		{
+			Check.ArgumentNull(commandLine, nameof(commandLine));
+
+			IntPtr argumentsPtr = Native.CommandLineToArgvW(commandLine, out int count);
+			if (argumentsPtr == IntPtr.Zero) throw Throw.Win32();
+
+			try
+			{
+				return Create.Array(count, i => Marshal.PtrToStringUni(Marshal.ReadIntPtr(argumentsPtr, i * IntPtr.Size)));
+			}
+			finally
+			{
+				Native.LocalFree(argumentsPtr);
+			}
 		}
 	}
 }

@@ -84,7 +84,7 @@ namespace BytecodeApi.Data
 		/// </returns>
 		public bool Compare(Blob other)
 		{
-			return other != null && CSharp.TypeEquals(this, other) && (this == other || Name == other.Name && Content.Compare(other.Content) && Equals(Tag, other.Tag));
+			return other != null && (this == other || Name == other.Name && Content.Compare(other.Content) && Equals(Tag, other.Tag));
 		}
 		/// <summary>
 		/// Writes the contents of <see cref="Content" /> to a binary file.

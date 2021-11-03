@@ -40,7 +40,7 @@ namespace BytecodeApi.Extensions
 		/// </returns>
 		public static ushort? ToNullIfDefault(this ushort value)
 		{
-			return value == default(ushort) ? (ushort?)null : value;
+			return value == default(ushort) ? null : value;
 		}
 	}
 }

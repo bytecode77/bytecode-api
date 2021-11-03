@@ -88,7 +88,7 @@ namespace BytecodeApi.Extensions
 		/// </returns>
 		public static float? ToNullIfDefault(this float value)
 		{
-			return value == default ? (float?)null : value;
+			return value == default ? null : value;
 		}
 	}
 }

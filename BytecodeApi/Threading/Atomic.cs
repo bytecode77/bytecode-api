@@ -100,7 +100,17 @@ namespace BytecodeApi.Threading
 		/// </returns>
 		public static implicit operator T(Atomic<T> value)
 		{
-			return value == null ? default : value.Value;
+			if (value == null)
+			{
+				return default;
+			}
+			else
+			{
+				lock (value.SyncRoot)
+				{
+					return value.Value;
+				}
+			}
 		}
 	}
 }

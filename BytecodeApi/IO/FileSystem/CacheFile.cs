@@ -182,7 +182,11 @@ namespace BytecodeApi.IO.FileSystem
 
 			using StreamReader stream = new StreamReader(OpenRead(out _), encoding);
 			string line;
-			while ((line = stream.ReadLine()) != null) yield return line;
+
+			while ((line = stream.ReadLine()) != null)
+			{
+				yield return line;
+			}
 		}
 		/// <summary>
 		/// Deletes the cached file, if it exists. The next call to <see cref="OpenRead(out bool)" /> will trigger an update as specified in the <see cref="CacheFileUpdateCallback" /> delegate.

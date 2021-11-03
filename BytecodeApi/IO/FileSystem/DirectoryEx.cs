@@ -113,6 +113,7 @@ namespace BytecodeApi.IO.FileSystem
 		public static void CopyTo(string path, string destDirectoryName, bool overwrite)
 		{
 			Check.ArgumentNull(path, nameof(path));
+			Check.DirectoryNotFound(path);
 			Check.ArgumentNull(destDirectoryName, nameof(destDirectoryName));
 
 			new DirectoryInfo(path).CopyTo(destDirectoryName, overwrite);

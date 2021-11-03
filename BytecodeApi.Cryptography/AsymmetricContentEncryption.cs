@@ -24,7 +24,7 @@ namespace BytecodeApi.Cryptography
 			Check.ArgumentNull(data, nameof(data));
 			Check.ArgumentNull(derKey, nameof(derKey));
 
-			return Encrypt(data, AsymmetricKeyConverter.ConvertToKey(derKey));
+			return Encrypt(data, AsymmetricKeyConvert.ToKey(derKey));
 		}
 		/// <summary>
 		/// Encrypts the specified <see cref="byte" />[] using the specified public key and returns a <see cref="byte" />[] representing the encrypted version of <paramref name="data" />. The resulting binary is proprietary and can be decrypted using the <see cref="Decrypt(byte[], RSAParameters)" /> method.
@@ -39,7 +39,7 @@ namespace BytecodeApi.Cryptography
 			Check.ArgumentNull(data, nameof(data));
 			Check.ArgumentNull(pemKey, nameof(pemKey));
 
-			return Encrypt(data, AsymmetricKeyConverter.ConvertToKey(pemKey));
+			return Encrypt(data, AsymmetricKeyConvert.ToKey(pemKey));
 		}
 		/// <summary>
 		/// Encrypts the specified <see cref="byte" />[] using the specified public key and returns a <see cref="byte" />[] representing the encrypted version of <paramref name="data" />. The resulting binary is proprietary and can be decrypted using the <see cref="Decrypt(byte[], RSAParameters)" /> method.
@@ -72,7 +72,7 @@ namespace BytecodeApi.Cryptography
 			Check.ArgumentNull(data, nameof(data));
 			Check.ArgumentNull(derKey, nameof(derKey));
 
-			return Decrypt(data, AsymmetricKeyConverter.ConvertToKey(derKey));
+			return Decrypt(data, AsymmetricKeyConvert.ToKey(derKey));
 		}
 		/// <summary>
 		/// Decrypts the specified <see cref="byte" />[] using the specified private key and returns a <see cref="byte" />[] representing the decrypted version of <paramref name="data" />. The <paramref name="data" /> parameter is a proprietary binary, created by the <see cref="Encrypt(byte[], RSAParameters)" /> method.
@@ -87,7 +87,7 @@ namespace BytecodeApi.Cryptography
 			Check.ArgumentNull(data, nameof(data));
 			Check.ArgumentNull(pemKey, nameof(pemKey));
 
-			return Decrypt(data, AsymmetricKeyConverter.ConvertToKey(pemKey));
+			return Decrypt(data, AsymmetricKeyConvert.ToKey(pemKey));
 		}
 		/// <summary>
 		/// Decrypts the specified <see cref="byte" />[] using the specified private key and returns a <see cref="byte" />[] representing the decrypted version of <paramref name="data" />. The <paramref name="data" /> parameter is a proprietary binary, created by the <see cref="Encrypt(byte[], RSAParameters)" /> method.

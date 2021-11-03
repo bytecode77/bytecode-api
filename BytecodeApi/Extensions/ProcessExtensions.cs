@@ -3,6 +3,7 @@ using BytecodeApi.IO.Cli;
 using BytecodeApi.IO.Wmi;
 using System;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
@@ -123,6 +124,7 @@ namespace BytecodeApi.Extensions
 		{
 			Check.ArgumentNull(process, nameof(process));
 
+			//TODO: Implement using WinAPI
 			return new WmiNamespace("CIMV2", false, false)
 				.GetClass("Win32_Process", false)
 				.GetObjects(new[] { "CommandLine" }, "ProcessId = " + process.Id)
@@ -192,13 +194,20 @@ namespace BytecodeApi.Extensions
 		{
 			Check.ArgumentNull(process, nameof(process));
 
-			if (Environment.Is64BitOperatingSystem)
+			try
 			{
-				return CSharp.Try<bool?>(() => Native.IsWow64Process(process.Handle, out bool result) && !result);
+				if (Environment.Is64BitOperatingSystem)
+				{
+					return Native.IsWow64Process(process.Handle, out bool result) && !result;
+				}
+				else
+				{
+					return false;
+				}
 			}
-			else
+			catch
 			{
-				return false;
+				return null;
 			}
 		}
 		/// <summary>
@@ -215,7 +224,17 @@ namespace BytecodeApi.Extensions
 		{
 			Check.ArgumentNull(process, nameof(process));
 
-			return CSharp.Try(() => process.Modules.Cast<ProcessModule>().Any(module => MscorlibModuleRegex.IsMatch(module.FileName)));
+			try
+			{
+				return process.Modules
+					.Cast<ProcessModule>()
+					.Select(module => Path.GetFileName(module.FileName))
+					.Any(module => MscorlibModuleRegex.IsMatch(module));
+			}
+			catch
+			{
+				return null;
+			}
 		}
 		/// <summary>
 		/// Injects a DLL into this <see cref="Process" /> using the WriteProcessMemory / CreateRemoteThread technique. If <see cref="ProcessLoadLibraryResult.Success" /> is returned, the DLL has been successfully loaded by this <see cref="Process" />.
@@ -232,7 +251,7 @@ namespace BytecodeApi.Extensions
 			Check.ArgumentNull(dllName, nameof(dllName));
 			Check.FileNotFound(dllName);
 
-			if (CSharp.Try(() => process.Modules.Cast<ProcessModule>().Any(module => module.FileName.Equals(dllName, SpecialStringComparisons.IgnoreCase))))
+			if (CSharp.Try(() => process.Modules.Cast<ProcessModule>().Any(module => module.FileName.Equals(dllName, StringComparison.OrdinalIgnoreCase))))
 			{
 				return ProcessLoadLibraryResult.AlreadyLoaded;
 			}
@@ -240,11 +259,22 @@ namespace BytecodeApi.Extensions
 			{
 				IntPtr processHandle = Native.OpenProcess(1082, false, process.Id);
 				if (processHandle == IntPtr.Zero) return ProcessLoadLibraryResult.OpenProcessFailed;
+
 				IntPtr loadLibraryAddress = Native.GetProcAddress(Native.GetModuleHandle("kernel32.dll"), "LoadLibraryW");
-				IntPtr allocatedMemoryAddress = Native.VirtualAllocEx(processHandle, IntPtr.Zero, (uint)dllName.Length * 2 + 1, 0x3000, 4);
+				IntPtr allocatedMemoryAddress = Native.VirtualAllocEx(processHandle, IntPtr.Zero, (uint)(dllName.Length + 1) * 2, 0x3000, 4);
 				if (allocatedMemoryAddress == IntPtr.Zero) return ProcessLoadLibraryResult.VirtualAllocFailed;
-				if (!Native.WriteProcessMemory(processHandle, allocatedMemoryAddress, dllName.ToUnicodeBytes(), (uint)dllName.Length * 2 + 1, out _)) return ProcessLoadLibraryResult.WriteProcessMemoryFailed;
-				return Native.CreateRemoteThread(processHandle, IntPtr.Zero, 0, loadLibraryAddress, allocatedMemoryAddress, 0, IntPtr.Zero) == IntPtr.Zero ? ProcessLoadLibraryResult.CreateRemoteThreadFailed : ProcessLoadLibraryResult.Success;
+
+				if (!Native.WriteProcessMemory(processHandle, allocatedMemoryAddress, dllName.ToUnicodeBytes(), (uint)dllName.Length * 2 + 1, out _))
+				{
+					return ProcessLoadLibraryResult.WriteProcessMemoryFailed;
+				}
+
+				if (Native.CreateRemoteThread(processHandle, IntPtr.Zero, 0, loadLibraryAddress, allocatedMemoryAddress, 0, IntPtr.Zero) == IntPtr.Zero)
+				{
+					return ProcessLoadLibraryResult.CreateRemoteThreadFailed;
+				}
+
+				return ProcessLoadLibraryResult.Success;
 			}
 		}
 		internal static IntPtr OpenToken(this Process process, uint desiredAccess)

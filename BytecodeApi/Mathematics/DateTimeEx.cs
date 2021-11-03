@@ -63,7 +63,7 @@ namespace BytecodeApi.Mathematics
 		public static int? ConvertUnixTimeStamp(DateTime dateTime, DateTimeKind kind)
 		{
 			double seconds = (dateTime - new DateTime(1970, 1, 1, 0, 0, 0, kind)).TotalSeconds;
-			return seconds > 0 && seconds <= int.MaxValue ? (int)seconds : (int?)null;
+			return seconds > 0 && seconds <= int.MaxValue ? (int)seconds : null;
 		}
 		/// <summary>
 		/// Calculates the age from a birthday.

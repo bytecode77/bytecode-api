@@ -16,13 +16,7 @@ namespace BytecodeApi.Extensions
 		/// <param name="content">A <see cref="byte" />[] speficying the content for the entry.</param>
 		public static void CreateEntry(this ZipArchive archive, string name, byte[] content)
 		{
-			Check.ArgumentNull(archive, nameof(archive));
-			Check.ArgumentNull(name, nameof(name));
-			Check.ArgumentNull(content, nameof(content));
-
-			ZipArchiveEntry entry = archive.CreateEntry(name);
-			using Stream stream = entry.Open();
-			stream.Write(content);
+			archive.CreateEntry(name, content, CompressionLevel.Optimal);
 		}
 		/// <summary>
 		/// Adds a <see cref="ZipArchiveEntry" /> to this <see cref="ZipArchive" /> with the specified name, content and <see cref="CompressionLevel" />.

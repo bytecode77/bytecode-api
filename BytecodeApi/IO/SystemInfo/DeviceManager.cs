@@ -1,7 +1,6 @@
 ﻿using BytecodeApi.Extensions;
 using BytecodeApi.IO.Wmi;
 using Microsoft.Win32;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -28,50 +27,37 @@ namespace BytecodeApi.IO.SystemInfo
 		/// <returns>
 		/// The <see cref="DeviceManager" /> this method creates.
 		/// </returns>
-		public static DeviceManager GetDevices()
+		public static DeviceManager Create()
 		{
-			List<DeviceInfo> devices = new List<DeviceInfo>();
-
-			IEnumerable<WmiObject> objects = new WmiNamespace("CIMV2", false, false)
-				.GetClass("Win32_PnPentity", false)
-				.GetObjects()
-				.Where(obj => obj.Properties["ClassGuid", null].Value != null);
-
-			foreach (WmiObject wmiObject in objects)
-			{
-				devices.Add(new DeviceInfo
-				(
-					wmiObject.Properties
-						.Where(property => property.Value != null)
-						.Select(property => Tuple.Create(property.Name.Trim(), property.Value))
-						.ToDictionary()
-				));
-			}
-
 			return new DeviceManager
 			(
-				devices
-					.GroupBy(device => device.Attributes["ClassGuid"] as string)
-					.Select(group => new
-					{
-						ClassGuid = group.Key,
-						RegistryKey = Registry.LocalMachine.OpenSubKey(@"System\CurrentControlSet\Control\Class\" + group.Key),
-						Devices = group.ToArray()
-					})
+				new WmiNamespace("CIMV2", false, false)
+					.GetClass("Win32_PnPentity", false)
+					.GetObjects()
+					.Where(obj => obj.Properties["ClassGuid", null].Value is string)
+					.Select(obj => new DeviceInfo
+					(
+						obj.Properties
+							.Where(property => property.Value != null)
+							.ToDictionary(property => property.Name.Trim(), property => property.Value)
+					))
+					.ToArray()
+					.GroupBy(device => (string)device.Attributes["ClassGuid"])
 					.Select(group =>
 					{
-						using (group.RegistryKey)
+						using (RegistryKey key = Registry.LocalMachine.OpenSubKey(@"System\CurrentControlSet\Control\Class\" + group.Key))
 						{
 							return new DeviceTypeInfo
 							(
-								group.ClassGuid,
-								group.RegistryKey.GetStringValue("Class").ToNullIfEmpty(),
-								group.RegistryKey.GetStringValue(null).ToNullIfEmpty(),
-								group.Devices
+								group.Key,
+								key.GetStringValue("Class").ToNullIfEmpty(),
+								key.GetStringValue(null).ToNullIfEmpty(),
+								group.OrderBy(device => device.Name).ToArray()
 							);
 						}
 					})
 					.OrderBy(deviceType => deviceType.Name)
+					.ToArray()
 			);
 		}
 	}

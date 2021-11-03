@@ -1,5 +1,6 @@
 ﻿using BytecodeApi.Extensions;
 using Microsoft.VisualBasic.FileIO;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -20,7 +21,7 @@ namespace BytecodeApi.FileFormats.Csv
 		/// </summary>
 		public string[] Headers { get; set; }
 		/// <summary>
-		/// Gets or sets the delimiter for this <see cref="CsvFile" />. The initial value is set to the specified or detected delimiter when loading a flat file database, or <see langword="null" />, if the constructor was used to create an empty <see cref="CsvFile" />. This property is used by the <see cref="Save(Stream, bool, bool, Encoding, bool)" /> method.
+		/// Gets or sets the delimiter for this <see cref="CsvFile" />. The initial value is set to the specified or detected delimiter when loading a flat file database, or <see langword="null" />, if the constructor was used to create an empty <see cref="CsvFile" />. This property is used by the <see cref="Save(Stream, bool, Encoding, bool)" /> method.
 		/// </summary>
 		public string Delimiter { get; set; }
 		/// <summary>
@@ -209,7 +210,9 @@ namespace BytecodeApi.FileFormats.Csv
 				{
 					csv.Headers = parser.ReadFields();
 				}
-				catch (MalformedLineException) { }
+				catch (MalformedLineException)
+				{
+				}
 
 				lineNumber++;
 			}
@@ -232,6 +235,7 @@ namespace BytecodeApi.FileFormats.Csv
 
 			return csv;
 		}
+
 		/// <summary>
 		/// Returns an enumerable collection of <see cref="CsvRow" /> objects from the specified file. This method streams the file and does not load it into memory and is typically used for large files that are processed in a <see langword="foreach" /> loop.
 		/// </summary>
@@ -698,7 +702,7 @@ namespace BytecodeApi.FileFormats.Csv
 					{
 						string cell = row[i].Value;
 
-						if (alwaysQuote || cell?.Contains(delimiter) == true || cell?.Contains('\n') == true)
+						if (alwaysQuote || cell?.Contains(delimiter) == true || cell?.Contains("\n") == true)
 						{
 							streamWriter.Write('"');
 							if (cell != null) streamWriter.Write(cell.Replace("\"", "\"\""));
@@ -750,7 +754,7 @@ namespace BytecodeApi.FileFormats.Csv
 		/// </returns>
 		public int GetColumnIndex(string header, bool ignoreCase)
 		{
-			return Headers?.IndexOf(h => h.Equals(header, ignoreCase ? SpecialStringComparisons.IgnoreCase : SpecialStringComparisons.None)) ?? -1;
+			return Headers?.IndexOf(h => h.Equals(header, ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal)) ?? -1;
 		}
 		/// <summary>
 		/// Writes the contents of this flat file database to a file. If <see cref="Headers" /> is not <see langword="null" />, the header row is included. The <see cref="Delimiter" /> property specifies the delimiter to use when writing.
@@ -764,36 +768,25 @@ namespace BytecodeApi.FileFormats.Csv
 		/// Writes the contents of this flat file database to a file. If <see cref="Headers" /> is not <see langword="null" />, the header row is included. The <see cref="Delimiter" /> property specifies the delimiter to use when writing.
 		/// </summary>
 		/// <param name="path">A <see cref="string" /> specifying the path of a file to which this flat file database is written to.</param>
-		/// <param name="excludeErrorRows"><see langword="true" /> to include parsed error lines; otherwise, <see langword="false" />.</param>
-		public void Save(string path, bool excludeErrorRows)
-		{
-			Save(path, excludeErrorRows, false);
-		}
-		/// <summary>
-		/// Writes the contents of this flat file database to a file. If <see cref="Headers" /> is not <see langword="null" />, the header row is included. The <see cref="Delimiter" /> property specifies the delimiter to use when writing.
-		/// </summary>
-		/// <param name="path">A <see cref="string" /> specifying the path of a file to which this flat file database is written to.</param>
-		/// <param name="excludeErrorRows"><see langword="true" /> to include parsed error lines; otherwise, <see langword="false" />.</param>
 		/// <param name="alwaysQuote"><see langword="true" /> to wrap all cells with quotes; <see langword="false" /> to only use quotes when needed.</param>
-		public void Save(string path, bool excludeErrorRows, bool alwaysQuote)
+		public void Save(string path, bool alwaysQuote)
 		{
-			Save(path, excludeErrorRows, alwaysQuote, null);
+			Save(path, alwaysQuote, null);
 		}
 		/// <summary>
 		/// Writes the contents of this flat file database to a file. If <see cref="Headers" /> is not <see langword="null" />, the header row is included. The <see cref="Delimiter" /> property specifies the delimiter to use when writing.
 		/// </summary>
 		/// <param name="path">A <see cref="string" /> specifying the path of a file to which this flat file database is written to.</param>
-		/// <param name="excludeErrorRows"><see langword="true" /> to include parsed error lines; otherwise, <see langword="false" />.</param>
 		/// <param name="alwaysQuote"><see langword="true" /> to wrap all cells with quotes; <see langword="false" /> to only use quotes when needed.</param>
 		/// <param name="encoding">The encoding to use to write to the file.</param>
-		public void Save(string path, bool excludeErrorRows, bool alwaysQuote, Encoding encoding)
+		public void Save(string path, bool alwaysQuote, Encoding encoding)
 		{
 			Check.ArgumentNull(path, nameof(path));
 			Check.ArgumentNull(Delimiter, nameof(Delimiter));
 			Check.ArgumentEx.StringNotEmpty(Delimiter, nameof(Delimiter));
 
 			using FileStream stream = File.Create(path);
-			Save(stream, excludeErrorRows, alwaysQuote, encoding, false);
+			Save(stream, alwaysQuote, encoding, false);
 		}
 		/// <summary>
 		/// Writes the contents of this flat file database to a <see cref="Stream" />. If <see cref="Headers" /> is not <see langword="null" />, the header row is included. The <see cref="Delimiter" /> property specifies the delimiter to use when writing.
@@ -807,47 +800,35 @@ namespace BytecodeApi.FileFormats.Csv
 		/// Writes the contents of this flat file database to a <see cref="Stream" />. If <see cref="Headers" /> is not <see langword="null" />, the header row is included. The <see cref="Delimiter" /> property specifies the delimiter to use when writing.
 		/// </summary>
 		/// <param name="stream">The <see cref="Stream" /> to which this flat file database is written to.</param>
-		/// <param name="excludeErrorRows"><see langword="true" /> to include parsed error lines; otherwise, <see langword="false" />.</param>
-		public void Save(Stream stream, bool excludeErrorRows)
-		{
-			Save(stream, excludeErrorRows, false);
-		}
-		/// <summary>
-		/// Writes the contents of this flat file database to a <see cref="Stream" />. If <see cref="Headers" /> is not <see langword="null" />, the header row is included. The <see cref="Delimiter" /> property specifies the delimiter to use when writing.
-		/// </summary>
-		/// <param name="stream">The <see cref="Stream" /> to which this flat file database is written to.</param>
-		/// <param name="excludeErrorRows"><see langword="true" /> to include parsed error lines; otherwise, <see langword="false" />.</param>
 		/// <param name="alwaysQuote"><see langword="true" /> to wrap all cells with quotes; <see langword="false" /> to only use quotes when needed.</param>
-		public void Save(Stream stream, bool excludeErrorRows, bool alwaysQuote)
+		public void Save(Stream stream, bool alwaysQuote)
 		{
-			Save(stream, excludeErrorRows, alwaysQuote, null);
+			Save(stream, alwaysQuote, null);
 		}
 		/// <summary>
 		/// Writes the contents of this flat file database to a <see cref="Stream" />. If <see cref="Headers" /> is not <see langword="null" />, the header row is included. The <see cref="Delimiter" /> property specifies the delimiter to use when writing.
 		/// </summary>
 		/// <param name="stream">The <see cref="Stream" /> to which this flat file database is written to.</param>
-		/// <param name="excludeErrorRows"><see langword="true" /> to include parsed error lines; otherwise, <see langword="false" />.</param>
 		/// <param name="alwaysQuote"><see langword="true" /> to wrap all cells with quotes; <see langword="false" /> to only use quotes when needed.</param>
 		/// <param name="encoding">The encoding to use to write to the file.</param>
-		public void Save(Stream stream, bool excludeErrorRows, bool alwaysQuote, Encoding encoding)
+		public void Save(Stream stream, bool alwaysQuote, Encoding encoding)
 		{
-			Save(stream, excludeErrorRows, alwaysQuote, encoding, false);
+			Save(stream, alwaysQuote, encoding, false);
 		}
 		/// <summary>
 		/// Writes the contents of this flat file database to a <see cref="Stream" />. If <see cref="Headers" /> is not <see langword="null" />, the header row is included. The <see cref="Delimiter" /> property specifies the delimiter to use when writing.
 		/// </summary>
 		/// <param name="stream">The <see cref="Stream" /> to which this flat file database is written to.</param>
-		/// <param name="excludeErrorRows"><see langword="true" /> to include parsed error lines; otherwise, <see langword="false" />.</param>
 		/// <param name="alwaysQuote"><see langword="true" /> to wrap all cells with quotes; <see langword="false" /> to only use quotes when needed.</param>
 		/// <param name="encoding">The encoding to use to write to the file.</param>
 		/// <param name="leaveOpen">A <see cref="bool" /> value indicating whether to leave <paramref name="stream" /> open.</param>
-		public void Save(Stream stream, bool excludeErrorRows, bool alwaysQuote, Encoding encoding, bool leaveOpen)
+		public void Save(Stream stream, bool alwaysQuote, Encoding encoding, bool leaveOpen)
 		{
 			Check.ArgumentNull(stream, nameof(stream));
 			Check.ArgumentNull(Delimiter, nameof(Delimiter));
 			Check.ArgumentEx.StringNotEmpty(Delimiter, nameof(Delimiter));
 
-			if (Headers != null) SaveRows(stream, new[] { new CsvRow(Headers) }, Delimiter, alwaysQuote, encoding, true);
+			if (Headers?.Any() == true) SaveRows(stream, new[] { new CsvRow(Headers) }, Delimiter, alwaysQuote, encoding, true);
 			SaveRows(stream, Rows, Delimiter, alwaysQuote, encoding, leaveOpen);
 		}
 

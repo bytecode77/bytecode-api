@@ -1,6 +1,6 @@
 ﻿using BytecodeApi.Comparers;
 using BytecodeApi.IO.FileSystem;
-using Microsoft.VisualBasic.FileIO;
+using System;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -12,17 +12,6 @@ namespace BytecodeApi.Extensions
 	/// </summary>
 	public static class DirectoryInfoExtensions
 	{
-		/// <summary>
-		/// Sends this directory and all of its contents to recycle bin.
-		/// </summary>
-		/// <param name="directory">The <see cref="DirectoryInfo" /> to process.</param>
-		public static void SendToRecycleBin(this DirectoryInfo directory)
-		{
-			Check.ArgumentNull(directory, nameof(directory));
-			Check.DirectoryNotFound(directory.FullName);
-
-			FileSystem.DeleteDirectory(directory.FullName, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin, UICancelOption.ThrowException);
-		}
 		/// <summary>
 		/// Gets the UNC path of this directory. If the path cannot be converted to a UNC path, the original path is returned.
 		/// </summary>
@@ -127,7 +116,7 @@ namespace BytecodeApi.Extensions
 
 			bool CompareNames(string nameA, string nameB)
 			{
-				return nameA.Equals(nameB, options.HasFlag(CompareDirectoryOptions.IgnoreCase) ? SpecialStringComparisons.IgnoreCase : SpecialStringComparisons.None);
+				return nameA.Equals(nameB, options.HasFlag(CompareDirectoryOptions.IgnoreCase) ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal);
 			}
 		}
 		/// <summary>

@@ -151,8 +151,10 @@ namespace BytecodeApi.Data
 			Check.ArgumentNull(path, nameof(path));
 			Check.DirectoryNotFound(path);
 
-			Blob illegalBlob = Blobs.FirstOrDefault(blob => !Validate.FileName(blob.Name));
-			if (illegalBlob != null) throw CreateIllegalFilenameException(illegalBlob);
+			if (Blobs.FirstOrDefault(blob => !Validate.FileName(blob.Name)) is Blob illegalBlob)
+			{
+				throw CreateIllegalFilenameException(illegalBlob);
+			}
 
 			foreach (Blob blob in Blobs)
 			{

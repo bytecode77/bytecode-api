@@ -1,5 +1,4 @@
 ﻿using System.Globalization;
-using System.Linq;
 
 namespace BytecodeApi.Extensions
 {
@@ -220,7 +219,7 @@ namespace BytecodeApi.Extensions
 		/// </returns>
 		public static bool IsHexadecimal(this char value)
 		{
-			return "0123456789abcdefABCDEF".Contains(value);
+			return value >= '0' && value <= '9' || value >= 'a' && value <= 'f' || value >= 'A' && value <= 'F';
 		}
 		/// <summary>
 		/// Converts the value of this <see langword="char" /> to its lowercase equivalent.
@@ -304,7 +303,7 @@ namespace BytecodeApi.Extensions
 		/// </returns>
 		public static char? ToNullIfDefault(this char value)
 		{
-			return value == default(char) ? (char?)null : value;
+			return value == default(char) ? null : value;
 		}
 		/// <summary>
 		/// Creates a <see cref="string" /> using the value of the <paramref name="value" /> parameter and repeats it a specified number of times.

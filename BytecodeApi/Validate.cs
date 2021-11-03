@@ -135,7 +135,7 @@ namespace BytecodeApi
 		/// </returns>
 		public static bool Path(string str)
 		{
-			return str != null && CSharp.Try(() => new FileIOPermission(FileIOPermissionAccess.Read, new[] { str }).Demand());
+			return !str.IsNullOrWhiteSpace() && CSharp.Try(() => new FileIOPermission(FileIOPermissionAccess.Read, new[] { str }).Demand());
 		}
 		/// <summary>
 		/// Validates a <see cref="string" /> that is a filename.

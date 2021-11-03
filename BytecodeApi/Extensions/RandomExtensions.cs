@@ -37,7 +37,7 @@ namespace BytecodeApi.Extensions
 		{
 			Check.ArgumentNull(random, nameof(random));
 
-			return random.Next(2) == 1;
+			return (random.Next() & 1) == 1;
 		}
 		/// <summary>
 		/// Returns a random <see cref="byte" /> value that is greater than or equal to 0, and less than or equal to <see cref="byte.MaxValue" />.
@@ -242,6 +242,7 @@ namespace BytecodeApi.Extensions
 
 			BitArray bits = new BitArray(count);
 
+			//TODO: Performance optimization
 			for (int i = 0; i < count; i++)
 			{
 				bits[i] = (random.Next() & 1) == 1;

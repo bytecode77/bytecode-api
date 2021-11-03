@@ -70,7 +70,7 @@ namespace BytecodeApi.IO
 			return Native.SystemParametersInfo(20, 0, path, 1) == 1;
 		}
 		/// <summary>
-		/// Refreshes the system tray area and removes icons processes that no longer run.
+		/// Refreshes the system tray area and removes icons of processes that no longer run.
 		/// </summary>
 		public static void RefreshSystemTray()
 		{

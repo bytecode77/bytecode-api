@@ -47,7 +47,7 @@ namespace BytecodeApi.UI.Mathematics
 		/// <summary>
 		/// Gets a <see cref="double" /> value indicating the progress. This value is between 0.0 and 1.0, if <see cref="Value" /> is in bounds of 0.0 and <see cref="MaxValue" />.
 		/// </summary>
-		public double? Progress => MaxValue == null ? (double?)null : Value == 0 ? 1 : Value / MaxValue.Value;
+		public double? Progress => MaxValue == null ? null : Value == 0 ? 1 : Value / MaxValue.Value;
 		/// <summary>
 		/// Gets a <see cref="double" /> value indicating the progress in percent. This value is between 0.0 and 100.0, if <see cref="Value" /> is in bounds of 0.0 and <see cref="MaxValue" />.
 		/// </summary>

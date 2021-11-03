@@ -6,6 +6,7 @@ using System.Linq;
 
 namespace BytecodeApi.Extensions
 {
+	//IMPORTANT: Provide static conversion method for DateTime values instead of constant "yyyy-MM-dd HH:mm:ss" format
 	/// <summary>
 	/// Provides a set of <see langword="static" /> methods for interaction with <see cref="RegistryKey" /> objects, specifically for easy data access of strongly typed values.
 	/// </summary>
@@ -29,7 +30,7 @@ namespace BytecodeApi.Extensions
 			{
 				0 => false,
 				1 => true,
-				_ => (bool?)null
+				_ => null
 			};
 		}
 		/// <summary>
@@ -263,7 +264,7 @@ namespace BytecodeApi.Extensions
 		{
 			Check.ArgumentNull(key, nameof(key));
 
-			key.SetInt32Value(name, value == null ? (int?)null : value.Value ? 1 : 0);
+			key.SetInt32Value(name, value == null ? null : value.Value ? 1 : 0);
 		}
 		/// <summary>
 		/// Writes a <see cref="int" /> value to this <see cref="RegistryKey" /> that is represented as a REG_DWORD value. If <see langword="null" /> is provided, the value will be deleted.
@@ -328,7 +329,7 @@ namespace BytecodeApi.Extensions
 			Check.ArgumentNull(key, nameof(key));
 
 			if (value == null) key.DeleteValue(name, false);
-			else key.SetInt32Value(name, Convert.ToInt32(value.Value));
+			else key.SetInt32Value(name, Convert.ToInt32(value.Value)); //REFACTOR: Can (int) cast be used?
 		}
 		/// <summary>
 		/// Writes a <see cref="byte" />[] value to this <see cref="RegistryKey" /> that is represented as a REG_BINARY value. If <see langword="null" /> is provided, the value will be deleted.

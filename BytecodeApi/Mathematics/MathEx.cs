@@ -7,7 +7,6 @@ using System.Security.Cryptography;
 
 namespace BytecodeApi.Mathematics
 {
-	//FEATURE: ComputePrimeNumbers(int from, int to)
 	/// <summary>
 	/// Provides <see langword="static" /> methods that extend the <see cref="Math" /> class.
 	/// </summary>
@@ -1049,7 +1048,7 @@ namespace BytecodeApi.Mathematics
 			return true;
 		}
 		/// <summary>
-		/// Computes the prime numbers between 0 and <paramref name="n" />. A <see cref="BitArray" /> with <paramref name="n" /> elements is returned, where a <see cref="bool" /> value at any given index indicates whether the number is a prime number.
+		/// Computes the prime numbers between 0 and <paramref name="n" /> - 1. A <see cref="BitArray" /> with <paramref name="n" /> elements is returned, where a <see cref="bool" /> value at any given index indicates whether the number is a prime number.
 		/// </summary>
 		/// <param name="n">A <see cref="int" /> value specifying the range of numbers to check, where computation of numbers applies to values between 0 and <paramref name="n" />-1.</param>
 		/// <returns>
@@ -1060,7 +1059,7 @@ namespace BytecodeApi.Mathematics
 			Check.ArgumentOutOfRangeEx.Greater0(n, nameof(n));
 
 			BitArray result = new BitArray(n, true);
-			if (n >= 1) result[0] = false;
+			result[0] = false;
 			if (n >= 2) result[1] = false;
 
 			int to = (int)Math.Ceiling(Math.Sqrt(n));
@@ -1134,7 +1133,7 @@ namespace BytecodeApi.Mathematics
 			Check.Overflow(n <= 20);
 
 			long result = 1;
-			for (int i = 1; i <= n; i++) result *= i;
+			for (int i = 2; i <= n; i++) result *= i;
 			return result;
 		}
 		/// <summary>
@@ -1150,7 +1149,7 @@ namespace BytecodeApi.Mathematics
 			Check.ArgumentOutOfRangeEx.GreaterEqual0(n, nameof(n));
 
 			BigInteger result = 1;
-			for (int i = 1; i <= n; i++) result *= i;
+			for (int i = 2; i <= n; i++) result *= i;
 			return result;
 		}
 		/// <summary>

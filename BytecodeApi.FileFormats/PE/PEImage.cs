@@ -34,13 +34,7 @@ namespace BytecodeApi.FileFormats.PE
 		/// </summary>
 		public ImageSection[] Sections { get; private set; }
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="PEImage" /> class.
-		/// </summary>
-		public PEImage()
-		{
-		}
-		private PEImage(byte[] originalImage) : this()
+		private PEImage(byte[] originalImage)
 		{
 			OriginalImage = originalImage;
 			using BinaryReader reader = new BinaryReader(new MemoryStream(OriginalImage));

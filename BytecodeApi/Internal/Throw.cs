@@ -31,7 +31,7 @@ namespace BytecodeApi
 		}
 		public static Exception InvalidEnumArgument<TEnum>(string parameterName, TEnum enumValue) where TEnum : Enum
 		{
-			return new InvalidEnumArgumentException(parameterName, Convert.ToInt32(enumValue), typeof(TEnum));
+			return new InvalidEnumArgumentException(parameterName, Convert.ToInt32(enumValue), typeof(TEnum)); //REFACTOR: Can (int) cast be used?
 		}
 		public static Exception UnsupportedType(string parameterName)
 		{

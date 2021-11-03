@@ -1,5 +1,4 @@
-﻿using BytecodeApi.Extensions;
-using BytecodeApi.Mathematics;
+﻿using BytecodeApi.Mathematics;
 using System.Text;
 
 namespace BytecodeApi.Text
@@ -25,15 +24,15 @@ namespace BytecodeApi.Text
 		/// </summary>
 		public int MaxSentenceCount { get; set; }
 		/// <summary>
-		/// Gets or sets a <see cref="float" /> value that specifies the chance of a linebreak being inserted after a sentence, where 0.0f means no linebreaks and 1.0f means a linebreak between every sentence.
-		/// <para>The default value is 0.0f</para>
+		/// Gets or sets a <see cref="double" /> value that specifies the chance of a linebreak being inserted after a sentence, where 0.0 means no linebreaks and 1.0 means a linebreak between every sentence.
+		/// <para>The default value is 0.0</para>
 		/// </summary>
-		public float LineBreakChance { get; set; }
+		public double LineBreakChance { get; set; }
 		/// <summary>
-		/// Gets or sets a <see cref="float" /> value that specifies the chance of a paragraph being inserted after a sentence, where 0.0f means no paragraphs and 1.0f means a paragraph between every sentence. Randomly picked paragraphs have precedence over linebreaks and do not occur consecutively.
-		/// <para>The default value is 0.1f</para>
+		/// Gets or sets a <see cref="double" /> value that specifies the chance of a paragraph being inserted after a sentence, where 0.0 means no paragraphs and 1.0 means a paragraph between every sentence. Randomly picked paragraphs have precedence over linebreaks and do not occur consecutively.
+		/// <para>The default value is 0.1</para>
 		/// </summary>
-		public float ParagraphChance { get; set; }
+		public double ParagraphChance { get; set; }
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="TextGenerator" /> class with default values.
@@ -42,7 +41,7 @@ namespace BytecodeApi.Text
 		{
 		}
 		/// <summary>
-		/// Initializes a new instance of the <see cref="TextGenerator" /> class with the specified <see cref="SentenceGenerator" /> and with default values (<see cref="MinSentenceCount" /> = 10, <see cref="MaxSentenceCount" /> = 20, <see cref="LineBreakChance" /> = 0.0f, <see cref="ParagraphChance" /> = 0.1f).
+		/// Initializes a new instance of the <see cref="TextGenerator" /> class with the specified <see cref="SentenceGenerator" /> and with default values (<see cref="MinSentenceCount" /> = 10, <see cref="MaxSentenceCount" /> = 20, <see cref="LineBreakChance" /> = 0.0, <see cref="ParagraphChance" /> = 0.1).
 		/// </summary>
 		/// <param name="sentenceGenerator">The <see cref="SentenceGenerator" /> to use for sentence generation.</param>
 		public TextGenerator(SentenceGenerator sentenceGenerator)
@@ -53,7 +52,7 @@ namespace BytecodeApi.Text
 			MinSentenceCount = 10;
 			MaxSentenceCount = 20;
 			LineBreakChance = 0;
-			ParagraphChance = .1f;
+			ParagraphChance = .1;
 		}
 
 		/// <summary>
@@ -81,8 +80,8 @@ namespace BytecodeApi.Text
 				{
 					stringBuilder.Append(SentenceGenerator.Generate());
 
-					if (MathEx._Random.NextSingle() < ParagraphChance) stringBuilder.AppendLine().AppendLine();
-					else if (MathEx._Random.NextSingle() < LineBreakChance) stringBuilder.AppendLine();
+					if (MathEx._Random.NextDouble() < ParagraphChance) stringBuilder.AppendLine().AppendLine();
+					else if (MathEx._Random.NextDouble() < LineBreakChance) stringBuilder.AppendLine();
 					else stringBuilder.Append(" ");
 				}
 			}

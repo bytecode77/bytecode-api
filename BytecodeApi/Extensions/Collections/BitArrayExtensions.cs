@@ -242,6 +242,7 @@ namespace BytecodeApi.Extensions
 			Check.ArgumentOutOfRangeEx.GreaterEqual0(count, nameof(count));
 			Check.ArgumentEx.OffsetAndLengthOutOfBounds(offset, count, array.Length);
 
+			//TODO: Performance optimization
 			if (cryptographic)
 			{
 				lock (MathEx._RandomNumberGenerator)

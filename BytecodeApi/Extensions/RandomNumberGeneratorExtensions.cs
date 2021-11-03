@@ -4,6 +4,7 @@ using System.Security.Cryptography;
 
 namespace BytecodeApi.Extensions
 {
+	//FEATURE: NextObject
 	/// <summary>
 	/// Provides a set of <see langword="static" /> methods for interaction with <see cref="RandomNumberGenerator" /> objects.
 	/// </summary>
@@ -202,6 +203,7 @@ namespace BytecodeApi.Extensions
 			BitArray bits = new BitArray(count);
 			byte[] bytes = new byte[1];
 
+			//TODO: Performance optimization
 			for (int i = 0; i < count; i++)
 			{
 				randomNumberGenerator.GetBytes(bytes);

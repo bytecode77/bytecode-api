@@ -87,6 +87,7 @@ namespace BytecodeApi.IO
 						int tokenInfo = Marshal.SizeOf(mandatoryTokenLabel);
 						tokenInfoPtr = Marshal.AllocHGlobal(tokenInfo);
 						Marshal.StructureToPtr(mandatoryTokenLabel, tokenInfoPtr, false);
+
 						if (Native.SetTokenInformation(newToken, 25, tokenInfoPtr, tokenInfo + Native.GetLengthSid(integritySid)))
 						{
 							startupInfo.StructSize = Marshal.SizeOf(startupInfo);
@@ -214,7 +215,7 @@ namespace BytecodeApi.IO
 
 			using (Process process = Process.Start(new ProcessStartInfo(fileName, arguments) { Verb = runas ? "runas" : null }))
 			{
-				return process.WaitForExit(timeout) ? process.ExitCode : (int?)null;
+				return process.WaitForExit(timeout) ? process.ExitCode : null;
 			}
 		}
 		/// <summary>
@@ -333,7 +334,6 @@ namespace BytecodeApi.IO
 		/// <param name="args">A <see cref="string" />[] representing the arguments that is passed to the main entry point, if the Main method has a <see cref="string" />[] parameter.</param>
 		public static void ExecuteDotNetAssembly(byte[] executable, params string[] args)
 		{
-
 			ExecuteDotNetAssembly(executable, args, false);
 		}
 		/// <summary>

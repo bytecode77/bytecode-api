@@ -675,7 +675,6 @@ namespace BytecodeApi.Extensions
 		/// </returns>
 		public static IEnumerable<IEnumerable<TSource>> Chunk<TSource>(this IEnumerable<TSource> source, int chunkSize)
 		{
-			//IMPORTANT: Pulls everything into memory. Consider [][] or yield return
 			Check.ArgumentNull(source, nameof(source));
 			Check.ArgumentOutOfRangeEx.Greater0(chunkSize, nameof(chunkSize));
 
@@ -782,11 +781,11 @@ namespace BytecodeApi.Extensions
 		/// <returns>
 		/// A new <see cref="Dictionary{TKey, TValue}" />, where keys and values are swapped.
 		/// </returns>
-		public static Dictionary<TValue, TKey> Swap<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, IEqualityComparer<TKey> comparer)
+		public static Dictionary<TValue, TKey> Swap<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, IEqualityComparer<TValue> comparer)
 		{
 			Check.ArgumentNull(dictionary, nameof(dictionary));
 
-			return dictionary.ToDictionary(itm => itm.Value, itm => itm.Key);
+			return dictionary.ToDictionary(itm => itm.Value, itm => itm.Key, comparer);
 		}
 
 		/// <summary>

@@ -54,25 +54,22 @@ namespace BytecodeApi.UI.Converters
 			{
 				result = !Equals(value, parameter);
 			}
+			else if (value is IComparable comparableValue && parameter is IComparable comparableParameter)
+			{
+				int comparison = comparableValue.CompareTo(comparableParameter);
+
+				result = Method switch
+				{
+					EqualityConverterMethod.Less => comparison < 0,
+					EqualityConverterMethod.LessEqual => comparison <= 0,
+					EqualityConverterMethod.Greater => comparison > 0,
+					EqualityConverterMethod.GreaterEqual => comparison >= 0,
+					_ => throw Throw.InvalidEnumArgument(nameof(Result), Result)
+				};
+			}
 			else
 			{
-				if (value is IComparable comparableValue && parameter is IComparable comparableParameter)
-				{
-					int comparison = comparableValue.CompareTo(comparableParameter);
-
-					result = Method switch
-					{
-						EqualityConverterMethod.Less => comparison < 0,
-						EqualityConverterMethod.LessEqual => comparison <= 0,
-						EqualityConverterMethod.Greater => comparison > 0,
-						EqualityConverterMethod.GreaterEqual => comparison >= 0,
-						_ => throw Throw.InvalidEnumArgument(nameof(Result), Result)
-					};
-				}
-				else
-				{
-					result = false;
-				}
+				result = false;
 			}
 
 			return new BooleanConverter(Result).Convert(result);
