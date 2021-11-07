@@ -1,10 +1,11 @@
-﻿using System;
+﻿using BytecodeApi.Mathematics;
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Security.Cryptography;
 
 namespace BytecodeApi.Extensions
 {
-	//FEATURE: NextObject
 	/// <summary>
 	/// Provides a set of <see langword="static" /> methods for interaction with <see cref="RandomNumberGenerator" /> objects.
 	/// </summary>
@@ -123,6 +124,41 @@ namespace BytecodeApi.Extensions
 			return BitConverter.ToInt32(randomNumberGenerator.GetBytes(4), 0);
 		}
 		/// <summary>
+		/// Generates a cryptographically strong random <see cref="int" /> value that is less than the specified maximum.
+		/// </summary>
+		/// <param name="randomNumberGenerator">The <see cref="RandomNumberGenerator" /> object to be used for random number generation.</param>
+		/// <param name="maxValue">The exclusive upper bound of the random number to be generated. <paramref name="maxValue" /> must be greater than or equal to 0.</param>
+		/// <returns>
+		/// A cryptographically strong random <see cref="int" /> value that is less than the specified maximum.
+		/// </returns>
+		public static int GetInt32(this RandomNumberGenerator randomNumberGenerator, int maxValue)
+		{
+			Check.ArgumentNull(randomNumberGenerator, nameof(randomNumberGenerator));
+			Check.ArgumentOutOfRangeEx.GreaterEqual0(maxValue, nameof(maxValue));
+
+			byte[] bytes = randomNumberGenerator.GetBytes(4);
+			BitCalculator.SetBit(bytes, 31, false);
+
+			return (int)((long)BitConverter.ToInt32(bytes, 0) * maxValue / int.MaxValue);
+		}
+		/// <summary>
+		/// Generates a cryptographically strong random <see cref="int" /> value that is less than the specified maximum.
+		/// </summary>
+		/// <param name="randomNumberGenerator">The <see cref="RandomNumberGenerator" /> object to be used for random number generation.</param>
+		/// <param name="minValue">The inclusive lower bound of the random number returned.</param>
+		/// <param name="maxValue">The exclusive upper bound of the random number to be generated. <paramref name="maxValue" /> must be greater than or equal to 0.</param>
+		/// <returns>
+		/// A cryptographically strong random <see cref="int" /> value that is less than the specified maximum.
+		/// </returns>
+		public static int GetInt32(this RandomNumberGenerator randomNumberGenerator, int minValue, int maxValue)
+		{
+			Check.ArgumentNull(randomNumberGenerator, nameof(randomNumberGenerator));
+			Check.ArgumentOutOfRangeEx.GreaterEqual0(maxValue, nameof(maxValue));
+			Check.ArgumentOutOfRangeEx.GreaterEqualValue(maxValue, minValue, nameof(maxValue), nameof(minValue));
+
+			return minValue + randomNumberGenerator.GetInt32(maxValue - minValue);
+		}
+		/// <summary>
 		/// Generates a cryptographically strong random <see cref="uint" /> value that is greater than or equal to 0, and less than or equal to <see cref="uint.MaxValue" />.
 		/// </summary>
 		/// <param name="randomNumberGenerator">The <see cref="RandomNumberGenerator" /> object to be used for random number generation.</param>
@@ -201,16 +237,39 @@ namespace BytecodeApi.Extensions
 			Check.ArgumentOutOfRangeEx.GreaterEqual0(count, nameof(count));
 
 			BitArray bits = new BitArray(count);
-			byte[] bytes = new byte[1];
+			byte[] buffer = new byte[16];
+			int bufferPosition = int.MaxValue;
 
-			//TODO: Performance optimization
 			for (int i = 0; i < count; i++)
 			{
-				randomNumberGenerator.GetBytes(bytes);
-				bits[i] = (bytes[0] & 1) == 1;
+				if (bufferPosition >= buffer.Length << 3)
+				{
+					randomNumberGenerator.GetBytes(buffer);
+					bufferPosition = 0;
+				}
+
+				bits[i] = (buffer[bufferPosition >> 3] & 1 << (bufferPosition & 7)) > 0;
+				bufferPosition++;
 			}
 
 			return bits;
+		}
+		/// <summary>
+		/// Returns a random <see cref="object" /> of the specified type from <paramref name="list" />, selected based on a cryptographically strong random index.
+		/// </summary>
+		/// <typeparam name="T">The element type of <paramref name="list" />.</typeparam>
+		/// <param name="randomNumberGenerator">The <see cref="RandomNumberGenerator" /> object to be used for random number generation.</param>
+		/// <param name="list">A <see cref="IList{T}" /> of the specified type.</param>
+		/// <returns>
+		/// A random <see cref="object" /> of the specified type from <paramref name="list" />.
+		/// </returns>
+		public static T GetObject<T>(this RandomNumberGenerator randomNumberGenerator, IList<T> list)
+		{
+			Check.ArgumentNull(randomNumberGenerator, nameof(randomNumberGenerator));
+			Check.ArgumentNull(list, nameof(list));
+			Check.ArgumentEx.ArrayElementsRequired(list, nameof(list));
+
+			return list[randomNumberGenerator.GetInt32(list.Count)];
 		}
 	}
 }

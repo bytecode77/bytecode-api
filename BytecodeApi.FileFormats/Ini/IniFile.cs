@@ -1,4 +1,5 @@
 ﻿using BytecodeApi.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -195,7 +196,7 @@ namespace BytecodeApi.FileFormats.Ini
 						if (parsingOptions.TrimSectionNames) newSection = newSection.Trim();
 						AbortIf(!parsingOptions.AllowSectionNameClosingBracket && newSection.Contains("]"));
 
-						IniSection duplicate = ini.Sections.FirstOrDefault(sect => sect.Name.Equals(newSection, parsingOptions.DuplicateSectionNameIgnoreCase ? SpecialStringComparisons.IgnoreCase : SpecialStringComparisons.None));
+						IniSection duplicate = ini.Sections.FirstOrDefault(sect => sect.Name.Equals(newSection, parsingOptions.DuplicateSectionNameIgnoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal));
 						bool create = false;
 
 						switch (parsingOptions.DuplicateSectionNameBehavior)
@@ -257,7 +258,7 @@ namespace BytecodeApi.FileFormats.Ini
 							if (parsingOptions.TrimPropertyNames) property.Name = property.Name.Trim();
 							if (parsingOptions.TrimPropertyValues) property.Value = property.Value.Trim();
 
-							IniProperty duplicate = section.Properties.FirstOrDefault(prop => prop.Name.Equals(property.Name, parsingOptions.DuplicatePropertyNameIgnoreCase ? SpecialStringComparisons.IgnoreCase : SpecialStringComparisons.None));
+							IniProperty duplicate = section.Properties.FirstOrDefault(prop => prop.Name.Equals(property.Name, parsingOptions.DuplicatePropertyNameIgnoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal));
 							if (duplicate == null)
 							{
 								section.Properties.Add(property);

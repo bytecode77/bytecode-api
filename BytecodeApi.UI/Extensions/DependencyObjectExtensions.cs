@@ -1,9 +1,6 @@
-﻿using BytecodeApi.Extensions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -229,33 +226,6 @@ namespace BytecodeApi.UI.Extensions
 			Check.ArgumentNull(dependencyObject, nameof(dependencyObject));
 
 			return !Validation.GetHasError(dependencyObject) && (!validateChildren || dependencyObject.FindChildren<DependencyObject>(UITreeType.Logical).All(Validate));
-		}
-		internal static DependencyProperty GetDependencyProperty<T>(this DependencyObject dependencyObject, Expression<Func<T>> dependencyProperty)
-		{
-			string propertyName = dependencyProperty.GetMemberName() + "Property";
-
-			Type type = dependencyObject.GetType();
-			FieldInfo field = type.GetField(propertyName);
-
-			while (field == null && type != typeof(DependencyObject))
-			{
-				type = type.BaseType;
-				field = type.GetField(propertyName);
-			}
-
-			if (field == null)
-			{
-				throw CreateNotFoundException();
-			}
-			else
-			{
-				return field.GetValue(dependencyObject) is DependencyProperty property ? property : throw CreateNotFoundException();
-			}
-
-			Exception CreateNotFoundException()
-			{
-				return Throw.InvalidOperation("DependencyProperty '" + propertyName + "' not found.");
-			}
 		}
 	}
 }

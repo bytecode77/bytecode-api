@@ -23,6 +23,26 @@ namespace BytecodeApi.IO
 		public static bool HasConsole => Native.GetConsoleWindow() != IntPtr.Zero;
 
 		/// <summary>
+		/// Determines whether a <see cref="Process" /> with the specified process ID is running.
+		/// </summary>
+		/// <param name="processId">The process ID to check.</param>
+		/// <returns>
+		/// <see langword="true" />, if the process is running;
+		/// otherwise, <see langword="false" />.
+		/// </returns>
+		public static bool IsRunning(int processId)
+		{
+			try
+			{
+				Process.GetProcessById(processId);
+				return true;
+			}
+			catch
+			{
+				return false;
+			}
+		}
+		/// <summary>
 		/// Creates a new <see cref="Process" /> component for each process resource with the SessionId of the current <see cref="Process" /> on the local computer.
 		/// </summary>
 		/// <returns>
@@ -148,6 +168,7 @@ namespace BytecodeApi.IO
 				return file.IsInvalid ? null : new FileStream(file, fileAccess);
 			}
 		}
+
 		/// <summary>
 		/// Creates a <see cref="Process" />, waits for the process to exit and returns its exit code.
 		/// </summary>

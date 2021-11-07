@@ -219,7 +219,7 @@ namespace BytecodeApi.IO
 
 					foreach (string path in entry.FullName.TrimEndString(entry.Name, true, true).TrimEnd('\\').Split(new[] { '\\' }, StringSplitOptions.RemoveEmptyEntries))
 					{
-						if (!node.Nodes.HasNode(path, true)) node.Nodes.Add(new BlobTreeNode(path));
+						if (!node.HasNode(path, true)) node.Nodes.Add(new BlobTreeNode(path));
 						node = node.Nodes[path, true];
 					}
 

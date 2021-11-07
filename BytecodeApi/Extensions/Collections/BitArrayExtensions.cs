@@ -242,17 +242,23 @@ namespace BytecodeApi.Extensions
 			Check.ArgumentOutOfRangeEx.GreaterEqual0(count, nameof(count));
 			Check.ArgumentEx.OffsetAndLengthOutOfBounds(offset, count, array.Length);
 
-			//TODO: Performance optimization
+			byte[] buffer = new byte[16];
+			int bufferPosition = int.MaxValue;
+
 			if (cryptographic)
 			{
 				lock (MathEx._RandomNumberGenerator)
 				{
-					byte[] bytes = new byte[1];
-
 					for (int i = offset; i < offset + count; i++)
 					{
-						MathEx._RandomNumberGenerator.GetBytes(bytes);
-						array[i] = (bytes[0] & 1) == 1;
+						if (bufferPosition >= buffer.Length << 3)
+						{
+							MathEx._RandomNumberGenerator.GetBytes(buffer);
+							bufferPosition = 0;
+						}
+
+						array[i] = (buffer[bufferPosition >> 3] & 1 << (bufferPosition & 7)) > 0;
+						bufferPosition++;
 					}
 				}
 			}
@@ -262,7 +268,14 @@ namespace BytecodeApi.Extensions
 				{
 					for (int i = offset; i < offset + count; i++)
 					{
-						array[i] = (MathEx._Random.Next() & 1) == 1;
+						if (bufferPosition >= buffer.Length << 3)
+						{
+							MathEx._Random.NextBytes(buffer);
+							bufferPosition = 0;
+						}
+
+						array[i] = (buffer[bufferPosition >> 3] & 1 << (bufferPosition & 7)) > 0;
+						bufferPosition++;
 					}
 				}
 			}

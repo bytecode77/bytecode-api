@@ -6,7 +6,6 @@ using System.Windows;
 
 namespace BytecodeApi.IO
 {
-	//FEATURE: CaptureWindow(IntPtr handle)
 	/// <summary>
 	/// Provides a set of <see langword="static" /> methods for Windows desktop interaction.
 	/// </summary>
@@ -36,9 +35,9 @@ namespace BytecodeApi.IO
 		/// </returns>
 		public static Bitmap CaptureScreen(bool allScreens)
 		{
-			SizeF dpi = ApplicationBase.Session.DesktopDpi;
-			int left = (int)(SystemParameters.VirtualScreenLeft * dpi.Width / 96);
-			int top = (int)(SystemParameters.VirtualScreenTop * dpi.Height / 96);
+			System.Drawing.Size dpi = ApplicationBase.Session.Dpi;
+			int left = allScreens ? (int)(SystemParameters.VirtualScreenLeft * dpi.Width / 96) : 0;
+			int top = allScreens ? (int)(SystemParameters.VirtualScreenTop * dpi.Height / 96) : 0;
 			int width = (int)((allScreens ? SystemParameters.VirtualScreenWidth : SystemParameters.PrimaryScreenWidth) * dpi.Width / 96);
 			int height = (int)((allScreens ? SystemParameters.VirtualScreenHeight : SystemParameters.PrimaryScreenHeight) * dpi.Height / 96);
 
@@ -56,6 +55,13 @@ namespace BytecodeApi.IO
 		public static void TurnOnScreenSaver()
 		{
 			Native.SendMessage((IntPtr)0xffff, 0x112, 0xf140, 0);
+		}
+		/// <summary>
+		/// Locks the workstation.
+		/// </summary>
+		public static void LockWorkstation()
+		{
+			Native.LockWorkStation();
 		}
 		/// <summary>
 		/// Changes the Windows wallpaper to an image from the specified file.

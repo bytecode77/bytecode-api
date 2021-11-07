@@ -128,7 +128,6 @@ namespace BytecodeApi.Extensions
 
 			return Native.DeleteFile(file.FullName + ":Zone.Identifier");
 		}
-		//TODO: Bug: Size specification parameter unclear, quality bad
 		/// <summary>
 		/// Extracts the icon of this file. Returns <see langword="null" />, if extraction failed.
 		/// </summary>

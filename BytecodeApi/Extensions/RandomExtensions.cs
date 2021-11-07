@@ -241,31 +241,22 @@ namespace BytecodeApi.Extensions
 			Check.ArgumentOutOfRangeEx.GreaterEqual0(count, nameof(count));
 
 			BitArray bits = new BitArray(count);
+			byte[] buffer = new byte[16];
+			int bufferPosition = int.MaxValue;
 
-			//TODO: Performance optimization
 			for (int i = 0; i < count; i++)
 			{
-				bits[i] = (random.Next() & 1) == 1;
+				if (bufferPosition >= buffer.Length << 3)
+				{
+					random.NextBytes(buffer);
+					bufferPosition = 0;
+				}
+
+				bits[i] = (buffer[bufferPosition >> 3] & 1 << (bufferPosition & 7)) > 0;
+				bufferPosition++;
 			}
 
 			return bits;
-		}
-		/// <summary>
-		/// Returns a random <see cref="object" /> of the specified type from <paramref name="array" />, selected based on a random index.
-		/// </summary>
-		/// <typeparam name="T">The element type of <paramref name="array" />.</typeparam>
-		/// <param name="random">The <see cref="Random" /> object to be used for random number generation.</param>
-		/// <param name="array">An <see cref="Array" /> of the specified type.</param>
-		/// <returns>
-		/// A random <see cref="object" /> of the specified type from <paramref name="array" />.
-		/// </returns>
-		public static T NextObject<T>(this Random random, params T[] array)
-		{
-			Check.ArgumentNull(random, nameof(random));
-			Check.ArgumentNull(array, nameof(array));
-			Check.ArgumentEx.ArrayElementsRequired(array, nameof(array));
-
-			return array[random.Next(array.Length)];
 		}
 		/// <summary>
 		/// Returns a random <see cref="object" /> of the specified type from <paramref name="list" />, selected based on a random index.

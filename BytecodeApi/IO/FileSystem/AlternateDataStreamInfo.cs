@@ -8,7 +8,6 @@ using System.Runtime.InteropServices;
 
 namespace BytecodeApi.IO.FileSystem
 {
-	//FEATURE: Read contents, Exists, Delete, Create, Update
 	/// <summary>
 	/// Provides properties and instance methods for NTFS alternate data streams.
 	/// </summary>
@@ -73,7 +72,7 @@ namespace BytecodeApi.IO.FileSystem
 
 							if (!name.IsNullOrEmpty())
 							{
-								streams.Add(new AlternateDataStream(name, streamId.Size.ToInt64(), (AlternateDataStreamType)streamId.StreamId, (AlternateDataStreamAttributes)streamId.StreamAttributes));
+								streams.Add(new AlternateDataStream(path + ":" + name, name, streamId.Size.ToInt64(), (AlternateDataStreamType)streamId.StreamId, (AlternateDataStreamAttributes)streamId.StreamAttributes));
 							}
 
 							if (streamId.Size.Low != 0 || streamId.Size.High != 0)

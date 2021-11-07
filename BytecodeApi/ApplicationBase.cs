@@ -4,8 +4,8 @@ using BytecodeApi.IO.Wmi;
 using BytecodeApi.Mathematics;
 using Microsoft.Win32;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Reflection;
@@ -50,7 +50,7 @@ namespace BytecodeApi
 		{
 			get
 			{
-				if (_DebugMode == null) _DebugMode = Debugger.IsAttached || new[] { @"\bin\Debug", @"\bin\x86\Debug", @"\bin\x64\Debug" }.Any(path => Path.Contains(path + @"\", SpecialStringComparisons.IgnoreCase) || Path.EndsWith(path, SpecialStringComparisons.IgnoreCase));
+				if (_DebugMode == null) _DebugMode = Debugger.IsAttached || new[] { @"\bin\Debug", @"\bin\x86\Debug", @"\bin\x64\Debug" }.Any(path => Path.Contains(path + @"\", SpecialStringComparisons.IgnoreCase) || Path.EndsWith(path, StringComparison.OrdinalIgnoreCase));
 				return _DebugMode.Value;
 			}
 		}
@@ -270,7 +270,6 @@ namespace BytecodeApi
 			private static string _CurrentUser;
 			private static string _DomainName;
 			private static string _Workgroup;
-			private static bool? _IsWorkstationLocked;
 			private static bool? _IsRdp;
 			/// <summary>
 			/// Gets the name of the current <see cref="WindowsIdentity" />, including the domain or workstation name.
@@ -307,44 +306,28 @@ namespace BytecodeApi
 				{
 					if (_Workgroup == null)
 					{
-						_Workgroup = new WmiNamespace("CIMV2", false, false)
-							.GetClass("Win32_ComputerSystem", false)
-							.GetObjects("Workgroup")
-							.First()
-							.Properties["Workgroup"]
-							.GetValue<string>()
-							?.Trim()
-							.ToNullIfEmpty();
+						IntPtr domainStr = IntPtr.Zero;
+
+						try
+						{
+							if (Native.NetGetJoinInformation(null, out domainStr, out int status) == 0 && status == 2)
+							{
+								_Workgroup = Marshal.PtrToStringAuto(domainStr);
+							}
+						}
+						finally
+						{
+							if (domainStr != IntPtr.Zero) Native.NetApiBufferFree(domainStr);
+						}
 					}
 
 					return _Workgroup;
 				}
 			}
 			/// <summary>
-			/// Gets a <see cref="bool" /> value indicating whether the workstation is locked. The application is required to have a message loop, such as in a WPF or WinForms project.
+			/// Gets a <see cref="bool" /> value indicating whether the workstation is locked.
 			/// </summary>
 			public static bool IsWorkstationLocked
-			{
-				get
-				{
-					if (_IsWorkstationLocked == null)
-					{
-						_IsWorkstationLocked = false; //IMPORTANT: Bug: Wrongfully returns false, if workstation was locked when application started.
-
-						SystemEvents.SessionSwitch += delegate (object sender, SessionSwitchEventArgs e)
-						{
-							if (e.Reason == SessionSwitchReason.SessionLock) _IsWorkstationLocked = true;
-							else if (e.Reason == SessionSwitchReason.SessionUnlock) _IsWorkstationLocked = false;
-						};
-					}
-
-					return _IsWorkstationLocked.Value;
-				}
-			}
-			/// <summary>
-			/// Gets the screen DPI. A value of 96.0 corresponds to 100% font scaling.
-			/// </summary>
-			public static SizeF DesktopDpi
 			{
 				get
 				{
@@ -352,16 +335,38 @@ namespace BytecodeApi
 
 					try
 					{
-						desktop = Native.GetDC(IntPtr.Zero);
-
-						using (Graphics graphics = Graphics.FromHdc(desktop))
-						{
-							return new SizeF(graphics.DpiX, graphics.DpiY);
-						}
+						desktop = Native.OpenInputDesktop(0, false, 256);
+						if (desktop == IntPtr.Zero) desktop = Native.OpenDesktop("Default", 0, false, 256);
+						return desktop != IntPtr.Zero && !Native.SwitchDesktop(desktop);
 					}
 					finally
 					{
-						if (desktop != IntPtr.Zero) Native.ReleaseDC(IntPtr.Zero, desktop);
+						if (desktop != IntPtr.Zero) Native.CloseDesktop(desktop);
+					}
+				}
+			}
+			/// <summary>
+			/// Gets a <see cref="bool" /> value indicating whether the screensaver is running.
+			/// </summary>
+			public static bool IsScreensaverRunning
+			{
+				get
+				{
+					bool running = false;
+					return Native.SystemParametersInfo(114, 0, ref running, 0) && running;
+				}
+			}
+			/// <summary>
+			/// Gets the screen DPI. A value of 96 corresponds to 100% font scaling.
+			/// </summary>
+			public static System.Drawing.Size Dpi
+			{
+				get
+				{
+					using (System.Drawing.Graphics graphics = System.Drawing.Graphics.FromHwnd(IntPtr.Zero))
+					{
+						IntPtr desktop = graphics.GetHdc();
+						return new System.Drawing.Size(Native.GetDeviceCaps(desktop, 88), Native.GetDeviceCaps(desktop, 90));
 					}
 				}
 			}
@@ -382,7 +387,6 @@ namespace BytecodeApi
 		/// </summary>
 		public static class OperatingSystem
 		{
-			//FEATURE: Major & Minor version
 			private static string _Name;
 			private static DateTime? _InstallDate;
 			private static string[] _InstalledAntiVirusSoftware;
@@ -397,14 +401,11 @@ namespace BytecodeApi
 				{
 					if (_Name == null)
 					{
-						_Name = new WmiNamespace("CIMV2", false, false)
-							.GetClass("Win32_OperatingSystem", false)
-							.GetObjects("Caption")
-							.First()
-							.Properties["Caption"]
-							.GetValue<string>()
-							.SubstringFrom("Microsoft ")
-							.Trim();
+						using (RegistryKey baseKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64))
+						using (RegistryKey key = baseKey.OpenSubKey(@"Software\Microsoft\Windows NT\CurrentVersion"))
+						{
+							_Name = key.GetStringValue("ProductName");
+						}
 					}
 
 					return _Name;
@@ -516,50 +517,27 @@ namespace BytecodeApi
 				}
 			}
 			/// <summary>
-			/// Gets the currently installed version of the .NET Framework, deduced from the <see cref="FrameworkVersionNumber" /> property and <see langword="null" />, if the version name could not be determined. Works for .NET 4.5+.
-			/// <para>Examples: 4.5, 4.6, 4.7, 4.7.1, 4.7.2, 4.8</para>
+			/// Gets the currently installed version of the .NET Framework, deduced from the <see cref="FrameworkVersionNumber" /> property and <see langword="null" />, if the version name could not be determined.
+			/// Works for version numbers from NET 4.5 to .NET 4.8.
+			/// <para>Examples: 4.5, 4.6, 4.6.1, ..., 4.8</para>
 			/// </summary>
 			public static string FrameworkVersionName
 			{
 				get
 				{
-					// Version numbers: https://docs.microsoft.com/en-us/dotnet/framework/migration-guide/versions-and-dependencies
-					//TODO: Find algorithm, where code changes are not needed, when new version is released
-					switch (FrameworkVersionNumber)
-					{
-						case 378389:
-							return "4.5";
-						case 378675:
-						case 378758:
-							return "4.5.1";
-						case 379893:
-							return "4.5.2";
-						case 393295:
-						case 393297:
-							return "4.6";
-						case 394254:
-						case 394271:
-							return "4.6.1";
-						case 394802:
-						case 394806:
-							return "4.6.2";
-						case 460798:
-						case 460805:
-							return "4.7";
-						case 461308:
-						case 461310:
-							return "4.7.1";
-						case 461808:
-						case 461814:
-							return "4.7.2";
-						case 528040:
-						case 528049:
-						case 528372:
-						case 528449:
-							return "4.8";
-						default:
-							return null;
-					}
+					// Version numbers: https://docs.microsoft.com/en-us/dotnet/framework/migration-guide/how-to-determine-which-versions-are-installed#minimum-version
+
+					if (FrameworkVersionNumber >= 528040) return "4.8";
+					else if (FrameworkVersionNumber >= 461808) return "4.7.2";
+					else if (FrameworkVersionNumber >= 461308) return "4.7.1";
+					else if (FrameworkVersionNumber >= 460798) return "4.7";
+					else if (FrameworkVersionNumber >= 394802) return "4.6.2";
+					else if (FrameworkVersionNumber >= 394254) return "4.6.1";
+					else if (FrameworkVersionNumber >= 393295) return "4.6";
+					else if (FrameworkVersionNumber >= 379893) return "4.5.2";
+					else if (FrameworkVersionNumber >= 378675) return "4.5.1";
+					else if (FrameworkVersionNumber >= 378389) return "4.5";
+					else return null;
 				}
 			}
 		}
@@ -568,28 +546,38 @@ namespace BytecodeApi
 		/// </summary>
 		public static class Hardware
 		{
-			private static string _Processor;
+			private static string[] _ProcessorNames;
 			private static long? _Memory;
-			private static string _VideoController;
+			private static string _VideoControllerName;
 			/// <summary>
-			/// Gets the name of the processor. If multiple processors are installed, the name of the first processor is returned.
+			/// Gets the names of all installed processors.
 			/// </summary>
-			public static string Processor
+			public static string[] ProcessorNames
 			{
 				get
 				{
-					if (_Processor == null)
+					if (_ProcessorNames == null)
 					{
-						_Processor = new WmiNamespace("CIMV2", false, false)
-							.GetClass("Win32_Processor", false)
-							.GetObjects("Name")
-							.First()
-							.Properties["Name"]
-							.GetValue<string>()
-							.Trim();
+						List<string> names = new List<string>();
+
+						using (RegistryKey key = Registry.LocalMachine.OpenSubKey(@"HARDWARE\DESCRIPTION\System\CentralProcessor"))
+						{
+							foreach (string subKeyName in key.GetSubKeyNames())
+							{
+								using (RegistryKey subKey = key.OpenSubKey(subKeyName))
+								{
+									if (subKey.GetStringValue("ProcessorNameString").ToNullIfEmpty() is string name)
+									{
+										names.Add(name);
+									}
+								}
+							}
+						}
+
+						_ProcessorNames = names.ToArray();
 					}
 
-					return _Processor;
+					return _ProcessorNames;
 				}
 			}
 			/// <summary>
@@ -611,13 +599,13 @@ namespace BytecodeApi
 			/// <summary>
 			/// Gets the name of the video controller. If multiple video controllers are installed, the name of the first video controller is returned.
 			/// </summary>
-			public static string VideoController
+			public static string VideoControllerName
 			{
 				get
 				{
-					if (_VideoController == null)
+					if (_VideoControllerName == null)
 					{
-						_VideoController = new WmiNamespace("CIMV2", false, false)
+						_VideoControllerName = new WmiNamespace("CIMV2", false, false)
 							.GetClass("Win32_VideoController", false)
 							.GetObjects("Name")
 							.First()
@@ -626,7 +614,7 @@ namespace BytecodeApi
 							.Trim();
 					}
 
-					return _VideoController;
+					return _VideoControllerName;
 				}
 			}
 		}

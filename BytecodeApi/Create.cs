@@ -148,7 +148,21 @@ namespace BytecodeApi
 		/// </returns>
 		public static string AlphaNumericString(int length, bool digits, bool lowerCase, bool upperCase)
 		{
-			//TODO: bool cryptographic parameter
+			return AlphaNumericString(length, digits, lowerCase, upperCase, false);
+		}
+		/// <summary>
+		/// Generates a new <see cref="string" /> with random characters, where each character can be either a digit, a lowercase letter, an uppercase letter, or a combination of those. At least one of these parameters needs to be <see langword="true" />.
+		/// </summary>
+		/// <param name="length">The length of the generated <see cref="string" />.</param>
+		/// <param name="digits"><see langword="true" /> to include digits.</param>
+		/// <param name="lowerCase"><see langword="true" /> to include lowercase letters.</param>
+		/// <param name="upperCase"><see langword="true" /> to include uppercase letters.</param>
+		/// <param name="cryptographic"><see langword="true" /> to use a cryptographic random number generator; <see langword="false" /> to use the default random number generator.</param>
+		/// <returns>
+		/// A new <see cref="string" /> with random characters.
+		/// </returns>
+		public static string AlphaNumericString(int length, bool digits, bool lowerCase, bool upperCase, bool cryptographic)
+		{
 			Check.ArgumentOutOfRangeEx.GreaterEqual0(length, nameof(length));
 			Check.Argument(digits || lowerCase || upperCase, null, "Either of '" + nameof(digits) + "', '" + nameof(lowerCase) + "', or '" + nameof(upperCase) + "' must be true.");
 
@@ -160,11 +174,24 @@ namespace BytecodeApi
 			char[] charset = chars.ToCharArray();
 			char[] newString = new char[length];
 
-			lock (MathEx._Random)
+			if (cryptographic)
 			{
-				for (int i = 0; i < length; i++)
+				lock (MathEx._RandomNumberGenerator)
 				{
-					newString[i] = MathEx._Random.NextObject(charset);
+					for (int i = 0; i < length; i++)
+					{
+						newString[i] = MathEx._RandomNumberGenerator.GetObject(charset);
+					}
+				}
+			}
+			else
+			{
+				lock (MathEx._Random)
+				{
+					for (int i = 0; i < length; i++)
+					{
+						newString[i] = MathEx._Random.NextObject(charset);
+					}
 				}
 			}
 

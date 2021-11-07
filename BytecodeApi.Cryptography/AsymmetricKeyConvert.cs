@@ -11,7 +11,7 @@ namespace BytecodeApi.Cryptography
 	/// </summary>
 	public static class AsymmetricKeyConvert
 	{
-		//TODO: PKCS#1 and PKCS#8 implementation ("BEGIN RSA PUBLIC KEY" and "BEGIN PRIVATE KEY")
+		//TODO: "BEGIN RSA PUBLIC KEY" and "BEGIN PRIVATE KEY"
 		private const string PublicKeyHeader = "-----BEGIN PUBLIC KEY-----";
 		private const string PublicKeyFooter = "-----END PUBLIC KEY-----";
 		private const string PrivateKeyHeader = "-----BEGIN RSA PRIVATE KEY-----";

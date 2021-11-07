@@ -110,6 +110,11 @@ namespace BytecodeApi
 				if (parameter.Any(itm => itm == null)) throw new ArgumentException(ExceptionMessages.Argument.ArrayValuesNotNull, parameterName);
 			}
 			[DebuggerHidden, MethodImpl(MethodImplOptions.AggressiveInlining)]
+			public static void EnumerableElementsRequired(bool any, string parameterName)
+			{
+				if (!any) throw new ArgumentException(ExceptionMessages.Argument.EnumerableElementsRequired, parameterName);
+			}
+			[DebuggerHidden, MethodImpl(MethodImplOptions.AggressiveInlining)]
 			public static void ArrayValuesNotStringEmpty(IEnumerable<string> parameter, string parameterName)
 			{
 				if (parameter.Any(itm => itm == "")) throw new ArgumentException(ExceptionMessages.Argument.ArrayValuesNotStringEmpty, parameterName);

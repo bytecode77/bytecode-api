@@ -66,7 +66,7 @@ namespace BytecodeApi.IO.Http
 		/// <returns>
 		/// A new <see cref="HttpGetRequest" /> object that represents the HTTP GET request.
 		/// </returns>
-		public HttpGetRequest CreateGetRequest(string url)
+		public HttpGetRequest Get(string url)
 		{
 			Check.ArgumentNull(url, nameof(url));
 
@@ -79,7 +79,7 @@ namespace BytecodeApi.IO.Http
 		/// <returns>
 		/// A new <see cref="HttpPostRequest" /> object that represents the HTTP POST request.
 		/// </returns>
-		public HttpPostRequest CreatePostRequest(string url)
+		public HttpPostRequest Post(string url)
 		{
 			Check.ArgumentNull(url, nameof(url));
 
@@ -92,7 +92,7 @@ namespace BytecodeApi.IO.Http
 		/// <returns>
 		/// A new <see cref="HttpMultipartRequest" /> object that represents the HTTP multipart request.
 		/// </returns>
-		public HttpMultipartRequest CreateMultipartRequest(string url)
+		public HttpMultipartRequest Multipart(string url)
 		{
 			Check.ArgumentNull(url, nameof(url));
 
@@ -105,7 +105,7 @@ namespace BytecodeApi.IO.Http
 		/// <returns>
 		/// A new <see cref="HttpHeadRequest" /> object that represents the HTTP HEAD request.
 		/// </returns>
-		public HttpHeadRequest CreateHeadRequest(string url)
+		public HttpHeadRequest Head(string url)
 		{
 			Check.ArgumentNull(url, nameof(url));
 

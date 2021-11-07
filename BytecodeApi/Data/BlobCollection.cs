@@ -45,7 +45,7 @@ namespace BytecodeApi.Data
 			get
 			{
 				Check.KeyNotFoundException(HasBlob(name, ignoreCase), "A blob with the name '" + name + "' was not found.");
-				return Blobs.First(b => b.Name.Equals(name, ignoreCase ? SpecialStringComparisons.IgnoreCase : SpecialStringComparisons.None));
+				return Blobs.First(b => b.Name.Equals(name, ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal));
 			}
 		}
 		/// <summary>
@@ -107,30 +107,9 @@ namespace BytecodeApi.Data
 			);
 		}
 
-		/// <summary>
-		/// Determines whether a <see cref="Blob" /> with the specified name exists in this collection.
-		/// </summary>
-		/// <param name="name">The name of the <see cref="Blob" /> to check.</param>
-		/// <returns>
-		/// <see langword="true" />, if the <see cref="Blob" /> with the specified name exists;
-		/// otherwise, <see langword="false" />.
-		/// </returns>
-		public bool HasBlob(string name)
+		internal bool HasBlob(string name, bool ignoreCase)
 		{
-			return HasBlob(name, false);
-		}
-		/// <summary>
-		/// Determines whether a <see cref="Blob" /> with the specified name exists in this collection.
-		/// </summary>
-		/// <param name="name">The name of the <see cref="Blob" /> to check.</param>
-		/// <param name="ignoreCase"><see langword="true" /> to ignore character casing during comparison.</param>
-		/// <returns>
-		/// <see langword="true" />, if the <see cref="Blob" /> with the specified name exists;
-		/// otherwise, <see langword="false" />.
-		/// </returns>
-		public bool HasBlob(string name, bool ignoreCase)
-		{
-			return Blobs.Any(blob => blob.Name.Equals(name, ignoreCase ? SpecialStringComparisons.IgnoreCase : SpecialStringComparisons.None));
+			return Blobs.Any(blob => blob.Name.Equals(name, ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal));
 		}
 		/// <summary>
 		/// Computes the size, in bytes, of all <see cref="Blob" /> objects within this <see cref="BlobCollection" />.

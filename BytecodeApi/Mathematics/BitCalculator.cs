@@ -113,6 +113,8 @@ namespace BytecodeApi.Mathematics
 		/// </returns>
 		public static bool GetBit(byte[] value, int index)
 		{
+			Check.ArgumentNull(value, nameof(value));
+
 			return index >= 0 && index < value.Length << 3 && (value[index >> 3] & 1 << (index & 7)) > 0;
 		}
 		/// <summary>
@@ -235,6 +237,8 @@ namespace BytecodeApi.Mathematics
 		/// <param name="bit"><see langword="false" /> to set the bit to 0; <see langword="true" /> to set the bit to 1.</param>
 		public static void SetBit(byte[] value, int index, bool bit)
 		{
+			Check.ArgumentNull(value, nameof(value));
+
 			if (index >= 0 && index < value.Length << 3)
 			{
 				if (bit) value[index >> 3] |= (byte)(1 << (index & 7));
@@ -352,6 +356,8 @@ namespace BytecodeApi.Mathematics
 		/// <param name="index">The index of the toggled bit, where 0 is the least significant bit. If <paramref name="index" /> is not in the range of the <see cref="byte" />[], this method returns.</param>
 		public static void ToggleBit(byte[] value, int index)
 		{
+			Check.ArgumentNull(value, nameof(value));
+
 			if (index >= 0 && index < value.Length << 3)
 			{
 				value[index >> 3] ^= (byte)(1 << (index & 7));

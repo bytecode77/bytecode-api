@@ -163,12 +163,20 @@ namespace BytecodeApi.Extensions
 		{
 			Check.ArgumentNull(source, nameof(source));
 
+			bool hasFirstItem = false;
 			TSource firstItem = default;
 
 			foreach (TSource item in source)
 			{
-				if (Equals(firstItem, default(TSource))) firstItem = item;
-				else if (!Equals(item, firstItem)) return false;
+				if (!hasFirstItem)
+				{
+					firstItem = item;
+					hasFirstItem = true;
+				}
+				else if (!Equals(item, firstItem))
+				{
+					return false;
+				}
 			}
 
 			return true;
@@ -227,31 +235,50 @@ namespace BytecodeApi.Extensions
 
 			return hasTrue;
 		}
+
 		/// <summary>
 		/// Computes the sum of the sequence of <see cref="TimeSpan" /> values.
 		/// </summary>
 		/// <param name="source">A sequence of <see cref="TimeSpan" /> values that are used to calculate a sum.</param>
 		/// <returns>
-		/// A new <see cref="TimeSpan" /> with the sum of the projected values.
+		/// A new <see cref="TimeSpan" /> with the sum of the values.
 		/// </returns>
 		public static TimeSpan Sum(this IEnumerable<TimeSpan> source)
 		{
 			Check.ArgumentNull(source, nameof(source));
 
-			return new TimeSpan(source.Sum(itm => itm.Ticks));
+			long sum = 0;
+			foreach (TimeSpan timeSpan in source)
+			{
+				sum += timeSpan.Ticks;
+			}
+
+			return new TimeSpan(sum);
 		}
 		/// <summary>
-		/// Computes the sum of the sequence of <see cref="TimeSpan" /> values. Values equal to <see langword="null" /> are excluded from the calculation and treated as <see cref="TimeSpan.Zero" />.
+		/// Computes the sum of the sequence of <see cref="TimeSpan" /> values.
 		/// </summary>
 		/// <param name="source">A sequence of <see cref="TimeSpan" /> values that are used to calculate a sum.</param>
 		/// <returns>
-		/// A new <see cref="TimeSpan" /> with the sum of the projected values.
+		/// A new <see cref="TimeSpan" /> with the sum of the values, or <see langword="null" /> if the source sequence is empty or contains only values that are <see langword="null" />.
 		/// </returns>
-		public static TimeSpan Sum(this IEnumerable<TimeSpan?> source)
+		public static TimeSpan? Sum(this IEnumerable<TimeSpan?> source)
 		{
 			Check.ArgumentNull(source, nameof(source));
 
-			return new TimeSpan(source.Sum(itm => itm?.Ticks ?? 0));
+			long sum = 0;
+			int count = 0;
+
+			foreach (TimeSpan? timeSpan in source)
+			{
+				if (timeSpan != null)
+				{
+					sum += timeSpan.Value.Ticks;
+					count++;
+				}
+			}
+
+			return count == 0 ? (TimeSpan?)null : new TimeSpan(sum);
 		}
 		/// <summary>
 		/// Computes the average of a sequence of <see cref="TimeSpan" /> values.
@@ -264,7 +291,212 @@ namespace BytecodeApi.Extensions
 		{
 			Check.ArgumentNull(source, nameof(source));
 
-			return new TimeSpan((long)source.Average(itm => itm.Ticks));
+			long sum = 0;
+			int count = 0;
+
+			foreach (TimeSpan timeSpan in source)
+			{
+				sum += timeSpan.Ticks;
+				count++;
+			}
+
+			Check.ArgumentEx.EnumerableElementsRequired(count > 0, nameof(source));
+			return new TimeSpan(sum / count);
+		}
+		/// <summary>
+		/// Computes the average of a sequence of <see cref="TimeSpan" /> values.
+		/// </summary>
+		/// <param name="source">A sequence of <see cref="TimeSpan" /> values that are used to calculate a sum.</param>
+		/// <returns>
+		/// The average of the sequence of <paramref name="source" />, or <see langword="null" /> if the source sequence is empty or contains only values that are <see langword="null" />.
+		/// </returns>
+		public static TimeSpan? Average(this IEnumerable<TimeSpan?> source)
+		{
+			Check.ArgumentNull(source, nameof(source));
+
+			long sum = 0;
+			int count = 0;
+
+			foreach (TimeSpan? timeSpan in source)
+			{
+				if (timeSpan != null)
+				{
+					sum += timeSpan.Value.Ticks;
+					count++;
+				}
+			}
+
+			return count == 0 ? (TimeSpan?)null : new TimeSpan(sum / count);
+		}
+		/// <summary>
+		/// Returns the median number of a sequence of <see cref="int" /> values. If the sequence contains an even number of elements, the mean of both medians is returned.
+		/// </summary>
+		/// <param name="source">A sequence of <see cref="int" /> values that are used to calculate a median.</param>
+		/// <returns>
+		/// The median of the sequence of <paramref name="source" />.
+		/// </returns>
+		public static double Median(this IEnumerable<int> source)
+		{
+			Check.ArgumentNull(source, nameof(source));
+
+			int[] sorted = source.Sort().ToArray();
+			Check.ArgumentEx.EnumerableElementsRequired(sorted.Length > 0, nameof(source));
+
+			if (sorted.Length % 2 == 0) return (sorted[sorted.Length / 2 - 1] + sorted[sorted.Length / 2]) / 2.0;
+			else return sorted[sorted.Length / 2];
+		}
+		/// <summary>
+		/// Returns the median number of a sequence of <see cref="int" /> values. If the sequence contains an even number of elements, the mean of both medians is returned.
+		/// </summary>
+		/// <param name="source">A sequence of <see cref="int" /> values that are used to calculate a median.</param>
+		/// <returns>
+		/// The median of the sequence of <paramref name="source" />, or <see langword="null" /> if the source sequence is empty or contains only values that are <see langword="null" />.
+		/// </returns>
+		public static double? Median(this IEnumerable<int?> source)
+		{
+			Check.ArgumentNull(source, nameof(source));
+
+			int[] sorted = source.ExceptNull().Sort().ToArray();
+
+			if (sorted.Length == 0) return null;
+			else if (sorted.Length % 2 == 0) return (sorted[sorted.Length / 2 - 1] + sorted[sorted.Length / 2]) / 2.0;
+			else return sorted[sorted.Length / 2];
+		}
+		/// <summary>
+		/// Returns the median number of a sequence of <see cref="long" /> values. If the sequence contains an even number of elements, the mean of both medians is returned.
+		/// </summary>
+		/// <param name="source">A sequence of <see cref="long" /> values that are used to calculate a median.</param>
+		/// <returns>
+		/// The median of the sequence of <paramref name="source" />.
+		/// </returns>
+		public static double Median(this IEnumerable<long> source)
+		{
+			Check.ArgumentNull(source, nameof(source));
+
+			long[] sorted = source.Sort().ToArray();
+			Check.ArgumentEx.EnumerableElementsRequired(sorted.Length > 0, nameof(source));
+
+			if (sorted.Length % 2 == 0) return (sorted[sorted.Length / 2 - 1] + sorted[sorted.Length / 2]) / 2.0;
+			else return sorted[sorted.Length / 2];
+		}
+		/// <summary>
+		/// Returns the median number of a sequence of <see cref="long" /> values. If the sequence contains an even number of elements, the mean of both medians is returned.
+		/// </summary>
+		/// <param name="source">A sequence of <see cref="long" /> values that are used to calculate a median.</param>
+		/// <returns>
+		/// The median of the sequence of <paramref name="source" />, or <see langword="null" /> if the source sequence is empty or contains only values that are <see langword="null" />.
+		/// </returns>
+		public static double? Median(this IEnumerable<long?> source)
+		{
+			Check.ArgumentNull(source, nameof(source));
+
+			long[] sorted = source.ExceptNull().Sort().ToArray();
+
+			if (sorted.Length == 0) return null;
+			else if (sorted.Length % 2 == 0) return (sorted[sorted.Length / 2 - 1] + sorted[sorted.Length / 2]) / 2.0;
+			else return sorted[sorted.Length / 2];
+		}
+		/// <summary>
+		/// Returns the median number of a sequence of <see cref="float" /> values. If the sequence contains an even number of elements, the mean of both medians is returned.
+		/// </summary>
+		/// <param name="source">A sequence of <see cref="float" /> values that are used to calculate a median.</param>
+		/// <returns>
+		/// The median of the sequence of <paramref name="source" />.
+		/// </returns>
+		public static float Median(this IEnumerable<float> source)
+		{
+			Check.ArgumentNull(source, nameof(source));
+
+			float[] sorted = source.Sort().ToArray();
+			Check.ArgumentEx.EnumerableElementsRequired(sorted.Length > 0, nameof(source));
+
+			if (sorted.Length % 2 == 0) return (sorted[sorted.Length / 2 - 1] + sorted[sorted.Length / 2]) / 2;
+			else return sorted[sorted.Length / 2];
+		}
+		/// <summary>
+		/// Returns the median number of a sequence of <see cref="float" /> values. If the sequence contains an even number of elements, the mean of both medians is returned.
+		/// </summary>
+		/// <param name="source">A sequence of <see cref="float" /> values that are used to calculate a median.</param>
+		/// <returns>
+		/// The median of the sequence of <paramref name="source" />, or <see langword="null" /> if the source sequence is empty or contains only values that are <see langword="null" />.
+		/// </returns>
+		public static float? Median(this IEnumerable<float?> source)
+		{
+			Check.ArgumentNull(source, nameof(source));
+
+			float[] sorted = source.ExceptNull().Sort().ToArray();
+
+			if (sorted.Length == 0) return null;
+			else if (sorted.Length % 2 == 0) return (sorted[sorted.Length / 2 - 1] + sorted[sorted.Length / 2]) / 2;
+			else return sorted[sorted.Length / 2];
+		}
+		/// <summary>
+		/// Returns the median number of a sequence of <see cref="double" /> values. If the sequence contains an even number of elements, the mean of both medians is returned.
+		/// </summary>
+		/// <param name="source">A sequence of <see cref="double" /> values that are used to calculate a median.</param>
+		/// <returns>
+		/// The median of the sequence of <paramref name="source" />.
+		/// </returns>
+		public static double Median(this IEnumerable<double> source)
+		{
+			Check.ArgumentNull(source, nameof(source));
+
+			double[] sorted = source.Sort().ToArray();
+			Check.ArgumentEx.EnumerableElementsRequired(sorted.Length > 0, nameof(source));
+
+			if (sorted.Length % 2 == 0) return (sorted[sorted.Length / 2 - 1] + sorted[sorted.Length / 2]) / 2;
+			else return sorted[sorted.Length / 2];
+		}
+		/// <summary>
+		/// Returns the median number of a sequence of <see cref="double" /> values. If the sequence contains an even number of elements, the mean of both medians is returned.
+		/// </summary>
+		/// <param name="source">A sequence of <see cref="double" /> values that are used to calculate a median.</param>
+		/// <returns>
+		/// The median of the sequence of <paramref name="source" />, or <see langword="null" /> if the source sequence is empty or contains only values that are <see langword="null" />.
+		/// </returns>
+		public static double? Median(this IEnumerable<double?> source)
+		{
+			Check.ArgumentNull(source, nameof(source));
+
+			double[] sorted = source.ExceptNull().Sort().ToArray();
+
+			if (sorted.Length == 0) return null;
+			else if (sorted.Length % 2 == 0) return (sorted[sorted.Length / 2 - 1] + sorted[sorted.Length / 2]) / 2;
+			else return sorted[sorted.Length / 2];
+		}
+		/// <summary>
+		/// Returns the median number of a sequence of <see cref="decimal" /> values. If the sequence contains an even number of elements, the mean of both medians is returned.
+		/// </summary>
+		/// <param name="source">A sequence of <see cref="decimal" /> values that are used to calculate a median.</param>
+		/// <returns>
+		/// The median of the sequence of <paramref name="source" />.
+		/// </returns>
+		public static decimal Median(this IEnumerable<decimal> source)
+		{
+			Check.ArgumentNull(source, nameof(source));
+
+			decimal[] sorted = source.Sort().ToArray();
+			Check.ArgumentEx.EnumerableElementsRequired(sorted.Length > 0, nameof(source));
+
+			if (sorted.Length % 2 == 0) return (sorted[sorted.Length / 2 - 1] + sorted[sorted.Length / 2]) / 2;
+			else return sorted[sorted.Length / 2];
+		}
+		/// <summary>
+		/// Returns the median number of a sequence of <see cref="decimal" /> values. If the sequence contains an even number of elements, the mean of both medians is returned.
+		/// </summary>
+		/// <param name="source">A sequence of <see cref="decimal" /> values that are used to calculate a median.</param>
+		/// <returns>
+		/// The median of the sequence of <paramref name="source" />, or <see langword="null" /> if the source sequence is empty or contains only values that are <see langword="null" />.
+		/// </returns>
+		public static decimal? Median(this IEnumerable<decimal?> source)
+		{
+			Check.ArgumentNull(source, nameof(source));
+
+			decimal[] sorted = source.ExceptNull().Sort().ToArray();
+
+			if (sorted.Length == 0) return null;
+			else if (sorted.Length % 2 == 0) return (sorted[sorted.Length / 2 - 1] + sorted[sorted.Length / 2]) / 2;
+			else return sorted[sorted.Length / 2];
 		}
 
 		/// <summary>
@@ -587,7 +819,10 @@ namespace BytecodeApi.Extensions
 		{
 			Check.ArgumentNull(source, nameof(source));
 
-			return source.Where(itm => itm != null);
+			foreach (TSource item in source)
+			{
+				if (item != null) yield return item;
+			}
 		}
 		/// <summary>
 		/// Filters a sequence of values and returns only values which are not <see langword="null" />.
@@ -601,7 +836,10 @@ namespace BytecodeApi.Extensions
 		{
 			Check.ArgumentNull(source, nameof(source));
 
-			return source.Where(itm => itm != null).Select(itm => itm.Value);
+			foreach (TSource? item in source)
+			{
+				if (item != null) yield return item.Value;
+			}
 		}
 		/// <summary>
 		/// Returns all distinct elements of a sequence according to a specified key selector function.
@@ -633,7 +871,7 @@ namespace BytecodeApi.Extensions
 			Check.ArgumentNull(source, nameof(source));
 			Check.ArgumentNull(keySelector, nameof(keySelector));
 
-			return source.GroupBy(keySelector, comparer).Select(x => x.First());
+			return source.GroupBy(keySelector, (key, items) => items.First(), comparer);
 		}
 		/// <summary>
 		/// Produces the set difference of a sequence and one element.
@@ -662,7 +900,7 @@ namespace BytecodeApi.Extensions
 		{
 			Check.ArgumentNull(first, nameof(first));
 
-			return first.Except(new List<TSource> { second }, comparer);
+			return first.Except(new[] { second }, comparer);
 		}
 		/// <summary>
 		/// Splits up a sequence into chunks with the specified size. Each chunk is an <see cref="IEnumerable{T}" />, containing a maximum number of elements according to <paramref name="chunkSize" />. The last chunk may contain less elements than specified <paramref name="chunkSize" />.
@@ -812,7 +1050,7 @@ namespace BytecodeApi.Extensions
 			Check.ArgumentNull(source, nameof(source));
 			Check.ArgumentNull(predicate, nameof(predicate));
 
-			foreach (TSource item in source.Where(itm => predicate(itm)).ToList()) source.Remove(item);
+			foreach (TSource item in source.Where(itm => predicate(itm)).ToArray()) source.Remove(item);
 		}
 		/// <summary>
 		/// Removes all elements that occur in the specified collection.
@@ -825,7 +1063,7 @@ namespace BytecodeApi.Extensions
 			Check.ArgumentNull(source, nameof(source));
 			Check.ArgumentNull(collection, nameof(collection));
 
-			foreach (TSource item in collection.ToList()) source.Remove(item);
+			foreach (TSource item in collection.ToArray()) source.Remove(item);
 		}
 		/// <summary>
 		/// Performs the specified <see cref="Action" /> on each element of this <see cref="IEnumerable{T}" />.

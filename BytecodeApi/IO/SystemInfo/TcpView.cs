@@ -137,7 +137,7 @@ namespace BytecodeApi.IO.SystemInfo
 			TRow[] GetConnections<TTable, TRow>(bool udp, int version)
 			{
 				int bufferSize = 0;
-				FieldInfo numEntriesField = typeof(TTable).GetField("EntryCount");
+				FieldInfo entryCountField = typeof(TTable).GetField("EntryCount");
 
 				GetTable(IntPtr.Zero);
 				IntPtr tcpTable = Marshal.AllocHGlobal(bufferSize);
@@ -148,7 +148,7 @@ namespace BytecodeApi.IO.SystemInfo
 					{
 						TTable table = Marshal.PtrToStructure<TTable>(tcpTable);
 						int rowSize = Marshal.SizeOf<TRow>();
-						uint entryCount = numEntriesField.GetValue<uint>(table);
+						uint entryCount = entryCountField.GetValue<uint>(table);
 
 						TRow[] tableRows = new TRow[entryCount];
 						IntPtr ptr = tcpTable + 4;

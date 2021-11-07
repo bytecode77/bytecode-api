@@ -1,6 +1,5 @@
 ﻿using BytecodeApi.IO;
 using BytecodeApi.IO.Cli;
-using BytecodeApi.IO.Wmi;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -128,13 +127,76 @@ namespace BytecodeApi.Extensions
 		{
 			Check.ArgumentNull(process, nameof(process));
 
-			//TODO: Implement using WinAPI
-			return new WmiNamespace("CIMV2", false, false)
-				.GetClass("Win32_Process", false)
-				.GetObjects(new[] { "CommandLine" }, "ProcessId = " + process.Id)
-				.First()
-				.Properties["CommandLine"]
-				.GetValue<string>();
+			IntPtr processHandle = Native.OpenProcess(0x410, false, process.Id);
+
+			if (processHandle != IntPtr.Zero)
+			{
+				try
+				{
+					int basicInformationSize = Marshal.SizeOf<Native.ProcessBasicInformation>();
+					IntPtr basicInformationBuffer = Marshal.AllocHGlobal(basicInformationSize);
+
+					try
+					{
+						if (Native.NtQueryInformationProcess(processHandle, 0, basicInformationBuffer, (uint)basicInformationSize, out _) == 0)
+						{
+							Native.ProcessBasicInformation basicInformation = Marshal.PtrToStructure<Native.ProcessBasicInformation>(basicInformationBuffer);
+
+							if (basicInformation.PebBaseAddress != IntPtr.Zero &&
+								ReadStruct(basicInformation.PebBaseAddress, out Native.PebWithProcessParameters peb) &&
+								ReadStruct(peb.ProcessParameters, out Native.RtlUserProcessParameters parameters))
+							{
+								var commandLineLength = parameters.CommandLine.MaximumLength;
+								var commandLineBuffer = Marshal.AllocHGlobal(commandLineLength);
+
+								try
+								{
+									if (Native.ReadProcessMemory(processHandle, parameters.CommandLine.Buffer, commandLineBuffer, commandLineLength, out _))
+									{
+										return Marshal.PtrToStringUni(commandLineBuffer);
+									}
+								}
+								finally
+								{
+									Marshal.FreeHGlobal(commandLineBuffer);
+								}
+							}
+						}
+					}
+					finally
+					{
+						Marshal.FreeHGlobal(basicInformationBuffer);
+					}
+				}
+				finally
+				{
+					Native.CloseHandle(processHandle);
+				}
+			}
+
+			return null;
+
+			bool ReadStruct<TStruct>(IntPtr baseAddress, out TStruct result) where TStruct : struct
+			{
+				int size = Marshal.SizeOf<TStruct>();
+				IntPtr buffer = Marshal.AllocHGlobal(size);
+
+				try
+				{
+					if (Native.ReadProcessMemory(processHandle, baseAddress, buffer, (uint)size, out uint length) && length == size)
+					{
+						result = Marshal.PtrToStructure<TStruct>(buffer);
+						return true;
+					}
+				}
+				finally
+				{
+					Marshal.FreeHGlobal(buffer);
+				}
+
+				result = default;
+				return false;
+			}
 		}
 		/// <summary>
 		/// Gets the commandline arguments of this <see cref="Process" /> that were passed during process creation.
