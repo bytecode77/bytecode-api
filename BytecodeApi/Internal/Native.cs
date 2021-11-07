@@ -241,7 +241,7 @@ namespace BytecodeApi
 			public uint Flags;
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
 			public string ExeFile;
-		};
+		}
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct SHFileInfo
 		{

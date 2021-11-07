@@ -29,7 +29,7 @@ namespace BytecodeApi.Extensions
 		/// </returns>
 		public static bool? ToNullIfDefault(this bool value)
 		{
-			return value ? true : null;
+			return value ? true : (bool?)null;
 		}
 		/// <summary>
 		/// Converts this <see cref="bool" /> value to <see cref="Visibility.Visible" /> or <see cref="Visibility.Collapsed" />.

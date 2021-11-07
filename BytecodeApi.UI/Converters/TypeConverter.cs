@@ -44,12 +44,21 @@ namespace BytecodeApi.UI.Converters
 		/// </returns>
 		public override object Convert(object value, Type parameter)
 		{
-			return new BooleanConverter(Result).Convert(Method switch
+			bool result;
+
+			switch (Method)
 			{
-				TypeConverterMethod.TypeEqual => CSharp.IsType(value, parameter),
-				TypeConverterMethod.IsAssignableFrom => value != null && parameter?.IsAssignableFrom(value.GetType()) == true,
-				_ => throw Throw.InvalidEnumArgument(nameof(Method), Method)
-			});
+				case TypeConverterMethod.TypeEqual:
+					result = CSharp.IsType(value, parameter);
+					break;
+				case TypeConverterMethod.IsAssignableFrom:
+					result = value != null && parameter?.IsAssignableFrom(value.GetType()) == true;
+					break;
+				default:
+					throw Throw.InvalidEnumArgument(nameof(Method), Method);
+			}
+
+			return new BooleanConverter(Result).Convert(result);
 		}
 	}
 }

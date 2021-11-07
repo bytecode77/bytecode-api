@@ -54,37 +54,38 @@ namespace BytecodeApi.IO.Http
 		{
 			Try(() =>
 			{
-				using WebResponse response = GetWebRequest().GetResponse();
-				using Stream responseStream = response.GetResponseStream();
-
-				byte[] buffer = new byte[4096];
-				int bytesRead;
-				long totalBytesRead = 0;
-				long callbackBytesRead = 0;
-				Stopwatch stopwatch = ThreadFactory.StartStopwatch();
-
-				do
+				using (WebResponse response = GetWebRequest().GetResponse())
+				using (Stream responseStream = response.GetResponseStream())
 				{
-					bytesRead = responseStream.Read(buffer);
-					totalBytesRead += bytesRead;
-					stream.Write(buffer, 0, bytesRead);
+					byte[] buffer = new byte[4096];
+					int bytesRead;
+					long totalBytesRead = 0;
+					long callbackBytesRead = 0;
+					Stopwatch stopwatch = ThreadFactory.StartStopwatch();
 
-					if (callback != null)
+					do
 					{
-						callbackBytesRead += bytesRead;
-						if (stopwatch.Elapsed > TimeSpan.FromMilliseconds(100))
+						bytesRead = responseStream.Read(buffer);
+						totalBytesRead += bytesRead;
+						stream.Write(buffer, 0, bytesRead);
+
+						if (callback != null)
 						{
-							stopwatch.Restart();
-							callback(callbackBytesRead, totalBytesRead);
-							callbackBytesRead = 0;
+							callbackBytesRead += bytesRead;
+							if (stopwatch.Elapsed > TimeSpan.FromMilliseconds(100))
+							{
+								stopwatch.Restart();
+								callback(callbackBytesRead, totalBytesRead);
+								callbackBytesRead = 0;
+							}
 						}
 					}
+					while (bytesRead > 0);
+
+					if (callbackBytesRead > 0) callback?.Invoke(callbackBytesRead, totalBytesRead);
+
+					return new object();
 				}
-				while (bytesRead > 0);
-
-				if (callbackBytesRead > 0) callback?.Invoke(callbackBytesRead, totalBytesRead);
-
-				return new object();
 			});
 		}
 		/// <summary>
@@ -97,9 +98,11 @@ namespace BytecodeApi.IO.Http
 		{
 			return Try(() =>
 			{
-				using WebResponse response = GetWebRequest().GetResponse();
-				using StreamReader reader = new StreamReader(response.GetResponseStream());
-				return reader.ReadToEnd();
+				using (WebResponse response = GetWebRequest().GetResponse())
+				using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+				{
+					return reader.ReadToEnd();
+				}
 			});
 		}
 		/// <summary>
@@ -121,9 +124,11 @@ namespace BytecodeApi.IO.Http
 		/// </returns>
 		public byte[] ReadBytes(TransferCallback callback)
 		{
-			using MemoryStream memoryStream = new MemoryStream();
-			Read(memoryStream, callback);
-			return memoryStream.ToArray();
+			using (MemoryStream memoryStream = new MemoryStream())
+			{
+				Read(memoryStream, callback);
+				return memoryStream.ToArray();
+			}
 		}
 		/// <summary>
 		/// Sends the HTTP request and writes the response into a file. Throws a <see cref="HttpException" />, if the request failed.
@@ -140,8 +145,10 @@ namespace BytecodeApi.IO.Http
 		/// <param name="callback">The method that is called periodically while binary data is transferred, or <see langword="null" />.</param>
 		public void ReadFile(string path, TransferCallback callback)
 		{
-			using FileStream stream = File.Create(path);
-			Read(stream, callback);
+			using (FileStream stream = File.Create(path))
+			{
+				Read(stream, callback);
+			}
 		}
 
 		private protected abstract HttpWebRequest GetWebRequest();
@@ -185,8 +192,10 @@ namespace BytecodeApi.IO.Http
 				{
 					try
 					{
-						using StreamReader reader = new StreamReader(ex.Response.GetResponseStream());
-						htmlBody = reader.ReadToEnd();
+						using (StreamReader reader = new StreamReader(ex.Response.GetResponseStream()))
+						{
+							htmlBody = reader.ReadToEnd();
+						}
 					}
 					catch
 					{

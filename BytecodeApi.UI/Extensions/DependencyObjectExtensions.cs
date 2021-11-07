@@ -97,12 +97,18 @@ namespace BytecodeApi.UI.Extensions
 
 			if (dependencyObject is Visual)
 			{
-				DependencyObject parent = treeType switch
+				DependencyObject parent;
+				switch (treeType)
 				{
-					UITreeType.Logical => LogicalTreeHelper.GetParent(dependencyObject),
-					UITreeType.Visual => VisualTreeHelper.GetParent(dependencyObject),
-					_ => throw Throw.InvalidEnumArgument(nameof(treeType), treeType)
-				};
+					case UITreeType.Logical:
+						parent = LogicalTreeHelper.GetParent(dependencyObject);
+						break;
+					case UITreeType.Visual:
+						parent = VisualTreeHelper.GetParent(dependencyObject);
+						break;
+					default:
+						throw Throw.InvalidEnumArgument(nameof(treeType), treeType);
+				}
 
 				return parent is T visualParent && predicate?.Invoke(visualParent) != false ? visualParent : parent?.FindParent<T>(treeType, predicate);
 			}
@@ -139,12 +145,19 @@ namespace BytecodeApi.UI.Extensions
 			Check.ArgumentNull(dependencyObject, nameof(dependencyObject));
 
 			List<T> result = new List<T>();
-			IEnumerable<DependencyObject> children = treeType switch
+
+			IEnumerable<DependencyObject> children;
+			switch (treeType)
 			{
-				UITreeType.Logical => children = LogicalTreeHelper.GetChildren(dependencyObject).OfType<DependencyObject>(),
-				UITreeType.Visual => children = Create.Enumerable(VisualTreeHelper.GetChildrenCount(dependencyObject), i => VisualTreeHelper.GetChild(dependencyObject, i)),
-				_ => throw Throw.InvalidEnumArgument(nameof(treeType), treeType)
-			};
+				case UITreeType.Logical:
+					children = LogicalTreeHelper.GetChildren(dependencyObject).OfType<DependencyObject>();
+					break;
+				case UITreeType.Visual:
+					children = Create.Enumerable(VisualTreeHelper.GetChildrenCount(dependencyObject), i => VisualTreeHelper.GetChild(dependencyObject, i));
+					break;
+				default:
+					throw Throw.InvalidEnumArgument(nameof(treeType), treeType);
+			}
 
 			foreach (DependencyObject child in children)
 			{
@@ -169,12 +182,18 @@ namespace BytecodeApi.UI.Extensions
 			Check.ArgumentNull(dependencyObject, nameof(dependencyObject));
 			Check.ArgumentNull(predicate, nameof(predicate));
 
-			IEnumerable<DependencyObject> children = treeType switch
+			IEnumerable<DependencyObject> children;
+			switch (treeType)
 			{
-				UITreeType.Logical => LogicalTreeHelper.GetChildren(dependencyObject).OfType<DependencyObject>(),
-				UITreeType.Visual => Create.Enumerable(VisualTreeHelper.GetChildrenCount(dependencyObject), i => VisualTreeHelper.GetChild(dependencyObject, i)),
-				_ => throw Throw.InvalidEnumArgument(nameof(treeType), treeType)
-			};
+				case UITreeType.Logical:
+					children = LogicalTreeHelper.GetChildren(dependencyObject).OfType<DependencyObject>();
+					break;
+				case UITreeType.Visual:
+					children = Create.Enumerable(VisualTreeHelper.GetChildrenCount(dependencyObject), i => VisualTreeHelper.GetChild(dependencyObject, i));
+					break;
+				default:
+					throw Throw.InvalidEnumArgument(nameof(treeType), treeType);
+			}
 
 			foreach (DependencyObject child in children)
 			{

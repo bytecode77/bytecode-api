@@ -175,7 +175,7 @@ namespace BytecodeApi
 				}
 			}
 
-			static void Process(Type sourceType, Type destType, Func<object> getValue, Action<object> setValue)
+			void Process(Type sourceType, Type destType, Func<object> getValue, Action<object> setValue)
 			{
 				GetEffectiveType(ref sourceType);
 				GetEffectiveType(ref destType);
@@ -200,7 +200,7 @@ namespace BytecodeApi
 
 				if (!changed) setValue(null);
 			}
-			static void GetEffectiveType(ref Type type)
+			void GetEffectiveType(ref Type type)
 			{
 				if (Nullable.GetUnderlyingType(type) is Type nullable) type = nullable;
 				if (type.IsEnum) type = type.GetEnumUnderlyingType();

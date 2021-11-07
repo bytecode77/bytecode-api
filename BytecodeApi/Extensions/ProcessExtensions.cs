@@ -55,8 +55,10 @@ namespace BytecodeApi.Extensions
 		{
 			Check.ArgumentNull(process, nameof(process));
 
-			using WindowsIdentity windowsIdentity = process.GetUser();
-			return windowsIdentity?.Name;
+			using (WindowsIdentity windowsIdentity = process.GetUser())
+			{
+				return windowsIdentity?.Name;
+			}
 		}
 		/// <summary>
 		/// Returns a <see cref="string" /> that represents the user running this <see cref="Process" />. This <see cref="string" /> contains only the user, excluding machine or domain name.
@@ -87,23 +89,25 @@ namespace BytecodeApi.Extensions
 					Size = (uint)Marshal.SizeOf<Native.ProcessEntry>()
 				};
 
-				using Native.SafeSnapshotHandle snapshot = Native.CreateToolhelp32Snapshot(2, (uint)process.Id);
-				int lastError = Marshal.GetLastWin32Error();
+				using (Native.SafeSnapshotHandle snapshot = Native.CreateToolhelp32Snapshot(2, (uint)process.Id))
+				{
+					int lastError = Marshal.GetLastWin32Error();
 
-				if (snapshot.IsInvalid || !Native.Process32First(snapshot, ref processEntry) && lastError == 18)
-				{
-					return null;
-				}
-				else
-				{
-					do
+					if (snapshot.IsInvalid || !Native.Process32First(snapshot, ref processEntry) && lastError == 18)
 					{
-						if (processEntry.ProcessId == (uint)process.Id)
-						{
-							return Process.GetProcessById((int)processEntry.ParentProcessId);
-						}
+						return null;
 					}
-					while (Native.Process32Next(snapshot, ref processEntry));
+					else
+					{
+						do
+						{
+							if (processEntry.ProcessId == (uint)process.Id)
+							{
+								return Process.GetProcessById((int)processEntry.ParentProcessId);
+							}
+						}
+						while (Native.Process32Next(snapshot, ref processEntry));
+					}
 				}
 
 				return null;

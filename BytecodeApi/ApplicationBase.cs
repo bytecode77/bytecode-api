@@ -131,8 +131,10 @@ namespace BytecodeApi
 				{
 					if (_Id == null)
 					{
-						using System.Diagnostics.Process process = System.Diagnostics.Process.GetCurrentProcess();
-						_Id = process.Id;
+						using (System.Diagnostics.Process process = System.Diagnostics.Process.GetCurrentProcess())
+						{
+							_Id = process.Id;
+						}
 					}
 
 					return _Id.Value;
@@ -147,8 +149,10 @@ namespace BytecodeApi
 				{
 					if (_SessionId == null)
 					{
-						using System.Diagnostics.Process process = System.Diagnostics.Process.GetCurrentProcess();
-						_SessionId = process.SessionId;
+						using (System.Diagnostics.Process process = System.Diagnostics.Process.GetCurrentProcess())
+						{
+							_SessionId = process.SessionId;
+						}
 					}
 
 					return _SessionId.Value;
@@ -163,8 +167,10 @@ namespace BytecodeApi
 				{
 					if (_IntegrityLevel == null)
 					{
-						using System.Diagnostics.Process process = System.Diagnostics.Process.GetCurrentProcess();
-						_IntegrityLevel = process.GetIntegrityLevel();
+						using (System.Diagnostics.Process process = System.Diagnostics.Process.GetCurrentProcess())
+						{
+							_IntegrityLevel = process.GetIntegrityLevel();
+						}
 					}
 
 					return _IntegrityLevel ?? throw Throw.Win32();
@@ -179,8 +185,10 @@ namespace BytecodeApi
 				{
 					if (_IsElevated == null)
 					{
-						using WindowsIdentity windowsIdentity = WindowsIdentity.GetCurrent();
-						_IsElevated = new WindowsPrincipal(windowsIdentity).IsInRole(WindowsBuiltInRole.Administrator);
+						using (WindowsIdentity windowsIdentity = WindowsIdentity.GetCurrent())
+						{
+							_IsElevated = new WindowsPrincipal(windowsIdentity).IsInRole(WindowsBuiltInRole.Administrator);
+						}
 					}
 
 					return _IsElevated.Value;
@@ -236,8 +244,10 @@ namespace BytecodeApi
 			{
 				get
 				{
-					using System.Diagnostics.Process process = System.Diagnostics.Process.GetCurrentProcess();
-					return process.PrivateMemorySize64;
+					using (System.Diagnostics.Process process = System.Diagnostics.Process.GetCurrentProcess())
+					{
+						return process.PrivateMemorySize64;
+					}
 				}
 			}
 			/// <summary>
@@ -343,8 +353,11 @@ namespace BytecodeApi
 					try
 					{
 						desktop = Native.GetDC(IntPtr.Zero);
-						using Graphics graphics = Graphics.FromHdc(desktop);
-						return new SizeF(graphics.DpiX, graphics.DpiY);
+
+						using (Graphics graphics = Graphics.FromHdc(desktop))
+						{
+							return new SizeF(graphics.DpiX, graphics.DpiY);
+						}
 					}
 					finally
 					{
@@ -406,11 +419,12 @@ namespace BytecodeApi
 				{
 					if (_InstallDate == null)
 					{
-						using RegistryKey baseKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64);
-						using RegistryKey key = baseKey.OpenSubKey(@"Software\Microsoft\Windows NT\CurrentVersion");
-
-						int installDate = key.GetInt32Value("InstallDate", 0);
-						_InstallDate = installDate == 0 ? null : DateTimeEx.ConvertUnixTimeStamp((uint)installDate);
+						using (RegistryKey baseKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64))
+						using (RegistryKey key = baseKey.OpenSubKey(@"Software\Microsoft\Windows NT\CurrentVersion"))
+						{
+							int installDate = key.GetInt32Value("InstallDate", 0);
+							_InstallDate = installDate == 0 ? (DateTime?)null : DateTimeEx.ConvertUnixTimeStamp((uint)installDate);
+						}
 					}
 
 					return _InstallDate;
@@ -468,14 +482,14 @@ namespace BytecodeApi
 
 						if (browser != null)
 						{
-							return browser switch
+							switch (browser)
 							{
-								"iexplore" => KnownBrowser.InternetExplorer,
-								"chrome" => KnownBrowser.Chrome,
-								"firefox" => KnownBrowser.Firefox,
-								"launcher" => KnownBrowser.Opera,
-								_ => null
-							};
+								case "iexplore": return KnownBrowser.InternetExplorer;
+								case "chrome": return KnownBrowser.Chrome;
+								case "firefox": return KnownBrowser.Firefox;
+								case "launcher": return KnownBrowser.Opera;
+								default: return null;
+							}
 						}
 					}
 
@@ -492,8 +506,10 @@ namespace BytecodeApi
 				{
 					if (_FrameworkVersionNumber == null)
 					{
-						using RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full");
-						_FrameworkVersionNumber = key.GetInt32Value("Release");
+						using (RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full"))
+						{
+							_FrameworkVersionNumber = key.GetInt32Value("Release");
+						}
 					}
 
 					return _FrameworkVersionNumber;
@@ -508,30 +524,42 @@ namespace BytecodeApi
 				get
 				{
 					// Version numbers: https://docs.microsoft.com/en-us/dotnet/framework/migration-guide/versions-and-dependencies
-					return FrameworkVersionNumber switch
+					//TODO: Find algorithm, where code changes are not needed, when new version is released
+					switch (FrameworkVersionNumber)
 					{
-						378389 => "4.5",
-						378675 => "4.5.1",
-						378758 => "4.5.1",
-						379893 => "4.5.2",
-						393295 => "4.6",
-						393297 => "4.6",
-						394254 => "4.6.1",
-						394271 => "4.6.1",
-						394802 => "4.6.2",
-						394806 => "4.6.2",
-						460798 => "4.7",
-						460805 => "4.7",
-						461308 => "4.7.1",
-						461310 => "4.7.1",
-						461808 => "4.7.2",
-						461814 => "4.7.2",
-						528040 => "4.8",
-						528049 => "4.8",
-						528372 => "4.8",
-						528449 => "4.8",
-						_ => null
-					};
+						case 378389:
+							return "4.5";
+						case 378675:
+						case 378758:
+							return "4.5.1";
+						case 379893:
+							return "4.5.2";
+						case 393295:
+						case 393297:
+							return "4.6";
+						case 394254:
+						case 394271:
+							return "4.6.1";
+						case 394802:
+						case 394806:
+							return "4.6.2";
+						case 460798:
+						case 460805:
+							return "4.7";
+						case 461308:
+						case 461310:
+							return "4.7.1";
+						case 461808:
+						case 461814:
+							return "4.7.2";
+						case 528040:
+						case 528049:
+						case 528372:
+						case 528449:
+							return "4.8";
+						default:
+							return null;
+					}
 				}
 			}
 		}
@@ -574,7 +602,7 @@ namespace BytecodeApi
 					if (_Memory == null)
 					{
 						Native.MemoryStatusEx memoryStatus = new Native.MemoryStatusEx();
-						_Memory = Native.GlobalMemoryStatusEx(memoryStatus) ? (long)memoryStatus.TotalPhys : null;
+						_Memory = Native.GlobalMemoryStatusEx(memoryStatus) ? (long)memoryStatus.TotalPhys : (long?)null;
 					}
 
 					return _Memory;

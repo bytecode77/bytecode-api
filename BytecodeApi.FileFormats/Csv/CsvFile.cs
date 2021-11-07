@@ -89,8 +89,10 @@ namespace BytecodeApi.FileFormats.Csv
 			Check.FileNotFound(path);
 			Check.ArgumentEx.StringNotEmpty(delimiter, nameof(delimiter));
 
-			using FileStream file = File.OpenRead(path);
-			return FromStream(file, delimiter, hasHeaderRow, ignoreEmptyLines, encoding);
+			using (FileStream file = File.OpenRead(path))
+			{
+				return FromStream(file, delimiter, hasHeaderRow, ignoreEmptyLines, encoding);
+			}
 		}
 		/// <summary>
 		/// Creates a <see cref="CsvFile" /> object from the specified <see cref="byte" />[] that represents a flat file database.
@@ -135,8 +137,10 @@ namespace BytecodeApi.FileFormats.Csv
 			Check.ArgumentNull(file, nameof(file));
 			Check.ArgumentEx.StringNotEmpty(delimiter, nameof(delimiter));
 
-			using MemoryStream memoryStream = new MemoryStream(file);
-			return FromStream(memoryStream, delimiter, hasHeaderRow, ignoreEmptyLines, encoding);
+			using (MemoryStream memoryStream = new MemoryStream(file))
+			{
+				return FromStream(memoryStream, delimiter, hasHeaderRow, ignoreEmptyLines, encoding);
+			}
 		}
 		/// <summary>
 		/// Creates a <see cref="CsvFile" /> object from the specified <see cref="Stream" />.
@@ -199,41 +203,42 @@ namespace BytecodeApi.FileFormats.Csv
 
 			AutoDetectDelimiter(stream, encoding, ref delimiter);
 
-			using TextFieldParser parser = CreateTextFieldParser(stream, delimiter, encoding, leaveOpen);
-
-			CsvFile csv = new CsvFile { Delimiter = delimiter };
-			long lineNumber = 1;
-
-			if (hasHeaderRow)
+			using (TextFieldParser parser = CreateTextFieldParser(stream, delimiter, encoding, leaveOpen))
 			{
-				try
+				CsvFile csv = new CsvFile { Delimiter = delimiter };
+				long lineNumber = 1;
+
+				if (hasHeaderRow)
 				{
-					csv.Headers = parser.ReadFields();
-				}
-				catch (MalformedLineException)
-				{
+					try
+					{
+						csv.Headers = parser.ReadFields();
+					}
+					catch (MalformedLineException)
+					{
+					}
+
+					lineNumber++;
 				}
 
-				lineNumber++;
+				int columnCount = -1;
+
+				foreach (CsvRow row in EnumerateTextFieldParser(parser, ignoreEmptyLines))
+				{
+					row.LineNumber = lineNumber++;
+					csv.HasErrors |= row.ErrorLine != null;
+
+					if (row.ErrorLine == null && csv.IsColumnCountConsistent)
+					{
+						if (columnCount == -1) columnCount = row.Count;
+						else if (columnCount != row.Count) csv.IsColumnCountConsistent = false;
+					}
+
+					csv.Rows.Add(row);
+				}
+
+				return csv;
 			}
-
-			int columnCount = -1;
-
-			foreach (CsvRow row in EnumerateTextFieldParser(parser, ignoreEmptyLines))
-			{
-				row.LineNumber = lineNumber++;
-				csv.HasErrors |= row.ErrorLine != null;
-
-				if (row.ErrorLine == null && csv.IsColumnCountConsistent)
-				{
-					if (columnCount == -1) columnCount = row.Count;
-					else if (columnCount != row.Count) csv.IsColumnCountConsistent = false;
-				}
-
-				csv.Rows.Add(row);
-			}
-
-			return csv;
 		}
 
 		/// <summary>
@@ -280,10 +285,12 @@ namespace BytecodeApi.FileFormats.Csv
 			Check.FileNotFound(path);
 			Check.ArgumentEx.StringNotEmpty(delimiter, nameof(delimiter));
 
-			using FileStream file = File.OpenRead(path);
-			foreach (CsvRow row in EnumerateStream(file, delimiter, hasHeaderRow, ignoreEmptyLines, encoding))
+			using (FileStream file = File.OpenRead(path))
 			{
-				yield return row;
+				foreach (CsvRow row in EnumerateStream(file, delimiter, hasHeaderRow, ignoreEmptyLines, encoding))
+				{
+					yield return row;
+				}
 			}
 		}
 		/// <summary>
@@ -329,10 +336,12 @@ namespace BytecodeApi.FileFormats.Csv
 			Check.ArgumentNull(file, nameof(file));
 			Check.ArgumentEx.StringNotEmpty(delimiter, nameof(delimiter));
 
-			using MemoryStream memoryStream = new MemoryStream(file);
-			foreach (CsvRow row in EnumerateStream(memoryStream, delimiter, hasHeaderRow, ignoreEmptyLines, encoding))
+			using (MemoryStream memoryStream = new MemoryStream(file))
 			{
-				yield return row;
+				foreach (CsvRow row in EnumerateStream(memoryStream, delimiter, hasHeaderRow, ignoreEmptyLines, encoding))
+				{
+					yield return row;
+				}
 			}
 		}
 		/// <summary>
@@ -396,20 +405,21 @@ namespace BytecodeApi.FileFormats.Csv
 
 			AutoDetectDelimiter(stream, encoding, ref delimiter);
 
-			using TextFieldParser parser = CreateTextFieldParser(stream, delimiter, encoding, leaveOpen);
-
-			long lineNumber = 1;
-
-			if (hasHeaderRow)
+			using (TextFieldParser parser = CreateTextFieldParser(stream, delimiter, encoding, leaveOpen))
 			{
-				parser.ReadLine();
-				lineNumber++;
-			}
+				long lineNumber = 1;
 
-			foreach (CsvRow row in EnumerateTextFieldParser(parser, ignoreEmptyLines))
-			{
-				row.LineNumber = lineNumber++;
-				yield return row;
+				if (hasHeaderRow)
+				{
+					parser.ReadLine();
+					lineNumber++;
+				}
+
+				foreach (CsvRow row in EnumerateTextFieldParser(parser, ignoreEmptyLines))
+				{
+					row.LineNumber = lineNumber++;
+					yield return row;
+				}
 			}
 		}
 
@@ -461,8 +471,10 @@ namespace BytecodeApi.FileFormats.Csv
 			Check.ArgumentEx.ArrayValuesNotNull(delimitersToTest, nameof(delimitersToTest));
 			Check.ArgumentEx.ArrayValuesNotStringEmpty(delimitersToTest, nameof(delimitersToTest));
 
-			using FileStream file = File.OpenRead(path);
-			return DetectDelimiter(file, encoding, minimumRowsToTest, maximumRowsToTest, delimitersToTest);
+			using (FileStream file = File.OpenRead(path))
+			{
+				return DetectDelimiter(file, encoding, minimumRowsToTest, maximumRowsToTest, delimitersToTest);
+			}
 		}
 		/// <summary>
 		/// Tries to detect the delimiter of a CSV file and returns a <see cref="string" /> indicating the delimiter, or <see langword="null" />, if it could not be detected.
@@ -511,8 +523,10 @@ namespace BytecodeApi.FileFormats.Csv
 			Check.ArgumentEx.ArrayValuesNotNull(delimitersToTest, nameof(delimitersToTest));
 			Check.ArgumentEx.ArrayValuesNotStringEmpty(delimitersToTest, nameof(delimitersToTest));
 
-			using MemoryStream memoryStream = new MemoryStream(file);
-			return DetectDelimiter(memoryStream, encoding, minimumRowsToTest, maximumRowsToTest, delimitersToTest);
+			using (MemoryStream memoryStream = new MemoryStream(file))
+			{
+				return DetectDelimiter(memoryStream, encoding, minimumRowsToTest, maximumRowsToTest, delimitersToTest);
+			}
 		}
 		/// <summary>
 		/// Tries to detect the delimiter of a CSV file and returns a <see cref="string" /> indicating the delimiter, or <see langword="null" />, if it could not be detected.
@@ -636,8 +650,10 @@ namespace BytecodeApi.FileFormats.Csv
 			Check.ArgumentNull(delimiter, nameof(delimiter));
 			Check.ArgumentEx.StringNotEmpty(delimiter, nameof(delimiter));
 
-			using FileStream stream = File.Create(path);
-			SaveRows(stream, rows, delimiter, alwaysQuote, encoding, false);
+			using (FileStream stream = File.Create(path))
+			{
+				SaveRows(stream, rows, delimiter, alwaysQuote, encoding, false);
+			}
 		}
 		/// <summary>
 		/// Writes an enumerable collection of <see cref="CsvRow" /> to a <see cref="Stream" />. This method streams an <see cref="IEnumerable{T}" /> into the <see cref="Stream" /> and does not require to load all rows into memory and is typically used for large files that are processed in a <see langword="foreach" /> loop.
@@ -688,34 +704,35 @@ namespace BytecodeApi.FileFormats.Csv
 			Check.ArgumentNull(delimiter, nameof(delimiter));
 			Check.ArgumentEx.StringNotEmpty(delimiter, nameof(delimiter));
 
-			using StreamWriter streamWriter = new StreamWriter(stream, encoding ?? Encoding.UTF8, 4096, leaveOpen);
-
-			foreach (CsvRow row in rows)
+			using (StreamWriter streamWriter = new StreamWriter(stream, encoding ?? Encoding.UTF8, 4096, leaveOpen))
 			{
-				if (row.ErrorLine != null)
+				foreach (CsvRow row in rows)
 				{
-					streamWriter.WriteLine(row.ErrorLine);
-				}
-				else
-				{
-					for (int i = 0; i < row.Count; i++)
+					if (row.ErrorLine != null)
 					{
-						string cell = row[i].Value;
-
-						if (alwaysQuote || cell?.Contains(delimiter) == true || cell?.Contains("\n") == true)
-						{
-							streamWriter.Write('"');
-							if (cell != null) streamWriter.Write(cell.Replace("\"", "\"\""));
-							streamWriter.Write('"');
-						}
-						else
-						{
-							if (cell != null) streamWriter.Write(cell);
-						}
-
-						if (i < row.Count - 1) streamWriter.Write(delimiter);
+						streamWriter.WriteLine(row.ErrorLine);
 					}
-					streamWriter.WriteLine();
+					else
+					{
+						for (int i = 0; i < row.Count; i++)
+						{
+							string cell = row[i].Value;
+
+							if (alwaysQuote || cell?.Contains(delimiter) == true || cell?.Contains("\n") == true)
+							{
+								streamWriter.Write('"');
+								if (cell != null) streamWriter.Write(cell.Replace("\"", "\"\""));
+								streamWriter.Write('"');
+							}
+							else
+							{
+								if (cell != null) streamWriter.Write(cell);
+							}
+
+							if (i < row.Count - 1) streamWriter.Write(delimiter);
+						}
+						streamWriter.WriteLine();
+					}
 				}
 			}
 		}
@@ -785,8 +802,10 @@ namespace BytecodeApi.FileFormats.Csv
 			Check.ArgumentNull(Delimiter, nameof(Delimiter));
 			Check.ArgumentEx.StringNotEmpty(Delimiter, nameof(Delimiter));
 
-			using FileStream stream = File.Create(path);
-			Save(stream, alwaysQuote, encoding, false);
+			using (FileStream stream = File.Create(path))
+			{
+				Save(stream, alwaysQuote, encoding, false);
+			}
 		}
 		/// <summary>
 		/// Writes the contents of this flat file database to a <see cref="Stream" />. If <see cref="Headers" /> is not <see langword="null" />, the header row is included. The <see cref="Delimiter" /> property specifies the delimiter to use when writing.

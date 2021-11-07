@@ -18,8 +18,10 @@ namespace BytecodeApi.Extensions
 			Check.ArgumentNull(bitmapEncoder, nameof(bitmapEncoder));
 			Check.ArgumentNull(path, nameof(path));
 
-			using FileStream file = File.Create(path);
-			bitmapEncoder.Save(file);
+			using (FileStream file = File.Create(path))
+			{
+				bitmapEncoder.Save(file);
+			}
 		}
 		/// <summary>
 		/// Encodes a bitmap image and returns a new <see cref="byte" />[] representing the encoded image.
@@ -32,9 +34,11 @@ namespace BytecodeApi.Extensions
 		{
 			Check.ArgumentNull(bitmapEncoder, nameof(bitmapEncoder));
 
-			using MemoryStream memoryStream = new MemoryStream();
-			bitmapEncoder.Save(memoryStream);
-			return memoryStream.ToArray();
+			using (MemoryStream memoryStream = new MemoryStream())
+			{
+				bitmapEncoder.Save(memoryStream);
+				return memoryStream.ToArray();
+			}
 		}
 	}
 }

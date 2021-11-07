@@ -40,26 +40,26 @@ namespace BytecodeApi.UI.Converters
 			}
 			else
 			{
-				return Method switch
+				switch (Method)
 				{
-					IEnumerableConverterMethod.First => value.Cast<object>().First(),
-					IEnumerableConverterMethod.FirstOrDefault => value.Cast<object>().FirstOrDefault(),
-					IEnumerableConverterMethod.Last => value.Cast<object>().Last(),
-					IEnumerableConverterMethod.LastOrDefault => value.Cast<object>().LastOrDefault(),
-					IEnumerableConverterMethod.ElementAt => value.Cast<object>().ElementAt((int)parameter),
-					IEnumerableConverterMethod.ElementAtOrDefault => value.Cast<object>().ElementAtOrDefault((int)parameter),
-					IEnumerableConverterMethod.Count => value.Count(),
-					IEnumerableConverterMethod.Skip => value.Cast<object>().Skip((int)parameter),
-					IEnumerableConverterMethod.Take => value.Cast<object>().Take((int)parameter),
-					IEnumerableConverterMethod.JoinStrings => value.Cast<object>().AsString(),
-					IEnumerableConverterMethod.JoinStringsComma => value.Cast<object>().Select(itm => itm?.ToString()).AsString(", "),
-					IEnumerableConverterMethod.AsMultilineString => value.Cast<object>().Select(itm => itm?.ToString()).AsMultilineString(),
-					IEnumerableConverterMethod.BooleansToIndeterminate =>
-						value is IEnumerable<bool> booleanCollection ? booleanCollection.ToIndeterminate() :
-						value is IEnumerable<bool?> nullableBooleanCollection ? nullableBooleanCollection.ToIndeterminate() :
-						throw Throw.UnsupportedType(nameof(value)),
-					_ => throw Throw.InvalidEnumArgument(nameof(Method), Method)
-				};
+					case IEnumerableConverterMethod.First: return value.Cast<object>().First();
+					case IEnumerableConverterMethod.FirstOrDefault: return value.Cast<object>().FirstOrDefault();
+					case IEnumerableConverterMethod.Last: return value.Cast<object>().Last();
+					case IEnumerableConverterMethod.LastOrDefault: return value.Cast<object>().LastOrDefault();
+					case IEnumerableConverterMethod.ElementAt: return value.Cast<object>().ElementAt((int)parameter);
+					case IEnumerableConverterMethod.ElementAtOrDefault: return value.Cast<object>().ElementAtOrDefault((int)parameter);
+					case IEnumerableConverterMethod.Count: return value.Count();
+					case IEnumerableConverterMethod.Skip: return value.Cast<object>().Skip((int)parameter);
+					case IEnumerableConverterMethod.Take: return value.Cast<object>().Take((int)parameter);
+					case IEnumerableConverterMethod.JoinStrings: return value.Cast<object>().AsString();
+					case IEnumerableConverterMethod.JoinStringsComma: return value.Cast<object>().Select(itm => itm?.ToString()).AsString(", ");
+					case IEnumerableConverterMethod.AsMultilineString: return value.Cast<object>().Select(itm => itm?.ToString()).AsMultilineString();
+					case IEnumerableConverterMethod.BooleansToIndeterminate:
+						if (value is IEnumerable<bool> booleanCollection) return booleanCollection.ToIndeterminate();
+						else if (value is IEnumerable<bool?> nullableBooleanCollection) return nullableBooleanCollection.ToIndeterminate();
+						else throw Throw.UnsupportedType(nameof(value));
+					default: throw Throw.InvalidEnumArgument(nameof(Method), Method);
+				}
 			}
 		}
 	}

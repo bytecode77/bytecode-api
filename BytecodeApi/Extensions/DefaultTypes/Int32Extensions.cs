@@ -40,7 +40,7 @@ namespace BytecodeApi.Extensions
 		/// </returns>
 		public static int? ToNullIfDefault(this int value)
 		{
-			return value == default ? null : value;
+			return value == default ? null : (int?)value;
 		}
 	}
 }

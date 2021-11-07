@@ -43,7 +43,7 @@ namespace BytecodeApi.Extensions
 		/// </returns>
 		public static bool? ToBooleanOrNull(this string str)
 		{
-			return bool.TryParse(str, out bool result) ? result : null;
+			return bool.TryParse(str, out bool result) ? result : (bool?)null;
 		}
 		/// <summary>
 		/// Tries to convert this <see cref="string" /> to an equivalent <see cref="byte" /> value or returns 0 if conversion failed.
@@ -80,7 +80,7 @@ namespace BytecodeApi.Extensions
 		/// </returns>
 		public static byte? ToByteOrNull(this string str)
 		{
-			return byte.TryParse(str, out byte result) ? result : null;
+			return byte.TryParse(str, out byte result) ? result : (byte?)null;
 		}
 		/// <summary>
 		/// Tries to convert this <see cref="string" /> to an equivalent <see cref="sbyte" /> value or returns 0 if conversion failed.
@@ -117,7 +117,7 @@ namespace BytecodeApi.Extensions
 		/// </returns>
 		public static sbyte? ToSByteOrNull(this string str)
 		{
-			return sbyte.TryParse(str, out sbyte result) ? result : null;
+			return sbyte.TryParse(str, out sbyte result) ? result : (sbyte?)null;
 		}
 		/// <summary>
 		/// Tries to convert this <see cref="string" /> to an equivalent <see cref="char" /> value or returns '\0' if conversion failed.
@@ -154,7 +154,7 @@ namespace BytecodeApi.Extensions
 		/// </returns>
 		public static char? ToCharOrNull(this string str)
 		{
-			return char.TryParse(str, out char result) ? result : null;
+			return char.TryParse(str, out char result) ? result : (char?)null;
 		}
 		/// <summary>
 		/// Tries to convert this <see cref="string" /> to an equivalent <see cref="decimal" /> value or returns 0.0m if conversion failed.
@@ -191,7 +191,7 @@ namespace BytecodeApi.Extensions
 		/// </returns>
 		public static decimal? ToDecimalOrNull(this string str)
 		{
-			return decimal.TryParse(str, NumberStyles.Float, CultureInfo.InvariantCulture, out decimal result) ? result : null;
+			return decimal.TryParse(str, NumberStyles.Float, CultureInfo.InvariantCulture, out decimal result) ? result : (decimal?)null;
 		}
 		/// <summary>
 		/// Tries to convert this <see cref="string" /> to an equivalent <see cref="double" /> value or returns 0.0 if conversion failed.
@@ -228,7 +228,7 @@ namespace BytecodeApi.Extensions
 		/// </returns>
 		public static double? ToDoubleOrNull(this string str)
 		{
-			return double.TryParse(str, NumberStyles.Float, CultureInfo.InvariantCulture, out double result) ? result : null;
+			return double.TryParse(str, NumberStyles.Float, CultureInfo.InvariantCulture, out double result) ? result : (double?)null;
 		}
 		/// <summary>
 		/// Tries to convert this <see cref="string" /> to an equivalent <see cref="float" /> value or returns 0.0f if conversion failed.
@@ -265,7 +265,7 @@ namespace BytecodeApi.Extensions
 		/// </returns>
 		public static float? ToSingleOrNull(this string str)
 		{
-			return float.TryParse(str, NumberStyles.Float, CultureInfo.InvariantCulture, out float result) ? result : null;
+			return float.TryParse(str, NumberStyles.Float, CultureInfo.InvariantCulture, out float result) ? result : (float?)null;
 		}
 		/// <summary>
 		/// Tries to convert this <see cref="string" /> to an equivalent <see cref="int" /> value or returns 0 if conversion failed.
@@ -302,7 +302,7 @@ namespace BytecodeApi.Extensions
 		/// </returns>
 		public static int? ToInt32OrNull(this string str)
 		{
-			return int.TryParse(str, out int result) ? result : null;
+			return int.TryParse(str, out int result) ? result : (int?)null;
 		}
 		/// <summary>
 		/// Tries to convert this <see cref="string" /> to an equivalent <see cref="uint" /> value or returns 0 if conversion failed.
@@ -339,7 +339,7 @@ namespace BytecodeApi.Extensions
 		/// </returns>
 		public static uint? ToUInt32OrNull(this string str)
 		{
-			return uint.TryParse(str, out uint result) ? result : null;
+			return uint.TryParse(str, out uint result) ? result : (uint?)null;
 		}
 		/// <summary>
 		/// Tries to convert this <see cref="string" /> to an equivalent <see cref="long" /> value or returns 0L if conversion failed.
@@ -376,7 +376,7 @@ namespace BytecodeApi.Extensions
 		/// </returns>
 		public static long? ToInt64OrNull(this string str)
 		{
-			return long.TryParse(str, out long result) ? result : null;
+			return long.TryParse(str, out long result) ? result : (long?)null;
 		}
 		/// <summary>
 		/// Tries to convert this <see cref="string" /> to an equivalent <see cref="ulong" /> value or returns 0UL if conversion failed.
@@ -413,7 +413,7 @@ namespace BytecodeApi.Extensions
 		/// </returns>
 		public static ulong? ToUInt64OrNull(this string str)
 		{
-			return ulong.TryParse(str, out ulong result) ? result : null;
+			return ulong.TryParse(str, out ulong result) ? result : (ulong?)null;
 		}
 		/// <summary>
 		/// Tries to convert this <see cref="string" /> to an equivalent <see cref="short" /> value or returns 0 if conversion failed.
@@ -450,7 +450,7 @@ namespace BytecodeApi.Extensions
 		/// </returns>
 		public static short? ToInt16OrNull(this string str)
 		{
-			return short.TryParse(str, out short result) ? result : null;
+			return short.TryParse(str, out short result) ? result : (short?)null;
 		}
 		/// <summary>
 		/// Tries to convert this <see cref="string" /> to an equivalent <see cref="ushort" /> value or returns 0 if conversion failed.
@@ -487,7 +487,7 @@ namespace BytecodeApi.Extensions
 		/// </returns>
 		public static ushort? ToUInt16OrNull(this string str)
 		{
-			return ushort.TryParse(str, out ushort result) ? result : null;
+			return ushort.TryParse(str, out ushort result) ? result : (ushort?)null;
 		}
 
 		/// <summary>
@@ -503,7 +503,7 @@ namespace BytecodeApi.Extensions
 		{
 			Check.ArgumentNull(format, nameof(format));
 
-			return DateTime.TryParseExact(str, format, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime result) ? result : null;
+			return DateTime.TryParseExact(str, format, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime result) ? result : (DateTime?)null;
 		}
 		/// <summary>
 		/// Tries to convert this <see cref="string" /> to an equivalent <see cref="TimeSpan" /> value or returns <see langword="null" />, if conversion failed.
@@ -518,7 +518,7 @@ namespace BytecodeApi.Extensions
 		{
 			Check.ArgumentNull(format, nameof(format));
 
-			return TimeSpan.TryParseExact(str, format, CultureInfo.InvariantCulture, out TimeSpan result) ? result : null;
+			return TimeSpan.TryParseExact(str, format, CultureInfo.InvariantCulture, out TimeSpan result) ? result : (TimeSpan?)null;
 		}
 		/// <summary>
 		/// Tries to convert this <see cref="string" /> to an equivalent <see cref="Uri" /> value or returns <see langword="null" />, if conversion failed.

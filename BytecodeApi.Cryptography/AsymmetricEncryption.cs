@@ -14,9 +14,11 @@ namespace BytecodeApi.Cryptography
 		/// <param name="privateKey">When this method returns, an <see cref="RSAParameters" /> structure with the private key information.</param>
 		public static void GenerateKeyPair(out RSAParameters publicKey, out RSAParameters privateKey)
 		{
-			using RSACryptoServiceProvider rsa = new RSACryptoServiceProvider();
-			publicKey = rsa.ExportParameters(false);
-			privateKey = rsa.ExportParameters(true);
+			using (RSACryptoServiceProvider rsa = new RSACryptoServiceProvider())
+			{
+				publicKey = rsa.ExportParameters(false);
+				privateKey = rsa.ExportParameters(true);
+			}
 		}
 		/// <summary>
 		/// Encrypts the specified <see cref="byte" />[] using RSA and the specified public key.
@@ -60,9 +62,11 @@ namespace BytecodeApi.Cryptography
 		{
 			Check.ArgumentNull(data, nameof(data));
 
-			using RSACryptoServiceProvider rsa = new RSACryptoServiceProvider();
-			rsa.ImportParameters(key);
-			return rsa.Encrypt(data, true);
+			using (RSACryptoServiceProvider rsa = new RSACryptoServiceProvider())
+			{
+				rsa.ImportParameters(key);
+				return rsa.Encrypt(data, true);
+			}
 		}
 		/// <summary>
 		/// Decrypts the specified <see cref="byte" />[] using RSA and the specified private key.
@@ -106,9 +110,11 @@ namespace BytecodeApi.Cryptography
 		{
 			Check.ArgumentNull(data, nameof(data));
 
-			using RSACryptoServiceProvider rsa = new RSACryptoServiceProvider();
-			rsa.ImportParameters(key);
-			return rsa.Decrypt(data, true);
+			using (RSACryptoServiceProvider rsa = new RSACryptoServiceProvider())
+			{
+				rsa.ImportParameters(key);
+				return rsa.Decrypt(data, true);
+			}
 		}
 	}
 }

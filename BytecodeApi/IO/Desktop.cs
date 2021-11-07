@@ -43,8 +43,11 @@ namespace BytecodeApi.IO
 			int height = (int)((allScreens ? SystemParameters.VirtualScreenHeight : SystemParameters.PrimaryScreenHeight) * dpi.Height / 96);
 
 			Bitmap bitmap = new Bitmap(width, height, PixelFormat.Format32bppArgb);
-			using Graphics graphics = Graphics.FromImage(bitmap);
-			graphics.CopyFromScreen(left, top, 0, 0, bitmap.Size);
+			using (Graphics graphics = Graphics.FromImage(bitmap))
+			{
+				graphics.CopyFromScreen(left, top, 0, 0, bitmap.Size);
+			}
+
 			return bitmap;
 		}
 		/// <summary>

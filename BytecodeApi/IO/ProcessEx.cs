@@ -215,7 +215,7 @@ namespace BytecodeApi.IO
 
 			using (Process process = Process.Start(new ProcessStartInfo(fileName, arguments) { Verb = runas ? "runas" : null }))
 			{
-				return process.WaitForExit(timeout) ? process.ExitCode : null;
+				return process.WaitForExit(timeout) ? process.ExitCode : (int?)null;
 			}
 		}
 		/// <summary>

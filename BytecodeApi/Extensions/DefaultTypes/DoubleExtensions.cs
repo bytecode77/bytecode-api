@@ -88,7 +88,7 @@ namespace BytecodeApi.Extensions
 		/// </returns>
 		public static double? ToNullIfDefault(this double value)
 		{
-			return value == default ? null : value;
+			return value == default ? null : (double?)value;
 		}
 	}
 }

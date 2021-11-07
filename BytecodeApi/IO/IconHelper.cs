@@ -32,16 +32,17 @@ namespace BytecodeApi.IO
 				int offset = BitConverter.ToInt32(iconData, i * 16 + 18);
 				int length = BitConverter.ToInt32(iconData, i * 16 + 14);
 
-				using BinaryWriter writer = new BinaryWriter(new MemoryStream(length + 24));
+				using (BinaryWriter writer = new BinaryWriter(new MemoryStream(length + 24)))
+				{
+					writer.Write(iconData, 0, 4);
+					writer.Write((short)1);
+					writer.Write(iconData, i * 16 + 6, 12);
+					writer.Write(22);
+					writer.Write(iconData, offset, length);
 
-				writer.Write(iconData, 0, 4);
-				writer.Write((short)1);
-				writer.Write(iconData, i * 16 + 6, 12);
-				writer.Write(22);
-				writer.Write(iconData, offset, length);
-
-				writer.BaseStream.Seek(0, SeekOrigin.Begin);
-				icons[i] = new Icon(writer.BaseStream);
+					writer.BaseStream.Seek(0, SeekOrigin.Begin);
+					icons[i] = new Icon(writer.BaseStream);
+				}
 			}
 
 			return icons.OrderBy(i => i.Width).ToArray();
@@ -60,44 +61,52 @@ namespace BytecodeApi.IO
 			Check.ArgumentEx.ArrayValuesNotNull(images, nameof(images));
 			Check.Argument(images.All(image => image.Width < 256 && image.Height < 256), nameof(images), "Images may not exceed a resolution of 256x256 pixels.");
 
-			using MemoryStream memoryStream = new MemoryStream();
-
-			using (BinaryWriter iconWriter = new BinaryWriter(memoryStream, Encoding.Default, true))
+			using (MemoryStream memoryStream = new MemoryStream())
 			{
-				iconWriter.Write((short)0);
-				iconWriter.Write((short)1);
-				iconWriter.Write((short)images.Length);
-
-				byte[][] frameBytes = new byte[images.Length][];
-
-				for (int i = 0, offset = 6 + 16 * images.Length; i < images.Length; i++)
+				using (BinaryWriter iconWriter = new BinaryWriter(memoryStream, Encoding.Default, true))
 				{
-					frameBytes[i] = images[i].ToArray(ImageFormat.Png);
-
-					int bitsPerPixel = frameBytes[i][25] switch
-					{
-						2 => bitsPerPixel = 3 * frameBytes[i][24],
-						6 => bitsPerPixel = 4 * frameBytes[i][24],
-						_ => bitsPerPixel = frameBytes[i][24]
-					};
-
-					iconWriter.Write((byte)images[i].Width);
-					iconWriter.Write((byte)images[i].Height);
-					iconWriter.Write((byte)images[i].Palette.Entries.Length);
-					iconWriter.Write((byte)0);
 					iconWriter.Write((short)0);
-					iconWriter.Write((short)bitsPerPixel);
-					iconWriter.Write(frameBytes[i].Length);
-					iconWriter.Write(offset);
+					iconWriter.Write((short)1);
+					iconWriter.Write((short)images.Length);
 
-					offset += frameBytes[i].Length;
+					byte[][] frameBytes = new byte[images.Length][];
+
+					for (int i = 0, offset = 6 + 16 * images.Length; i < images.Length; i++)
+					{
+						frameBytes[i] = images[i].ToArray(ImageFormat.Png);
+
+						int bitsPerPixel;
+						switch (frameBytes[i][25])
+						{
+							case 2:
+								bitsPerPixel = frameBytes[i][24] * 3;
+								break;
+							case 6:
+								bitsPerPixel = frameBytes[i][24] * 4;
+								break;
+							default:
+								bitsPerPixel = frameBytes[i][24];
+								break;
+						}
+
+						iconWriter.Write((byte)images[i].Width);
+						iconWriter.Write((byte)images[i].Height);
+						iconWriter.Write((byte)images[i].Palette.Entries.Length);
+						iconWriter.Write((byte)0);
+						iconWriter.Write((short)0);
+						iconWriter.Write((short)bitsPerPixel);
+						iconWriter.Write(frameBytes[i].Length);
+						iconWriter.Write(offset);
+
+						offset += frameBytes[i].Length;
+					}
+
+					foreach (byte[] frame in frameBytes) iconWriter.Write(frame);
 				}
 
-				foreach (byte[] frame in frameBytes) iconWriter.Write(frame);
+				memoryStream.Position = 0;
+				return new Icon(memoryStream);
 			}
-
-			memoryStream.Position = 0;
-			return new Icon(memoryStream);
 		}
 	}
 }

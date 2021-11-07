@@ -303,7 +303,7 @@ namespace BytecodeApi.Extensions
 		/// </returns>
 		public static char? ToNullIfDefault(this char value)
 		{
-			return value == default(char) ? null : value;
+			return value == default(char) ? null : (char?)value;
 		}
 		/// <summary>
 		/// Creates a <see cref="string" /> using the value of the <paramref name="value" /> parameter and repeats it a specified number of times.

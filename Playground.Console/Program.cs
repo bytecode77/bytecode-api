@@ -1,8 +1,7 @@
 using BytecodeApi;
 using System;
-using static System.Console;
 
-namespace Playground.Console
+namespace Playground
 {
 	/// <summary>
 	/// Playground project for development and case testing of class libraries.
@@ -14,8 +13,8 @@ namespace Playground.Console
 		{
 			Action test = Test1;
 
-			WriteLine("Time elapsed: " + (int)CSharp.MeasureTime(test).TotalMilliseconds);
-			ReadKey();
+			Console.WriteLine("Time elapsed: " + (int)CSharp.MeasureTime(test).TotalMilliseconds);
+			Console.ReadKey();
 		}
 
 		public static void Test1()

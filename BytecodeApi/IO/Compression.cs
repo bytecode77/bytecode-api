@@ -32,14 +32,15 @@ namespace BytecodeApi.IO
 		{
 			Check.ArgumentNull(data, nameof(data));
 
-			using MemoryStream memoryStream = new MemoryStream();
-
-			using (GZipStream gzipStream = new GZipStream(memoryStream, compressionLevel, true))
+			using (MemoryStream memoryStream = new MemoryStream())
 			{
-				gzipStream.Write(data);
-			}
+				using (GZipStream gzipStream = new GZipStream(memoryStream, compressionLevel, true))
+				{
+					gzipStream.Write(data);
+				}
 
-			return memoryStream.ToArray();
+				return memoryStream.ToArray();
+			}
 		}
 		/// <summary>
 		/// Decompresses the specified <see cref="byte" />[] using GZip and returns a new <see cref="byte" />[] that represents the uncompressed data.
@@ -52,14 +53,15 @@ namespace BytecodeApi.IO
 		{
 			Check.ArgumentNull(data, nameof(data));
 
-			using MemoryStream memoryStream = new MemoryStream();
-
-			using (GZipStream gzipStream = new GZipStream(new MemoryStream(data), CompressionMode.Decompress))
+			using (MemoryStream memoryStream = new MemoryStream())
 			{
-				gzipStream.CopyTo(memoryStream);
-			}
+				using (GZipStream gzipStream = new GZipStream(new MemoryStream(data), CompressionMode.Decompress))
+				{
+					gzipStream.CopyTo(memoryStream);
+				}
 
-			return memoryStream.ToArray();
+				return memoryStream.ToArray();
+			}
 		}
 	}
 }

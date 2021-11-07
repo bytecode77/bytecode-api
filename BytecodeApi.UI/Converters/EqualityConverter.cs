@@ -58,14 +58,23 @@ namespace BytecodeApi.UI.Converters
 			{
 				int comparison = comparableValue.CompareTo(comparableParameter);
 
-				result = Method switch
+				switch (Method)
 				{
-					EqualityConverterMethod.Less => comparison < 0,
-					EqualityConverterMethod.LessEqual => comparison <= 0,
-					EqualityConverterMethod.Greater => comparison > 0,
-					EqualityConverterMethod.GreaterEqual => comparison >= 0,
-					_ => throw Throw.InvalidEnumArgument(nameof(Result), Result)
-				};
+					case EqualityConverterMethod.Less:
+						result = comparison < 0;
+						break;
+					case EqualityConverterMethod.LessEqual:
+						result = comparison <= 0;
+						break;
+					case EqualityConverterMethod.Greater:
+						result = comparison > 0;
+						break;
+					case EqualityConverterMethod.GreaterEqual:
+						result = comparison >= 0;
+						break;
+					default:
+						throw Throw.InvalidEnumArgument(nameof(Result), Result);
+				}
 			}
 			else
 			{

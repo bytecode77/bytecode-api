@@ -71,8 +71,10 @@ namespace BytecodeApi.FileFormats.Ini
 			Check.ArgumentNull(path, nameof(path));
 			Check.FileNotFound(path);
 
-			using FileStream file = File.OpenRead(path);
-			return FromStream(file, encoding, parsingOptions);
+			using (FileStream file = File.OpenRead(path))
+			{
+				return FromStream(file, encoding, parsingOptions);
+			}
 		}
 		/// <summary>
 		/// Creates an <see cref="IniFile" /> object from the specified <see cref="byte" />[] that represents an INI file.
@@ -110,8 +112,10 @@ namespace BytecodeApi.FileFormats.Ini
 		{
 			Check.ArgumentNull(file, nameof(file));
 
-			using MemoryStream memoryStream = new MemoryStream(file);
-			return FromStream(memoryStream, encoding, parsingOptions);
+			using (MemoryStream memoryStream = new MemoryStream(file))
+			{
+				return FromStream(memoryStream, encoding, parsingOptions);
+			}
 		}
 		/// <summary>
 		/// Creates an <see cref="IniFile" /> object from the specified <see cref="Stream" />.
@@ -171,110 +175,111 @@ namespace BytecodeApi.FileFormats.Ini
 			bool ignoreSection = false;
 			List<IniErrorLine> errorLines = new List<IniErrorLine>();
 
-			using StreamReader reader = new StreamReader(stream, encoding, true, 4096, leaveOpen);
-
-			for (int lineNumber = 1; !reader.EndOfStream; lineNumber++)
+			using (StreamReader reader = new StreamReader(stream, encoding, true, 4096, leaveOpen))
 			{
-				string line = reader.ReadLine();
-				string trimmedLine = line.Trim();
-
-				if (trimmedLine.StartsWith(";") && parsingOptions.AllowSemicolonComments || trimmedLine.StartsWith("#") && parsingOptions.AllowNumberSignComments)
+				for (int lineNumber = 1; !reader.EndOfStream; lineNumber++)
 				{
-				}
-				else if (trimmedLine == "")
-				{
-					AbortIf(!parsingOptions.AllowEmptyLines);
-				}
-				else if (trimmedLine.StartsWith("[") && trimmedLine.EndsWith("]"))
-				{
-					string newSection = trimmedLine.Substring(1, trimmedLine.Length - 2);
-					if (parsingOptions.TrimSectionNames) newSection = newSection.Trim();
-					AbortIf(!parsingOptions.AllowSectionNameClosingBracket && newSection.Contains("]"));
+					string line = reader.ReadLine();
+					string trimmedLine = line.Trim();
 
-					IniSection duplicate = ini.Sections.FirstOrDefault(sect => sect.Name.Equals(newSection, parsingOptions.DuplicateSectionNameIgnoreCase ? SpecialStringComparisons.IgnoreCase : SpecialStringComparisons.None));
-					bool create = false;
-
-					switch (parsingOptions.DuplicateSectionNameBehavior)
+					if (trimmedLine.StartsWith(";") && parsingOptions.AllowSemicolonComments || trimmedLine.StartsWith("#") && parsingOptions.AllowNumberSignComments)
 					{
-						case IniDuplicateSectionNameBehavior.Abort:
-							AbortIf(duplicate != null);
-							create = true;
-							break;
-						case IniDuplicateSectionNameBehavior.Ignore:
-							if (duplicate == null) create = true;
-							else ignoreSection = true;
-							break;
-						case IniDuplicateSectionNameBehavior.Merge:
-							if (duplicate == null) create = true;
-							else section = duplicate;
-							break;
-						case IniDuplicateSectionNameBehavior.Duplicate:
-							create = true;
-							break;
-						default:
-							throw Throw.InvalidEnumArgument(nameof(parsingOptions.DuplicatePropertyNameBehavior), parsingOptions.DuplicatePropertyNameBehavior);
 					}
-
-					if (create)
+					else if (trimmedLine == "")
 					{
-						section = new IniSection(newSection);
-						ini.Sections.Add(section);
+						AbortIf(!parsingOptions.AllowEmptyLines);
 					}
-				}
-				else if (parsingOptions.PropertyDelimiter == IniPropertyDelimiter.EqualSign && line.Contains("="))
-				{
-					ParseProperty("=");
-				}
-				else if (parsingOptions.PropertyDelimiter == IniPropertyDelimiter.Colon && line.Contains(":"))
-				{
-					ParseProperty(":");
-				}
-				else
-				{
-					Abort();
-				}
-
-				void Abort()
-				{
-					if (parsingOptions.IgnoreErrors) errorLines.Add(new IniErrorLine(lineNumber, line));
-					else throw new IniParsingException(lineNumber, line);
-				}
-				void AbortIf(bool condition)
-				{
-					if (condition) Abort();
-				}
-				void ParseProperty(string delimiter)
-				{
-					if (!ignoreSection)
+					else if (trimmedLine.StartsWith("[") && trimmedLine.EndsWith("]"))
 					{
-						AbortIf(!parsingOptions.AllowGlobalProperties && section == ini.GlobalProperties);
+						string newSection = trimmedLine.Substring(1, trimmedLine.Length - 2);
+						if (parsingOptions.TrimSectionNames) newSection = newSection.Trim();
+						AbortIf(!parsingOptions.AllowSectionNameClosingBracket && newSection.Contains("]"));
 
-						IniProperty property = new IniProperty(line.SubstringUntil(delimiter), line.SubstringFrom(delimiter));
-						if (parsingOptions.TrimPropertyNames) property.Name = property.Name.Trim();
-						if (parsingOptions.TrimPropertyValues) property.Value = property.Value.Trim();
+						IniSection duplicate = ini.Sections.FirstOrDefault(sect => sect.Name.Equals(newSection, parsingOptions.DuplicateSectionNameIgnoreCase ? SpecialStringComparisons.IgnoreCase : SpecialStringComparisons.None));
+						bool create = false;
 
-						IniProperty duplicate = section.Properties.FirstOrDefault(prop => prop.Name.Equals(property.Name, parsingOptions.DuplicatePropertyNameIgnoreCase ? SpecialStringComparisons.IgnoreCase : SpecialStringComparisons.None));
-						if (duplicate == null)
+						switch (parsingOptions.DuplicateSectionNameBehavior)
 						{
-							section.Properties.Add(property);
+							case IniDuplicateSectionNameBehavior.Abort:
+								AbortIf(duplicate != null);
+								create = true;
+								break;
+							case IniDuplicateSectionNameBehavior.Ignore:
+								if (duplicate == null) create = true;
+								else ignoreSection = true;
+								break;
+							case IniDuplicateSectionNameBehavior.Merge:
+								if (duplicate == null) create = true;
+								else section = duplicate;
+								break;
+							case IniDuplicateSectionNameBehavior.Duplicate:
+								create = true;
+								break;
+							default:
+								throw Throw.InvalidEnumArgument(nameof(parsingOptions.DuplicatePropertyNameBehavior), parsingOptions.DuplicatePropertyNameBehavior);
 						}
-						else
+
+						if (create)
 						{
-							switch (parsingOptions.DuplicatePropertyNameBehavior)
+							section = new IniSection(newSection);
+							ini.Sections.Add(section);
+						}
+					}
+					else if (parsingOptions.PropertyDelimiter == IniPropertyDelimiter.EqualSign && line.Contains("="))
+					{
+						ParseProperty("=");
+					}
+					else if (parsingOptions.PropertyDelimiter == IniPropertyDelimiter.Colon && line.Contains(":"))
+					{
+						ParseProperty(":");
+					}
+					else
+					{
+						Abort();
+					}
+
+					void Abort()
+					{
+						if (parsingOptions.IgnoreErrors) errorLines.Add(new IniErrorLine(lineNumber, line));
+						else throw new IniParsingException(lineNumber, line);
+					}
+					void AbortIf(bool condition)
+					{
+						if (condition) Abort();
+					}
+					void ParseProperty(string delimiter)
+					{
+						if (!ignoreSection)
+						{
+							AbortIf(!parsingOptions.AllowGlobalProperties && section == ini.GlobalProperties);
+
+							IniProperty property = new IniProperty(line.SubstringUntil(delimiter), line.SubstringFrom(delimiter));
+							if (parsingOptions.TrimPropertyNames) property.Name = property.Name.Trim();
+							if (parsingOptions.TrimPropertyValues) property.Value = property.Value.Trim();
+
+							IniProperty duplicate = section.Properties.FirstOrDefault(prop => prop.Name.Equals(property.Name, parsingOptions.DuplicatePropertyNameIgnoreCase ? SpecialStringComparisons.IgnoreCase : SpecialStringComparisons.None));
+							if (duplicate == null)
 							{
-								case IniDuplicatePropertyNameBehavior.Abort:
-									Abort();
-									break;
-								case IniDuplicatePropertyNameBehavior.Ignore:
-									break;
-								case IniDuplicatePropertyNameBehavior.Overwrite:
-									duplicate.Value = property.Value;
-									break;
-								case IniDuplicatePropertyNameBehavior.Duplicate:
-									section.Properties.Add(property);
-									break;
-								default:
-									throw Throw.InvalidEnumArgument(nameof(parsingOptions.DuplicatePropertyNameBehavior), parsingOptions.DuplicatePropertyNameBehavior);
+								section.Properties.Add(property);
+							}
+							else
+							{
+								switch (parsingOptions.DuplicatePropertyNameBehavior)
+								{
+									case IniDuplicatePropertyNameBehavior.Abort:
+										Abort();
+										break;
+									case IniDuplicatePropertyNameBehavior.Ignore:
+										break;
+									case IniDuplicatePropertyNameBehavior.Overwrite:
+										duplicate.Value = property.Value;
+										break;
+									case IniDuplicatePropertyNameBehavior.Duplicate:
+										section.Properties.Add(property);
+										break;
+									default:
+										throw Throw.InvalidEnumArgument(nameof(parsingOptions.DuplicatePropertyNameBehavior), parsingOptions.DuplicatePropertyNameBehavior);
+								}
 							}
 						}
 					}
@@ -313,8 +318,10 @@ namespace BytecodeApi.FileFormats.Ini
 			Check.ArgumentNull(path, nameof(path));
 			Check.ArgumentNull(encoding, nameof(encoding));
 
-			using FileStream file = File.Create(path);
-			Save(file, encoding, formattingOptions, false);
+			using (FileStream file = File.Create(path))
+			{
+				Save(file, encoding, formattingOptions, false);
+			}
 		}
 		/// <summary>
 		/// Writes the contents of this INI file to a <see cref="Stream" />.
@@ -362,27 +369,28 @@ namespace BytecodeApi.FileFormats.Ini
 				formattingOptions.PropertyDelimiter.GetDescription() +
 				(formattingOptions.UseDelimiterSpaceAfter ? " " : null);
 
-			using StreamWriter streamWriter = new StreamWriter(stream, encoding, 4096, leaveOpen);
-
-			if (GlobalProperties.Properties.Count > 0)
+			using (StreamWriter streamWriter = new StreamWriter(stream, encoding, 4096, leaveOpen))
 			{
-				WriteSection(GlobalProperties);
-				if (formattingOptions.UseNewLineBetweenSections) streamWriter.WriteLine();
-			}
-
-			for (int i = 0; i < Sections.Count; i++)
-			{
-				WriteSection(Sections[i]);
-				if (i < Sections.Count - 1 && formattingOptions.UseNewLineBetweenSections) streamWriter.WriteLine();
-			}
-
-			void WriteSection(IniSection section)
-			{
-				if (section.Name != null) streamWriter.WriteLine("[" + section.Name + "]");
-
-				foreach (IniProperty property in section.Properties)
+				if (GlobalProperties.Properties.Count > 0)
 				{
-					streamWriter.WriteLine(property.Name + delimiter + property.Value);
+					WriteSection(GlobalProperties);
+					if (formattingOptions.UseNewLineBetweenSections) streamWriter.WriteLine();
+				}
+
+				for (int i = 0; i < Sections.Count; i++)
+				{
+					WriteSection(Sections[i]);
+					if (i < Sections.Count - 1 && formattingOptions.UseNewLineBetweenSections) streamWriter.WriteLine();
+				}
+
+				void WriteSection(IniSection section)
+				{
+					if (section.Name != null) streamWriter.WriteLine("[" + section.Name + "]");
+
+					foreach (IniProperty property in section.Properties)
+					{
+						streamWriter.WriteLine(property.Name + delimiter + property.Value);
+					}
 				}
 			}
 		}

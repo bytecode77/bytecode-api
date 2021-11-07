@@ -57,7 +57,7 @@ namespace BytecodeApi.Data
 			CheckNames(Root);
 			Save(Root, path);
 
-			static void CheckNames(BlobTreeNode node)
+			void CheckNames(BlobTreeNode node)
 			{
 				foreach (BlobTreeNode childNode in node.Nodes)
 				{
@@ -68,7 +68,7 @@ namespace BytecodeApi.Data
 				Blob blob = node.Blobs.FirstOrDefault(b => !Validate.FileName(b.Name));
 				if (blob != null) throw BlobCollection.CreateIllegalFilenameException(blob);
 			}
-			static void Save(BlobTreeNode node, string nodePath)
+			void Save(BlobTreeNode node, string nodePath)
 			{
 				Directory.CreateDirectory(nodePath);
 				foreach (BlobTreeNode childNode in node.Nodes) Save(childNode, Path.Combine(nodePath, childNode.Name));

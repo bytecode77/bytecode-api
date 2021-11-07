@@ -79,8 +79,10 @@ namespace BytecodeApi.IO.FileSystem
 		{
 			if (!File.Exists(Path) || Age > Timeout || RequestCallback?.Invoke(new FileInfo(Path)) == false)
 			{
-				using FileStream file = File.Create(Path);
-				UpdateCallback(file);
+				using (FileStream file = File.Create(Path))
+				{
+					UpdateCallback(file);
+				}
 
 				updated = true;
 			}
@@ -100,11 +102,15 @@ namespace BytecodeApi.IO.FileSystem
 		/// </returns>
 		public byte[] ReadAllBytes()
 		{
-			using FileStream file = OpenRead(out _);
-			using MemoryStream memoryStream = new MemoryStream();
+			using (MemoryStream memoryStream = new MemoryStream())
+			{
+				using (FileStream file = OpenRead(out _))
+				{
+					file.CopyTo(memoryStream);
+				}
 
-			file.CopyTo(memoryStream);
-			return memoryStream.ToArray();
+				return memoryStream.ToArray();
+			}
 		}
 		/// <summary>
 		/// Opens the file, reads all lines of the file into a <see cref="string" />[], and then closes the file.
@@ -154,8 +160,10 @@ namespace BytecodeApi.IO.FileSystem
 		{
 			Check.ArgumentNull(encoding, nameof(encoding));
 
-			using StreamReader stream = new StreamReader(OpenRead(out _), encoding);
-			return stream.ReadToEnd();
+			using (StreamReader stream = new StreamReader(OpenRead(out _), encoding))
+			{
+				return stream.ReadToEnd();
+			}
 		}
 		/// <summary>
 		/// Reads the lines of a file.
@@ -180,12 +188,14 @@ namespace BytecodeApi.IO.FileSystem
 		{
 			Check.ArgumentNull(encoding, nameof(encoding));
 
-			using StreamReader stream = new StreamReader(OpenRead(out _), encoding);
-			string line;
-
-			while ((line = stream.ReadLine()) != null)
+			using (StreamReader stream = new StreamReader(OpenRead(out _), encoding))
 			{
-				yield return line;
+				string line;
+
+				while ((line = stream.ReadLine()) != null)
+				{
+					yield return line;
+				}
 			}
 		}
 		/// <summary>

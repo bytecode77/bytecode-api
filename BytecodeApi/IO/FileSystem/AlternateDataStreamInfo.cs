@@ -35,61 +35,63 @@ namespace BytecodeApi.IO.FileSystem
 
 			Path = path;
 
-			using SafeFileHandle file = Native.CreateFile(Path, 0x80000000, FileShare.Read, IntPtr.Zero, FileMode.Open, 0x2000000, IntPtr.Zero);
-			if (!file.IsInvalid && Native.GetFileType(file) != 1) throw Throw.Win32(2);
-
-			Native.Win32StreamId streamId = new Native.Win32StreamId();
-			int streamHeaderSize = Marshal.SizeOf(streamId);
-			IntPtr context = IntPtr.Zero;
-			Native.SafeHGlobalHandle streamName = new Native.SafeHGlobalHandle();
-
-			try
+			using (SafeFileHandle file = Native.CreateFile(Path, 0x80000000, FileShare.Read, IntPtr.Zero, FileMode.Open, 0x2000000, IntPtr.Zero))
 			{
-				List<AlternateDataStream> streams = new List<AlternateDataStream>();
+				if (!file.IsInvalid && Native.GetFileType(file) != 1) throw Throw.Win32(2);
 
-				for (bool done = false; !done;)
+				Native.Win32StreamId streamId = new Native.Win32StreamId();
+				int streamHeaderSize = Marshal.SizeOf(streamId);
+				IntPtr context = IntPtr.Zero;
+				Native.SafeHGlobalHandle streamName = new Native.SafeHGlobalHandle();
+
+				try
 				{
-					if (!Native.BackupRead(file, ref streamId, streamHeaderSize, out int bytesRead, false, false, ref context) || bytesRead != streamHeaderSize)
+					List<AlternateDataStream> streams = new List<AlternateDataStream>();
+
+					for (bool done = false; !done;)
 					{
-						done = true;
+						if (!Native.BackupRead(file, ref streamId, streamHeaderSize, out int bytesRead, false, false, ref context) || bytesRead != streamHeaderSize)
+						{
+							done = true;
+						}
+						else
+						{
+							string name = null;
+							if (streamId.StreamNameSize > 0)
+							{
+								streamName = Native.SafeHGlobalHandle.Allocate(streamId.StreamNameSize);
+
+								if (!Native.BackupRead(file, streamName, streamId.StreamNameSize, out bytesRead, false, false, ref context))
+								{
+									done = true;
+								}
+								else
+								{
+									name = Marshal.PtrToStringUni(streamName.DangerousGetHandle(), bytesRead / 2).Substring(1).SubstringUntil(":", true);
+								}
+							}
+
+							if (!name.IsNullOrEmpty())
+							{
+								streams.Add(new AlternateDataStream(name, streamId.Size.ToInt64(), (AlternateDataStreamType)streamId.StreamId, (AlternateDataStreamAttributes)streamId.StreamAttributes));
+							}
+
+							if (streamId.Size.Low != 0 || streamId.Size.High != 0)
+							{
+								if (!done && !Native.BackupSeek(file, streamId.Size.Low, streamId.Size.High, out _, out _, ref context))
+								{
+									done = true;
+								}
+							}
+						}
 					}
-					else
-					{
-						string name = null;
-						if (streamId.StreamNameSize > 0)
-						{
-							streamName = Native.SafeHGlobalHandle.Allocate(streamId.StreamNameSize);
 
-							if (!Native.BackupRead(file, streamName, streamId.StreamNameSize, out bytesRead, false, false, ref context))
-							{
-								done = true;
-							}
-							else
-							{
-								name = Marshal.PtrToStringUni(streamName.DangerousGetHandle(), bytesRead / 2).Substring(1).SubstringUntil(":", true);
-							}
-						}
-
-						if (!name.IsNullOrEmpty())
-						{
-							streams.Add(new AlternateDataStream(name, streamId.Size.ToInt64(), (AlternateDataStreamType)streamId.StreamId, (AlternateDataStreamAttributes)streamId.StreamAttributes));
-						}
-
-						if (streamId.Size.Low != 0 || streamId.Size.High != 0)
-						{
-							if (!done && !Native.BackupSeek(file, streamId.Size.Low, streamId.Size.High, out _, out _, ref context))
-							{
-								done = true;
-							}
-						}
-					}
+					Streams = streams.AsReadOnly();
 				}
-
-				Streams = streams.AsReadOnly();
-			}
-			finally
-			{
-				Native.BackupRead(file, streamName, 0, out _, true, false, ref context);
+				finally
+				{
+					Native.BackupRead(file, streamName, 0, out _, true, false, ref context);
+				}
 			}
 		}
 	}

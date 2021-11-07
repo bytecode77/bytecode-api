@@ -26,12 +26,12 @@ namespace BytecodeApi.Extensions
 		{
 			Check.ArgumentNull(key, nameof(key));
 
-			return key.GetInt32Value(name) switch
+			switch (key.GetInt32Value(name))
 			{
-				0 => false,
-				1 => true,
-				_ => null
-			};
+				case 0: return false;
+				case 1: return true;
+				default: return null;
+			}
 		}
 		/// <summary>
 		/// Retrieves a <see cref="bool" /> value from this <see cref="RegistryKey" /> that is represented as a REG_DWORD value. Returns a default value, if the value does not exist in the registry, is not a REG_DWORD value, or is not equal to 0 or 1.
@@ -264,7 +264,7 @@ namespace BytecodeApi.Extensions
 		{
 			Check.ArgumentNull(key, nameof(key));
 
-			key.SetInt32Value(name, value == null ? null : value.Value ? 1 : 0);
+			key.SetInt32Value(name, value == null ? (int?)null : value.Value ? 1 : 0);
 		}
 		/// <summary>
 		/// Writes a <see cref="int" /> value to this <see cref="RegistryKey" /> that is represented as a REG_DWORD value. If <see langword="null" /> is provided, the value will be deleted.

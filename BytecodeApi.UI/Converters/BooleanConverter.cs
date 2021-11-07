@@ -31,20 +31,20 @@ namespace BytecodeApi.UI.Converters
 		/// </returns>
 		public override object Convert(bool? value)
 		{
-			return Method switch
+			switch (Method)
 			{
-				BooleanConverterMethod.Default => value,
-				BooleanConverterMethod.Inverse => value != true,
-				BooleanConverterMethod.Visibility => (value == true).ToVisibility(),
-				BooleanConverterMethod.VisibilityInverse => (value != true).ToVisibility(),
-				BooleanConverterMethod.VisibilityHidden => (value == true).ToVisibility(true),
-				BooleanConverterMethod.VisibilityHiddenInverse => (value != true).ToVisibility(true),
-				BooleanConverterMethod.GridLengthZeroAuto => value == true ? GridLength.Auto : new GridLength(0),
-				BooleanConverterMethod.GridLengthZeroAutoInverse => value == true ? new GridLength(0) : GridLength.Auto,
-				BooleanConverterMethod.GridLengthZeroStar => value == true ? new GridLength(1, GridUnitType.Star) : new GridLength(0),
-				BooleanConverterMethod.GridLengthZeroStarInverse => value == true ? new GridLength(0) : new GridLength(1, GridUnitType.Star),
-				_ => throw Throw.InvalidEnumArgument(nameof(Method), Method)
-			};
+				case BooleanConverterMethod.Default: return value;
+				case BooleanConverterMethod.Inverse: return value != true;
+				case BooleanConverterMethod.Visibility: return (value == true).ToVisibility();
+				case BooleanConverterMethod.VisibilityInverse: return (value != true).ToVisibility();
+				case BooleanConverterMethod.VisibilityHidden: return (value == true).ToVisibility(true);
+				case BooleanConverterMethod.VisibilityHiddenInverse: return (value != true).ToVisibility(true);
+				case BooleanConverterMethod.GridLengthZeroAuto: return value == true ? GridLength.Auto : new GridLength(0);
+				case BooleanConverterMethod.GridLengthZeroAutoInverse: return value == true ? new GridLength(0) : GridLength.Auto;
+				case BooleanConverterMethod.GridLengthZeroStar: return value == true ? new GridLength(1, GridUnitType.Star) : new GridLength(0);
+				case BooleanConverterMethod.GridLengthZeroStarInverse: return value == true ? new GridLength(0) : new GridLength(1, GridUnitType.Star);
+				default: throw Throw.InvalidEnumArgument(nameof(Method), Method);
+			}
 		}
 	}
 }
