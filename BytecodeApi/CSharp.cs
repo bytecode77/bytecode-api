@@ -616,6 +616,8 @@ namespace BytecodeApi
 		/// </returns>
 		public static TimeSpan MeasureTime(Action action)
 		{
+			Check.ArgumentNull(action, nameof(action));
+
 			Stopwatch stopwatch = ThreadFactory.StartStopwatch();
 			action();
 			stopwatch.Stop();

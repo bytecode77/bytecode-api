@@ -4,12 +4,12 @@ using System;
 namespace BytecodeApi.FileFormats.Csv
 {
 	/// <summary>
-	/// Represents a cell in a <see cref="CsvRow" /> of a flat file database.
+	/// Represents a cell in a <see cref="CsvRow" /> of a CSV file.
 	/// </summary>
 	public struct CsvCell : IEquatable<CsvCell>
 	{
 		/// <summary>
-		/// Gets or sets the cell content of a flat file database.
+		/// Gets or sets the cell content of a CSV file.
 		/// </summary>
 		public string Value { get; private set; }
 		/// <summary>
@@ -39,10 +39,10 @@ namespace BytecodeApi.FileFormats.Csv
 		}
 
 		/// <summary>
-		/// Returns a <see cref="string" /> whose value was parsed from the flat file database.
+		/// Returns a <see cref="string" /> whose value was parsed from the CSV file.
 		/// </summary>
 		/// <returns>
-		/// A <see cref="string" /> whose value was parsed from the flat file database.
+		/// A <see cref="string" /> whose value was parsed from the CSV file.
 		/// </returns>
 		public override string ToString()
 		{
