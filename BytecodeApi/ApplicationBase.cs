@@ -325,38 +325,6 @@ namespace BytecodeApi
 				}
 			}
 			/// <summary>
-			/// Gets a <see cref="bool" /> value indicating whether the workstation is locked.
-			/// </summary>
-			public static bool IsWorkstationLocked
-			{
-				get
-				{
-					IntPtr desktop = IntPtr.Zero;
-
-					try
-					{
-						desktop = Native.OpenInputDesktop(0, false, 256);
-						if (desktop == IntPtr.Zero) desktop = Native.OpenDesktop("Default", 0, false, 256);
-						return desktop != IntPtr.Zero && !Native.SwitchDesktop(desktop);
-					}
-					finally
-					{
-						if (desktop != IntPtr.Zero) Native.CloseDesktop(desktop);
-					}
-				}
-			}
-			/// <summary>
-			/// Gets a <see cref="bool" /> value indicating whether the screensaver is running.
-			/// </summary>
-			public static bool IsScreensaverRunning
-			{
-				get
-				{
-					bool running = false;
-					return Native.SystemParametersInfo(114, 0, ref running, 0) && running;
-				}
-			}
-			/// <summary>
 			/// Gets the screen DPI. A value of 96 corresponds to 100% font scaling.
 			/// </summary>
 			public static System.Drawing.Size Dpi

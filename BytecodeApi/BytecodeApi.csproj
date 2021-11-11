@@ -90,6 +90,8 @@
     <Compile Include="IO\Interop\GlobalAtom.cs" />
     <Compile Include="IO\Interop\CommandPrompt.cs" />
     <Compile Include="IO\Interop\Atom.cs" />
+    <Compile Include="IO\Interop\KeyboardHookEventArgs.cs" />
+    <Compile Include="IO\Interop\KeyboardHookEventHandler.cs" />
     <Compile Include="IO\Interop\IAtom.cs" />
     <Compile Include="IO\Interop\CommandPromptEventArgs.cs" />
     <Compile Include="IO\Interop\DynamicLibraryFunction.cs" />

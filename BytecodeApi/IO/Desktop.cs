@@ -12,6 +12,39 @@ namespace BytecodeApi.IO
 	public static class Desktop
 	{
 		/// <summary>
+		/// Gets a <see cref="bool" /> value indicating whether the workstation is locked.
+		/// </summary>
+		public static bool IsWorkstationLocked
+		{
+			get
+			{
+				IntPtr desktop = IntPtr.Zero;
+
+				try
+				{
+					desktop = Native.OpenInputDesktop(0, false, 256);
+					if (desktop == IntPtr.Zero) desktop = Native.OpenDesktop("Default", 0, false, 256);
+					return desktop != IntPtr.Zero && !Native.SwitchDesktop(desktop);
+				}
+				finally
+				{
+					if (desktop != IntPtr.Zero) Native.CloseDesktop(desktop);
+				}
+			}
+		}
+		/// <summary>
+		/// Gets a <see cref="bool" /> value indicating whether the screensaver is running.
+		/// </summary>
+		public static bool IsScreensaverRunning
+		{
+			get
+			{
+				bool running = false;
+				return Native.SystemParametersInfo(114, 0, ref running, 0) && running;
+			}
+		}
+
+		/// <summary>
 		/// Plays the <see cref="SystemSounds.Beep" /> sound.
 		/// </summary>
 		public static void Beep()
@@ -50,18 +83,18 @@ namespace BytecodeApi.IO
 			return bitmap;
 		}
 		/// <summary>
-		/// Turns on the Windows screensaver using a HWND broadcast message, if a screensaver is configured.
-		/// </summary>
-		public static void TurnOnScreenSaver()
-		{
-			Native.SendMessage((IntPtr)0xffff, 0x112, 0xf140, 0);
-		}
-		/// <summary>
 		/// Locks the workstation.
 		/// </summary>
 		public static void LockWorkstation()
 		{
 			Native.LockWorkStation();
+		}
+		/// <summary>
+		/// Turns on the Windows screensaver using a HWND broadcast message, if a screensaver is configured.
+		/// </summary>
+		public static void TurnOnScreenSaver()
+		{
+			Native.SendMessage((IntPtr)0xffff, 0x112, 0xf140, 0);
 		}
 		/// <summary>
 		/// Changes the Windows wallpaper to an image from the specified file.

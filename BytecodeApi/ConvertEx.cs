@@ -428,6 +428,7 @@ namespace BytecodeApi
 		public static int FromRomanNumber(string value)
 		{
 			Check.ArgumentNull(value, nameof(value));
+			Check.ArgumentEx.StringNotEmpty(value, nameof(value));
 			Check.Format(RomanNumberRegex.IsMatch(value), "String is not a valid roman number.");
 
 			// 1	I
