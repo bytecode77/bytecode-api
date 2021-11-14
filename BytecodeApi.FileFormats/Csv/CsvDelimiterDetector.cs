@@ -27,7 +27,7 @@ namespace BytecodeApi.FileFormats.Csv
 		/// Initializes a new instance of the <see cref="CsvDelimiterDetector" /> class.
 		/// </summary>
 		/// <param name="delimitersToTest">A <see cref="string" />[] specifying the delimiters to test for.</param>
-		/// <param name="minRowsToTest">The minimum amount of rows that the CSV file must have in order to determine a delimiter. If the file has less rows, the delimiter is considered undetectable.</param>
+		/// <param name="minRowsToTest">The minimum amount of rows that the CSV file must have in order to determine a delimiter. If the file has less rows, the delimiter is considered indeterminable.</param>
 		/// <param name="maxRowsToTest">The maximum amount of rows that should be tested. The CSV file can contain less rows, but no less than <paramref name="minRowsToTest" />.</param>
 		public CsvDelimiterDetector(string[] delimitersToTest, int minRowsToTest, int maxRowsToTest)
 		{

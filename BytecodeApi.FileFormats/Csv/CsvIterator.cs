@@ -188,16 +188,19 @@ namespace BytecodeApi.FileFormats.Csv
 			{
 				long lineNumber = 1;
 
-				if (hasHeaderRow)
-				{
-					parser.ReadLine();
-					lineNumber++;
-				}
-
 				foreach (CsvRow row in CsvHelper.EnumerateTextFieldParser(parser, ignoreEmptyLines))
 				{
-					row.LineNumber = lineNumber++;
-					yield return row;
+					if (hasHeaderRow)
+					{
+						hasHeaderRow = false;
+					}
+					else
+					{
+						row.LineNumber = lineNumber;
+						yield return row;
+					}
+
+					lineNumber++;
 				}
 			}
 		}

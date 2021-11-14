@@ -346,6 +346,7 @@ namespace BytecodeApi.FileFormats.Csv
 					}
 					catch (MalformedLineException)
 					{
+						csv.HasErrors = true;
 					}
 
 					lineNumber++;

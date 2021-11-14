@@ -57,6 +57,7 @@ namespace BytecodeApi.FileFormats.Csv
 		/// <summary>
 		/// Gets the one-based line number of this <see cref="CsvRow" /> object, if it was loaded from an existing CSV source. Returns -1, if the row has been manually initialized.
 		/// </summary>
+		//TODO: Bug: Incorrect, if empty lines are in the CSV
 		public long LineNumber { get; internal set; }
 		/// <summary>
 		/// If the line could not be parsed, gets the <see cref="string" /> representing the original line, otherwise returns <see langword="null" />.
