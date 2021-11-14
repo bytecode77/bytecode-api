@@ -209,7 +209,7 @@ namespace BytecodeApi.Extensions
 		{
 			Check.ArgumentNull(process, nameof(process));
 
-			return OptionSet.ParseCommandLine(process.GetCommandLine());
+			return CommandLineParser.GetArguments(process.GetCommandLine());
 		}
 		/// <summary>
 		/// Gets the mandatory integrity level of this <see cref="Process" /> or <see langword="null" />, if this method failed.

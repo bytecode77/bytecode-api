@@ -68,6 +68,7 @@
     <Compile Include="Extensions\DelegateExtensions.cs" />
     <Compile Include="IO\Cli\CliValidationSource.cs" />
     <Compile Include="IO\Cli\CliException.cs" />
+    <Compile Include="IO\Cli\CommandLineParser.cs" />
     <Compile Include="IO\Cli\ParsedOptionSet.cs" />
     <Compile Include="IO\Cli\ParsedOption.cs" />
     <Compile Include="IO\Cli\Option.cs" />
