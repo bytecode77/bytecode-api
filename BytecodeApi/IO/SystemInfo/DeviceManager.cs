@@ -7,6 +7,7 @@ using System.Linq;
 
 namespace BytecodeApi.IO.SystemInfo
 {
+	//FEATURE: DeviceManager: Read icons
 	/// <summary>
 	/// Provides information for devices as shown in the Windows Device Manager.
 	/// </summary>
@@ -51,12 +52,11 @@ namespace BytecodeApi.IO.SystemInfo
 							(
 								group.Key,
 								key.GetStringValue("Class").ToNullIfEmpty(),
-								key.GetStringValue(null).ToNullIfEmpty(),
 								group.OrderBy(device => device.Name).ToArray()
 							);
 						}
 					})
-					.OrderBy(deviceType => deviceType.Name)
+					.OrderBy(deviceType => deviceType.ClassName)
 					.ToArray()
 			);
 		}
