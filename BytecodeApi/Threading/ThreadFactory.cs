@@ -7,7 +7,7 @@ using System.Windows.Threading;
 namespace BytecodeApi.Threading
 {
 	/// <summary>
-	/// Provides support for creating <see cref="Thread" /> and other multithreading related objects.
+	/// Provides support for creating <see cref="Thread" /> and other multi threading related objects.
 	/// </summary>
 	public static class ThreadFactory
 	{
