@@ -18,8 +18,10 @@ namespace BytecodeApi.Cryptography
 		/// </returns>
 		public static byte[] GenerateIV()
 		{
-			using Aes aes = Aes.Create();
-			return aes.IV;
+			using (Aes aes = Aes.Create())
+			{
+				return aes.IV;
+			}
 		}
 		/// <summary>
 		/// Generates a 128-bit or 256-bit key for symmetric algorithms. The result is a <see cref="byte" />[] with a length of 16 or 32.
@@ -30,10 +32,12 @@ namespace BytecodeApi.Cryptography
 		/// </returns>
 		public static byte[] GenerateKey(bool aes256)
 		{
-			using Aes aes = Aes.Create();
-			byte[] key = new byte[aes256 ? 32 : 16];
-			Buffer.BlockCopy(aes.Key, 0, key, 0, key.Length);
-			return key;
+			using (Aes aes = Aes.Create())
+			{
+				byte[] key = new byte[aes256 ? 32 : 16];
+				Buffer.BlockCopy(aes.Key, 0, key, 0, key.Length);
+				return key;
+			}
 		}
 		/// <summary>
 		/// Encrypts the specified <see cref="byte" />[] using the specified IV and key and returns a <see cref="byte" />[] representing the encrypted version of <paramref name="data" />.
@@ -52,19 +56,22 @@ namespace BytecodeApi.Cryptography
 			Check.ArgumentNull(key, nameof(key));
 			Check.Argument(key.Length == 16 || key.Length == 32, nameof(key), "Array must be a 128-bit or 256-bit sized byte array (16 or 32 bytes).");
 
-			using Aes aes = Aes.Create();
-			aes.IV = iv;
-			aes.Key = key;
-
-			using ICryptoTransform encryptor = aes.CreateEncryptor();
-			using MemoryStream memoryStream = new MemoryStream();
-
-			using (CryptoStream cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Write))
+			using (Aes aes = Aes.Create())
 			{
-				cryptoStream.Write(data);
-			}
+				aes.IV = iv;
+				aes.Key = key;
 
-			return memoryStream.ToArray();
+				using (ICryptoTransform encryptor = aes.CreateEncryptor())
+				using (MemoryStream memoryStream = new MemoryStream())
+				{
+					using (CryptoStream cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Write))
+					{
+						cryptoStream.Write(data);
+					}
+
+					return memoryStream.ToArray();
+				}
+			}
 		}
 		/// <summary>
 		/// Decrypts the specified <see cref="byte" />[] using the specified IV and key and returns a <see cref="byte" />[] representing the decrypted version of <paramref name="data" />.
@@ -83,19 +90,22 @@ namespace BytecodeApi.Cryptography
 			Check.ArgumentNull(key, nameof(key));
 			Check.Argument(key.Length == 16 || key.Length == 32, nameof(key), "Array must be a 128-bit or 256-bit sized byte array (16 or 32 bytes).");
 
-			using Aes aes = Aes.Create();
-			aes.IV = iv;
-			aes.Key = key;
-
-			using ICryptoTransform decryptor = aes.CreateDecryptor();
-			using MemoryStream memoryStream = new MemoryStream();
-
-			using (CryptoStream cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Write))
+			using (Aes aes = Aes.Create())
 			{
-				cryptoStream.Write(data);
-			}
+				aes.IV = iv;
+				aes.Key = key;
 
-			return memoryStream.ToArray();
+				using (ICryptoTransform decryptor = aes.CreateDecryptor())
+				using (MemoryStream memoryStream = new MemoryStream())
+				{
+					using (CryptoStream cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Write))
+					{
+						cryptoStream.Write(data);
+					}
+
+					return memoryStream.ToArray();
+				}
+			}
 		}
 	}
 }

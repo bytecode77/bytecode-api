@@ -20,15 +20,15 @@ namespace BytecodeApi.Text
 		/// </summary>
 		public int MaxLength { get; set; }
 		/// <summary>
-		/// Gets or sets a <see cref="float" /> value that specifies the chance of a consonant being inserted twice, where 0.0f means no double consonants and 1.0f means consonants are always inserted twice.
+		/// Gets or sets a <see cref="double" /> value that specifies the chance of a consonant being inserted twice, where 0.0 means no double consonants and 1.0 means consonants are always inserted twice.
 		/// <para>The default value is 0.1f</para>
 		/// </summary>
-		public float DoubleConsonantChance { get; set; }
+		public double DoubleConsonantChance { get; set; }
 		/// <summary>
-		/// Gets or sets a <see cref="float" /> value that specifies the chance of a vovel being inserted twice, where 0.0f means no double vovels and 1.0f means vovels are always inserted twice.
-		/// <para>The default value is 0.1f</para>
+		/// Gets or sets a <see cref="double" /> value that specifies the chance of a vovel being inserted twice, where 0.0 means no double vovels and 1.0 means vovels are always inserted twice.
+		/// <para>The default value is 0.1</para>
 		/// </summary>
-		public float DoubleVovelChance { get; set; }
+		public double DoubleVovelChance { get; set; }
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="WordGenerator" /> class with default values.
@@ -37,8 +37,8 @@ namespace BytecodeApi.Text
 		{
 			MinLength = 3;
 			MaxLength = 10;
-			DoubleConsonantChance = .1f;
-			DoubleVovelChance = .1f;
+			DoubleConsonantChance = .1;
+			DoubleVovelChance = .1;
 		}
 
 		/// <summary>
@@ -77,11 +77,11 @@ namespace BytecodeApi.Text
 				while (word.Length < length)
 				{
 					string charset = consonant ? TextResources.Consonants : TextResources.Vovels;
-					float chance = consonant ? DoubleConsonantChance : DoubleVovelChance;
+					double chance = consonant ? DoubleConsonantChance : DoubleVovelChance;
 					consonant = !consonant;
 
 					char c = MathEx._Random.NextObject(charset.ToCharArray());
-					word += c.Repeat(MathEx._Random.NextSingle() < chance ? 2 : 1);
+					word += c.Repeat(MathEx._Random.NextDouble() < chance ? 2 : 1);
 				}
 			}
 

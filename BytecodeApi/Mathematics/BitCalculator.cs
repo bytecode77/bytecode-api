@@ -113,6 +113,8 @@ namespace BytecodeApi.Mathematics
 		/// </returns>
 		public static bool GetBit(byte[] value, int index)
 		{
+			Check.ArgumentNull(value, nameof(value));
+
 			return index >= 0 && index < value.Length << 3 && (value[index >> 3] & 1 << (index & 7)) > 0;
 		}
 		/// <summary>
@@ -235,6 +237,8 @@ namespace BytecodeApi.Mathematics
 		/// <param name="bit"><see langword="false" /> to set the bit to 0; <see langword="true" /> to set the bit to 1.</param>
 		public static void SetBit(byte[] value, int index, bool bit)
 		{
+			Check.ArgumentNull(value, nameof(value));
+
 			if (index >= 0 && index < value.Length << 3)
 			{
 				if (bit) value[index >> 3] |= (byte)(1 << (index & 7));
@@ -352,10 +356,190 @@ namespace BytecodeApi.Mathematics
 		/// <param name="index">The index of the toggled bit, where 0 is the least significant bit. If <paramref name="index" /> is not in the range of the <see cref="byte" />[], this method returns.</param>
 		public static void ToggleBit(byte[] value, int index)
 		{
+			Check.ArgumentNull(value, nameof(value));
+
 			if (index >= 0 && index < value.Length << 3)
 			{
 				value[index >> 3] ^= (byte)(1 << (index & 7));
 			}
+		}
+		/// <summary>
+		/// Counts the number of bits that are set to 1 in the specified <see cref="byte" /> value.
+		/// </summary>
+		/// <param name="value">The <see cref="byte" /> value to count the bits of.</param>
+		/// <returns>
+		/// The number of set bits in <paramref name="value" />.
+		/// </returns>
+		public static int CountBits(byte value)
+		{
+			int count = 0;
+
+			while (value != 0)
+			{
+				value = (byte)(value & (value - 1));
+				count++;
+			}
+
+			return count;
+		}
+		/// <summary>
+		/// Counts the number of bits that are set to 1 in the specified <see cref="sbyte" /> value.
+		/// </summary>
+		/// <param name="value">The <see cref="sbyte" /> value to count the bits of.</param>
+		/// <returns>
+		/// The number of set bits in <paramref name="value" />.
+		/// </returns>
+		public static int CountBits(sbyte value)
+		{
+			int count = 0;
+
+			while (value != 0)
+			{
+				value = (sbyte)(value & (value - 1));
+				count++;
+			}
+
+			return count;
+		}
+		/// <summary>
+		/// Counts the number of bits that are set to 1 in the specified <see cref="int" /> value.
+		/// </summary>
+		/// <param name="value">The <see cref="int" /> value to count the bits of.</param>
+		/// <returns>
+		/// The number of set bits in <paramref name="value" />.
+		/// </returns>
+		public static int CountBits(int value)
+		{
+			int count = 0;
+
+			while (value != 0)
+			{
+				value &= value - 1;
+				count++;
+			}
+
+			return count;
+		}
+		/// <summary>
+		/// Counts the number of bits that are set to 1 in the specified <see cref="uint" /> value.
+		/// </summary>
+		/// <param name="value">The <see cref="uint" /> value to count the bits of.</param>
+		/// <returns>
+		/// The number of set bits in <paramref name="value" />.
+		/// </returns>
+		public static int CountBits(uint value)
+		{
+			int count = 0;
+
+			while (value != 0)
+			{
+				value &= value - 1;
+				count++;
+			}
+
+			return count;
+		}
+		/// <summary>
+		/// Counts the number of bits that are set to 1 in the specified <see cref="long" /> value.
+		/// </summary>
+		/// <param name="value">The <see cref="long" /> value to count the bits of.</param>
+		/// <returns>
+		/// The number of set bits in <paramref name="value" />.
+		/// </returns>
+		public static int CountBits(long value)
+		{
+			int count = 0;
+
+			while (value != 0)
+			{
+				value &= value - 1;
+				count++;
+			}
+
+			return count;
+		}
+		/// <summary>
+		/// Counts the number of bits that are set to 1 in the specified <see cref="ulong" /> value.
+		/// </summary>
+		/// <param name="value">The <see cref="ulong" /> value to count the bits of.</param>
+		/// <returns>
+		/// The number of set bits in <paramref name="value" />.
+		/// </returns>
+		public static int CountBits(ulong value)
+		{
+			int count = 0;
+
+			while (value != 0)
+			{
+				value &= value - 1;
+				count++;
+			}
+
+			return count;
+		}
+		/// <summary>
+		/// Counts the number of bits that are set to 1 in the specified <see cref="short" /> value.
+		/// </summary>
+		/// <param name="value">The <see cref="short" /> value to count the bits of.</param>
+		/// <returns>
+		/// The number of set bits in <paramref name="value" />.
+		/// </returns>
+		public static int CountBits(short value)
+		{
+			int count = 0;
+
+			while (value != 0)
+			{
+				value = (short)(value & (value - 1));
+				count++;
+			}
+
+			return count;
+		}
+		/// <summary>
+		/// Counts the number of bits that are set to 1 in the specified <see cref="ushort" /> value.
+		/// </summary>
+		/// <param name="value">The <see cref="ushort" /> value to count the bits of.</param>
+		/// <returns>
+		/// The number of set bits in <paramref name="value" />.
+		/// </returns>
+		public static int CountBits(ushort value)
+		{
+			int count = 0;
+
+			while (value != 0)
+			{
+				value = (ushort)(value & (value - 1));
+				count++;
+			}
+
+			return count;
+		}
+		/// <summary>
+		/// Iterates the specified <see cref="byte" />[], counts the number of bits that are set to 1 in each <see cref="byte" /> and returns the sum of set bits for the entire array.
+		/// </summary>
+		/// <param name="value">The <see cref="byte" />[] to count the bits of.</param>
+		/// <returns>
+		/// The sum of set bits in all bytes of <paramref name="value" />.
+		/// </returns>
+		public static int CountBits(byte[] value)
+		{
+			Check.ArgumentNull(value, nameof(value));
+
+			int count = 0;
+
+			foreach (byte b in value)
+			{
+				byte current = b;
+
+				while (current != 0)
+				{
+					current = (byte)(current & (current - 1));
+					count++;
+				}
+			}
+
+			return count;
 		}
 		/// <summary>
 		/// Converts the specified <see cref="byte" /> value to a <see cref="BitArray" />.

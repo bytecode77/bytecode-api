@@ -1,9 +1,6 @@
-﻿using BytecodeApi.Extensions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -97,12 +94,18 @@ namespace BytecodeApi.UI.Extensions
 
 			if (dependencyObject is Visual)
 			{
-				DependencyObject parent = treeType switch
+				DependencyObject parent;
+				switch (treeType)
 				{
-					UITreeType.Logical => LogicalTreeHelper.GetParent(dependencyObject),
-					UITreeType.Visual => VisualTreeHelper.GetParent(dependencyObject),
-					_ => throw Throw.InvalidEnumArgument(nameof(treeType), treeType)
-				};
+					case UITreeType.Logical:
+						parent = LogicalTreeHelper.GetParent(dependencyObject);
+						break;
+					case UITreeType.Visual:
+						parent = VisualTreeHelper.GetParent(dependencyObject);
+						break;
+					default:
+						throw Throw.InvalidEnumArgument(nameof(treeType), treeType);
+				}
 
 				return parent is T visualParent && predicate?.Invoke(visualParent) != false ? visualParent : parent?.FindParent<T>(treeType, predicate);
 			}
@@ -139,12 +142,19 @@ namespace BytecodeApi.UI.Extensions
 			Check.ArgumentNull(dependencyObject, nameof(dependencyObject));
 
 			List<T> result = new List<T>();
-			IEnumerable<DependencyObject> children = treeType switch
+
+			IEnumerable<DependencyObject> children;
+			switch (treeType)
 			{
-				UITreeType.Logical => children = LogicalTreeHelper.GetChildren(dependencyObject).OfType<DependencyObject>(),
-				UITreeType.Visual => children = Create.Enumerable(VisualTreeHelper.GetChildrenCount(dependencyObject), i => VisualTreeHelper.GetChild(dependencyObject, i)),
-				_ => throw Throw.InvalidEnumArgument(nameof(treeType), treeType)
-			};
+				case UITreeType.Logical:
+					children = LogicalTreeHelper.GetChildren(dependencyObject).OfType<DependencyObject>();
+					break;
+				case UITreeType.Visual:
+					children = Create.Enumerable(VisualTreeHelper.GetChildrenCount(dependencyObject), i => VisualTreeHelper.GetChild(dependencyObject, i));
+					break;
+				default:
+					throw Throw.InvalidEnumArgument(nameof(treeType), treeType);
+			}
 
 			foreach (DependencyObject child in children)
 			{
@@ -169,12 +179,18 @@ namespace BytecodeApi.UI.Extensions
 			Check.ArgumentNull(dependencyObject, nameof(dependencyObject));
 			Check.ArgumentNull(predicate, nameof(predicate));
 
-			IEnumerable<DependencyObject> children = treeType switch
+			IEnumerable<DependencyObject> children;
+			switch (treeType)
 			{
-				UITreeType.Logical => LogicalTreeHelper.GetChildren(dependencyObject).OfType<DependencyObject>(),
-				UITreeType.Visual => Create.Enumerable(VisualTreeHelper.GetChildrenCount(dependencyObject), i => VisualTreeHelper.GetChild(dependencyObject, i)),
-				_ => throw Throw.InvalidEnumArgument(nameof(treeType), treeType)
-			};
+				case UITreeType.Logical:
+					children = LogicalTreeHelper.GetChildren(dependencyObject).OfType<DependencyObject>();
+					break;
+				case UITreeType.Visual:
+					children = Create.Enumerable(VisualTreeHelper.GetChildrenCount(dependencyObject), i => VisualTreeHelper.GetChild(dependencyObject, i));
+					break;
+				default:
+					throw Throw.InvalidEnumArgument(nameof(treeType), treeType);
+			}
 
 			foreach (DependencyObject child in children)
 			{
@@ -210,33 +226,6 @@ namespace BytecodeApi.UI.Extensions
 			Check.ArgumentNull(dependencyObject, nameof(dependencyObject));
 
 			return !Validation.GetHasError(dependencyObject) && (!validateChildren || dependencyObject.FindChildren<DependencyObject>(UITreeType.Logical).All(Validate));
-		}
-		internal static DependencyProperty GetDependencyProperty<T>(this DependencyObject dependencyObject, Expression<Func<T>> dependencyProperty)
-		{
-			string propertyName = dependencyProperty.GetMemberName() + "Property";
-
-			Type type = dependencyObject.GetType();
-			FieldInfo field = type.GetField(propertyName);
-
-			while (field == null && type != typeof(DependencyObject))
-			{
-				type = type.BaseType;
-				field = type.GetField(propertyName);
-			}
-
-			if (field == null)
-			{
-				throw CreateNotFoundException();
-			}
-			else
-			{
-				return field.GetValue(dependencyObject) is DependencyProperty property ? property : throw CreateNotFoundException();
-			}
-
-			Exception CreateNotFoundException()
-			{
-				return Throw.InvalidOperation("DependencyProperty '" + propertyName + "' not found.");
-			}
 		}
 	}
 }

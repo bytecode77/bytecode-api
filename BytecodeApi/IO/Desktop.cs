@@ -6,12 +6,44 @@ using System.Windows;
 
 namespace BytecodeApi.IO
 {
-	//FEATURE: CaptureWindow(IntPtr handle)
 	/// <summary>
 	/// Provides a set of <see langword="static" /> methods for Windows desktop interaction.
 	/// </summary>
 	public static class Desktop
 	{
+		/// <summary>
+		/// Gets a <see cref="bool" /> value indicating whether the workstation is locked.
+		/// </summary>
+		public static bool IsWorkstationLocked
+		{
+			get
+			{
+				IntPtr desktop = IntPtr.Zero;
+
+				try
+				{
+					desktop = Native.OpenInputDesktop(0, false, 256);
+					if (desktop == IntPtr.Zero) desktop = Native.OpenDesktop("Default", 0, false, 256);
+					return desktop != IntPtr.Zero && !Native.SwitchDesktop(desktop);
+				}
+				finally
+				{
+					if (desktop != IntPtr.Zero) Native.CloseDesktop(desktop);
+				}
+			}
+		}
+		/// <summary>
+		/// Gets a <see cref="bool" /> value indicating whether the screensaver is running.
+		/// </summary>
+		public static bool IsScreensaverRunning
+		{
+			get
+			{
+				bool running = false;
+				return Native.SystemParametersInfo(114, 0, ref running, 0) && running;
+			}
+		}
+
 		/// <summary>
 		/// Plays the <see cref="SystemSounds.Beep" /> sound.
 		/// </summary>
@@ -36,16 +68,26 @@ namespace BytecodeApi.IO
 		/// </returns>
 		public static Bitmap CaptureScreen(bool allScreens)
 		{
-			SizeF dpi = ApplicationBase.Session.DesktopDpi;
-			int left = (int)(SystemParameters.VirtualScreenLeft * dpi.Width / 96);
-			int top = (int)(SystemParameters.VirtualScreenTop * dpi.Height / 96);
+			System.Drawing.Size dpi = ApplicationBase.Session.Dpi;
+			int left = allScreens ? (int)(SystemParameters.VirtualScreenLeft * dpi.Width / 96) : 0;
+			int top = allScreens ? (int)(SystemParameters.VirtualScreenTop * dpi.Height / 96) : 0;
 			int width = (int)((allScreens ? SystemParameters.VirtualScreenWidth : SystemParameters.PrimaryScreenWidth) * dpi.Width / 96);
 			int height = (int)((allScreens ? SystemParameters.VirtualScreenHeight : SystemParameters.PrimaryScreenHeight) * dpi.Height / 96);
 
 			Bitmap bitmap = new Bitmap(width, height, PixelFormat.Format32bppArgb);
-			using Graphics graphics = Graphics.FromImage(bitmap);
-			graphics.CopyFromScreen(left, top, 0, 0, bitmap.Size);
+			using (Graphics graphics = Graphics.FromImage(bitmap))
+			{
+				graphics.CopyFromScreen(left, top, 0, 0, bitmap.Size);
+			}
+
 			return bitmap;
+		}
+		/// <summary>
+		/// Locks the workstation.
+		/// </summary>
+		public static void LockWorkstation()
+		{
+			Native.LockWorkStation();
 		}
 		/// <summary>
 		/// Turns on the Windows screensaver using a HWND broadcast message, if a screensaver is configured.
@@ -70,7 +112,7 @@ namespace BytecodeApi.IO
 			return Native.SystemParametersInfo(20, 0, path, 1) == 1;
 		}
 		/// <summary>
-		/// Refreshes the system tray area and removes icons processes that no longer run.
+		/// Refreshes the system tray area and removes icons of processes that no longer run.
 		/// </summary>
 		public static void RefreshSystemTray()
 		{

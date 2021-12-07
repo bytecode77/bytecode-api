@@ -30,7 +30,7 @@ namespace BytecodeApi.Extensions
 		/// </returns>
 		public static TimeSpan? ToNullIfDefault(this TimeSpan timeSpan)
 		{
-			return timeSpan == default ? (TimeSpan?)null : timeSpan;
+			return timeSpan == default ? null : (TimeSpan?)timeSpan;
 		}
 		/// <summary>
 		/// Returns a new <see cref="TimeSpan" /> object whose value is the sum of this <see cref="TimeSpan" /> and the specified days.

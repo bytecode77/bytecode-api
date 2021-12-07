@@ -23,6 +23,26 @@ namespace BytecodeApi.IO
 		public static bool HasConsole => Native.GetConsoleWindow() != IntPtr.Zero;
 
 		/// <summary>
+		/// Determines whether a <see cref="Process" /> with the specified process ID is running.
+		/// </summary>
+		/// <param name="processId">The process ID to check.</param>
+		/// <returns>
+		/// <see langword="true" />, if the process is running;
+		/// otherwise, <see langword="false" />.
+		/// </returns>
+		public static bool IsRunning(int processId)
+		{
+			try
+			{
+				Process.GetProcessById(processId);
+				return true;
+			}
+			catch
+			{
+				return false;
+			}
+		}
+		/// <summary>
 		/// Creates a new <see cref="Process" /> component for each process resource with the SessionId of the current <see cref="Process" /> on the local computer.
 		/// </summary>
 		/// <returns>
@@ -87,6 +107,7 @@ namespace BytecodeApi.IO
 						int tokenInfo = Marshal.SizeOf(mandatoryTokenLabel);
 						tokenInfoPtr = Marshal.AllocHGlobal(tokenInfo);
 						Marshal.StructureToPtr(mandatoryTokenLabel, tokenInfoPtr, false);
+
 						if (Native.SetTokenInformation(newToken, 25, tokenInfoPtr, tokenInfo + Native.GetLengthSid(integritySid)))
 						{
 							startupInfo.StructSize = Marshal.SizeOf(startupInfo);
@@ -147,6 +168,7 @@ namespace BytecodeApi.IO
 				return file.IsInvalid ? null : new FileStream(file, fileAccess);
 			}
 		}
+
 		/// <summary>
 		/// Creates a <see cref="Process" />, waits for the process to exit and returns its exit code.
 		/// </summary>
@@ -333,7 +355,6 @@ namespace BytecodeApi.IO
 		/// <param name="args">A <see cref="string" />[] representing the arguments that is passed to the main entry point, if the Main method has a <see cref="string" />[] parameter.</param>
 		public static void ExecuteDotNetAssembly(byte[] executable, params string[] args)
 		{
-
 			ExecuteDotNetAssembly(executable, args, false);
 		}
 		/// <summary>

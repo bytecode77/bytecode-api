@@ -10,16 +10,20 @@ namespace BytecodeApi.UI.Data
 	/// </summary>
 	public sealed class KeyboardShortcut : ObservableObject, IEquatable<KeyboardShortcut>
 	{
+		private bool _IsCtrl;
+		private bool _IsShift;
+		private bool _IsAlt;
+		private Key _Key;
 		/// <summary>
 		/// Gets or sets a value indicating whether this <see cref="KeyboardShortcut" /> uses the Ctrl modifier.
 		/// </summary>
 		public bool IsCtrl
 		{
-			get => Get(() => IsCtrl);
+			get => _IsCtrl;
 			set
 			{
-				Set(() => IsCtrl, value);
-				RaisePropertyChanged(() => DisplayName);
+				Set(ref _IsCtrl, value);
+				RaisePropertyChanged(nameof(DisplayName));
 			}
 		}
 		/// <summary>
@@ -27,11 +31,11 @@ namespace BytecodeApi.UI.Data
 		/// </summary>
 		public bool IsShift
 		{
-			get => Get(() => IsShift);
+			get => _IsShift;
 			set
 			{
-				Set(() => IsShift, value);
-				RaisePropertyChanged(() => DisplayName);
+				Set(ref _IsShift, value);
+				RaisePropertyChanged(nameof(DisplayName));
 			}
 		}
 		/// <summary>
@@ -39,11 +43,11 @@ namespace BytecodeApi.UI.Data
 		/// </summary>
 		public bool IsAlt
 		{
-			get => Get(() => IsAlt);
+			get => _IsAlt;
 			set
 			{
-				Set(() => IsAlt, value);
-				RaisePropertyChanged(() => DisplayName);
+				Set(ref _IsAlt, value);
+				RaisePropertyChanged(nameof(DisplayName));
 			}
 		}
 		/// <summary>
@@ -51,12 +55,12 @@ namespace BytecodeApi.UI.Data
 		/// </summary>
 		public Key Key
 		{
-			get => Get(() => Key, () => Key.None);
+			get => _Key;
 			set
 			{
-				Set(() => Key, value);
-				RaisePropertyChanged(() => KeyName);
-				RaisePropertyChanged(() => DisplayName);
+				Set(ref _Key, value);
+				RaisePropertyChanged(nameof(KeyName));
+				RaisePropertyChanged(nameof(DisplayName));
 			}
 		}
 		/// <summary>

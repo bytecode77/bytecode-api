@@ -55,9 +55,6 @@
       <SelectedProject>BytecodeApi.Cryptography</SelectedProject>
       <SelectedProject>BytecodeApi.FileFormats</SelectedProject>
       <SelectedProject>BytecodeApi.FileIcons</SelectedProject>
-      <SelectedProject>BytecodeApi.GeoIP</SelectedProject>
-      <SelectedProject>BytecodeApi.GeoIP.ASN</SelectedProject>
-      <SelectedProject>BytecodeApi.GeoIP.City</SelectedProject>
       <SelectedProject>BytecodeApi.UI</SelectedProject>
     </SelectedProjects>
   </HelpConfiguration>

@@ -40,7 +40,7 @@ namespace BytecodeApi.Extensions
 		/// </returns>
 		public static decimal? ToNullIfDefault(this decimal value)
 		{
-			return value == default ? (decimal?)null : value;
+			return value == default ? null : (decimal?)value;
 		}
 	}
 }

@@ -18,9 +18,9 @@ namespace BytecodeApi.Cryptography
 		/// <returns>
 		/// A <see cref="byte" />[] representing the fixed-length binary of the hash of the <paramref name="data" /> parameter.
 		/// </returns>
-		public static byte[] ComputeRaw(string data, HashType type)
+		public static byte[] ComputeBytes(string data, HashType type)
 		{
-			return ComputeRaw(data, type, 1);
+			return ComputeBytes(data, type, 1);
 		}
 		/// <summary>
 		/// Computes the hash value for the specified <see cref="string" /> using the specified <see cref="HashType" /> and repeats computation a specified number of times. The <see cref="string" /> is converted using the <see cref="Encoding.UTF8" /> encoding.
@@ -31,9 +31,9 @@ namespace BytecodeApi.Cryptography
 		/// <returns>
 		/// A <see cref="byte" />[] representing the fixed-length binary of the hash of the <paramref name="data" /> parameter.
 		/// </returns>
-		public static byte[] ComputeRaw(string data, HashType type, int passes)
+		public static byte[] ComputeBytes(string data, HashType type, int passes)
 		{
-			return ComputeRaw(data?.ToUTF8Bytes(), type, passes);
+			return ComputeBytes(data?.ToUTF8Bytes(), type, passes);
 		}
 		/// <summary>
 		/// Computes the hash value for the specified <see cref="byte" />[] using the specified <see cref="HashType" />.
@@ -43,9 +43,9 @@ namespace BytecodeApi.Cryptography
 		/// <returns>
 		/// A <see cref="byte" />[] representing the fixed-length binary of the hash of the <paramref name="data" /> parameter.
 		/// </returns>
-		public static byte[] ComputeRaw(byte[] data, HashType type)
+		public static byte[] ComputeBytes(byte[] data, HashType type)
 		{
-			return ComputeRaw(data, type, 1);
+			return ComputeBytes(data, type, 1);
 		}
 		/// <summary>
 		/// Computes the hash value for the specified <see cref="byte" />[] using the specified <see cref="HashType" /> and repeats computation a specified number of times.
@@ -56,29 +56,30 @@ namespace BytecodeApi.Cryptography
 		/// <returns>
 		/// A <see cref="byte" />[] representing the fixed-length binary of the hash of the <paramref name="data" /> parameter.
 		/// </returns>
-		public static byte[] ComputeRaw(byte[] data, HashType type, int passes)
+		public static byte[] ComputeBytes(byte[] data, HashType type, int passes)
 		{
 			Check.ArgumentNull(data, nameof(data));
 			Check.ArgumentOutOfRangeEx.Greater0(passes, nameof(passes));
 
 			if (type == HashType.Adler32)
 			{
-				Repeat(ref data, HashAlgorithms.ComputeAdler32);
+				Repeat(ref data, HashAlgorithms.Adler32);
 			}
 			else if (type == HashType.CRC32)
 			{
-				Repeat(ref data, HashAlgorithms.ComputeCrc32);
+				Repeat(ref data, HashAlgorithms.Crc32);
 			}
 			else if (type == HashType.CRC64)
 			{
-				Repeat(ref data, HashAlgorithms.ComputeCrc64);
+				Repeat(ref data, HashAlgorithms.Crc64);
 			}
 			else
 			{
-				using HashAlgorithm hash = HashAlgorithm.Create(type.ToString());
-
-				if (hash == null) throw Throw.InvalidEnumArgument(nameof(type), type);
-				else Repeat(ref data, hash.ComputeHash);
+				using (HashAlgorithm hash = HashAlgorithm.Create(type.ToString()))
+				{
+					if (hash == null) throw Throw.InvalidEnumArgument(nameof(type), type);
+					else Repeat(ref data, hash.ComputeHash);
+				}
 			}
 
 			return data;
@@ -114,7 +115,7 @@ namespace BytecodeApi.Cryptography
 			Check.ArgumentNull(data, nameof(data));
 			Check.ArgumentOutOfRangeEx.Greater0(passes, nameof(passes));
 
-			return ComputeRaw(data?.ToUTF8Bytes(), type, passes).ToHexadecimalString();
+			return ComputeBytes(data?.ToUTF8Bytes(), type, passes).ToHexadecimalString();
 		}
 		/// <summary>
 		/// Computes the hash value for the specified <see cref="byte" />[] using the specified <see cref="HashType" />. The result is the lowercase hexadecimal hash representation of the <paramref name="data" /> parameter.
@@ -142,7 +143,7 @@ namespace BytecodeApi.Cryptography
 			Check.ArgumentNull(data, nameof(data));
 			Check.ArgumentOutOfRangeEx.Greater0(passes, nameof(passes));
 
-			return ComputeRaw(data, type, passes).ToHexadecimalString();
+			return ComputeBytes(data, type, passes).ToHexadecimalString();
 		}
 	}
 }

@@ -92,6 +92,7 @@ namespace BytecodeApi.IO.Http
 					currentBoundary = boundaryBytes;
 				}
 			}
+
 			if (Files.Any())
 			{
 				foreach (HttpFile file in Files)
@@ -123,6 +124,7 @@ namespace BytecodeApi.IO.Http
 						stream.Write((contentDisposition + value.Key + contentDispositionSeparatorValue + value.Value).ToUTF8Bytes());
 					}
 				}
+
 				if (Files.Any())
 				{
 					foreach (HttpFile file in Files)

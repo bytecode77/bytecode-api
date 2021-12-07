@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 
-[assembly: AssemblyVersion("1.4.5")]
-[assembly: AssemblyFileVersion("1.4.5")]
+[assembly: AssemblyVersion("2.0.0")]
+[assembly: AssemblyFileVersion("2.0.0")]
 [assembly: AssemblyCompany("bytecode77")]
 [assembly: AssemblyCopyright("© bytecode77, 2021.")]
 

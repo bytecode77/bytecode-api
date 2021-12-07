@@ -48,7 +48,6 @@ namespace BytecodeApi.Extensions
 		{
 			Check.ArgumentNull(member, nameof(member));
 
-			//IMPORTANT: Omit "obj" parameter; get automatically
 			MemberInfo memberInfo = (member.Body as MemberExpression)?.Member;
 
 			if (memberInfo is PropertyInfo property) property.SetValue(obj, value);

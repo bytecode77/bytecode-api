@@ -12,6 +12,21 @@ namespace BytecodeApi.Extensions
 	public static class RegistryExtensions
 	{
 		/// <summary>
+		/// The conversion function that converts a <see cref="string" /> to a <see cref="DateTime" />? object. The default format is "yyyy-MM-dd HH:mm:ss".
+		/// </summary>
+		public static Func<string, DateTime?> StringToDateTimeConverter { get; set; }
+		/// <summary>
+		/// The conversion function that converts a <see cref="DateTime" />? to a <see cref="string" /> object. The default format is "yyyy-MM-dd HH:mm:ss".
+		/// </summary>
+		public static Func<DateTime?, string> DateTimeToStringConverter { get; set; }
+
+		static RegistryExtensions()
+		{
+			StringToDateTimeConverter = str => str.ToDateTime("yyyy-MM-dd HH:mm:ss");
+			DateTimeToStringConverter = dateTime => dateTime?.ToStringInvariant("yyyy-MM-dd HH:mm:ss");
+		}
+
+		/// <summary>
 		/// Retrieves a <see cref="bool" /> value from this <see cref="RegistryKey" /> that is represented as a REG_DWORD value. Returns <see langword="null" />, if the value does not exist in the registry, is not a REG_DWORD value, or is not equal to 0 or 1.
 		/// </summary>
 		/// <param name="key">The <see cref="RegistryKey" /> to read the value from.</param>
@@ -25,12 +40,12 @@ namespace BytecodeApi.Extensions
 		{
 			Check.ArgumentNull(key, nameof(key));
 
-			return key.GetInt32Value(name) switch
+			switch (key.GetInt32Value(name))
 			{
-				0 => false,
-				1 => true,
-				_ => (bool?)null
-			};
+				case 0: return false;
+				case 1: return true;
+				default: return null;
+			}
 		}
 		/// <summary>
 		/// Retrieves a <see cref="bool" /> value from this <see cref="RegistryKey" /> that is represented as a REG_DWORD value. Returns a default value, if the value does not exist in the registry, is not a REG_DWORD value, or is not equal to 0 or 1.
@@ -135,7 +150,8 @@ namespace BytecodeApi.Extensions
 			return key.GetStringValue(name) ?? defaultValue;
 		}
 		/// <summary>
-		/// Retrieves a <see cref="DateTime" /> value from this <see cref="RegistryKey" /> that is represented as a REG_SZ value with the format "yyyy-MM-dd HH:mm:ss". Returns <see langword="null" />, if the value does not exist in the registry, is not a REG_SZ value, or does not match the format.
+		/// Retrieves a <see cref="DateTime" /> value from this <see cref="RegistryKey" /> that is represented as a REG_SZ value. Returns <see langword="null" />, if the value does not exist in the registry, is not a REG_SZ value, or does not match the format.
+		/// <para><see cref="StringToDateTimeConverter" /> is used to convert the REG_SZ value.</para>
 		/// </summary>
 		/// <param name="key">The <see cref="RegistryKey" /> to read the value from.</param>
 		/// <param name="name">A <see cref="string" /> value specifying the name of the value to read.</param>
@@ -146,11 +162,13 @@ namespace BytecodeApi.Extensions
 		public static DateTime? GetDateTimeValue(this RegistryKey key, string name)
 		{
 			Check.ArgumentNull(key, nameof(key));
+			Check.ArgumentNull(StringToDateTimeConverter, nameof(StringToDateTimeConverter));
 
-			return key.GetStringValue(name).ToDateTime("yyyy-MM-dd HH:mm:ss");
+			return StringToDateTimeConverter(key.GetStringValue(name));
 		}
 		/// <summary>
-		/// Retrieves a <see cref="DateTime" /> value from this <see cref="RegistryKey" /> that is represented as a REG_SZ value with the format "yyyy-MM-dd HH:mm:ss". Returns a default value, if the value does not exist in the registry, is not a REG_SZ value, or does not match the format.
+		/// Retrieves a <see cref="DateTime" /> value from this <see cref="RegistryKey" /> that is represented as a REG_SZ value. Returns a default value, if the value does not exist in the registry, is not a REG_SZ value, or does not match the format.
+		/// <para><see cref="StringToDateTimeConverter" /> is used to convert the REG_SZ value.</para>
 		/// </summary>
 		/// <param name="key">The <see cref="RegistryKey" /> to read the value from.</param>
 		/// <param name="name">A <see cref="string" /> value specifying the name of the value to read.</param>
@@ -258,7 +276,7 @@ namespace BytecodeApi.Extensions
 		/// </summary>
 		/// <param name="key">The <see cref="RegistryKey" /> to write the value to.</param>
 		/// <param name="name">A <see cref="string" /> value specifying the name of the value to write to.</param>
-		/// <param name="value">The <see cref="bool" /> value to be written to. If <see langword="null" /> is provided, the value will be deleted.</param>
+		/// <param name="value">The <see cref="bool" /> value to be written. If <see langword="null" /> is provided, the value will be deleted.</param>
 		public static void SetBooleanValue(this RegistryKey key, string name, bool? value)
 		{
 			Check.ArgumentNull(key, nameof(key));
@@ -270,7 +288,7 @@ namespace BytecodeApi.Extensions
 		/// </summary>
 		/// <param name="key">The <see cref="RegistryKey" /> to write the value to.</param>
 		/// <param name="name">A <see cref="string" /> value specifying the name of the value to write to.</param>
-		/// <param name="value">The <see cref="int" /> value to be written to. If <see langword="null" /> is provided, the value will be deleted.</param>
+		/// <param name="value">The <see cref="int" /> value to be written. If <see langword="null" /> is provided, the value will be deleted.</param>
 		public static void SetInt32Value(this RegistryKey key, string name, int? value)
 		{
 			Check.ArgumentNull(key, nameof(key));
@@ -283,7 +301,7 @@ namespace BytecodeApi.Extensions
 		/// </summary>
 		/// <param name="key">The <see cref="RegistryKey" /> to write the value to.</param>
 		/// <param name="name">A <see cref="string" /> value specifying the name of the value to write to.</param>
-		/// <param name="value">The <see cref="long" /> value to be written to. If <see langword="null" /> is provided, the value will be deleted.</param>
+		/// <param name="value">The <see cref="long" /> value to be written. If <see langword="null" /> is provided, the value will be deleted.</param>
 		public static void SetInt64Value(this RegistryKey key, string name, long? value)
 		{
 			Check.ArgumentNull(key, nameof(key));
@@ -296,7 +314,7 @@ namespace BytecodeApi.Extensions
 		/// </summary>
 		/// <param name="key">The <see cref="RegistryKey" /> to write the value to.</param>
 		/// <param name="name">A <see cref="string" /> value specifying the name of the value to write to.</param>
-		/// <param name="value">The <see cref="string" /> value to be written to. If <see langword="null" /> is provided, the value will be deleted.</param>
+		/// <param name="value">The <see cref="string" /> value to be written. If <see langword="null" /> is provided, the value will be deleted.</param>
 		public static void SetStringValue(this RegistryKey key, string name, string value)
 		{
 			Check.ArgumentNull(key, nameof(key));
@@ -305,16 +323,31 @@ namespace BytecodeApi.Extensions
 			else key.SetValue(name, value, RegistryValueKind.String);
 		}
 		/// <summary>
-		/// Writes a <see cref="DateTime" /> value to this <see cref="RegistryKey" /> that is represented as a REG_SZ value with the format "yyyy-MM-dd HH:mm:ss". If <see langword="null" /> is provided, the value will be deleted.
+		/// Writes a <see cref="DateTime" /> value to this <see cref="RegistryKey" /> that is represented as a REG_SZ value. If <see langword="null" /> is provided, the value will be deleted.
+		/// <para><see cref="DateTimeToStringConverter" /> is used to convert <paramref name="value" /> to a REG_SZ value.</para>
 		/// </summary>
 		/// <param name="key">The <see cref="RegistryKey" /> to write the value to.</param>
 		/// <param name="name">A <see cref="string" /> value specifying the name of the value to write to.</param>
-		/// <param name="value">The <see cref="DateTime" /> value to be written in the format "yyyy-MM-dd HH:mm:ss". If <see langword="null" /> is provided, the value will be deleted.</param>
+		/// <param name="value">The <see cref="DateTime" /> value to be written. If <see langword="null" /> is provided, the value will be deleted.</param>
 		public static void SetDateTimeValue(this RegistryKey key, string name, DateTime? value)
 		{
 			Check.ArgumentNull(key, nameof(key));
+			Check.ArgumentNull(DateTimeToStringConverter, nameof(DateTimeToStringConverter));
 
-			key.SetStringValue(name, value?.ToStringInvariant("yyyy-MM-dd HH:mm:ss"));
+			key.SetStringValue(name, DateTimeToStringConverter(value));
+		}
+		/// <summary>
+		/// Writes an <see cref="Enum" /> value to this <see cref="RegistryKey" /> that is represented as a REG_dword value.
+		/// </summary>
+		/// <typeparam name="T">The type of the <see cref="Enum" /> to write.</typeparam>
+		/// <param name="key">The <see cref="RegistryKey" /> to write the value to.</param>
+		/// <param name="name">A <see cref="string" /> value specifying the name of the value to write to.</param>
+		/// <param name="value">The <see cref="Enum" /> value to be written.</param>
+		public static void SetEnumValue<T>(this RegistryKey key, string name, T value) where T : struct, Enum
+		{
+			Check.ArgumentNull(key, nameof(key));
+
+			key.SetInt32Value(name, Convert.ToInt32(value));
 		}
 		/// <summary>
 		/// Writes an <see cref="Enum" /> value to this <see cref="RegistryKey" /> that is represented as a REG_dword value. If <see langword="null" /> is provided, the value will be deleted.
@@ -335,7 +368,7 @@ namespace BytecodeApi.Extensions
 		/// </summary>
 		/// <param name="key">The <see cref="RegistryKey" /> to write the value to.</param>
 		/// <param name="name">A <see cref="string" /> value specifying the name of the value to write to.</param>
-		/// <param name="value">The <see cref="byte" />[] value to be written to. If <see langword="null" /> is provided, the value will be deleted.</param>
+		/// <param name="value">The <see cref="byte" />[] value to be written. If <see langword="null" /> is provided, the value will be deleted.</param>
 		public static void SetByteArrayValue(this RegistryKey key, string name, byte[] value)
 		{
 			Check.ArgumentNull(key, nameof(key));
@@ -348,7 +381,7 @@ namespace BytecodeApi.Extensions
 		/// </summary>
 		/// <param name="key">The <see cref="RegistryKey" /> to write the value to.</param>
 		/// <param name="name">A <see cref="string" /> value specifying the name of the value to write to.</param>
-		/// <param name="value">The <see cref="string" />[] value to be written to. If <see langword="null" /> is provided, the value will be deleted.</param>
+		/// <param name="value">The <see cref="string" />[] value to be written. If <see langword="null" /> is provided, the value will be deleted.</param>
 		public static void SetStringArrayValue(this RegistryKey key, string name, string[] value)
 		{
 			Check.ArgumentNull(key, nameof(key));
@@ -377,7 +410,13 @@ namespace BytecodeApi.Extensions
 				regeditAppletKey.SetStringValue("LastKey", key.Name);
 			}
 
-			CSharp.Try(() => Process.Start("regedit"));
+			try
+			{
+				Process.Start("regedit");
+			}
+			catch
+			{
+			}
 		}
 	}
 }

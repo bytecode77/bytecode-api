@@ -1,8 +1,8 @@
 ﻿using BytecodeApi.IO;
 using BytecodeApi.IO.Cli;
-using BytecodeApi.IO.Wmi;
 using System;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
@@ -54,8 +54,10 @@ namespace BytecodeApi.Extensions
 		{
 			Check.ArgumentNull(process, nameof(process));
 
-			using WindowsIdentity windowsIdentity = process.GetUser();
-			return windowsIdentity?.Name;
+			using (WindowsIdentity windowsIdentity = process.GetUser())
+			{
+				return windowsIdentity?.Name;
+			}
 		}
 		/// <summary>
 		/// Returns a <see cref="string" /> that represents the user running this <see cref="Process" />. This <see cref="string" /> contains only the user, excluding machine or domain name.
@@ -86,23 +88,25 @@ namespace BytecodeApi.Extensions
 					Size = (uint)Marshal.SizeOf<Native.ProcessEntry>()
 				};
 
-				using Native.SafeSnapshotHandle snapshot = Native.CreateToolhelp32Snapshot(2, (uint)process.Id);
-				int lastError = Marshal.GetLastWin32Error();
+				using (Native.SafeSnapshotHandle snapshot = Native.CreateToolhelp32Snapshot(2, (uint)process.Id))
+				{
+					int lastError = Marshal.GetLastWin32Error();
 
-				if (snapshot.IsInvalid || !Native.Process32First(snapshot, ref processEntry) && lastError == 18)
-				{
-					return null;
-				}
-				else
-				{
-					do
+					if (snapshot.IsInvalid || !Native.Process32First(snapshot, ref processEntry) && lastError == 18)
 					{
-						if (processEntry.ProcessId == (uint)process.Id)
-						{
-							return Process.GetProcessById((int)processEntry.ParentProcessId);
-						}
+						return null;
 					}
-					while (Native.Process32Next(snapshot, ref processEntry));
+					else
+					{
+						do
+						{
+							if (processEntry.ProcessId == (uint)process.Id)
+							{
+								return Process.GetProcessById((int)processEntry.ParentProcessId);
+							}
+						}
+						while (Native.Process32Next(snapshot, ref processEntry));
+					}
 				}
 
 				return null;
@@ -123,12 +127,76 @@ namespace BytecodeApi.Extensions
 		{
 			Check.ArgumentNull(process, nameof(process));
 
-			return new WmiNamespace("CIMV2", false, false)
-				.GetClass("Win32_Process", false)
-				.GetObjects(new[] { "CommandLine" }, "ProcessId = " + process.Id)
-				.First()
-				.Properties["CommandLine"]
-				.GetValue<string>();
+			IntPtr processHandle = Native.OpenProcess(0x410, false, process.Id);
+
+			if (processHandle != IntPtr.Zero)
+			{
+				try
+				{
+					int basicInformationSize = Marshal.SizeOf<Native.ProcessBasicInformation>();
+					IntPtr basicInformationBuffer = Marshal.AllocHGlobal(basicInformationSize);
+
+					try
+					{
+						if (Native.NtQueryInformationProcess(processHandle, 0, basicInformationBuffer, (uint)basicInformationSize, out _) == 0)
+						{
+							Native.ProcessBasicInformation basicInformation = Marshal.PtrToStructure<Native.ProcessBasicInformation>(basicInformationBuffer);
+
+							if (basicInformation.PebBaseAddress != IntPtr.Zero &&
+								ReadStruct(basicInformation.PebBaseAddress, out Native.PebWithProcessParameters peb) &&
+								ReadStruct(peb.ProcessParameters, out Native.RtlUserProcessParameters parameters))
+							{
+								var commandLineLength = parameters.CommandLine.MaximumLength;
+								var commandLineBuffer = Marshal.AllocHGlobal(commandLineLength);
+
+								try
+								{
+									if (Native.ReadProcessMemory(processHandle, parameters.CommandLine.Buffer, commandLineBuffer, commandLineLength, out _))
+									{
+										return Marshal.PtrToStringUni(commandLineBuffer);
+									}
+								}
+								finally
+								{
+									Marshal.FreeHGlobal(commandLineBuffer);
+								}
+							}
+						}
+					}
+					finally
+					{
+						Marshal.FreeHGlobal(basicInformationBuffer);
+					}
+				}
+				finally
+				{
+					Native.CloseHandle(processHandle);
+				}
+			}
+
+			return null;
+
+			bool ReadStruct<TStruct>(IntPtr baseAddress, out TStruct result) where TStruct : struct
+			{
+				int size = Marshal.SizeOf<TStruct>();
+				IntPtr buffer = Marshal.AllocHGlobal(size);
+
+				try
+				{
+					if (Native.ReadProcessMemory(processHandle, baseAddress, buffer, (uint)size, out uint length) && length == size)
+					{
+						result = Marshal.PtrToStructure<TStruct>(buffer);
+						return true;
+					}
+				}
+				finally
+				{
+					Marshal.FreeHGlobal(buffer);
+				}
+
+				result = default;
+				return false;
+			}
 		}
 		/// <summary>
 		/// Gets the commandline arguments of this <see cref="Process" /> that were passed during process creation.
@@ -141,7 +209,7 @@ namespace BytecodeApi.Extensions
 		{
 			Check.ArgumentNull(process, nameof(process));
 
-			return OptionSet.ParseCommandLine(process.GetCommandLine());
+			return CommandLineParser.GetArguments(process.GetCommandLine());
 		}
 		/// <summary>
 		/// Gets the mandatory integrity level of this <see cref="Process" /> or <see langword="null" />, if this method failed.
@@ -192,13 +260,20 @@ namespace BytecodeApi.Extensions
 		{
 			Check.ArgumentNull(process, nameof(process));
 
-			if (Environment.Is64BitOperatingSystem)
+			try
 			{
-				return CSharp.Try<bool?>(() => Native.IsWow64Process(process.Handle, out bool result) && !result);
+				if (Environment.Is64BitOperatingSystem)
+				{
+					return Native.IsWow64Process(process.Handle, out bool result) && !result;
+				}
+				else
+				{
+					return false;
+				}
 			}
-			else
+			catch
 			{
-				return false;
+				return null;
 			}
 		}
 		/// <summary>
@@ -215,7 +290,17 @@ namespace BytecodeApi.Extensions
 		{
 			Check.ArgumentNull(process, nameof(process));
 
-			return CSharp.Try(() => process.Modules.Cast<ProcessModule>().Any(module => MscorlibModuleRegex.IsMatch(module.FileName)));
+			try
+			{
+				return process.Modules
+					.Cast<ProcessModule>()
+					.Select(module => Path.GetFileName(module.FileName))
+					.Any(module => MscorlibModuleRegex.IsMatch(module));
+			}
+			catch
+			{
+				return null;
+			}
 		}
 		/// <summary>
 		/// Injects a DLL into this <see cref="Process" /> using the WriteProcessMemory / CreateRemoteThread technique. If <see cref="ProcessLoadLibraryResult.Success" /> is returned, the DLL has been successfully loaded by this <see cref="Process" />.
@@ -232,7 +317,7 @@ namespace BytecodeApi.Extensions
 			Check.ArgumentNull(dllName, nameof(dllName));
 			Check.FileNotFound(dllName);
 
-			if (CSharp.Try(() => process.Modules.Cast<ProcessModule>().Any(module => module.FileName.Equals(dllName, SpecialStringComparisons.IgnoreCase))))
+			if (CSharp.Try(() => process.Modules.Cast<ProcessModule>().Any(module => module.FileName.Equals(dllName, StringComparison.OrdinalIgnoreCase))))
 			{
 				return ProcessLoadLibraryResult.AlreadyLoaded;
 			}
@@ -240,11 +325,22 @@ namespace BytecodeApi.Extensions
 			{
 				IntPtr processHandle = Native.OpenProcess(1082, false, process.Id);
 				if (processHandle == IntPtr.Zero) return ProcessLoadLibraryResult.OpenProcessFailed;
+
 				IntPtr loadLibraryAddress = Native.GetProcAddress(Native.GetModuleHandle("kernel32.dll"), "LoadLibraryW");
-				IntPtr allocatedMemoryAddress = Native.VirtualAllocEx(processHandle, IntPtr.Zero, (uint)dllName.Length * 2 + 1, 0x3000, 4);
+				IntPtr allocatedMemoryAddress = Native.VirtualAllocEx(processHandle, IntPtr.Zero, (uint)(dllName.Length + 1) * 2, 0x3000, 4);
 				if (allocatedMemoryAddress == IntPtr.Zero) return ProcessLoadLibraryResult.VirtualAllocFailed;
-				if (!Native.WriteProcessMemory(processHandle, allocatedMemoryAddress, dllName.ToUnicodeBytes(), (uint)dllName.Length * 2 + 1, out _)) return ProcessLoadLibraryResult.WriteProcessMemoryFailed;
-				return Native.CreateRemoteThread(processHandle, IntPtr.Zero, 0, loadLibraryAddress, allocatedMemoryAddress, 0, IntPtr.Zero) == IntPtr.Zero ? ProcessLoadLibraryResult.CreateRemoteThreadFailed : ProcessLoadLibraryResult.Success;
+
+				if (!Native.WriteProcessMemory(processHandle, allocatedMemoryAddress, dllName.ToUnicodeBytes(), (uint)dllName.Length * 2 + 1, out _))
+				{
+					return ProcessLoadLibraryResult.WriteProcessMemoryFailed;
+				}
+
+				if (Native.CreateRemoteThread(processHandle, IntPtr.Zero, 0, loadLibraryAddress, allocatedMemoryAddress, 0, IntPtr.Zero) == IntPtr.Zero)
+				{
+					return ProcessLoadLibraryResult.CreateRemoteThreadFailed;
+				}
+
+				return ProcessLoadLibraryResult.Success;
 			}
 		}
 		internal static IntPtr OpenToken(this Process process, uint desiredAccess)

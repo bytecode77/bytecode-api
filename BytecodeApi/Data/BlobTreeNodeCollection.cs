@@ -1,4 +1,5 @@
 ﻿using BytecodeApi.Extensions;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,7 +44,7 @@ namespace BytecodeApi.Data
 			get
 			{
 				Check.KeyNotFoundException(HasNode(name, ignoreCase), "A node with the name '" + name + "' was not found.");
-				return Nodes.First(n => n.Name.Equals(name, ignoreCase ? SpecialStringComparisons.IgnoreCase : SpecialStringComparisons.None));
+				return Nodes.First(n => n.Name.Equals(name, ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal));
 			}
 		}
 		/// <summary>
@@ -71,30 +72,9 @@ namespace BytecodeApi.Data
 			Nodes.AddRange(nodes);
 		}
 
-		/// <summary>
-		/// Determines whether a <see cref="BlobTreeNode" /> with the specified name exists in this collection.
-		/// </summary>
-		/// <param name="name">The name of the <see cref="BlobTreeNode" /> to check.</param>
-		/// <returns>
-		/// <see langword="true" />, if the <see cref="BlobTreeNode" /> with the specified name exists;
-		/// otherwise, <see langword="false" />.
-		/// </returns>
-		public bool HasNode(string name)
+		internal bool HasNode(string name, bool ignoreCase)
 		{
-			return HasNode(name, false);
-		}
-		/// <summary>
-		/// Determines whether a <see cref="BlobTreeNode" /> with the specified name exists in this collection.
-		/// </summary>
-		/// <param name="name">The name of the <see cref="BlobTreeNode" /> to check.</param>
-		/// <param name="ignoreCase"><see langword="true" /> to ignore character casing during comparison.</param>
-		/// <returns>
-		/// <see langword="true" />, if the <see cref="BlobTreeNode" /> with the specified name exists;
-		/// otherwise, <see langword="false" />.
-		/// </returns>
-		public bool HasNode(string name, bool ignoreCase)
-		{
-			return Nodes.Any(node => node.Name.Equals(name, ignoreCase ? SpecialStringComparisons.IgnoreCase : SpecialStringComparisons.None));
+			return Nodes.Any(node => node.Name.Equals(name, ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal));
 		}
 		/// <summary>
 		/// Computes the size, in bytes, of all <see cref="Blob" /> objects within this <see cref="BlobTreeNodeCollection" /> recursively.

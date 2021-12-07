@@ -57,8 +57,9 @@ namespace BytecodeApi.IO
 			BaseStream = stream;
 			Encoding = encoding;
 			LeaveOpen = leaveOpen;
-			if (stream.CanRead) Reader = new BinaryReader(BaseStream, Encoding, LeaveOpen);
-			if (stream.CanWrite) Writer = new BinaryWriter(BaseStream, Encoding, LeaveOpen);
+
+			if (stream.CanRead) Reader = new BinaryReader(BaseStream, Encoding, true);
+			if (stream.CanWrite) Writer = new BinaryWriter(BaseStream, Encoding, true);
 		}
 		/// <summary>
 		/// Releases all resources used by the underlying instance of the <see cref="Stream" />.
@@ -111,7 +112,7 @@ namespace BytecodeApi.IO
 			AssertCanRead();
 
 			int read = Reader.Read(buffer, index, count);
-			BytesRead += Encoding.GetByteCount(buffer, index, count);
+			BytesRead += Encoding.GetByteCount(buffer, index, read);
 			return read;
 		}
 		/// <summary>

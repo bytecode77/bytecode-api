@@ -20,7 +20,7 @@ namespace BytecodeApi.Extensions
 		{
 			Check.ArgumentNull(value, nameof(value));
 
-			return value.GetType().GetField(value.ToString()).GetCustomAttribute<DescriptionAttribute>().Description;
+			return value.GetType().GetField(value.ToString()).GetCustomAttribute<DescriptionAttribute>()?.Description;
 		}
 		/// <summary>
 		/// Returns the <see cref="DescriptionAttribute.Description" /> of this <see langword="enum" /> value. If the attribute was not found, the <see cref="string" /> representation of this <see langword="enum" /> is returned.

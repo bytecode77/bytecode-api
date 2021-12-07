@@ -149,21 +149,33 @@ namespace BytecodeApi.Extensions
 				{
 					if (sign > 0)
 					{
-						dateTime = dateTime.DayOfWeek switch
+						switch (dateTime.DayOfWeek)
 						{
-							DayOfWeek.Friday => dateTime.AddDays(3),
-							DayOfWeek.Saturday => dateTime.AddDays(2),
-							_ => dateTime.AddDays(1)
-						};
+							case DayOfWeek.Friday:
+								dateTime = dateTime.AddDays(3);
+								break;
+							case DayOfWeek.Saturday:
+								dateTime = dateTime.AddDays(2);
+								break;
+							default:
+								dateTime = dateTime.AddDays(1);
+								break;
+						}
 					}
 					else
 					{
-						dateTime = dateTime.DayOfWeek switch
+						switch (dateTime.DayOfWeek)
 						{
-							DayOfWeek.Sunday => dateTime.SubtractDays(2),
-							DayOfWeek.Monday => dateTime.SubtractDays(3),
-							_ => dateTime.SubtractDays(1)
-						};
+							case DayOfWeek.Sunday:
+								dateTime = dateTime.SubtractDays(2);
+								break;
+							case DayOfWeek.Monday:
+								dateTime = dateTime.SubtractDays(3);
+								break;
+							default:
+								dateTime = dateTime.SubtractDays(1);
+								break;
+						}
 					}
 				}
 			}
@@ -229,16 +241,16 @@ namespace BytecodeApi.Extensions
 		/// </returns>
 		public static DateTime GetPart(this DateTime dateTime, DateTimePart part)
 		{
-			return part switch
+			switch (part)
 			{
-				DateTimePart.Full => dateTime,
-				DateTimePart.DateTimeWithSeconds => new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, dateTime.Hour, dateTime.Minute, dateTime.Second, dateTime.Kind),
-				DateTimePart.DateTime => new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, dateTime.Hour, dateTime.Minute, 0, dateTime.Kind),
-				DateTimePart.Date => new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, 0, 0, 0, dateTime.Kind),
-				DateTimePart.YearMonth => new DateTime(dateTime.Year, dateTime.Month, 1, 0, 0, 0, dateTime.Kind),
-				DateTimePart.Year => new DateTime(dateTime.Year, 1, 1, 0, 0, 0, dateTime.Kind),
-				_ => throw Throw.InvalidEnumArgument(nameof(part), part)
-			};
+				case DateTimePart.Full: return dateTime;
+				case DateTimePart.DateTimeWithSeconds: return new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, dateTime.Hour, dateTime.Minute, dateTime.Second, dateTime.Kind);
+				case DateTimePart.DateTime: return new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, dateTime.Hour, dateTime.Minute, 0, dateTime.Kind);
+				case DateTimePart.Date: return new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, 0, 0, 0, dateTime.Kind);
+				case DateTimePart.YearMonth: return new DateTime(dateTime.Year, dateTime.Month, 1, 0, 0, 0, dateTime.Kind);
+				case DateTimePart.Year: return new DateTime(dateTime.Year, 1, 1, 0, 0, 0, dateTime.Kind);
+				default: throw Throw.InvalidEnumArgument(nameof(part), part);
+			}
 		}
 		/// <summary>
 		/// Returns a new <see cref="DateTime" /> representing the first day of the week according to the current culture.

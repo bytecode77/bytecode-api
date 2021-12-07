@@ -38,7 +38,6 @@ namespace BytecodeApi.Text
 			{
 				string str = OriginalString
 					.Replace("\\", "\\\\")
-					.Replace("'", "\'")
 					.Replace("\"", "\\\"")
 					.Replace("\0", "\\0")
 					.Replace("\a", "\\a")

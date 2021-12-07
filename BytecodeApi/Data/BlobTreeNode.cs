@@ -2,10 +2,10 @@
 using BytecodeApi.Text;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 
 namespace BytecodeApi.Data
 {
-	//FEATURE: FindBlob(string path)
 	/// <summary>
 	/// Represents a tree node within a <see cref="BlobTree" />.
 	/// </summary>
@@ -60,6 +60,57 @@ namespace BytecodeApi.Data
 		}
 
 		/// <summary>
+		/// Determines whether a <see cref="BlobTreeNode" /> with the specified name exists in this <see cref="BlobTreeNode" />.
+		/// </summary>
+		/// <param name="name">The name of the <see cref="BlobTreeNode" /> to check.</param>
+		/// <returns>
+		/// <see langword="true" />, if the <see cref="BlobTreeNode" /> with the specified name exists;
+		/// otherwise, <see langword="false" />.
+		/// </returns>
+		public bool HasNode(string name)
+		{
+			return HasNode(name, false);
+		}
+		/// <summary>
+		/// Determines whether a <see cref="BlobTreeNode" /> with the specified name exists in this <see cref="BlobTreeNode" />.
+		/// </summary>
+		/// <param name="name">The name of the <see cref="BlobTreeNode" /> to check.</param>
+		/// <param name="ignoreCase"><see langword="true" /> to ignore character casing during comparison.</param>
+		/// <returns>
+		/// <see langword="true" />, if the <see cref="BlobTreeNode" /> with the specified name exists;
+		/// otherwise, <see langword="false" />.
+		/// </returns>
+		public bool HasNode(string name, bool ignoreCase)
+		{
+			return Nodes.HasNode(name, ignoreCase);
+		}
+		/// <summary>
+		/// Determines whether a <see cref="Blob" /> with the specified name exists in this <see cref="BlobTreeNode" />.
+		/// </summary>
+		/// <param name="name">The name of the <see cref="Blob" /> to check.</param>
+		/// <returns>
+		/// <see langword="true" />, if the <see cref="Blob" /> with the specified name exists;
+		/// otherwise, <see langword="false" />.
+		/// </returns>
+		public bool HasBlob(string name)
+		{
+			return HasBlob(name, false);
+		}
+		/// <summary>
+		/// Determines whether a <see cref="Blob" /> with the specified name exists in this <see cref="BlobTreeNode" />.
+		/// </summary>
+		/// <param name="name">The name of the <see cref="Blob" /> to check.</param>
+		/// <param name="ignoreCase"><see langword="true" /> to ignore character casing during comparison.</param>
+		/// <returns>
+		/// <see langword="true" />, if the <see cref="Blob" /> with the specified name exists;
+		/// otherwise, <see langword="false" />.
+		/// </returns>
+		public bool HasBlob(string name, bool ignoreCase)
+		{
+			return Blobs.HasBlob(name, ignoreCase);
+		}
+
+		/// <summary>
 		/// Tries to find a node by the specified case sensitive path. The path contains each node name, separated by a backslash. Returns <see langword="null" />, if the <see cref="BlobTreeNode" /> could not be found.
 		/// </summary>
 		/// <param name="path">A <see cref="string" /> specifying a case sensitive path. The path contains each node name, separated by a backslash.</param>
@@ -85,16 +136,53 @@ namespace BytecodeApi.Data
 
 			BlobTreeNode node = this;
 
-			foreach (string pathPart in path.Split('\\'))
+			foreach (string pathPart in path.Trim('\\').Split('\\'))
 			{
-				node = CSharp.Try(() => node.Nodes[pathPart, ignoreCase]);
+				node = node.HasNode(pathPart, ignoreCase) ? node.Nodes[pathPart, ignoreCase] : null;
 				if (node == null) break;
 			}
 
 			return node;
 		}
 		/// <summary>
-		/// Creates a new one-dimensional <see cref="BlobCollection" /> containing all <see cref="Blob" /> objects including all child nodes recursively.
+		/// Tries to find a blob by the specified case sensitive path. The path contains each node name, separated by a backslash. The last element represents the name of the blob. Returns <see langword="null" />, if the <see cref="Blob" /> could not be found.
+		/// </summary>
+		/// <param name="path">A <see cref="string" /> specifying a case sensitive path. The path contains each node name, separated by a backslash. The last element represents the name of the blob.</param>
+		/// <returns>
+		/// The <see cref="Blob" /> that was found by the specified path, or <see langword="null" />, if it could not be found.
+		/// </returns>
+		public Blob FindBlob(string path)
+		{
+			return FindBlob(path, false);
+		}
+		/// <summary>
+		/// Tries to find a blob by the specified path. The path contains each node name, separated by a backslash. The last element represents the name of the blob. Returns <see langword="null" />, if the <see cref="Blob" /> could not be found.
+		/// </summary>
+		/// <param name="path">A <see cref="string" /> specifying a path. The path contains each node name, separated by a backslash. The last element represents the name of the blob.</param>
+		/// <param name="ignoreCase"><see langword="true" /> to ignore character casing during name comparison.</param>
+		/// <returns>
+		/// The <see cref="Blob" /> that was found by the specified path, or <see langword="null" />, if it could not be found.
+		/// </returns>
+		public Blob FindBlob(string path, bool ignoreCase)
+		{
+			Check.ArgumentNull(path, nameof(path));
+			Check.ArgumentEx.StringNotEmpty(path, nameof(path));
+
+			path = path.Trim('\\');
+
+			if (FindNode(Path.GetDirectoryName(path), ignoreCase) is BlobTreeNode node)
+			{
+				string name = Path.GetFileName(path);
+				return node.HasBlob(name, ignoreCase) ? node.Blobs[name, ignoreCase] : null;
+			}
+			else
+			{
+				return null;
+			}
+
+		}
+		/// <summary>
+		/// Creates a new one-dimensional <see cref="BlobCollection" /> containing all <see cref="Blob" /> objects including the root node and all child nodes recursively.
 		/// </summary>
 		/// <returns>
 		/// The <see cref="BlobCollection" /> this method creates.

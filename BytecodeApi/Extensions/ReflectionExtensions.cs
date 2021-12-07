@@ -6,7 +6,6 @@ using System.Reflection;
 
 namespace BytecodeApi.Extensions
 {
-	//FEATURE: GetValue<T>(this PropertyInfo)
 	/// <summary>
 	/// Provides a set of <see langword="static" /> methods for interaction with .NET reflection objects, such as <see cref="Type" /> and <see cref="MethodBase" />.
 	/// </summary>
@@ -142,16 +141,31 @@ namespace BytecodeApi.Extensions
 		/// Returns the value of a field supported by a given <see cref="object" />.
 		/// </summary>
 		/// <typeparam name="T">The type to which the returned value is casted to.</typeparam>
-		/// <param name="fieldInfo">The <see cref="FieldInfo" /> to retrieve the value from.</param>
+		/// <param name="field">The <see cref="FieldInfo" /> to retrieve the value from.</param>
 		/// <param name="obj">The <see cref="object" /> to retrieve the value from.</param>
 		/// <returns>
 		/// The value of a field supported by a given <see cref="object" />.
 		/// </returns>
-		public static T GetValue<T>(this FieldInfo fieldInfo, object obj)
+		public static T GetValue<T>(this FieldInfo field, object obj)
 		{
-			Check.ArgumentNull(fieldInfo, nameof(fieldInfo));
+			Check.ArgumentNull(field, nameof(field));
 
-			return (T)fieldInfo.GetValue(obj);
+			return (T)field.GetValue(obj);
+		}
+		/// <summary>
+		/// Returns the value of a property supported by a given <see cref="object" />.
+		/// </summary>
+		/// <typeparam name="T">The type to which the returned value is casted to.</typeparam>
+		/// <param name="property">The <see cref="PropertyInfo" /> to retrieve the value from.</param>
+		/// <param name="obj">The <see cref="object" /> to retrieve the value from.</param>
+		/// <returns>
+		/// The value of a property supported by a given <see cref="object" />.
+		/// </returns>
+		public static T GetValue<T>(this PropertyInfo property, object obj)
+		{
+			Check.ArgumentNull(property, nameof(property));
+
+			return (T)property.GetValue(obj);
 		}
 		/// <summary>
 		/// Invokes the method or constructor represented by the current instance with no parameters.

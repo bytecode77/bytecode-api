@@ -43,12 +43,21 @@ namespace BytecodeApi.UI.Converters
 		/// </returns>
 		public override object Convert(string value)
 		{
-			return new BooleanConverter(Result).Convert(Method switch
+			bool result;
+
+			switch (Method)
 			{
-				StringEmptyConverterMethod.NotNullOrEmpty => !value.IsNullOrEmpty(),
-				StringEmptyConverterMethod.NotNullOrWhiteSpace => !value.IsNullOrWhiteSpace(),
-				_ => throw Throw.InvalidEnumArgument(nameof(Result), Result)
-			});
+				case StringEmptyConverterMethod.NotNullOrEmpty:
+					result = !value.IsNullOrEmpty();
+					break;
+				case StringEmptyConverterMethod.NotNullOrWhiteSpace:
+					result = !value.IsNullOrWhiteSpace();
+					break;
+				default:
+					throw Throw.InvalidEnumArgument(nameof(Result), Result);
+			}
+
+			return new BooleanConverter(Result).Convert(result);
 		}
 	}
 }

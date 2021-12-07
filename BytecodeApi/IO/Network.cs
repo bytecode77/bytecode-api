@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
-using System.Net.Security;
 using System.Net.Sockets;
 
 namespace BytecodeApi.IO
@@ -13,16 +12,28 @@ namespace BytecodeApi.IO
 	public static class Network
 	{
 		/// <summary>
-		/// Represents a <see cref="RemoteCertificateValidationCallback" /> callback that validates all certificates without checking. This field is read-only.
-		/// </summary>
-		public static readonly RemoteCertificateValidationCallback AlwaysValidCertificateValidationCallback = delegate { return true; };
-
-		/// <summary>
 		/// Sets up the <see cref="ServicePointManager.ServerCertificateValidationCallback" /> to validate all certificates without checking.
 		/// </summary>
 		public static void DisableCertificateValidation()
 		{
 			ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
+		}
+		/// <summary>
+		/// Globally enables all known security protocols.
+		/// </summary>
+		public static void EnableAllSecurityProtocols()
+		{
+			foreach (int protocol in new[]
+			{
+				48, // SecurityProtocolType.Ssl3
+				192, // SecurityProtocolType.Tls
+				768, // SecurityProtocolType.Tls11
+				3072, // SecurityProtocolType.Tls12
+				12288, // SecurityProtocolType.Tls13
+			})
+			{
+				CSharp.Try(() => ServicePointManager.SecurityProtocol |= (SecurityProtocolType)protocol);
+			}
 		}
 		/// <summary>
 		/// Sends a Wake-on-LAN magic packet containing the specified <see cref="PhysicalAddress" /> to UDP broadcast on port 9.
@@ -44,16 +55,18 @@ namespace BytecodeApi.IO
 		public static void WakeOnLan(PhysicalAddress physicalAddress, byte[] password)
 		{
 			Check.ArgumentNull(physicalAddress, nameof(physicalAddress));
-			Check.Argument(password == null || CSharp.EqualsAny(password.Length, 4, 6), nameof(password), "The password must be either 4 or 6 bytes long or null.");
+			Check.Argument(password == null || CSharp.EqualsAny(password.Length, 4, 6), nameof(password), "The password must be either 4 or 6 bytes long, or null.");
 
 			byte[] packet = Enumerable.Repeat<byte>(0xff, 6)
-				.Concat(Enumerable.Repeat(physicalAddress.GetAddressBytes(), 16).SelectMany(b => b))
+				.Concat(Enumerable.Repeat(physicalAddress.GetAddressBytes(), 16).SelectMany())
 				.Concat(password ?? new byte[0])
 				.ToArray();
 
-			using UdpClient client = new UdpClient();
-			client.Connect(IPAddress.Broadcast, 9);
-			client.Send(packet, packet.Length);
+			using (UdpClient client = new UdpClient())
+			{
+				client.Connect(IPAddress.Broadcast, 9);
+				client.Send(packet, packet.Length);
+			}
 		}
 	}
 }

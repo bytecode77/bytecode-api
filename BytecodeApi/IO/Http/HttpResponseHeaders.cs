@@ -64,5 +64,9 @@ namespace BytecodeApi.IO.Http
 		/// Gets a collection of headers of the response.
 		/// </summary>
 		public WebHeaderCollection Headers { get; internal set; }
+
+		internal HttpResponseHeaders()
+		{
+		}
 	}
 }

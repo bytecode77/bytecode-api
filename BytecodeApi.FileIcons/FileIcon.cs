@@ -1,4 +1,5 @@
 ﻿using BytecodeApi.Extensions;
+using System;
 using System.Collections;
 using System.Drawing;
 using System.Globalization;
@@ -121,7 +122,7 @@ namespace BytecodeApi.FileIcons
 		{
 			Check.ArgumentNull(extension, nameof(extension));
 
-			return AllIcons.FirstOrDefault(icon => icon.Extension.Equals(extension.TrimStart('.'), SpecialStringComparisons.IgnoreCase));
+			return AllIcons.FirstOrDefault(icon => icon.Extension.Equals(extension.TrimStart('.'), StringComparison.OrdinalIgnoreCase));
 		}
 		/// <summary>
 		/// Checks whether the specified extension is known and exists in the resources of BytecodeApi.FileIcons.dll.

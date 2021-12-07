@@ -7,7 +7,6 @@ using System.Security.Cryptography;
 
 namespace BytecodeApi.Mathematics
 {
-	//FEATURE: ComputePrimeNumbers(int from, int to)
 	/// <summary>
 	/// Provides <see langword="static" /> methods that extend the <see cref="Math" /> class.
 	/// </summary>
@@ -23,6 +22,351 @@ namespace BytecodeApi.Mathematics
 		/// Represents a singleton <see cref="System.Security.Cryptography.RandomNumberGenerator" /> object. This field is read-only.
 		/// </summary>
 		public static readonly RandomNumberGenerator RandomNumberGenerator = RandomNumberGenerator.Create();
+
+		/// <summary>
+		/// Determines whether the specified <see cref="byte" /> value is a positive power of two.
+		/// </summary>
+		/// <param name="value">The <see cref="byte" /> value to check.</param>
+		/// <returns>
+		/// <see langword="true" />, if <paramref name="value" /> is a positive power of two and greater than 0;
+		/// otherwise, <see langword="false" />.
+		/// </returns>
+		public static bool IsPowerOfTwo(byte value)
+		{
+			return value > 0 && (value & (value - 1)) == 0;
+		}
+		/// <summary>
+		/// Determines whether the specified <see cref="byte" /> value is a positive power of two.
+		/// </summary>
+		/// <param name="value">The <see cref="byte" /> value to check.</param>
+		/// <param name="exponent">If this method returns <see langword="true" />, the exponent of <paramref name="value" />; otherwise, 0.</param>
+		/// <returns>
+		/// <see langword="true" />, if <paramref name="value" /> is a positive power of two and greater than 0;
+		/// otherwise, <see langword="false" />.
+		/// </returns>
+		public static bool IsPowerOfTwo(byte value, out int exponent)
+		{
+			exponent = 0;
+
+			if (IsPowerOfTwo(value))
+			{
+				for (int i = 0; i < 8; i++)
+				{
+					if (BitCalculator.GetBit(value, i))
+					{
+						exponent = i;
+						break;
+					}
+				}
+
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		/// <summary>
+		/// Determines whether the specified <see cref="sbyte" /> value is a positive power of two.
+		/// </summary>
+		/// <param name="value">The <see cref="sbyte" /> value to check.</param>
+		/// <returns>
+		/// <see langword="true" />, if <paramref name="value" /> is a positive power of two and greater than 0;
+		/// otherwise, <see langword="false" />.
+		/// </returns>
+		public static bool IsPowerOfTwo(sbyte value)
+		{
+			return value > 0 && (value & (value - 1)) == 0;
+		}
+		/// <summary>
+		/// Determines whether the specified <see cref="sbyte" /> value is a positive power of two.
+		/// </summary>
+		/// <param name="value">The <see cref="sbyte" /> value to check.</param>
+		/// <param name="exponent">If this method returns <see langword="true" />, the exponent of <paramref name="value" />; otherwise, 0.</param>
+		/// <returns>
+		/// <see langword="true" />, if <paramref name="value" /> is a positive power of two and greater than 0;
+		/// otherwise, <see langword="false" />.
+		/// </returns>
+		public static bool IsPowerOfTwo(sbyte value, out int exponent)
+		{
+			exponent = 0;
+
+			if (IsPowerOfTwo(value))
+			{
+				for (int i = 0; i < 8; i++)
+				{
+					if (BitCalculator.GetBit(value, i))
+					{
+						exponent = i;
+						break;
+					}
+				}
+
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		/// <summary>
+		/// Determines whether the specified <see cref="int" /> value is a positive power of two.
+		/// </summary>
+		/// <param name="value">The <see cref="int" /> value to check.</param>
+		/// <returns>
+		/// <see langword="true" />, if <paramref name="value" /> is a positive power of two and greater than 0;
+		/// otherwise, <see langword="false" />.
+		/// </returns>
+		public static bool IsPowerOfTwo(int value)
+		{
+			return value > 0 && (value & (value - 1)) == 0;
+		}
+		/// <summary>
+		/// Determines whether the specified <see cref="int" /> value is a positive power of two.
+		/// </summary>
+		/// <param name="value">The <see cref="int" /> value to check.</param>
+		/// <param name="exponent">If this method returns <see langword="true" />, the exponent of <paramref name="value" />; otherwise, 0.</param>
+		/// <returns>
+		/// <see langword="true" />, if <paramref name="value" /> is a positive power of two and greater than 0;
+		/// otherwise, <see langword="false" />.
+		/// </returns>
+		public static bool IsPowerOfTwo(int value, out int exponent)
+		{
+			exponent = 0;
+
+			if (IsPowerOfTwo(value))
+			{
+				for (int i = 0; i < 32; i++)
+				{
+					if (BitCalculator.GetBit(value, i))
+					{
+						exponent = i;
+						break;
+					}
+				}
+
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		/// <summary>
+		/// Determines whether the specified <see cref="uint" /> value is a positive power of two.
+		/// </summary>
+		/// <param name="value">The <see cref="uint" /> value to check.</param>
+		/// <returns>
+		/// <see langword="true" />, if <paramref name="value" /> is a positive power of two and greater than 0;
+		/// otherwise, <see langword="false" />.
+		/// </returns>
+		public static bool IsPowerOfTwo(uint value)
+		{
+			return value > 0 && (value & (value - 1)) == 0;
+		}
+		/// <summary>
+		/// Determines whether the specified <see cref="uint" /> value is a positive power of two.
+		/// </summary>
+		/// <param name="value">The <see cref="uint" /> value to check.</param>
+		/// <param name="exponent">If this method returns <see langword="true" />, the exponent of <paramref name="value" />; otherwise, 0.</param>
+		/// <returns>
+		/// <see langword="true" />, if <paramref name="value" /> is a positive power of two and greater than 0;
+		/// otherwise, <see langword="false" />.
+		/// </returns>
+		public static bool IsPowerOfTwo(uint value, out int exponent)
+		{
+			exponent = 0;
+
+			if (IsPowerOfTwo(value))
+			{
+				for (int i = 0; i < 32; i++)
+				{
+					if (BitCalculator.GetBit(value, i))
+					{
+						exponent = i;
+						break;
+					}
+				}
+
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		/// <summary>
+		/// Determines whether the specified <see cref="long" /> value is a positive power of two.
+		/// </summary>
+		/// <param name="value">The <see cref="long" /> value to check.</param>
+		/// <returns>
+		/// <see langword="true" />, if <paramref name="value" /> is a positive power of two and greater than 0;
+		/// otherwise, <see langword="false" />.
+		/// </returns>
+		public static bool IsPowerOfTwo(long value)
+		{
+			return value > 0 && (value & (value - 1)) == 0;
+		}
+		/// <summary>
+		/// Determines whether the specified <see cref="long" /> value is a positive power of two.
+		/// </summary>
+		/// <param name="value">The <see cref="long" /> value to check.</param>
+		/// <param name="exponent">If this method returns <see langword="true" />, the exponent of <paramref name="value" />; otherwise, 0.</param>
+		/// <returns>
+		/// <see langword="true" />, if <paramref name="value" /> is a positive power of two and greater than 0;
+		/// otherwise, <see langword="false" />.
+		/// </returns>
+		public static bool IsPowerOfTwo(long value, out int exponent)
+		{
+			exponent = 0;
+
+			if (IsPowerOfTwo(value))
+			{
+				for (int i = 0; i < 64; i++)
+				{
+					if (BitCalculator.GetBit(value, i))
+					{
+						exponent = i;
+						break;
+					}
+				}
+
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		/// <summary>
+		/// Determines whether the specified <see cref="ulong" /> value is a positive power of two.
+		/// </summary>
+		/// <param name="value">The <see cref="ulong" /> value to check.</param>
+		/// <returns>
+		/// <see langword="true" />, if <paramref name="value" /> is a positive power of two and greater than 0;
+		/// otherwise, <see langword="false" />.
+		/// </returns>
+		public static bool IsPowerOfTwo(ulong value)
+		{
+			return value > 0 && (value & (value - 1)) == 0;
+		}
+		/// <summary>
+		/// Determines whether the specified <see cref="ulong" /> value is a positive power of two.
+		/// </summary>
+		/// <param name="value">The <see cref="ulong" /> value to check.</param>
+		/// <param name="exponent">If this method returns <see langword="true" />, the exponent of <paramref name="value" />; otherwise, 0.</param>
+		/// <returns>
+		/// <see langword="true" />, if <paramref name="value" /> is a positive power of two and greater than 0;
+		/// otherwise, <see langword="false" />.
+		/// </returns>
+		public static bool IsPowerOfTwo(ulong value, out int exponent)
+		{
+			exponent = 0;
+
+			if (IsPowerOfTwo(value))
+			{
+				for (int i = 0; i < 64; i++)
+				{
+					if (BitCalculator.GetBit(value, i))
+					{
+						exponent = i;
+						break;
+					}
+				}
+
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		/// <summary>
+		/// Determines whether the specified <see cref="short" /> value is a positive power of two.
+		/// </summary>
+		/// <param name="value">The <see cref="short" /> value to check.</param>
+		/// <returns>
+		/// <see langword="true" />, if <paramref name="value" /> is a positive power of two and greater than 0;
+		/// otherwise, <see langword="false" />.
+		/// </returns>
+		public static bool IsPowerOfTwo(short value)
+		{
+			return value > 0 && (value & (value - 1)) == 0;
+		}
+		/// <summary>
+		/// Determines whether the specified <see cref="short" /> value is a positive power of two.
+		/// </summary>
+		/// <param name="value">The <see cref="short" /> value to check.</param>
+		/// <param name="exponent">If this method returns <see langword="true" />, the exponent of <paramref name="value" />; otherwise, 0.</param>
+		/// <returns>
+		/// <see langword="true" />, if <paramref name="value" /> is a positive power of two and greater than 0;
+		/// otherwise, <see langword="false" />.
+		/// </returns>
+		public static bool IsPowerOfTwo(short value, out int exponent)
+		{
+			exponent = 0;
+
+			if (IsPowerOfTwo(value))
+			{
+				for (int i = 0; i < 16; i++)
+				{
+					if (BitCalculator.GetBit(value, i))
+					{
+						exponent = i;
+						break;
+					}
+				}
+
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		/// <summary>
+		/// Determines whether the specified <see cref="ushort" /> value is a positive power of two.
+		/// </summary>
+		/// <param name="value">The <see cref="ushort" /> value to check.</param>
+		/// <returns>
+		/// <see langword="true" />, if <paramref name="value" /> is a positive power of two and greater than 0;
+		/// otherwise, <see langword="false" />.
+		/// </returns>
+		public static bool IsPowerOfTwo(ushort value)
+		{
+			return value > 0 && (value & (value - 1)) == 0;
+		}
+		/// <summary>
+		/// Determines whether the specified <see cref="ushort" /> value is a positive power of two.
+		/// </summary>
+		/// <param name="value">The <see cref="ushort" /> value to check.</param>
+		/// <param name="exponent">If this method returns <see langword="true" />, the exponent of <paramref name="value" />; otherwise, 0.</param>
+		/// <returns>
+		/// <see langword="true" />, if <paramref name="value" /> is a positive power of two and greater than 0;
+		/// otherwise, <see langword="false" />.
+		/// </returns>
+		public static bool IsPowerOfTwo(ushort value, out int exponent)
+		{
+			exponent = 0;
+
+			if (IsPowerOfTwo(value))
+			{
+				for (int i = 0; i < 16; i++)
+				{
+					if (BitCalculator.GetBit(value, i))
+					{
+						exponent = i;
+						break;
+					}
+				}
+
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
 
 		/// <summary>
 		/// Rotates the bits in the specified <see cref="byte" /> value to the right.
@@ -1049,7 +1393,7 @@ namespace BytecodeApi.Mathematics
 			return true;
 		}
 		/// <summary>
-		/// Computes the prime numbers between 0 and <paramref name="n" />. A <see cref="BitArray" /> with <paramref name="n" /> elements is returned, where a <see cref="bool" /> value at any given index indicates whether the number is a prime number.
+		/// Computes the prime numbers between 0 and <paramref name="n" /> - 1. A <see cref="BitArray" /> with <paramref name="n" /> elements is returned, where a <see cref="bool" /> value at any given index indicates whether the number is a prime number.
 		/// </summary>
 		/// <param name="n">A <see cref="int" /> value specifying the range of numbers to check, where computation of numbers applies to values between 0 and <paramref name="n" />-1.</param>
 		/// <returns>
@@ -1060,7 +1404,7 @@ namespace BytecodeApi.Mathematics
 			Check.ArgumentOutOfRangeEx.Greater0(n, nameof(n));
 
 			BitArray result = new BitArray(n, true);
-			if (n >= 1) result[0] = false;
+			result[0] = false;
 			if (n >= 2) result[1] = false;
 
 			int to = (int)Math.Ceiling(Math.Sqrt(n));
@@ -1134,7 +1478,7 @@ namespace BytecodeApi.Mathematics
 			Check.Overflow(n <= 20);
 
 			long result = 1;
-			for (int i = 1; i <= n; i++) result *= i;
+			for (int i = 2; i <= n; i++) result *= i;
 			return result;
 		}
 		/// <summary>
@@ -1150,7 +1494,7 @@ namespace BytecodeApi.Mathematics
 			Check.ArgumentOutOfRangeEx.GreaterEqual0(n, nameof(n));
 
 			BigInteger result = 1;
-			for (int i = 1; i <= n; i++) result *= i;
+			for (int i = 2; i <= n; i++) result *= i;
 			return result;
 		}
 		/// <summary>

@@ -13,7 +13,7 @@ namespace BytecodeApi.IO.SystemInfo
 	public sealed class DeviceTypeInfo
 	{
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		private string DebuggerDisplay => CSharp.DebuggerDisplay<DeviceTypeInfo>("Name = {0}, ClassName = {1}, Devices: {2}", new QuotedString(Name), new QuotedString(ClassName), Devices.Count);
+		private string DebuggerDisplay => CSharp.DebuggerDisplay<DeviceTypeInfo>("ClassName = {0}, Devices: {1}", new QuotedString(ClassName), Devices.Count);
 		/// <summary>
 		/// Gets the class GUID of this device type.
 		/// </summary>
@@ -23,31 +23,26 @@ namespace BytecodeApi.IO.SystemInfo
 		/// </summary>
 		public string ClassName { get; private set; }
 		/// <summary>
-		/// Gets the display name of this device type.
-		/// </summary>
-		public string Name { get; private set; }
-		/// <summary>
 		/// Gets all <see cref="DeviceInfo" /> objects of this device type.
 		/// </summary>
 		public ReadOnlyCollection<DeviceInfo> Devices { get; private set; }
 
-		internal DeviceTypeInfo(string classGuid, string className, string name, IEnumerable<DeviceInfo> devices)
+		internal DeviceTypeInfo(string classGuid, string className, IEnumerable<DeviceInfo> devices)
 		{
 			ClassGuid = classGuid;
 			ClassName = className;
-			Name = name;
 			Devices = devices.ToReadOnlyCollection();
 		}
 
 		/// <summary>
-		/// Returns the name of this <see cref="DeviceTypeInfo" />.
+		/// Returns the class name of this <see cref="DeviceTypeInfo" />.
 		/// </summary>
 		/// <returns>
 		/// The name of this <see cref="DeviceTypeInfo" />.
 		/// </returns>
 		public override string ToString()
 		{
-			return Name;
+			return ClassName;
 		}
 	}
 }

@@ -16,13 +16,7 @@ namespace BytecodeApi.Extensions
 		/// <param name="content">A <see cref="byte" />[] speficying the content for the entry.</param>
 		public static void CreateEntry(this ZipArchive archive, string name, byte[] content)
 		{
-			Check.ArgumentNull(archive, nameof(archive));
-			Check.ArgumentNull(name, nameof(name));
-			Check.ArgumentNull(content, nameof(content));
-
-			ZipArchiveEntry entry = archive.CreateEntry(name);
-			using Stream stream = entry.Open();
-			stream.Write(content);
+			archive.CreateEntry(name, content, CompressionLevel.Optimal);
 		}
 		/// <summary>
 		/// Adds a <see cref="ZipArchiveEntry" /> to this <see cref="ZipArchive" /> with the specified name, content and <see cref="CompressionLevel" />.
@@ -38,8 +32,10 @@ namespace BytecodeApi.Extensions
 			Check.ArgumentNull(content, nameof(content));
 
 			ZipArchiveEntry entry = archive.CreateEntry(name, compressionLevel);
-			using Stream stream = entry.Open();
-			stream.Write(content);
+			using (Stream stream = entry.Open())
+			{
+				stream.Write(content);
+			}
 		}
 		/// <summary>
 		/// Extracts the content of this <see cref="ZipArchiveEntry" /> into a <see cref="byte" />[].
@@ -52,10 +48,12 @@ namespace BytecodeApi.Extensions
 		{
 			Check.ArgumentNull(entry, nameof(entry));
 
-			using Stream stream = entry.Open();
-			using MemoryStream memoryStream = new MemoryStream();
-			stream.CopyTo(memoryStream);
-			return memoryStream.ToArray();
+			using (Stream stream = entry.Open())
+			using (MemoryStream memoryStream = new MemoryStream())
+			{
+				stream.CopyTo(memoryStream);
+				return memoryStream.ToArray();
+			}
 		}
 	}
 }

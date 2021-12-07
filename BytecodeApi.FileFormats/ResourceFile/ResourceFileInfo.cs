@@ -204,28 +204,29 @@ namespace BytecodeApi.FileFormats.ResourceFile
 			int count = BitConverter.ToUInt16(data, 4);
 			int size = 6 + 16 * count + Enumerable.Range(0, count).Sum(i => BitConverter.ToInt32(data, 14 + 14 * i));
 
-			using MemoryStream memoryStream = new MemoryStream(size);
-
-			using (BinaryWriter writer = new BinaryWriter(memoryStream))
+			using (MemoryStream memoryStream = new MemoryStream(size))
 			{
-				writer.Write(data, 0, 6);
-
-				for (int i = 0, offset = 6 + 16 * count; i < count; i++)
+				using (BinaryWriter writer = new BinaryWriter(memoryStream))
 				{
-					byte[] icon = GetData(module, ResourceType.Icon, BitConverter.ToUInt16(data, 18 + 14 * i));
+					writer.Write(data, 0, 6);
 
-					memoryStream.Seek(6 + 16 * i, SeekOrigin.Begin);
-					writer.Write(data, 6 + 14 * i, 8);
-					writer.Write(icon.Length);
-					writer.Write(offset);
+					for (int i = 0, offset = 6 + 16 * count; i < count; i++)
+					{
+						byte[] icon = GetData(module, ResourceType.Icon, BitConverter.ToUInt16(data, 18 + 14 * i));
 
-					memoryStream.Seek(offset, SeekOrigin.Begin);
-					writer.Write(icon);
-					offset += icon.Length;
+						memoryStream.Seek(6 + 16 * i, SeekOrigin.Begin);
+						writer.Write(data, 6 + 14 * i, 8);
+						writer.Write(icon.Length);
+						writer.Write(offset);
+
+						memoryStream.Seek(offset, SeekOrigin.Begin);
+						writer.Write(icon);
+						offset += icon.Length;
+					}
 				}
-			}
 
-			return ConvertEx.ToIcon(memoryStream.ToArray());
+				return ConvertEx.ToIcon(memoryStream.ToArray());
+			}
 		}
 		private static byte[] GetData(IntPtr module, ResourceType type, int name)
 		{

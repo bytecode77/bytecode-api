@@ -96,11 +96,33 @@ namespace BytecodeApi
 		/// </returns>
 		public static string HexadecimalString(int size)
 		{
+			return HexadecimalString(size, false);
+		}
+		/// <summary>
+		/// Generates a new <see cref="string" /> with random hexadecimal charaters. The value of <paramref name="size" /> specifies the amount of bytes to be generated. A <see cref="string" /> with a length of <paramref name="size" /> * 2 is returned.
+		/// </summary>
+		/// <param name="size">A <see cref="int" /> value specifying the amount of bytes to be generated.</param>
+		/// <param name="cryptographic"><see langword="true" /> to use a cryptographic random number generator; <see langword="false" /> to use the default random number generator.</param>
+		/// <returns>
+		/// A new <see cref="string" /> with random hexadecimal charaters, where the value of <paramref name="size" /> specifies the amount of bytes to be generated. The returned <see cref="string" /> has a length of <paramref name="size" /> * 2.
+		/// </returns>
+		public static string HexadecimalString(int size, bool cryptographic)
+		{
 			Check.ArgumentOutOfRangeEx.GreaterEqual0(size, nameof(size));
 
-			lock (MathEx._Random)
+			if (cryptographic)
 			{
-				return MathEx._Random.NextBytes(size).ToHexadecimalString();
+				lock (MathEx._RandomNumberGenerator)
+				{
+					return MathEx._RandomNumberGenerator.GetBytes(size).ToHexadecimalString();
+				}
+			}
+			else
+			{
+				lock (MathEx._Random)
+				{
+					return MathEx._Random.NextBytes(size).ToHexadecimalString();
+				}
 			}
 		}
 		/// <summary>
@@ -126,6 +148,21 @@ namespace BytecodeApi
 		/// </returns>
 		public static string AlphaNumericString(int length, bool digits, bool lowerCase, bool upperCase)
 		{
+			return AlphaNumericString(length, digits, lowerCase, upperCase, false);
+		}
+		/// <summary>
+		/// Generates a new <see cref="string" /> with random characters, where each character can be either a digit, a lowercase letter, an uppercase letter, or a combination of those. At least one of these parameters needs to be <see langword="true" />.
+		/// </summary>
+		/// <param name="length">The length of the generated <see cref="string" />.</param>
+		/// <param name="digits"><see langword="true" /> to include digits.</param>
+		/// <param name="lowerCase"><see langword="true" /> to include lowercase letters.</param>
+		/// <param name="upperCase"><see langword="true" /> to include uppercase letters.</param>
+		/// <param name="cryptographic"><see langword="true" /> to use a cryptographic random number generator; <see langword="false" /> to use the default random number generator.</param>
+		/// <returns>
+		/// A new <see cref="string" /> with random characters.
+		/// </returns>
+		public static string AlphaNumericString(int length, bool digits, bool lowerCase, bool upperCase, bool cryptographic)
+		{
 			Check.ArgumentOutOfRangeEx.GreaterEqual0(length, nameof(length));
 			Check.Argument(digits || lowerCase || upperCase, null, "Either of '" + nameof(digits) + "', '" + nameof(lowerCase) + "', or '" + nameof(upperCase) + "' must be true.");
 
@@ -137,11 +174,24 @@ namespace BytecodeApi
 			char[] charset = chars.ToCharArray();
 			char[] newString = new char[length];
 
-			lock (MathEx._Random)
+			if (cryptographic)
 			{
-				for (int i = 0; i < length; i++)
+				lock (MathEx._RandomNumberGenerator)
 				{
-					newString[i] = MathEx._Random.NextObject(charset);
+					for (int i = 0; i < length; i++)
+					{
+						newString[i] = MathEx._RandomNumberGenerator.GetObject(charset);
+					}
+				}
+			}
+			else
+			{
+				lock (MathEx._Random)
+				{
+					for (int i = 0; i < length; i++)
+					{
+						newString[i] = MathEx._Random.NextObject(charset);
+					}
 				}
 			}
 

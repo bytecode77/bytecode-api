@@ -33,39 +33,39 @@ namespace BytecodeApi.UI.Converters
 		/// </returns>
 		public override object Convert(string value, object parameter)
 		{
-			return Method switch
+			switch (Method)
 			{
-				StringConverterMethod.Concat => value + parameter,
-				StringConverterMethod.Trim => value?.Trim(),
-				StringConverterMethod.TrimStart => value?.TrimStart(),
-				StringConverterMethod.TrimStartString => value?.TrimStartString(parameter?.ToString()),
-				StringConverterMethod.TrimStartStringIgnoreCase => value?.TrimStartString(parameter?.ToString(), true),
-				StringConverterMethod.TrimEnd => value?.TrimEnd(),
-				StringConverterMethod.TrimEndString => value?.TrimEndString(parameter?.ToString()),
-				StringConverterMethod.TrimEndStringIgnoreCase => value?.TrimEndString(parameter?.ToString(), true),
-				StringConverterMethod.ToLower => value?.ToLower(),
-				StringConverterMethod.ToUpper => value?.ToUpper(),
-				StringConverterMethod.ToCamelCase => value?.ChangeCasing(StringCasing.CamelCase),
-				StringConverterMethod.ToLowerSnakeCase => value?.ChangeCasing(StringCasing.LowerSnakeCase),
-				StringConverterMethod.ToUpperSnakeCase => value?.ChangeCasing(StringCasing.UpperSnakeCase),
-				StringConverterMethod.ToLowerKebabCase => value?.ChangeCasing(StringCasing.LowerKebabCase),
-				StringConverterMethod.ToUpperKebabCase => value?.ChangeCasing(StringCasing.UpperKebabCase),
-				StringConverterMethod.Substring => value?.Substring((int)parameter),
-				StringConverterMethod.Left => value?.Left((int)parameter),
-				StringConverterMethod.Right => value?.Right((int)parameter),
-				StringConverterMethod.StartsWith => value?.StartsWith(parameter?.ToString()) == true,
-				StringConverterMethod.StartsWithIgnoreCase => value?.StartsWith(parameter?.ToString(), StringComparison.OrdinalIgnoreCase) == true,
-				StringConverterMethod.EndsWith => value?.EndsWith(parameter?.ToString()) == true,
-				StringConverterMethod.EndsWithIgnoreCase => value?.EndsWith(parameter?.ToString(), StringComparison.OrdinalIgnoreCase) == true,
-				StringConverterMethod.Reverse => value?.Reverse(),
-				StringConverterMethod.Contains => value?.Contains(parameter?.ToString()) == true,
-				StringConverterMethod.ContainsIgnoreCase => value?.Contains(parameter?.ToString(), SpecialStringComparisons.IgnoreCase) == true,
-				StringConverterMethod.ReplaceLineBreaks => value?.ReplaceLineBreaks(parameter?.ToString()),
-				StringConverterMethod.TrimText => value == null ? null : Wording.TrimText(value, (int)parameter),
-				StringConverterMethod.StringDistanceLevenshtein => value != null && parameter is string ? StringDistance.Levenshtein(value, (string)parameter) : (int?)null,
-				StringConverterMethod.StringDistanceDamerauLevenshtein => value != null && parameter is string ? StringDistance.DamerauLevenshtein(value, (string)parameter) : (int?)null,
-				_ => throw Throw.InvalidEnumArgument(nameof(Method), Method)
-			};
+				case StringConverterMethod.Concat: return value + parameter;
+				case StringConverterMethod.Trim: return value?.Trim();
+				case StringConverterMethod.TrimStart: return value?.TrimStart();
+				case StringConverterMethod.TrimStartString: return value?.TrimStartString(parameter?.ToString());
+				case StringConverterMethod.TrimStartStringIgnoreCase: return value?.TrimStartString(parameter?.ToString(), true);
+				case StringConverterMethod.TrimEnd: return value?.TrimEnd();
+				case StringConverterMethod.TrimEndString: return value?.TrimEndString(parameter?.ToString());
+				case StringConverterMethod.TrimEndStringIgnoreCase: return value?.TrimEndString(parameter?.ToString(), true);
+				case StringConverterMethod.ToLower: return value?.ToLower();
+				case StringConverterMethod.ToUpper: return value?.ToUpper();
+				case StringConverterMethod.ToCamelCase: return value?.ChangeCasing(StringCasing.CamelCase);
+				case StringConverterMethod.ToLowerSnakeCase: return value?.ChangeCasing(StringCasing.LowerSnakeCase);
+				case StringConverterMethod.ToUpperSnakeCase: return value?.ChangeCasing(StringCasing.UpperSnakeCase);
+				case StringConverterMethod.ToLowerKebabCase: return value?.ChangeCasing(StringCasing.LowerKebabCase);
+				case StringConverterMethod.ToUpperKebabCase: return value?.ChangeCasing(StringCasing.UpperKebabCase);
+				case StringConverterMethod.Substring: return value?.Substring((int)parameter);
+				case StringConverterMethod.Left: return value?.Left((int)parameter);
+				case StringConverterMethod.Right: return value?.Right((int)parameter);
+				case StringConverterMethod.StartsWith: return value?.StartsWith(parameter?.ToString()) == true;
+				case StringConverterMethod.StartsWithIgnoreCase: return value?.StartsWith(parameter?.ToString(), StringComparison.OrdinalIgnoreCase) == true;
+				case StringConverterMethod.EndsWith: return value?.EndsWith(parameter?.ToString()) == true;
+				case StringConverterMethod.EndsWithIgnoreCase: return value?.EndsWith(parameter?.ToString(), StringComparison.OrdinalIgnoreCase) == true;
+				case StringConverterMethod.Reverse: return value?.Reverse();
+				case StringConverterMethod.Contains: return value?.Contains(parameter?.ToString()) == true;
+				case StringConverterMethod.ContainsIgnoreCase: return value?.Contains(parameter?.ToString(), SpecialStringComparisons.IgnoreCase) == true;
+				case StringConverterMethod.ReplaceLineBreaks: return value?.ReplaceLineBreaks(parameter?.ToString());
+				case StringConverterMethod.TrimText: return value == null ? null : Wording.TrimText(value, (int)parameter);
+				case StringConverterMethod.StringDistanceLevenshtein: return value != null && parameter is string ? StringDistance.Levenshtein(value, (string)parameter) : (int?)null;
+				case StringConverterMethod.StringDistanceDamerauLevenshtein: return value != null && parameter is string ? StringDistance.DamerauLevenshtein(value, (string)parameter) : (int?)null;
+				default: throw Throw.InvalidEnumArgument(nameof(Method), Method);
+			}
 		}
 	}
 }

@@ -38,8 +38,8 @@ namespace BytecodeApi.Cryptography
 			Check.ArgumentOutOfRangeEx.Greater0(passwordHashPasses, nameof(passwordHashPasses));
 
 			byte[] iv = Encryption.GenerateIV();
-			byte[] key = Hashes.ComputeRaw(password, HashType.SHA256, passwordHashPasses);
-			byte[] keyHash = Hashes.ComputeRaw(key, HashType.SHA256, passwordHashPasses);
+			byte[] key = Hashes.ComputeBytes(password, HashType.SHA256, passwordHashPasses);
+			byte[] keyHash = Hashes.ComputeBytes(key, HashType.SHA256, passwordHashPasses);
 			return Magic.Concat(iv, BitConverter.GetBytes(passwordHashPasses), keyHash, Encryption.Encrypt(data, iv, key));
 		}
 		/// <summary>
@@ -59,8 +59,8 @@ namespace BytecodeApi.Cryptography
 			byte[] iv = data.GetBytes(Magic.Length, 16);
 			int passwordPasses = BitConverter.ToInt32(data, Magic.Length + 16);
 			byte[] keyHash = data.GetBytes(Magic.Length + 20, 32);
-			byte[] key = Hashes.ComputeRaw(password, HashType.SHA256, passwordPasses);
-			byte[] userKeyHash = Hashes.ComputeRaw(key, HashType.SHA256, passwordPasses);
+			byte[] key = Hashes.ComputeBytes(password, HashType.SHA256, passwordPasses);
+			byte[] userKeyHash = Hashes.ComputeBytes(key, HashType.SHA256, passwordPasses);
 
 			int dataOffset = Magic.Length + 52;
 			return userKeyHash.Compare(keyHash) ? Encryption.Decrypt(data.GetBytes(dataOffset, data.Length - dataOffset), iv, key) : throw Throw.WrongPassword();

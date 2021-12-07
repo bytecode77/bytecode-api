@@ -25,10 +25,10 @@ namespace BytecodeApi.Text
 		/// </summary>
 		public int MaxWords { get; set; }
 		/// <summary>
-		/// Gets or sets a <see cref="float" /> value that specifies the chance of a comma being inserted after a word, where 0.0f means no commas and 1.0f means a comma between every word.
-		/// <para>The default value is 0.2f</para>
+		/// Gets or sets a <see cref="double" /> value that specifies the chance of a comma being inserted after a word, where 0.0 means no commas and 1.0 means a comma between every word.
+		/// <para>The default value is 0.2</para>
 		/// </summary>
-		public float CommaChance { get; set; }
+		public double CommaChance { get; set; }
 		/// <summary>
 		/// Gets or sets the characters that are used for punctuation after a sentence. Including a character multiple times increases the chance for this character. For example, this can be used to increase the likelihood of a period over a question mark or exclamation mark. Character order is not relevant.
 		/// <para>The default value is "...?!"</para>
@@ -42,7 +42,7 @@ namespace BytecodeApi.Text
 		{
 		}
 		/// <summary>
-		/// Initializes a new instance of the <see cref="SentenceGenerator" /> class with the specified <see cref="WordGenerator" /> and with default values (<see cref="MinWords" /> = 3, <see cref="MaxWords" /> = 10, <see cref="CommaChance" /> = 0.2f, <see cref="FinishPunctuation" /> = "...?!").
+		/// Initializes a new instance of the <see cref="SentenceGenerator" /> class with the specified <see cref="WordGenerator" /> and with default values (<see cref="MinWords" /> = 3, <see cref="MaxWords" /> = 10, <see cref="CommaChance" /> = 0.2, <see cref="FinishPunctuation" /> = "...?!").
 		/// </summary>
 		/// <param name="wordGenerator">The <see cref="WordGenerator" /> to use for word generation.</param>
 		public SentenceGenerator(WordGenerator wordGenerator)
@@ -52,7 +52,7 @@ namespace BytecodeApi.Text
 			WordGenerator = wordGenerator;
 			MinWords = 3;
 			MaxWords = 10;
-			CommaChance = .2f;
+			CommaChance = .2;
 			FinishPunctuation = "...?!".ToCharArray();
 		}
 
@@ -83,7 +83,7 @@ namespace BytecodeApi.Text
 					stringBuilder.Append(WordGenerator.Generate(i == 0 ? StringCasing.CamelCase : StringCasing.Lower));
 					if (i < words - 1)
 					{
-						if (MathEx._Random.NextSingle() < CommaChance) stringBuilder.Append(",");
+						if (MathEx._Random.NextDouble() < CommaChance) stringBuilder.Append(",");
 						stringBuilder.Append(" ");
 					}
 				}

@@ -107,6 +107,9 @@ namespace BytecodeApi.Extensions
 		/// </returns>
 		public static bool Contains(this string str, string value, SpecialStringComparisons comparison)
 		{
+			Check.ArgumentNull(str, nameof(str));
+			Check.ArgumentNull(str, nameof(value));
+
 			PrepareSpecialStringComparison(comparison, ref str, false);
 			PrepareSpecialStringComparison(comparison, ref value, false);
 
@@ -124,6 +127,9 @@ namespace BytecodeApi.Extensions
 		/// </returns>
 		public static bool StartsWith(this string str, string value, SpecialStringComparisons comparison)
 		{
+			Check.ArgumentNull(str, nameof(str));
+			Check.ArgumentNull(str, nameof(value));
+
 			PrepareSpecialStringComparison(comparison, ref str, false);
 			PrepareSpecialStringComparison(comparison, ref value, false);
 
@@ -141,6 +147,9 @@ namespace BytecodeApi.Extensions
 		/// </returns>
 		public static bool EndsWith(this string str, string value, SpecialStringComparisons comparison)
 		{
+			Check.ArgumentNull(str, nameof(str));
+			Check.ArgumentNull(str, nameof(value));
+
 			PrepareSpecialStringComparison(comparison, ref str, false);
 			PrepareSpecialStringComparison(comparison, ref value, false);
 
@@ -815,7 +824,6 @@ namespace BytecodeApi.Extensions
 				{
 					chunks[i] = i < chunks.Length - 1 ? str.Substring(i * chunkSize, chunkSize) : str.Substring(i * chunkSize);
 				}
-
 
 				return chunks;
 			}

@@ -6,7 +6,7 @@ using System.Linq;
 namespace BytecodeApi.FileFormats.Csv
 {
 	/// <summary>
-	/// Represents a row of a <see cref="CsvFile" /> flat file database.
+	/// Represents a row of a <see cref="CsvFile" />.
 	/// </summary>
 	[DebuggerDisplay(CSharp.DebuggerDisplayString)]
 	public sealed class CsvRow : IReadOnlyCollection<CsvCell>
@@ -55,8 +55,9 @@ namespace BytecodeApi.FileFormats.Csv
 		/// </summary>
 		public int Count => Cells.Count;
 		/// <summary>
-		/// Gets the one-based line number of this <see cref="CsvRow" /> object, if it was loaded from an existing flat file database source. Returns -1, if the row has been manually initialized.
+		/// Gets the one-based line number of this <see cref="CsvRow" /> object, if it was loaded from an existing CSV source. Returns -1, if the row has been manually initialized.
 		/// </summary>
+		//TODO: Bug: Incorrect, if empty lines are in the CSV
 		public long LineNumber { get; internal set; }
 		/// <summary>
 		/// If the line could not be parsed, gets the <see cref="string" /> representing the original line, otherwise returns <see langword="null" />.

@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -42,7 +41,19 @@ namespace BytecodeApi
 		{
 			Check.ArgumentNull(array, nameof(array));
 
-			return array.Select(hex => hex.ToString(upperCase ? "X2" : "x2")).AsString();
+			char firstLetter = upperCase ? 'A' : 'a';
+			char[] str = new char[array.Length * 2];
+
+			for (int i = 0; i < array.Length; i++)
+			{
+				int digit1 = array[i] >> 4;
+				int digit2 = array[i] & 15;
+
+				str[i * 2] = digit1 < 10 ? (char)('0' + digit1) : (char)(firstLetter + digit1 - 10);
+				str[i * 2 + 1] = digit2 < 10 ? (char)('0' + digit2) : (char)(firstLetter + digit2 - 10);
+			}
+
+			return str.AsString();
 		}
 		/// <summary>
 		/// Converts a hexadecimal <see cref="string" /> to its equivalent <see cref="byte" />[] representation. Only hexadecimal digits (upper and lowercase) are allowed. <paramref name="str" /> must have an even number of digits.
@@ -229,7 +240,6 @@ namespace BytecodeApi
 			while (index >= 0)
 			{
 				str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"[index % 26] + str;
-
 				index = index / 26 - 1;
 			}
 
@@ -266,6 +276,7 @@ namespace BytecodeApi
 				sum *= 26;
 				sum += columnChar - 'A' + 1;
 			}
+
 			return sum - (oneBased ? 0 : 1);
 		}
 		/// <summary>
@@ -400,7 +411,7 @@ namespace BytecodeApi
 				else if (value >= 1)
 				{
 					result += "I";
-					value -= 1;
+					value--;
 				}
 			}
 
@@ -417,6 +428,7 @@ namespace BytecodeApi
 		public static int FromRomanNumber(string value)
 		{
 			Check.ArgumentNull(value, nameof(value));
+			Check.ArgumentEx.StringNotEmpty(value, nameof(value));
 			Check.Format(RomanNumberRegex.IsMatch(value), "String is not a valid roman number.");
 
 			// 1	I
@@ -568,8 +580,10 @@ namespace BytecodeApi
 		{
 			Check.ArgumentNull(array, nameof(array));
 
-			using MemoryStream memoryStream = new MemoryStream(array);
-			return new Icon(memoryStream);
+			using (MemoryStream memoryStream = new MemoryStream(array))
+			{
+				return new Icon(memoryStream);
+			}
 		}
 		/// <summary>
 		/// Converts a <see cref="byte" />[] to an <see cref="Bitmap" />. The <paramref name="array" /> object should represent the binary of a valid image file.
@@ -582,8 +596,10 @@ namespace BytecodeApi
 		{
 			Check.ArgumentNull(array, nameof(array));
 
-			using MemoryStream memoryStream = new MemoryStream(array);
-			return new Bitmap(memoryStream);
+			using (MemoryStream memoryStream = new MemoryStream(array))
+			{
+				return new Bitmap(memoryStream);
+			}
 		}
 	}
 }

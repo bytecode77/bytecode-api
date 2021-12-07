@@ -32,7 +32,7 @@ namespace BytecodeApi
 		/// <returns>
 		/// A new array of the values of the constants in the specified <see cref="Enum" /> type, casted to <typeparamref name="T" />.
 		/// </returns>
-		public static T[] GetValues<T>() where T : Enum
+		public static T[] GetValues<T>() where T : struct, Enum
 		{
 			return Enum.GetValues(typeof(T)).ToArray<T>();
 		}
@@ -57,7 +57,7 @@ namespace BytecodeApi
 		/// <returns>
 		/// A new <see cref="Dictionary{TKey, TValue}" /> with all <see langword="enum" /> values and descriptions for the specified <see cref="Enum" /> type.
 		/// </returns>
-		public static Dictionary<T, string> GetDescriptionLookup<T>() where T : Enum
+		public static Dictionary<T, string> GetDescriptionLookup<T>() where T : struct, Enum
 		{
 			return GetValues<T>().Distinct().ToDictionary(item => item, item => ((Enum)item).GetDescription());
 		}

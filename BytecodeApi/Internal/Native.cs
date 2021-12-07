@@ -35,6 +35,9 @@ namespace BytecodeApi
 		public static extern IntPtr GetProcAddress(IntPtr module, string procName);
 		[DllImport("kernel32.dll", SetLastError = true, ExactSpelling = true)]
 		public static extern IntPtr VirtualAllocEx(IntPtr process, IntPtr dddress, uint size, uint allocationType, uint protect);
+		[DllImport("kernel32.dll")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool ReadProcessMemory(IntPtr process, IntPtr baseAddress, IntPtr buffer, uint size, out uint numberOfBytesRead);
 		[DllImport("kernel32.dll", SetLastError = true)]
 		public static extern bool WriteProcessMemory(IntPtr process, IntPtr baseAddress, byte[] buffer, uint size, out UIntPtr bytesWritten);
 		[DllImport("kernel32.dll")]
@@ -49,6 +52,12 @@ namespace BytecodeApi
 		public static extern int GetFileType(SafeFileHandle file);
 		[DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
 		public static extern SafeFileHandle CreateFile(string name, uint access, FileShare share, IntPtr security, FileMode mode, uint flags, IntPtr template);
+		[DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+		public static extern IntPtr CreateFileW([MarshalAs(UnmanagedType.LPWStr)] string path, uint desiredAccess, int shareMode, IntPtr securityAttributes, int creationDisposition, int flagsAndAttributes, IntPtr templateFile);
+		[DllImport("kernel32.dll", SetLastError = true)]
+		public static extern bool ReadFile(IntPtr hFile, [Out] byte[] lpBuffer, int nNumberOfBytesToRead, out int lpNumberOfBytesRead, IntPtr lpOverlapped);
+		[DllImport("kernel32.dll")]
+		public static extern bool GetFileSizeEx(IntPtr hFile, out long lpFileSize);
 		[DllImport("kernel32.dll", SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool BackupRead(SafeFileHandle file, ref Win32StreamId buffer, int bytesToRead, out int bytesRead, [MarshalAs(UnmanagedType.Bool)] bool abort, [MarshalAs(UnmanagedType.Bool)] bool processSecurity, ref IntPtr context);
@@ -73,8 +82,6 @@ namespace BytecodeApi
 		public static extern int UpdateResource(IntPtr update, uint type, uint name, ushort language, byte[] data, uint dateLength);
 		[DllImport("kernel32.dll")]
 		public static extern IntPtr LoadLibrary(string path);
-		[DllImport("kernel32.dll", SetLastError = true)]
-		public static extern bool CreateProcess(string applicationName, string commandLine, IntPtr processAttributes, IntPtr threadAttributes, bool inheritHandles, uint creationFlags, IntPtr environment, string currentDirectory, byte[] startupInfo, int[] processInfo);
 		[DllImport("kernel32.dll", SetLastError = true, CallingConvention = CallingConvention.Winapi)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool IsWow64Process([In] IntPtr process, [Out] out bool wow64Process);
@@ -103,11 +110,6 @@ namespace BytecodeApi
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)]
 		public static extern bool FindClose(IntPtr handle);
-		[DllImport("kernel32.dll", ExactSpelling = true, CharSet = CharSet.Auto, SetLastError = true)]
-		public static extern SafeFindHandle FindFirstStreamW(string fileName, int infoLevel, [In, Out, MarshalAs(UnmanagedType.LPStruct)] Win32FindStreamData findStreamData, uint flags);
-		[DllImport("kernel32.dll", ExactSpelling = true, CharSet = CharSet.Auto, SetLastError = true)]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool FindNextStreamW(SafeFindHandle findFile, [In, Out, MarshalAs(UnmanagedType.LPStruct)] Win32FindStreamData findStreamData);
 		[DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
 		public static extern bool GlobalMemoryStatusEx([In, Out] MemoryStatusEx buffer);
 		[DllImport("kernel32.dll", CharSet = CharSet.Auto)]
@@ -130,10 +132,6 @@ namespace BytecodeApi
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool GetDiskFreeSpaceEx(string path, out long free, out long totalFree, out long total);
 		[DllImport("user32.dll")]
-		public static extern IntPtr GetDC(IntPtr handle);
-		[DllImport("user32.dll")]
-		public static extern void ReleaseDC(IntPtr handle, IntPtr dc);
-		[DllImport("user32.dll")]
 		public static extern IntPtr FindWindow(string className, string windowName);
 		[DllImport("user32.dll")]
 		public static extern IntPtr FindWindowEx(IntPtr parent, IntPtr childAfter, string className, string window);
@@ -148,7 +146,10 @@ namespace BytecodeApi
 		[DllImport("user32.dll", SetLastError = true)]
 		public static extern bool DestroyIcon(IntPtr icon);
 		[DllImport("user32.dll", CharSet = CharSet.Auto)]
-		public static extern int SystemParametersInfo(int action, int param, string paramString, int winIni);
+		public static extern int SystemParametersInfo(int action, int param1, string param2, int winIni);
+		[DllImport("user32.dll", CharSet = CharSet.Auto)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SystemParametersInfo(uint action, uint param1, ref bool param2, int winIni);
 		[DllImport("user32.dll", SetLastError = true)]
 		public static extern bool RegisterHotKey(IntPtr handle, int id, ModifierKeys modifierKeys, Keys key);
 		[DllImport("user32.dll", SetLastError = true)]
@@ -165,10 +166,21 @@ namespace BytecodeApi
 		public static extern int GetKeyboardState(byte[] keyState);
 		[DllImport("user32.dll")]
 		public static extern int ToAscii(int virtualKey, int scanCode, byte[] keyState, byte[] translatedKey, int state);
-		[DllImport("user32.dll", CharSet = CharSet.Auto)]
-		public static extern int LoadString(IntPtr instance, int id, StringBuilder buffer, int bufferLength);
+		[DllImport("user32.dll", EntryPoint = "OpenDesktopA", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true)]
+		public static extern IntPtr OpenDesktop(string desktop, int flags, bool inherit, uint desiredAccess);
+		[DllImport("user32", SetLastError = true)]
+		public static extern IntPtr OpenInputDesktop(uint flags, bool inherit, uint desiredAccess);
+		[DllImport("user32.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true)]
+		public static extern IntPtr CloseDesktop(IntPtr desktop);
+		[DllImport("user32.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SwitchDesktop(IntPtr desktop);
+		[DllImport("user32.dll")]
+		public static extern void LockWorkStation();
 		[DllImport("gdi32.dll")]
 		public static extern bool DeleteObject(IntPtr obj);
+		[DllImport("gdi32.dll", CharSet = CharSet.Auto, SetLastError = true, ExactSpelling = true)]
+		public static extern int GetDeviceCaps(IntPtr dc, int index);
 		[DllImport("shell32.dll", CharSet = CharSet.Auto)]
 		public static extern bool ShellExecuteEx(ref ShellExecuteInfo execInfo);
 		[DllImport("shell32.dll")]
@@ -178,18 +190,10 @@ namespace BytecodeApi
 		public static extern bool SHPickIconDialog(IntPtr handle, StringBuilder fileName, int fileNameLength, out int iconIndex);
 		[DllImport("shell32.dll", SetLastError = true)]
 		public static extern IntPtr CommandLineToArgvW([MarshalAs(UnmanagedType.LPWStr)] string commandLine, out int argumentCount);
+		[DllImport("ntdll.dll")]
+		public static extern uint NtQueryInformationProcess(IntPtr Process, uint processInformationClass, IntPtr processInformation, uint processInformationLength, out uint returnLength);
 		[DllImport("ntdll.dll", SetLastError = true)]
 		public static extern int NtSetInformationProcess(IntPtr processHandle, int processInformationClass, ref int processInformation, uint processInformationLength);
-		[DllImport("ntdll.dll", SetLastError = true)]
-		public static extern uint NtUnmapViewOfSection(IntPtr process, IntPtr lpBaseAddress);
-		[DllImport("ntdll.dll", SetLastError = true)]
-		public static extern int NtWriteVirtualMemory(IntPtr process, IntPtr baseAddress, IntPtr buffer, uint size, IntPtr bytesWritten);
-		[DllImport("ntdll.dll", SetLastError = true)]
-		public static extern int NtGetContextThread(IntPtr thread, IntPtr context);
-		[DllImport("ntdll.dll", SetLastError = true)]
-		public static extern int NtSetContextThread(IntPtr thread, IntPtr context);
-		[DllImport("ntdll.dll", SetLastError = true)]
-		public static extern uint NtResumeThread(IntPtr thread, IntPtr suspendCount);
 		[DllImport("shlwapi.dll", CharSet = CharSet.Unicode)]
 		public static extern int StrCmpLogicalW(string strA, string strB);
 		[DllImport("shlwapi.dll", SetLastError = true, CharSet = CharSet.Auto)]
@@ -226,6 +230,10 @@ namespace BytecodeApi
 		public static extern uint GetExtendedTcpTable(IntPtr tcpTable, ref int bufferLength, bool sort, int ipVersion, int tableClass, uint reserved = 0);
 		[DllImport("iphlpapi.dll", SetLastError = true)]
 		public static extern uint GetExtendedUdpTable(IntPtr udpTable, ref int bufferLength, bool sort, int ipVersion, int tableClass, uint reserved = 0);
+		[DllImport("netapi32.dll")]
+		public static extern int NetApiBufferFree(IntPtr buffer);
+		[DllImport("netapi32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+		public static extern int NetGetJoinInformation(string server, out IntPtr domain, out int status);
 
 		[StructLayout(LayoutKind.Sequential)]
 		public struct ProcessEntry
@@ -241,7 +249,41 @@ namespace BytecodeApi
 			public uint Flags;
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
 			public string ExeFile;
-		};
+		}
+		[StructLayout(LayoutKind.Sequential)]
+		public struct UnicodeString
+		{
+			public ushort Length;
+			public ushort MaximumLength;
+			public IntPtr Buffer;
+		}
+		[StructLayout(LayoutKind.Sequential)]
+		public struct ProcessBasicInformation
+		{
+			public IntPtr Reserved1;
+			public IntPtr PebBaseAddress;
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
+			public IntPtr[] Reserved2;
+			public IntPtr UniqueProcessId;
+			public IntPtr Reserved3;
+		}
+		[StructLayout(LayoutKind.Sequential)]
+		public struct PebWithProcessParameters
+		{
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+			public IntPtr[] Reserved;
+			public IntPtr ProcessParameters;
+		}
+		[StructLayout(LayoutKind.Sequential)]
+		public struct RtlUserProcessParameters
+		{
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
+			public byte[] Reserved1;
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 10)]
+			public IntPtr[] Reserved2;
+			public UnicodeString ImagePathName;
+			public UnicodeString CommandLine;
+		}
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct SHFileInfo
 		{
@@ -608,13 +650,6 @@ namespace BytecodeApi
 			public uint FileSizeLow;
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
 			public string FileName;
-		}
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-		public sealed class Win32FindStreamData
-		{
-			public long StreamSize;
-			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 296)]
-			public string StreamName;
 		}
 		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("0000000B-0000-0000-C000-000000000046")]
 		public interface IStorage

@@ -175,7 +175,7 @@ namespace BytecodeApi
 				}
 			}
 
-			static void Process(Type sourceType, Type destType, Func<object> getValue, Action<object> setValue)
+			void Process(Type sourceType, Type destType, Func<object> getValue, Action<object> setValue)
 			{
 				GetEffectiveType(ref sourceType);
 				GetEffectiveType(ref destType);
@@ -193,12 +193,14 @@ namespace BytecodeApi
 						setValue(Convert.ChangeType(getValue(), destType));
 						changed = true;
 					}
-					catch { }
+					catch
+					{
+					}
 				}
 
 				if (!changed) setValue(null);
 			}
-			static void GetEffectiveType(ref Type type)
+			void GetEffectiveType(ref Type type)
 			{
 				if (Nullable.GetUnderlyingType(type) is Type nullable) type = nullable;
 				if (type.IsEnum) type = type.GetEnumUnderlyingType();
@@ -296,7 +298,8 @@ namespace BytecodeApi
 			}
 			catch
 			{
-				if (throws) throw; else return false;
+				if (throws) throw;
+				else return false;
 			}
 		}
 		/// <summary>
@@ -310,7 +313,7 @@ namespace BytecodeApi
 		/// </returns>
 		public static T Try<T>(Func<T> func)
 		{
-			return Try(func, default);
+			return Try(func, default(T));
 		}
 		/// <summary>
 		/// Invokes a <see cref="Func{TResult}" /> and handles any exception. Returns the result of <paramref name="func" /> on successful execution and <paramref name="defaultValue" />, if an exception was thrown.
@@ -347,7 +350,47 @@ namespace BytecodeApi
 			}
 			catch
 			{
-				if (throws) throw; else return defaultValue;
+				if (throws) throw;
+				else return defaultValue;
+			}
+		}
+		/// <summary>
+		/// Invokes a <see cref="Func{TResult}" /> and handles any exception. Returns the result of <paramref name="func" /> on successful execution and invokes and returns <paramref name="defaultValue" />, if an exception was thrown.
+		/// </summary>
+		/// <typeparam name="T">The return type of <paramref name="func" />.</typeparam>
+		/// <param name="func">The <see cref="Func{TResult}" /> to be invoked.</param>
+		/// <param name="defaultValue">The <see cref="Func{TResult}" /> that is invoked and whose result is returned, if an exception was thrown.</param>
+		/// <returns>
+		/// The result of <paramref name="func" />, on successful execution and
+		/// The result of <paramref name="defaultValue" />, if an exception was thrown.
+		/// </returns>
+		public static T Try<T>(Func<T> func, Func<T> defaultValue)
+		{
+			return Try(func, defaultValue, false);
+		}
+		/// <summary>
+		/// Invokes a <see cref="Func{TResult}" /> and handles any exception. Returns the result of <paramref name="func" /> on successful execution and invokes and returns <paramref name="defaultValue" />, if an exception was thrown.
+		/// </summary>
+		/// <typeparam name="T">The return type of <paramref name="func" />.</typeparam>
+		/// <param name="func">The <see cref="Func{TResult}" /> to be invoked.</param>
+		/// <param name="defaultValue">The <see cref="Func{TResult}" /> that is invoked and whose result is returned, if an exception was thrown.</param>
+		/// <param name="throws"><see langword="true" /> to throw the exception anyway, effectively bypassing the function logic and just executing <paramref name="func" /> without exception handling.</param>
+		/// <returns>
+		/// The result of <paramref name="func" />, on successful execution and
+		/// The result of <paramref name="defaultValue" />, if an exception was thrown and <paramref name="throws" /> equals to <see langword="false" />.
+		/// </returns>
+		public static T Try<T>(Func<T> func, Func<T> defaultValue, bool throws)
+		{
+			Check.ArgumentNull(func, nameof(func));
+
+			try
+			{
+				return func();
+			}
+			catch
+			{
+				if (throws) throw;
+				else return defaultValue();
 			}
 		}
 		/// <summary>
@@ -380,7 +423,8 @@ namespace BytecodeApi
 				}
 				catch
 				{
-					if (attempts <= 1) throw; else Thread.Sleep(delay);
+					if (attempts <= 1) throw;
+					else Thread.Sleep(delay);
 				}
 			}
 		}
@@ -423,7 +467,8 @@ namespace BytecodeApi
 				}
 				catch
 				{
-					if (attempts <= 1) throw; else Thread.Sleep(delay);
+					if (attempts <= 1) throw;
+					else Thread.Sleep(delay);
 				}
 			}
 		}
@@ -523,36 +568,6 @@ namespace BytecodeApi
 			return EqualsNone(obj, (IEnumerable<T>)values);
 		}
 		/// <summary>
-		/// Compares <paramref name="obj" /> with the objects in the specified collection and returns <see langword="true" />, if <paramref name="obj" /> is equal to all of the values.
-		/// </summary>
-		/// <typeparam name="T">The type of the <see cref="object" /> and the value collection.</typeparam>
-		/// <param name="obj">The <see cref="object" /> to compare with the objects in <paramref name="values" />.</param>
-		/// <param name="values">The value collection to be compared to <paramref name="obj" />.</param>
-		/// <returns>
-		/// <see langword="true" />, if <paramref name="obj" /> is equal to all of the values in the specified collection;
-		/// otherwise, <see langword="false" />.
-		/// </returns>
-		public static bool EqualsAll<T>(T obj, IEnumerable<T> values)
-		{
-			Check.ArgumentNull(values, nameof(values));
-
-			return values.All(itm => Equals(itm, obj));
-		}
-		/// <summary>
-		/// Compares <paramref name="obj" /> with the objects in the specified collection and returns <see langword="true" />, if <paramref name="obj" /> is equal to all of the values.
-		/// </summary>
-		/// <typeparam name="T">The type of the <see cref="object" /> and the value collection.</typeparam>
-		/// <param name="obj">The <see cref="object" /> to compare with the objects in <paramref name="values" />.</param>
-		/// <param name="values">The value collection to be compared to <paramref name="obj" />.</param>
-		/// <returns>
-		/// <see langword="true" />, if <paramref name="obj" /> is equal to all of the values in the specified collection;
-		/// otherwise, <see langword="false" />.
-		/// </returns>
-		public static bool EqualsAll<T>(T obj, params T[] values)
-		{
-			return EqualsAll(obj, (IEnumerable<T>)values);
-		}
-		/// <summary>
 		/// Returns <see langword="true" />, if <paramref name="obj" /> is an <see cref="object" /> of the specified <see cref="Type" />. If <paramref name="obj" /> is not of the specified <see cref="Type" />, or <paramref name="obj" /> is of a <see cref="Type" /> that inherits <paramref name="type" />, <see langword="false" /> is returned.
 		/// </summary>
 		/// <param name="obj">The <see cref="object" /> to check.</param>
@@ -601,6 +616,8 @@ namespace BytecodeApi
 		/// </returns>
 		public static TimeSpan MeasureTime(Action action)
 		{
+			Check.ArgumentNull(action, nameof(action));
+
 			Stopwatch stopwatch = ThreadFactory.StartStopwatch();
 			action();
 			stopwatch.Stop();

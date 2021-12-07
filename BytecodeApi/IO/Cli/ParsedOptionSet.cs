@@ -101,9 +101,9 @@ namespace BytecodeApi.IO.Cli
 			Check.ArgumentEx.StringNotEmpty(argument, nameof(argument));
 			Check.ArgumentNull(handler, nameof(handler));
 
-			if (HasOption(argument))
+			foreach (ParsedOption option in GetOptions(argument))
 			{
-				foreach (ParsedOption option in GetOptions(argument)) handler(option.Values.ToArray());
+				handler(option.Values.ToArray());
 			}
 
 			return this;
@@ -305,7 +305,7 @@ namespace BytecodeApi.IO.Cli
 
 				foreach (ParsedOption option in ParsedOptionSet.GetOptions(argument))
 				{
-					if (!option.Values.All(value => extensions.Any(extension => extension.TrimStart('.').Equals(Path.GetExtension(value).TrimStart('.'), SpecialStringComparisons.IgnoreCase)))) failed();
+					if (!option.Values.All(value => extensions.Any(extension => extension.TrimStart('.').Equals(Path.GetExtension(value).TrimStart('.'), StringComparison.OrdinalIgnoreCase)))) failed();
 				}
 
 				return ParsedOptionSet;
@@ -356,11 +356,10 @@ namespace BytecodeApi.IO.Cli
 				Check.ArgumentNull(argument, nameof(argument));
 				Check.ArgumentEx.StringNotEmpty(argument, nameof(argument));
 
-				bool failed = false;
-				ParsedOptionSet.Validate.OptionRequired(argument, () => failed = true);
-				if (failed) throw new CliException(CliValidationSource.OptionRequired, "Option '" + argument + "' is required.");
-
-				return ParsedOptionSet;
+				return ParsedOptionSet.Validate.OptionRequired(argument, () =>
+				{
+					throw new CliException(CliValidationSource.OptionRequired, "Option '" + argument + "' is required.");
+				});
 			}
 			/// <summary>
 			/// Validates that the argument has only one occurrence, or none; otherwise, a <see cref="CliException" /> is thrown.
@@ -374,11 +373,10 @@ namespace BytecodeApi.IO.Cli
 				Check.ArgumentNull(argument, nameof(argument));
 				Check.ArgumentEx.StringNotEmpty(argument, nameof(argument));
 
-				bool failed = false;
-				ParsedOptionSet.Validate.OptionNotDuplicate(argument, () => failed = true);
-				if (failed) throw new CliException(CliValidationSource.OptionNotDuplicate, "Option '" + argument + "' must not have multiple occurrences.");
-
-				return ParsedOptionSet;
+				return ParsedOptionSet.Validate.OptionNotDuplicate(argument, () =>
+				{
+					throw new CliException(CliValidationSource.OptionNotDuplicate, "Option '" + argument + "' must not have multiple occurrences.");
+				});
 			}
 			/// <summary>
 			/// Validates that the argument has a specific amount of values; otherwise, a <see cref="CliException" /> is thrown. If the <see cref="Option" /> was not found, this validation succeeds.
@@ -393,11 +391,10 @@ namespace BytecodeApi.IO.Cli
 				Check.ArgumentNull(argument, nameof(argument));
 				Check.ArgumentEx.StringNotEmpty(argument, nameof(argument));
 
-				bool failed = false;
-				ParsedOptionSet.Validate.ValueCount(argument, count, () => failed = true);
-				if (failed) throw new CliException(CliValidationSource.ValueCount, "Option '" + argument + "' must have at least " + count + " values.");
-
-				return ParsedOptionSet;
+				return ParsedOptionSet.Validate.ValueCount(argument, count, () =>
+				{
+					throw new CliException(CliValidationSource.ValueCount, "Option '" + argument + "' must have at least " + count + " values.");
+				});
 			}
 			/// <summary>
 			/// Validates that the argument has a minimum amount of values; otherwise, a <see cref="CliException" /> is thrown. If the <see cref="Option" /> was not found, this validation succeeds.
@@ -412,11 +409,10 @@ namespace BytecodeApi.IO.Cli
 				Check.ArgumentNull(argument, nameof(argument));
 				Check.ArgumentEx.StringNotEmpty(argument, nameof(argument));
 
-				bool failed = false;
-				ParsedOptionSet.Validate.MinimumValueCount(argument, count, () => failed = true);
-				if (failed) throw new CliException(CliValidationSource.MinimumValueCount, "Option '" + argument + "' must have at least " + count + " values.");
-
-				return ParsedOptionSet;
+				return ParsedOptionSet.Validate.MinimumValueCount(argument, count, () =>
+				{
+					throw new CliException(CliValidationSource.MinimumValueCount, "Option '" + argument + "' must have at least " + count + " values.");
+				});
 			}
 			/// <summary>
 			/// Validates that the argument does not exceed a maximum amount of values; otherwise, a <see cref="CliException" /> is thrown. If the <see cref="Option" /> was not found, this validation succeeds.
@@ -431,11 +427,10 @@ namespace BytecodeApi.IO.Cli
 				Check.ArgumentNull(argument, nameof(argument));
 				Check.ArgumentEx.StringNotEmpty(argument, nameof(argument));
 
-				bool failed = false;
-				ParsedOptionSet.Validate.MaximumValueCount(argument, count, () => failed = true);
-				if (failed) throw new CliException(CliValidationSource.MaximumValueCount, "Option '" + argument + "' must not have more than " + count + " values.");
-
-				return ParsedOptionSet;
+				return ParsedOptionSet.Validate.MaximumValueCount(argument, count, () =>
+				{
+					throw new CliException(CliValidationSource.MaximumValueCount, "Option '" + argument + "' must not have more than " + count + " values.");
+				});
 			}
 			/// <summary>
 			/// Performs a custom validation on the values and throws a <see cref="CliException" />, if the validation failed. If the <see cref="Option" /> was not found, this validation succeeds.
@@ -450,11 +445,10 @@ namespace BytecodeApi.IO.Cli
 				Check.ArgumentNull(argument, nameof(argument));
 				Check.ArgumentEx.StringNotEmpty(argument, nameof(argument));
 
-				bool failed = false;
-				ParsedOptionSet.Validate.Custom(argument, validate, () => failed = true);
-				if (failed) throw new CliException(CliValidationSource.Custom, "Custom validation for option '" + argument + "' failed.");
-
-				return ParsedOptionSet;
+				return ParsedOptionSet.Validate.Custom(argument, validate, () =>
+				{
+					throw new CliException(CliValidationSource.Custom, "Custom validation for option '" + argument + "' failed.");
+				});
 			}
 			/// <summary>
 			/// Validates that all values represent a valid <see cref="int" /> value; otherwise, a <see cref="CliException" /> is thrown. If the <see cref="Option" /> was not found, this validation succeeds.
@@ -468,11 +462,10 @@ namespace BytecodeApi.IO.Cli
 				Check.ArgumentNull(argument, nameof(argument));
 				Check.ArgumentEx.StringNotEmpty(argument, nameof(argument));
 
-				bool failed = false;
-				ParsedOptionSet.Validate.Int32(argument, () => failed = true);
-				if (failed) throw new CliException(CliValidationSource.Int32, "The value of option '" + argument + "' is not a valid Int32 value.");
-
-				return ParsedOptionSet;
+				return ParsedOptionSet.Validate.Int32(argument, () =>
+				{
+					throw new CliException(CliValidationSource.Int32, "The value of option '" + argument + "' is not a valid Int32 value.");
+				});
 			}
 			/// <summary>
 			/// Validates that all values represent existing files; otherwise, a <see cref="CliException" /> is thrown. If the <see cref="Option" /> was not found, this validation succeeds.
@@ -486,11 +479,10 @@ namespace BytecodeApi.IO.Cli
 				Check.ArgumentNull(argument, nameof(argument));
 				Check.ArgumentEx.StringNotEmpty(argument, nameof(argument));
 
-				bool failed = false;
-				ParsedOptionSet.Validate.FileExists(argument, () => failed = true);
-				if (failed) throw new CliException(CliValidationSource.FileExists, "File as specified in option '" + argument + "' was not found.");
-
-				return ParsedOptionSet;
+				return ParsedOptionSet.Validate.FileExists(argument, () =>
+				{
+					throw new CliException(CliValidationSource.FileExists, "File as specified in option '" + argument + "' was not found.");
+				});
 			}
 			/// <summary>
 			/// Validates that all values represent filenames with one of several specific extensions; otherwise, a <see cref="CliException" /> is thrown. If the <see cref="Option" /> was not found, this validation succeeds.
@@ -505,11 +497,10 @@ namespace BytecodeApi.IO.Cli
 				Check.ArgumentNull(argument, nameof(argument));
 				Check.ArgumentEx.StringNotEmpty(argument, nameof(argument));
 
-				bool failed = false;
-				ParsedOptionSet.Validate.FileExtension(argument, extensions, () => failed = true);
-				if (failed) throw new CliException(CliValidationSource.FileExtension, "File extension as specified in option '" + argument + "' is not allowed.");
-
-				return ParsedOptionSet;
+				return ParsedOptionSet.Validate.FileExtension(argument, extensions, () =>
+				{
+					throw new CliException(CliValidationSource.FileExtension, "File extension as specified in option '" + argument + "' is not allowed.");
+				});
 			}
 			/// <summary>
 			/// Validates that all values represent existing directories; otherwise, a <see cref="CliException" /> is thrown. If the <see cref="Option" /> was not found, this validation succeeds.
@@ -523,11 +514,10 @@ namespace BytecodeApi.IO.Cli
 				Check.ArgumentNull(argument, nameof(argument));
 				Check.ArgumentEx.StringNotEmpty(argument, nameof(argument));
 
-				bool failed = false;
-				ParsedOptionSet.Validate.DirectoryExists(argument, () => failed = true);
-				if (failed) throw new CliException(CliValidationSource.DirectoryExists, "Directory as specified in option '" + argument + "' was not found.");
-
-				return ParsedOptionSet;
+				return ParsedOptionSet.Validate.DirectoryExists(argument, () =>
+				{
+					throw new CliException(CliValidationSource.DirectoryExists, "Directory as specified in option '" + argument + "' was not found.");
+				});
 			}
 		}
 	}

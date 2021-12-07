@@ -1,6 +1,7 @@
 ﻿using BytecodeApi.Extensions;
 using BytecodeApi.IO.SystemInfo;
 using Microsoft.Win32;
+using System;
 using System.IO;
 using System.Linq;
 using WinFormsDialogResult = System.Windows.Forms.DialogResult;
@@ -149,7 +150,7 @@ namespace BytecodeApi.UI.Dialogs
 			if (dialog.ShowDialog() == true)
 			{
 				string result = dialog.FileName;
-				if (extension != null && !result.EndsWith(extension, SpecialStringComparisons.IgnoreCase))
+				if (extension != null && !result.EndsWith(extension, StringComparison.OrdinalIgnoreCase))
 				{
 					result = result.TrimEnd('.') + "." + extension.TrimStart('.');
 				}

@@ -40,7 +40,7 @@ namespace BytecodeApi.Extensions
 		/// </returns>
 		public static ulong? ToNullIfDefault(this ulong value)
 		{
-			return value == default ? (ulong?)null : value;
+			return value == default ? null : (ulong?)value;
 		}
 	}
 }

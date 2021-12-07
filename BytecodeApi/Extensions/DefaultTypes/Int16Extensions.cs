@@ -40,7 +40,7 @@ namespace BytecodeApi.Extensions
 		/// </returns>
 		public static short? ToNullIfDefault(this short value)
 		{
-			return value == default(short) ? (short?)null : value;
+			return value == default(short) ? null : (short?)value;
 		}
 	}
 }

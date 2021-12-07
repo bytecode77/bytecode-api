@@ -1,4 +1,4 @@
-﻿using BytecodeApi.Extensions;
+using BytecodeApi.Extensions;
 using System;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
@@ -16,7 +16,7 @@ namespace BytecodeApi.IO.Interop
 		/// <summary>
 		/// Occurs when a key is pressed. Keystrokes are captured globally using SetWindowsHookEx.
 		/// </summary>
-		public event KeyPressEventHandler KeyboardPressed;
+		public event KeyboardHookEventHandler KeyPressed;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="GlobalKeyboardHook" /> class and starts capturing.
@@ -38,6 +38,7 @@ namespace BytecodeApi.IO.Interop
 				Hook = IntPtr.Zero;
 				HookProcedure -= KeyboardHookProc;
 			}
+
 			if (User32Library != IntPtr.Zero)
 			{
 				Native.FreeLibrary(User32Library);
@@ -47,32 +48,41 @@ namespace BytecodeApi.IO.Interop
 
 		private IntPtr KeyboardHookProc(int code, IntPtr wParam, IntPtr lParam)
 		{
+			//TODO: Bug: Doesn't capture sticky keys correctly (^^, ´´, ``) and dead keys / AltGr combinations (i.e. []{}@)
 			bool handled = false;
-			if (code >= 0)
+
+			if (code >= 0 && wParam == (IntPtr)0x100)
 			{
 				Native.KeyboardInput input = Marshal.PtrToStructure<Native.KeyboardInput>(lParam);
-				if (wParam == (IntPtr)0x100)
+				bool isShift = (Native.GetKeyState(0x10) & 0x80) == 0x80;
+				bool isCapslock = Native.GetKeyState(0x14) != 0;
+
+				byte[] keyState = new byte[256];
+				Native.GetKeyboardState(keyState);
+
+				char key;
+				byte[] translatedKey = new byte[4];
+				switch (Native.ToAscii(input.KeyCode, input.ScanCode, keyState, translatedKey, input.Flags))
 				{
-					bool isShift = (Native.GetKeyState(0x10) & 0x80) == 0x80;
-					bool isCapslock = Native.GetKeyState(0x14) != 0;
-					byte[] keyState = new byte[256];
-					byte[] translatedKey = new byte[2];
-
-					Native.GetKeyboardState(keyState);
-					//TODO: Bug: Doesn't handly sticky keys (^^, ´´, ``) and doesn't handle characters, like §[]{}
-					if (Native.ToAscii(input.KeyCode, input.ScanCode, keyState, translatedKey, input.Flags) == 1)
-					{
-						char key = (char)(translatedKey[0] | translatedKey[1] << 8);
-						if ((isCapslock ^ isShift) && key.IsLetter()) key = key.ToUpper();
-
-						KeyPressEventArgs e = new KeyPressEventArgs(key);
-						KeyboardPressed?.Invoke(this, e);
-						handled |= e.Handled;
-					}
+					case 1:
+						key = BitConverter.ToChar(translatedKey, 0);
+						if (isCapslock ^ isShift && key.IsLetter()) key = key.ToUpper();
+						break;
+					case 2:
+						key = BitConverter.ToChar(translatedKey, 1);
+						if (isCapslock ^ isShift && key.IsLetter()) key = key.ToUpper();
+						break;
+					default:
+						key = '\0';
+						break;
 				}
+
+				KeyboardHookEventArgs e = new KeyboardHookEventArgs((Keys)input.KeyCode, input.ScanCode, key);
+				KeyPressed?.Invoke(this, e);
+				handled |= e.Handled;
 			}
 
-			return handled ? (IntPtr)1 : Native.CallNextHookEx(IntPtr.Zero, code, wParam, lParam);
+			return handled ? (IntPtr)1 : Native.CallNextHookEx(Hook, code, wParam, lParam);
 		}
 	}
 }

@@ -44,70 +44,72 @@ namespace BytecodeApi.UI.Converters
 				decimal a = System.Convert.ToDecimal(value);
 				decimal b = System.Convert.ToDecimal(parameter);
 
-				return Method switch
+				switch (Method)
 				{
-					MathConverterMethod.Add => a + b,
-					MathConverterMethod.Subtract => a - b,
-					MathConverterMethod.Multiply => a * b,
-					MathConverterMethod.Divide => a / b,
-					MathConverterMethod.Modulo => a % b,
-					MathConverterMethod method when method == MathConverterMethod.And || method == MathConverterMethod.Or || method == MathConverterMethod.Xor => throw CreateInvalidOperationException(),
-					_ => throw Throw.InvalidEnumArgument(nameof(Method), Method)
-				};
+					case MathConverterMethod.Add: return a + b;
+					case MathConverterMethod.Subtract: return a - b;
+					case MathConverterMethod.Multiply: return a * b;
+					case MathConverterMethod.Divide: return a / b;
+					case MathConverterMethod.Modulo: return a % b;
+					case MathConverterMethod.And:
+					case MathConverterMethod.Or:
+					case MathConverterMethod.Xor: throw CreateInvalidOperationException();
+					default: throw Throw.InvalidEnumArgument(nameof(Method), Method);
+				}
 			}
 			else if (value is double || parameter is double)
 			{
 				double a = System.Convert.ToDouble(value);
 				double b = System.Convert.ToDouble(parameter);
 
-				return Method switch
+				switch (Method)
 				{
-					MathConverterMethod.Add => a + b,
-					MathConverterMethod.Subtract => a - b,
-					MathConverterMethod.Multiply => a * b,
-					MathConverterMethod.Divide => a / b,
-					MathConverterMethod.Modulo => a % b,
-					MathConverterMethod.And => throw CreateInvalidOperationException(),
-					MathConverterMethod.Or => throw CreateInvalidOperationException(),
-					MathConverterMethod.Xor => throw CreateInvalidOperationException(),
-					_ => throw Throw.InvalidEnumArgument(nameof(Method), Method)
-				};
+					case MathConverterMethod.Add: return a + b;
+					case MathConverterMethod.Subtract: return a - b;
+					case MathConverterMethod.Multiply: return a * b;
+					case MathConverterMethod.Divide: return a / b;
+					case MathConverterMethod.Modulo: return a % b;
+					case MathConverterMethod.And:
+					case MathConverterMethod.Or:
+					case MathConverterMethod.Xor: throw CreateInvalidOperationException();
+					default: throw Throw.InvalidEnumArgument(nameof(Method), Method);
+				}
 			}
 			else if (value is float || parameter is float)
 			{
 				float a = System.Convert.ToSingle(value);
 				float b = System.Convert.ToSingle(parameter);
 
-				return Method switch
+				switch (Method)
 				{
-					MathConverterMethod.Add => a + b,
-					MathConverterMethod.Subtract => a - b,
-					MathConverterMethod.Multiply => a * b,
-					MathConverterMethod.Divide => a / b,
-					MathConverterMethod.Modulo => a % b,
-					MathConverterMethod.And => throw CreateInvalidOperationException(),
-					MathConverterMethod.Or => throw CreateInvalidOperationException(),
-					MathConverterMethod.Xor => throw CreateInvalidOperationException(),
-					_ => throw Throw.InvalidEnumArgument(nameof(Method), Method)
-				};
+					case MathConverterMethod.Add: return a + b;
+					case MathConverterMethod.Subtract: return a - b;
+					case MathConverterMethod.Multiply: return a * b;
+					case MathConverterMethod.Divide: return a / b;
+					case MathConverterMethod.Modulo: return a % b;
+					case MathConverterMethod.And:
+					case MathConverterMethod.Or:
+					case MathConverterMethod.Xor: throw CreateInvalidOperationException();
+					default: throw Throw.InvalidEnumArgument(nameof(Method), Method);
+				}
 			}
 			else
 			{
 				int a = System.Convert.ToInt32(value);
 				int b = System.Convert.ToInt32(parameter);
 
-				return Method switch
+				switch (Method)
 				{
-					MathConverterMethod.Add => a + b,
-					MathConverterMethod.Subtract => a - b,
-					MathConverterMethod.Multiply => a * b,
-					MathConverterMethod.Divide => a / b,
-					MathConverterMethod.Modulo => a % b,
-					MathConverterMethod.And => a & b,
-					MathConverterMethod.Or => a | b,
-					MathConverterMethod.Xor => a ^ b,
-					_ => throw Throw.InvalidEnumArgument(nameof(Method), Method)
-				};
+					case MathConverterMethod.Add: return a + b;
+					case MathConverterMethod.Subtract: return a - b;
+					case MathConverterMethod.Multiply: return a * b;
+					case MathConverterMethod.Divide: return a / b;
+					case MathConverterMethod.Modulo: return a % b;
+					case MathConverterMethod.And: return a & b;
+					case MathConverterMethod.Or: return a | b;
+					case MathConverterMethod.Xor: return a ^ b;
+					default: throw Throw.InvalidEnumArgument(nameof(Method), Method);
+				}
 			}
 
 			Exception CreateInvalidOperationException()

@@ -3,7 +3,7 @@
 namespace BytecodeApi.UI.Converters
 {
 	/// <summary>
-	/// Represents the converter that converts <see cref="ulong" />? values (or values that are convertible to <see cref="ulong" />) representing a byte size to an equivalent <see cref="string" /> representation. The <see cref="Convert(object)" /> method returns a <see cref="string" /> based on the specified parameters using the <see cref="ByteSize.Format()" /> method.
+	/// Represents the converter that converts <see cref="long" />? values (or values that are convertible to <see cref="long" />) representing a byte size to an equivalent <see cref="string" /> representation. The <see cref="Convert(object)" /> method returns a <see cref="string" /> based on the specified parameters using the <see cref="ByteSize.Format()" /> method.
 	/// </summary>
 	public sealed class ByteSizeConverter : ConverterBase<object, string>
 	{
@@ -120,9 +120,9 @@ namespace BytecodeApi.UI.Converters
 		}
 
 		/// <summary>
-		/// Converts the <see cref="object" /> that is convertible to an <see cref="ulong" />? value based on the specified parameters.
+		/// Converts the <see cref="object" /> that is convertible to an <see cref="long" />? value based on the specified parameters.
 		/// </summary>
-		/// <param name="value">The <see cref="object" /> that is convertible to an <see cref="ulong" />? value to convert.</param>
+		/// <param name="value">The <see cref="object" /> that is convertible to an <see cref="long" />? value to convert.</param>
 		/// <returns>
 		/// A <see cref="string" /> with the result of the conversion.
 		/// </returns>
@@ -134,10 +134,10 @@ namespace BytecodeApi.UI.Converters
 			}
 			else
 			{
-				ByteSize byteSize = new ByteSize(System.Convert.ToUInt64(value));
+				ByteSize byteSize = System.Convert.ToInt64(value);
 
 				if (Unit == null) return byteSize.Format(Decimals, PadDecimals, ThousandsSeparator, RoundUp);
-				else return byteSize.FormatWithUnit(Unit.Value, Decimals, PadDecimals, ThousandsSeparator, RoundUp);
+				else return byteSize.Format(Unit.Value, Decimals, PadDecimals, ThousandsSeparator, RoundUp);
 			}
 		}
 	}

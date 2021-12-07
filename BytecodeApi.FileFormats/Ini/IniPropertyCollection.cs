@@ -1,4 +1,5 @@
 ﻿using BytecodeApi.Extensions;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,7 +40,7 @@ namespace BytecodeApi.FileFormats.Ini
 			{
 				Check.ArgumentNull(name, nameof(name));
 				Check.KeyNotFoundException(HasProperty(name, ignoreCase), "The property '" + name + "' was not found.");
-				return Properties.First(property => property.Name.Equals(name, ignoreCase ? SpecialStringComparisons.IgnoreCase : SpecialStringComparisons.None));
+				return Properties.First(property => property.Name.Equals(name, ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal));
 			}
 		}
 		/// <summary>
@@ -74,7 +75,7 @@ namespace BytecodeApi.FileFormats.Ini
 
 		internal bool HasProperty(string name, bool ignoreCase)
 		{
-			return Properties.Any(property => property.Name.Equals(name, ignoreCase ? SpecialStringComparisons.IgnoreCase : SpecialStringComparisons.None));
+			return Properties.Any(property => property.Name.Equals(name, ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal));
 		}
 		/// <summary>
 		/// Processes all duplicate properties within this collection according to the specified behavior.
@@ -104,7 +105,7 @@ namespace BytecodeApi.FileFormats.Ini
 				case IniDuplicatePropertyNameBehavior.Ignore:
 					for (int i = 1; i < Count; i++)
 					{
-						if (Properties.Take(i).Any(property => property.Name.Equals(Properties[i].Name, ignoreCase ? SpecialStringComparisons.IgnoreCase : SpecialStringComparisons.None)))
+						if (Properties.Take(i).Any(property => property.Name.Equals(Properties[i].Name, ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal)))
 						{
 							removedProperties.Add(Properties[i]);
 						}
@@ -113,7 +114,7 @@ namespace BytecodeApi.FileFormats.Ini
 				case IniDuplicatePropertyNameBehavior.Overwrite:
 					for (int i = 1; i < Count; i++)
 					{
-						IniProperty firstProperty = Properties.Take(i).FirstOrDefault(property => property.Name.Equals(Properties[i].Name, ignoreCase ? SpecialStringComparisons.IgnoreCase : SpecialStringComparisons.None));
+						IniProperty firstProperty = Properties.Take(i).FirstOrDefault(property => property.Name.Equals(Properties[i].Name, ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal));
 						if (firstProperty != null)
 						{
 							firstProperty.Value = Properties[i].Value;
@@ -139,6 +140,18 @@ namespace BytecodeApi.FileFormats.Ini
 			Check.ArgumentNull(item, nameof(item));
 
 			Properties.Add(item);
+		}
+		/// <summary>
+		/// Adds an <see cref="IniProperty" /> to the end of the <see cref="IniPropertyCollection" />.
+		/// </summary>
+		/// <param name="name">The name of the INI property.</param>
+		/// <param name="value">The value of the INI property.</param>
+		public void Add(string name, string value)
+		{
+			Check.ArgumentNull(name, nameof(name));
+			Check.ArgumentNull(value, nameof(value));
+
+			Add(new IniProperty(name, value));
 		}
 		/// <summary>
 		/// Removes the first occurrence of a specific <see cref="IniProperty" /> from the <see cref="IniPropertyCollection" />.
