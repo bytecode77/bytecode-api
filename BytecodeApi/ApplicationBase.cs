@@ -536,7 +536,7 @@ namespace BytecodeApi
 								{
 									if (subKey.GetStringValue("ProcessorNameString").ToNullIfEmpty() is string name)
 									{
-										names.Add(name);
+										names.Add(name.Trim());
 									}
 								}
 							}
