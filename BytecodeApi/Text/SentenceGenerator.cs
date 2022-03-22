@@ -73,23 +73,19 @@ namespace BytecodeApi.Text
 			Check.ArgumentEx.ArrayElementsRequired(FinishPunctuation, nameof(FinishPunctuation));
 
 			StringBuilder stringBuilder = new StringBuilder();
+			int words = MathEx.Random.Next(MinWords, MaxWords + 1);
 
-			lock (MathEx._Random)
+			for (int i = 0; i < words; i++)
 			{
-				int words = MathEx._Random.Next(MinWords, MaxWords + 1);
-
-				for (int i = 0; i < words; i++)
+				stringBuilder.Append(WordGenerator.Generate(i == 0 ? StringCasing.CamelCase : StringCasing.Lower));
+				if (i < words - 1)
 				{
-					stringBuilder.Append(WordGenerator.Generate(i == 0 ? StringCasing.CamelCase : StringCasing.Lower));
-					if (i < words - 1)
-					{
-						if (MathEx._Random.NextDouble() < CommaChance) stringBuilder.Append(",");
-						stringBuilder.Append(" ");
-					}
+					if (MathEx.Random.NextDouble() < CommaChance) stringBuilder.Append(",");
+					stringBuilder.Append(" ");
 				}
-
-				return stringBuilder.Append(MathEx._Random.NextObject(FinishPunctuation)).ToString();
 			}
+
+			return stringBuilder.Append(MathEx.Random.NextObject(FinishPunctuation)).ToString();
 		}
 	}
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Security.Cryptography;
+using System.Threading;
 
 namespace BytecodeApi.Mathematics
 {
@@ -12,16 +13,16 @@ namespace BytecodeApi.Mathematics
 	/// </summary>
 	public static class MathEx
 	{
-		internal static readonly Random _Random = new Random();
-		internal static readonly RandomNumberGenerator _RandomNumberGenerator = RandomNumberGenerator.Create();
+		private static readonly ThreadLocal<Random> _Random = new ThreadLocal<Random>(() => new Random(Interlocked.Increment(ref RandomSeed)));
+		private static int RandomSeed = Environment.TickCount;
 		/// <summary>
-		/// Represents a singleton <see cref="System.Random" /> object. This field is read-only.
+		/// Represents a singleton <see cref="System.Random" /> object. This property is thread safe.
 		/// </summary>
-		public static readonly Random Random = new Random();
+		public static Random Random => _Random.Value;
 		/// <summary>
-		/// Represents a singleton <see cref="System.Security.Cryptography.RandomNumberGenerator" /> object. This field is read-only.
+		/// Represents a singleton <see cref="System.Security.Cryptography.RandomNumberGenerator" /> object. This field is thread safe.
 		/// </summary>
-		public static readonly RandomNumberGenerator RandomNumberGenerator = RandomNumberGenerator.Create();
+		public static readonly RandomNumberGenerator RandomNumberGenerator = new RNGCryptoServiceProvider();
 
 		/// <summary>
 		/// Determines whether the specified <see cref="byte" /> value is a positive power of two.

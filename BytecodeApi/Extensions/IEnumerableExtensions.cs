@@ -991,10 +991,7 @@ namespace BytecodeApi.Extensions
 		{
 			Check.ArgumentNull(source, nameof(source));
 
-			lock (MathEx._Random)
-			{
-				return source.OrderBy(itm => MathEx._Random.Next());
-			}
+			return source.OrderBy(itm => MathEx.Random.Next());
 		}
 		/// <summary>
 		/// Exchanges keys with values in this <see cref="IDictionary{TKey, TValue}" /> and returns a new <see cref="Dictionary{TKey, TValue}" />, where keys and values are swapped.
