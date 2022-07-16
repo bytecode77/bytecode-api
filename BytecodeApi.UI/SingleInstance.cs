@@ -45,11 +45,7 @@ namespace BytecodeApi.UI
 			PipeName = "BAPI_SINGLE_INSTANCE_PIPE_" + identifier;
 			Pipe = new NamedPipeServerStream(PipeName, PipeDirection.In, NamedPipeServerStream.MaxAllowedServerInstances);
 			PipeThread = ThreadFactory.StartThread(PipeThreadFunc);
-
-			lock (MathEx._RandomNumberGenerator)
-			{
-				PipeIdentifier = MathEx._RandomNumberGenerator.GetInt32();
-			}
+			PipeIdentifier = MathEx.RandomNumberGenerator.GetInt32();
 		}
 		/// <summary>
 		/// Releases all resources used by the current instance of the <see cref="SingleInstance" /> class.

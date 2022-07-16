@@ -247,36 +247,30 @@ namespace BytecodeApi.Extensions
 
 			if (cryptographic)
 			{
-				lock (MathEx._RandomNumberGenerator)
+				for (int i = offset; i < offset + count; i++)
 				{
-					for (int i = offset; i < offset + count; i++)
+					if (bufferPosition >= buffer.Length << 3)
 					{
-						if (bufferPosition >= buffer.Length << 3)
-						{
-							MathEx._RandomNumberGenerator.GetBytes(buffer);
-							bufferPosition = 0;
-						}
-
-						array[i] = (buffer[bufferPosition >> 3] & 1 << (bufferPosition & 7)) > 0;
-						bufferPosition++;
+						MathEx.RandomNumberGenerator.GetBytes(buffer);
+						bufferPosition = 0;
 					}
+
+					array[i] = (buffer[bufferPosition >> 3] & 1 << (bufferPosition & 7)) > 0;
+					bufferPosition++;
 				}
 			}
 			else
 			{
-				lock (MathEx._Random)
+				for (int i = offset; i < offset + count; i++)
 				{
-					for (int i = offset; i < offset + count; i++)
+					if (bufferPosition >= buffer.Length << 3)
 					{
-						if (bufferPosition >= buffer.Length << 3)
-						{
-							MathEx._Random.NextBytes(buffer);
-							bufferPosition = 0;
-						}
-
-						array[i] = (buffer[bufferPosition >> 3] & 1 << (bufferPosition & 7)) > 0;
-						bufferPosition++;
+						MathEx.Random.NextBytes(buffer);
+						bufferPosition = 0;
 					}
+
+					array[i] = (buffer[bufferPosition >> 3] & 1 << (bufferPosition & 7)) > 0;
+					bufferPosition++;
 				}
 			}
 		}

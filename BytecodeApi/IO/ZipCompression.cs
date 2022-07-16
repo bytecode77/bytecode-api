@@ -217,7 +217,7 @@ namespace BytecodeApi.IO
 				{
 					BlobTreeNode node = tree.Root;
 
-					foreach (string path in entry.FullName.TrimEndString(entry.Name, true, true).TrimEnd('\\').Split(new[] { '\\' }, StringSplitOptions.RemoveEmptyEntries))
+					foreach (string path in entry.FullName.TrimEndString(entry.Name, true, true).TrimEnd('\\', '/').Split(new[] { '\\' }, StringSplitOptions.RemoveEmptyEntries))
 					{
 						if (!node.HasNode(path, true)) node.Nodes.Add(new BlobTreeNode(path));
 						node = node.Nodes[path, true];

@@ -34,8 +34,10 @@ namespace BytecodeApi.IO
 		{
 			try
 			{
-				Process.GetProcessById(processId);
-				return true;
+				using (Process.GetProcessById(processId))
+				{
+					return true;
+				}
 			}
 			catch
 			{

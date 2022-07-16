@@ -71,19 +71,15 @@ namespace BytecodeApi.Text
 			Check.ArgumentOutOfRangeEx.Between0And1(ParagraphChance, nameof(ParagraphChance));
 
 			StringBuilder stringBuilder = new StringBuilder();
+			int sentences = MathEx.Random.Next(MinSentenceCount, MaxSentenceCount + 1);
 
-			lock (MathEx._Random)
+			for (int i = 0; i < sentences; i++)
 			{
-				int sentences = MathEx._Random.Next(MinSentenceCount, MaxSentenceCount + 1);
+				stringBuilder.Append(SentenceGenerator.Generate());
 
-				for (int i = 0; i < sentences; i++)
-				{
-					stringBuilder.Append(SentenceGenerator.Generate());
-
-					if (MathEx._Random.NextDouble() < ParagraphChance) stringBuilder.AppendLine().AppendLine();
-					else if (MathEx._Random.NextDouble() < LineBreakChance) stringBuilder.AppendLine();
-					else stringBuilder.Append(" ");
-				}
+				if (MathEx.Random.NextDouble() < ParagraphChance) stringBuilder.AppendLine().AppendLine();
+				else if (MathEx.Random.NextDouble() < LineBreakChance) stringBuilder.AppendLine();
+				else stringBuilder.Append(" ");
 			}
 
 			return stringBuilder.ToString().Trim();

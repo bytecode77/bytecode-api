@@ -112,17 +112,11 @@ namespace BytecodeApi
 
 			if (cryptographic)
 			{
-				lock (MathEx._RandomNumberGenerator)
-				{
-					return MathEx._RandomNumberGenerator.GetBytes(size).ToHexadecimalString();
-				}
+				return MathEx.RandomNumberGenerator.GetBytes(size).ToHexadecimalString();
 			}
 			else
 			{
-				lock (MathEx._Random)
-				{
-					return MathEx._Random.NextBytes(size).ToHexadecimalString();
-				}
+				return MathEx.Random.NextBytes(size).ToHexadecimalString();
 			}
 		}
 		/// <summary>
@@ -176,22 +170,16 @@ namespace BytecodeApi
 
 			if (cryptographic)
 			{
-				lock (MathEx._RandomNumberGenerator)
+				for (int i = 0; i < length; i++)
 				{
-					for (int i = 0; i < length; i++)
-					{
-						newString[i] = MathEx._RandomNumberGenerator.GetObject(charset);
-					}
+					newString[i] = MathEx.RandomNumberGenerator.GetObject(charset);
 				}
 			}
 			else
 			{
-				lock (MathEx._Random)
+				for (int i = 0; i < length; i++)
 				{
-					for (int i = 0; i < length; i++)
-					{
-						newString[i] = MathEx._Random.NextObject(charset);
-					}
+					newString[i] = MathEx.Random.NextObject(charset);
 				}
 			}
 

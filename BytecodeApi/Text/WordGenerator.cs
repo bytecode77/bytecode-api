@@ -69,20 +69,17 @@ namespace BytecodeApi.Text
 			string word = "";
 			int length;
 
-			lock (MathEx._Random)
+			length = MathEx.Random.Next(MinLength, MaxLength + 1);
+			bool consonant = MathEx.Random.NextBoolean();
+
+			while (word.Length < length)
 			{
-				length = MathEx._Random.Next(MinLength, MaxLength + 1);
-				bool consonant = MathEx._Random.NextBoolean();
+				string charset = consonant ? TextResources.Consonants : TextResources.Vovels;
+				double chance = consonant ? DoubleConsonantChance : DoubleVovelChance;
+				consonant = !consonant;
 
-				while (word.Length < length)
-				{
-					string charset = consonant ? TextResources.Consonants : TextResources.Vovels;
-					double chance = consonant ? DoubleConsonantChance : DoubleVovelChance;
-					consonant = !consonant;
-
-					char c = MathEx._Random.NextObject(charset.ToCharArray());
-					word += c.Repeat(MathEx._Random.NextDouble() < chance ? 2 : 1);
-				}
+				char c = MathEx.Random.NextObject(charset.ToCharArray());
+				word += c.Repeat(MathEx.Random.NextDouble() < chance ? 2 : 1);
 			}
 
 			return word.Left(length).ChangeCasing(casing);
