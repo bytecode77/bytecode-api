@@ -81,7 +81,7 @@ namespace BytecodeApi.Extensions
 		{
 			Check.ArgumentNull(type, nameof(type));
 
-			return type.Namespace + "." + type.GetNestedName();
+			return (type.Namespace == null ? null : type.Namespace + ".") + type.GetNestedName();
 		}
 		/// <summary>
 		/// Returns the equivalent <see cref="string" /> representation of the name of this <see cref="Type" /> using the <see cref="TypeNaming.CSharp" /> naming convention.
