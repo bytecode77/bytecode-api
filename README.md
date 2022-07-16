@@ -42,7 +42,7 @@ All classes and members are documented with XML tags. The [online documentation]
 
 ## Downloads
 
-[![](http://bytecode77.com/public/fileicons/zip.png) BytecodeApi 2.0.0.zip](https://downloads.bytecode77.com/BytecodeApi%202.0.0.zip)
+[![](http://bytecode77.com/public/fileicons/zip.png) BytecodeApi 2.0.1.zip](https://downloads.bytecode77.com/BytecodeApi%202.0.1.zip)
 
 ## Project Page
 
