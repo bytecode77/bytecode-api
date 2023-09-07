@@ -1,351 +1,361 @@
-﻿using BytecodeApi.IO;
-using BytecodeApi.IO.Cli;
-using System;
+﻿using BytecodeApi.Interop;
+using BytecodeApi.IO;
+using Microsoft.Win32.SafeHandles;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 using System.Security.Principal;
-using System.Text.RegularExpressions;
 
-namespace BytecodeApi.Extensions
+namespace BytecodeApi.Extensions;
+
+/// <summary>
+/// Provides a set of <see langword="static" /> methods for interaction with <see cref="Process" /> objects.
+/// </summary>
+[SupportedOSPlatform("windows")]
+public static class ProcessExtensions
 {
 	/// <summary>
-	/// Provides a set of <see langword="static" /> methods for interaction with <see cref="Process" /> objects.
+	/// Gets the <see cref="WindowsIdentity" /> object that represents the user running this <see cref="Process" />.
 	/// </summary>
-	public static class ProcessExtensions
+	/// <param name="process">The <see cref="Process" /> to be checked.</param>
+	/// <returns>
+	/// The <see cref="WindowsIdentity" /> object that represents the user running this <see cref="Process" />.
+	/// </returns>
+	public static WindowsIdentity GetUser(this Process process)
 	{
-		private static readonly Regex MscorlibModuleRegex = new Regex("^mscorlib.(ni.)?dll$", RegexOptions.IgnoreCase);
+		Check.ArgumentNull(process);
 
-		/// <summary>
-		/// Gets the <see cref="WindowsIdentity" /> object that represents the user running this <see cref="Process" />.
-		/// </summary>
-		/// <param name="process">The <see cref="Process" /> to be checked.</param>
-		/// <returns>
-		/// The <see cref="WindowsIdentity" /> object that represents the user running this <see cref="Process" />.
-		/// </returns>
-		public static WindowsIdentity GetUser(this Process process)
+		nint token = 0;
+		try
 		{
-			Check.ArgumentNull(process, nameof(process));
+			token = process.OpenToken(8);
+			return new(token);
+		}
+		finally
+		{
+			if (token != 0) Native.CloseHandle(token);
+		}
+	}
+	/// <summary>
+	/// Returns a <see cref="string" /> that represents the user running this <see cref="Process" />. This <see cref="string" /> contains the full Windows logon name, including the machine or domain name.
+	/// </summary>
+	/// <param name="process">The <see cref="Process" /> to be checked.</param>
+	/// <returns>
+	/// A <see cref="string" /> that represents the user running this <see cref="Process" />.
+	/// </returns>
+	public static string GetUserName(this Process process)
+	{
+		Check.ArgumentNull(process);
 
-			IntPtr token = IntPtr.Zero;
-			try
+		using WindowsIdentity windowsIdentity = process.GetUser();
+		return windowsIdentity.Name;
+	}
+	/// <summary>
+	/// Returns a <see cref="string" /> that represents the user running this <see cref="Process" />. This <see cref="string" /> contains only the user, excluding machine or domain name.
+	/// </summary>
+	/// <param name="process">The <see cref="Process" /> to be checked.</param>
+	/// <returns>
+	/// A <see cref="string" /> that represents the user running this <see cref="Process" />.
+	/// </returns>
+	public static string GetUserNameShort(this Process process)
+	{
+		return process.GetUserName().SubstringFromLast('\\');
+	}
+	/// <summary>
+	/// Gets the parent <see cref="Process" /> of this <see cref="Process" /> or <see langword="null" />, if the process does not have a parent or this method failed.
+	/// </summary>
+	/// <param name="process">The <see cref="Process" /> to be checked.</param>
+	/// <returns>
+	/// The parent <see cref="Process" /> of this <see cref="Process" /> or <see langword="null" />, if the process does not have a parent or this method failed.
+	/// </returns>
+	public static Process? GetParentProcess(this Process process)
+	{
+		Check.ArgumentNull(process);
+
+		try
+		{
+			Native.ProcessEntry processEntry = new()
 			{
-				token = process.OpenToken(8);
-				return new WindowsIdentity(token);
-			}
-			catch
+				Size = (uint)Marshal.SizeOf<Native.ProcessEntry>()
+			};
+
+			using Native.SafeSnapshotHandle snapshot = Native.CreateToolhelp32Snapshot(2, (uint)process.Id);
+			int lastError = Marshal.GetLastWin32Error();
+
+			if (snapshot.IsInvalid || !Native.Process32First(snapshot, ref processEntry) && lastError == 18)
 			{
 				return null;
-			}
-			finally
-			{
-				if (token != IntPtr.Zero) Native.CloseHandle(token);
-			}
-		}
-		/// <summary>
-		/// Returns a <see cref="string" /> that represents the user running this <see cref="Process" />. This <see cref="string" /> contains the full Windows logon name, including the machine or domain name.
-		/// </summary>
-		/// <param name="process">The <see cref="Process" /> to be checked.</param>
-		/// <returns>
-		/// A <see cref="string" /> that represents the user running this <see cref="Process" />.
-		/// </returns>
-		public static string GetUserName(this Process process)
-		{
-			Check.ArgumentNull(process, nameof(process));
-
-			using (WindowsIdentity windowsIdentity = process.GetUser())
-			{
-				return windowsIdentity?.Name;
-			}
-		}
-		/// <summary>
-		/// Returns a <see cref="string" /> that represents the user running this <see cref="Process" />. This <see cref="string" /> contains only the user, excluding machine or domain name.
-		/// </summary>
-		/// <param name="process">The <see cref="Process" /> to be checked.</param>
-		/// <returns>
-		/// A <see cref="string" /> that represents the user running this <see cref="Process" />.
-		/// </returns>
-		public static string GetUserNameShort(this Process process)
-		{
-			return process.GetUserName()?.SubstringFrom(@"\", true);
-		}
-		/// <summary>
-		/// Gets the parent <see cref="Process" /> of this <see cref="Process" /> or <see langword="null" />, if this method failed.
-		/// </summary>
-		/// <param name="process">The <see cref="Process" /> to be checked.</param>
-		/// <returns>
-		/// The parent <see cref="Process" /> of this <see cref="Process" /> or <see langword="null" />, if this method failed.
-		/// </returns>
-		public static Process GetParentProcess(this Process process)
-		{
-			Check.ArgumentNull(process, nameof(process));
-
-			try
-			{
-				Native.ProcessEntry processEntry = new Native.ProcessEntry
-				{
-					Size = (uint)Marshal.SizeOf<Native.ProcessEntry>()
-				};
-
-				using (Native.SafeSnapshotHandle snapshot = Native.CreateToolhelp32Snapshot(2, (uint)process.Id))
-				{
-					int lastError = Marshal.GetLastWin32Error();
-
-					if (snapshot.IsInvalid || !Native.Process32First(snapshot, ref processEntry) && lastError == 18)
-					{
-						return null;
-					}
-					else
-					{
-						do
-						{
-							if (processEntry.ProcessId == (uint)process.Id)
-							{
-								return Process.GetProcessById((int)processEntry.ParentProcessId);
-							}
-						}
-						while (Native.Process32Next(snapshot, ref processEntry));
-					}
-				}
-
-				return null;
-			}
-			catch
-			{
-				return null;
-			}
-		}
-		/// <summary>
-		/// Gets the commandline <see cref="string" /> of this <see cref="Process" /> that was passed during process creation.
-		/// </summary>
-		/// <param name="process">The <see cref="Process" /> to be checked.</param>
-		/// <returns>
-		/// The commandline <see cref="string" /> of this <see cref="Process" /> that was passed during process creation.
-		/// </returns>
-		public static string GetCommandLine(this Process process)
-		{
-			Check.ArgumentNull(process, nameof(process));
-
-			IntPtr processHandle = Native.OpenProcess(0x410, false, process.Id);
-
-			if (processHandle != IntPtr.Zero)
-			{
-				try
-				{
-					int basicInformationSize = Marshal.SizeOf<Native.ProcessBasicInformation>();
-					IntPtr basicInformationBuffer = Marshal.AllocHGlobal(basicInformationSize);
-
-					try
-					{
-						if (Native.NtQueryInformationProcess(processHandle, 0, basicInformationBuffer, (uint)basicInformationSize, out _) == 0)
-						{
-							Native.ProcessBasicInformation basicInformation = Marshal.PtrToStructure<Native.ProcessBasicInformation>(basicInformationBuffer);
-
-							if (basicInformation.PebBaseAddress != IntPtr.Zero &&
-								ReadStruct(basicInformation.PebBaseAddress, out Native.PebWithProcessParameters peb) &&
-								ReadStruct(peb.ProcessParameters, out Native.RtlUserProcessParameters parameters))
-							{
-								var commandLineLength = parameters.CommandLine.MaximumLength;
-								var commandLineBuffer = Marshal.AllocHGlobal(commandLineLength);
-
-								try
-								{
-									if (Native.ReadProcessMemory(processHandle, parameters.CommandLine.Buffer, commandLineBuffer, commandLineLength, out _))
-									{
-										return Marshal.PtrToStringUni(commandLineBuffer);
-									}
-								}
-								finally
-								{
-									Marshal.FreeHGlobal(commandLineBuffer);
-								}
-							}
-						}
-					}
-					finally
-					{
-						Marshal.FreeHGlobal(basicInformationBuffer);
-					}
-				}
-				finally
-				{
-					Native.CloseHandle(processHandle);
-				}
-			}
-
-			return null;
-
-			bool ReadStruct<TStruct>(IntPtr baseAddress, out TStruct result) where TStruct : struct
-			{
-				int size = Marshal.SizeOf<TStruct>();
-				IntPtr buffer = Marshal.AllocHGlobal(size);
-
-				try
-				{
-					if (Native.ReadProcessMemory(processHandle, baseAddress, buffer, (uint)size, out uint length) && length == size)
-					{
-						result = Marshal.PtrToStructure<TStruct>(buffer);
-						return true;
-					}
-				}
-				finally
-				{
-					Marshal.FreeHGlobal(buffer);
-				}
-
-				result = default;
-				return false;
-			}
-		}
-		/// <summary>
-		/// Gets the commandline arguments of this <see cref="Process" /> that were passed during process creation.
-		/// </summary>
-		/// <param name="process">The <see cref="Process" /> to be checked.</param>
-		/// <returns>
-		/// A <see cref="string" />[] with the commandline arguments of this <see cref="Process" /> that were passed during process creation.
-		/// </returns>
-		public static string[] GetCommandLineArgs(this Process process)
-		{
-			Check.ArgumentNull(process, nameof(process));
-
-			return CommandLineParser.GetArguments(process.GetCommandLine());
-		}
-		/// <summary>
-		/// Gets the mandatory integrity level of this <see cref="Process" /> or <see langword="null" />, if this method failed.
-		/// Usually, this method (specifically, OpenToken) will fail on elevated processes if this method is called with medium IL.
-		/// </summary>
-		/// <param name="process">The <see cref="Process" /> to be checked.</param>
-		/// <returns>
-		/// The <see cref="ProcessIntegrityLevel" /> of this <see cref="Process" /> or <see langword="null" />, if this method failed.
-		/// </returns>
-		public static ProcessIntegrityLevel? GetIntegrityLevel(this Process process)
-		{
-			Check.ArgumentNull(process, nameof(process));
-
-			IntPtr token = IntPtr.Zero;
-			IntPtr integrityLevelToken = IntPtr.Zero;
-
-			try
-			{
-				token = process.OpenToken(8);
-				Native.GetTokenInformation(token, 25, IntPtr.Zero, 0, out int integrityLevelTokenLength);
-
-				integrityLevelToken = Marshal.AllocHGlobal(integrityLevelTokenLength);
-				Native.GetTokenInformation(token, 25, integrityLevelToken, integrityLevelTokenLength, out integrityLevelTokenLength);
-				Native.TokenMandatoryLabel mandatoryLevelToken = Marshal.PtrToStructure<Native.TokenMandatoryLabel>(integrityLevelToken);
-
-				return (ProcessIntegrityLevel)Marshal.ReadInt32(Native.GetSidSubAuthority(mandatoryLevelToken.Label.Sid, 0));
-			}
-			catch
-			{
-				return null;
-			}
-			finally
-			{
-				if (token != IntPtr.Zero) Native.CloseHandle(token);
-				if (integrityLevelToken != IntPtr.Zero) Marshal.FreeHGlobal(integrityLevelToken);
-			}
-		}
-		/// <summary>
-		/// Gets a <see cref="bool" /> value indicating whether this <see cref="Process" /> is a 64-bit or a 32-bit process. Returns <see langword="null" />, if this method failed.
-		/// </summary>
-		/// <param name="process">The <see cref="Process" /> to be checked.</param>
-		/// <returns>
-		/// <see langword="true" />, if this <see cref="Process" /> is a 64-bit process;
-		/// <see langword="false" />, if this <see cref="Process" /> is a 32-bit process;
-		/// <see langword="null" />, if this method failed.
-		/// </returns>
-		public static bool? Is64Bit(this Process process)
-		{
-			Check.ArgumentNull(process, nameof(process));
-
-			try
-			{
-				if (Environment.Is64BitOperatingSystem)
-				{
-					return Native.IsWow64Process(process.Handle, out bool result) && !result;
-				}
-				else
-				{
-					return false;
-				}
-			}
-			catch
-			{
-				return null;
-			}
-		}
-		/// <summary>
-		/// Gets a <see cref="bool" /> value indicating whether this <see cref="Process" /> is a .NET process. Returns <see langword="null" />, if this method failed.
-		/// To identify a .NET process, the presence of either the mscorlib.dll or the mscorlib.ni.dll module is checked.
-		/// </summary>
-		/// <param name="process">The <see cref="Process" /> to be checked.</param>
-		/// <returns>
-		/// <see langword="true" />, if this <see cref="Process" /> is a .NET process;
-		/// <see langword="false" />, if this <see cref="Process" /> is not a .NET process;
-		/// <see langword="null" />, if this method failed.
-		/// </returns>
-		public static bool? IsDotNet(this Process process)
-		{
-			Check.ArgumentNull(process, nameof(process));
-
-			try
-			{
-				return process.Modules
-					.Cast<ProcessModule>()
-					.Select(module => Path.GetFileName(module.FileName))
-					.Any(module => MscorlibModuleRegex.IsMatch(module));
-			}
-			catch
-			{
-				return null;
-			}
-		}
-		/// <summary>
-		/// Injects a DLL into this <see cref="Process" /> using the WriteProcessMemory / CreateRemoteThread technique. If <see cref="ProcessLoadLibraryResult.Success" /> is returned, the DLL has been successfully loaded by this <see cref="Process" />.
-		/// </summary>
-		/// <param name="process">The <see cref="Process" /> to be injected.</param>
-		/// <param name="dllName">A <see cref="string" /> specifying the path of the DLL file to inject into this <see cref="Process" />.</param>
-		/// <returns>
-		/// <see cref="ProcessLoadLibraryResult.Success" />, if DLL injection succeeded;
-		/// otherwise, a <see cref="ProcessLoadLibraryResult" /> value that indicates the error reason.
-		/// </returns>
-		public static ProcessLoadLibraryResult LoadLibrary(this Process process, string dllName)
-		{
-			Check.ArgumentNull(process, nameof(process));
-			Check.ArgumentNull(dllName, nameof(dllName));
-			Check.FileNotFound(dllName);
-
-			if (CSharp.Try(() => process.Modules.Cast<ProcessModule>().Any(module => module.FileName.Equals(dllName, StringComparison.OrdinalIgnoreCase))))
-			{
-				return ProcessLoadLibraryResult.AlreadyLoaded;
 			}
 			else
 			{
-				IntPtr processHandle = Native.OpenProcess(1082, false, process.Id);
-				if (processHandle == IntPtr.Zero) return ProcessLoadLibraryResult.OpenProcessFailed;
-
-				IntPtr loadLibraryAddress = Native.GetProcAddress(Native.GetModuleHandle("kernel32.dll"), "LoadLibraryW");
-				IntPtr allocatedMemoryAddress = Native.VirtualAllocEx(processHandle, IntPtr.Zero, (uint)(dllName.Length + 1) * 2, 0x3000, 4);
-				if (allocatedMemoryAddress == IntPtr.Zero) return ProcessLoadLibraryResult.VirtualAllocFailed;
-
-				if (!Native.WriteProcessMemory(processHandle, allocatedMemoryAddress, dllName.ToUnicodeBytes(), (uint)dllName.Length * 2 + 1, out _))
+				do
 				{
-					return ProcessLoadLibraryResult.WriteProcessMemoryFailed;
+					if (processEntry.ProcessId == (uint)process.Id)
+					{
+						return Process.GetProcessById((int)processEntry.ParentProcessId);
+					}
 				}
+				while (Native.Process32Next(snapshot, ref processEntry));
+			}
 
-				if (Native.CreateRemoteThread(processHandle, IntPtr.Zero, 0, loadLibraryAddress, allocatedMemoryAddress, 0, IntPtr.Zero) == IntPtr.Zero)
+			return null;
+		}
+		catch
+		{
+			return null;
+		}
+	}
+	/// <summary>
+	/// Gets the commandline <see cref="string" /> of this <see cref="Process" /> that was passed during process creation.
+	/// </summary>
+	/// <param name="process">The <see cref="Process" /> to be checked.</param>
+	/// <returns>
+	/// The commandline <see cref="string" /> of this <see cref="Process" /> that was passed during process creation.
+	/// </returns>
+	public static string GetCommandLine(this Process process)
+	{
+		Check.ArgumentNull(process);
+
+		nint processHandle = Native.OpenProcess(0x410, false, process.Id);
+
+		if (processHandle != 0)
+		{
+			try
+			{
+				using HGlobal basicInformationPtr = new(Marshal.SizeOf<Native.ProcessBasicInformation>());
+
+				if (Native.NtQueryInformationProcess(processHandle, 0, basicInformationPtr.Handle, (uint)basicInformationPtr.Size, out _) == 0)
 				{
-					return ProcessLoadLibraryResult.CreateRemoteThreadFailed;
-				}
+					Native.ProcessBasicInformation basicInformation = basicInformationPtr.ToStructure<Native.ProcessBasicInformation>();
 
-				return ProcessLoadLibraryResult.Success;
+					if (basicInformation.PebBaseAddress != 0 &&
+						ReadStruct(basicInformation.PebBaseAddress, out Native.PebWithProcessParameters peb) &&
+						ReadStruct(peb.ProcessParameters, out Native.RtlUserProcessParameters parameters))
+					{
+						using HGlobal commandLinePtr = new(parameters.CommandLine.MaximumLength);
+						if (Native.ReadProcessMemory(processHandle, parameters.CommandLine.Buffer, commandLinePtr.Handle, (uint)commandLinePtr.Size, out _))
+						{
+							return commandLinePtr.ToStringUnicode() ?? throw Throw.Win32();
+						}
+					}
+				}
+			}
+			finally
+			{
+				if (processHandle != 0) Native.CloseHandle(processHandle);
 			}
 		}
-		internal static IntPtr OpenToken(this Process process, uint desiredAccess)
+
+		throw Throw.Win32();
+
+		bool ReadStruct<TStruct>(nint baseAddress, out TStruct result) where TStruct : struct
 		{
-			return Native.OpenProcessToken(process.Handle, desiredAccess, out IntPtr token) ? token : IntPtr.Zero;
+			using HGlobal buffer = new(Marshal.SizeOf<TStruct>());
+			if (Native.ReadProcessMemory(processHandle, baseAddress, buffer.Handle, (uint)buffer.Size, out uint length) && length == buffer.Size)
+			{
+				result = buffer.ToStructure<TStruct>();
+				return true;
+			}
+
+			result = default;
+			return false;
 		}
+	}
+	/// <summary>
+	/// Gets the commandline arguments of this <see cref="Process" /> that were passed during process creation.
+	/// </summary>
+	/// <param name="process">The <see cref="Process" /> to be checked.</param>
+	/// <returns>
+	/// A <see cref="string" />[] with the commandline arguments of this <see cref="Process" /> that were passed during process creation.
+	/// </returns>
+	public static string[] GetCommandLineArgs(this Process process)
+	{
+		Check.ArgumentNull(process);
+
+		return CommandLine.GetArguments(process.GetCommandLine());
+	}
+	/// <summary>
+	/// Gets the mandatory integrity level of this <see cref="Process" />.
+	/// Usually, this method (specifically, OpenToken) will fail on elevated processes if this method is called with medium IL.
+	/// </summary>
+	/// <param name="process">The <see cref="Process" /> to be checked.</param>
+	/// <returns>
+	/// The <see cref="ProcessIntegrityLevel" /> of this <see cref="Process" />.
+	/// </returns>
+	public static ProcessIntegrityLevel GetIntegrityLevel(this Process process)
+	{
+		Check.ArgumentNull(process);
+
+		nint token = 0;
+
+		try
+		{
+			token = process.OpenToken(8);
+			Native.GetTokenInformation(token, 25, 0, 0, out int integrityLevelTokenSize);
+
+			using HGlobal integrityLevelToken = new(integrityLevelTokenSize);
+			if (!Native.GetTokenInformation(token, 25, integrityLevelToken.Handle, integrityLevelTokenSize, out integrityLevelTokenSize))
+			{
+				throw Throw.Win32();
+			}
+
+			return (ProcessIntegrityLevel)Marshal.ReadInt32(Native.GetSidSubAuthority(integrityLevelToken.ToStructure<Native.TokenMandatoryLabel>().Label.Sid, 0));
+		}
+		finally
+		{
+			if (token != 0) Native.CloseHandle(token);
+		}
+	}
+	/// <summary>
+	/// Gets a <see cref="bool" /> value indicating whether this <see cref="Process" /> is a 64-bit or a 32-bit process.
+	/// </summary>
+	/// <param name="process">The <see cref="Process" /> to be checked.</param>
+	/// <returns>
+	/// <see langword="true" />, if this <see cref="Process" /> is a 64-bit process;
+	/// <see langword="false" />, if this <see cref="Process" /> is a 32-bit process;
+	/// </returns>
+	public static bool Is64Bit(this Process process)
+	{
+		Check.ArgumentNull(process);
+
+		if (Environment.Is64BitOperatingSystem)
+		{
+			return Native.IsWow64Process(process.Handle, out bool result) ? !result : throw Throw.Win32();
+		}
+		else
+		{
+			return false;
+		}
+	}
+	/// <summary>
+	/// Gets a <see cref="bool" /> value indicating whether this <see cref="Process" /> is a .NET process.
+	/// To identify a .NET process, the presence of either the mscorlib.dll, mscorlib.ni.dll or System.Runtime.dll module is checked.
+	/// </summary>
+	/// <param name="process">The <see cref="Process" /> to be checked.</param>
+	/// <returns>
+	/// <see langword="true" />, if this <see cref="Process" /> is a .NET process;
+	/// <see langword="false" />, if this <see cref="Process" /> is not a .NET process;
+	/// </returns>
+	public static bool IsDotNet(this Process process)
+	{
+		Check.ArgumentNull(process);
+
+		return process.Modules
+			.Cast<ProcessModule>()
+			.Select(module => Path.GetFileName(module.FileName).ToLower())
+			.Any(module => module == "mscorlib.dll" || module == "mscorlib.ni.dll" || module == "system.runtime.dll");
+	}
+	internal static nint OpenToken(this Process process, uint desiredAccess)
+	{
+		return Native.OpenProcessToken(process.Handle, desiredAccess, out nint token) ? token : throw Throw.Win32();
+	}
+}
+
+[SupportedOSPlatform("windows")]
+file static class Native
+{
+	[DllImport("kernel32.dll", SetLastError = true)]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	public static extern bool CloseHandle(nint obj);
+	[DllImport("kernel32.dll", SetLastError = true, CallingConvention = CallingConvention.Winapi)]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	public static extern bool IsWow64Process([In] nint process, [Out] out bool wow64Process);
+	[DllImport("kernel32.dll")]
+	public static extern nint OpenProcess(int desiredAccess, bool inheritHandle, int processId);
+	[DllImport("kernel32.dll")]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	public static extern bool ReadProcessMemory(nint process, nint baseAddress, nint buffer, uint size, out uint numberOfBytesRead);
+	[DllImport("advapi32.dll", SetLastError = true)]
+	public static extern bool OpenProcessToken(nint processHandle, uint desiredAccess, out nint tokenHandle);
+	[DllImport("advapi32.dll", SetLastError = true)]
+	public static extern bool GetTokenInformation(nint tokenHandle, int tokenInformationClass, nint tokenInformation, int tokenInformationLength, out int returnLength);
+	[DllImport("advapi32.dll", SetLastError = true)]
+	public static extern nint GetSidSubAuthority(nint sid, int subAuthority);
+	[DllImport("kernel32.dll", SetLastError = true)]
+	public static extern SafeSnapshotHandle CreateToolhelp32Snapshot(uint flags, uint id);
+	[DllImport("kernel32.dll", SetLastError = true)]
+	public static extern bool Process32First(SafeSnapshotHandle snapshot, ref ProcessEntry lppe);
+	[DllImport("kernel32.dll", SetLastError = true)]
+	public static extern bool Process32Next(SafeSnapshotHandle snapshot, ref ProcessEntry lppe);
+	[DllImport("ntdll.dll")]
+	public static extern uint NtQueryInformationProcess(nint Process, uint processInformationClass, nint processInformation, uint processInformationLength, out uint returnLength);
+
+	[StructLayout(LayoutKind.Sequential)]
+	public struct ProcessEntry
+	{
+		public uint Size;
+		public uint Usage;
+		public uint ProcessId;
+		public nint DefaultHeapId;
+		public uint ModuleId;
+		public uint ThreadCount;
+		public uint ParentProcessId;
+		public int PriorityClassBase;
+		public uint Flags;
+		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
+		public string ExeFile;
+	}
+	[StructLayout(LayoutKind.Sequential)]
+	public struct UnicodeString
+	{
+		public ushort Length;
+		public ushort MaximumLength;
+		public nint Buffer;
+	}
+	[StructLayout(LayoutKind.Sequential)]
+	public struct ProcessBasicInformation
+	{
+		public nint Reserved1;
+		public nint PebBaseAddress;
+		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
+		public nint[] Reserved2;
+		public nint UniqueProcessId;
+		public nint Reserved3;
+	}
+	[StructLayout(LayoutKind.Sequential)]
+	public struct PebWithProcessParameters
+	{
+		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+		public nint[] Reserved;
+		public nint ProcessParameters;
+	}
+	[StructLayout(LayoutKind.Sequential)]
+	public struct RtlUserProcessParameters
+	{
+		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
+		public byte[] Reserved1;
+		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 10)]
+		public nint[] Reserved2;
+		public UnicodeString ImagePathName;
+		public UnicodeString CommandLine;
+	}
+	[StructLayout(LayoutKind.Sequential)]
+	public struct TokenMandatoryLabel
+	{
+		public SidAndAttributes Label;
+	}
+	[StructLayout(LayoutKind.Sequential)]
+	public struct SidAndAttributes
+	{
+		public nint Sid;
+		public int Attributes;
+	}
+
+	public sealed class SafeSnapshotHandle : SafeHandleMinusOneIsInvalid
+	{
+		public SafeSnapshotHandle() : base(true)
+		{
+		}
+		public SafeSnapshotHandle(nint handle) : base(true)
+		{
+			SetHandle(handle);
+		}
+
+		protected override bool ReleaseHandle()
+		{
+			return CloseHandle(handle);
+		}
+		[DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true, ExactSpelling = true)]
+		private static extern bool CloseHandle(nint handle);
 	}
 }

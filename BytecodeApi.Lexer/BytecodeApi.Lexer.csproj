@@ -1,0 +1,43 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<GeneratePackageOnBuild Condition="'$(Configuration)' == 'Release'">True</GeneratePackageOnBuild>
+	</PropertyGroup>
+	<PropertyGroup>
+		<Version>3.0.0</Version>
+		<AssemblyVersion>3.0.0</AssemblyVersion>
+		<FileVersion>3.0.0</FileVersion>
+	</PropertyGroup>
+	<PropertyGroup>
+		<Product>BytecodeApi.Lexer</Product>
+		<Title>BytecodeApi.Lexer</Title>
+		<Description>General purpose tokenizer for parsing of any syntax.</Description>
+		<Company>bytecode77</Company>
+		<Authors>Martin Fischer</Authors>
+		<Copyright>© bytecode77, 2023.</Copyright>
+	</PropertyGroup>
+	<PropertyGroup>
+		<PackageId>BytecodeApi.Lexer</PackageId>
+		<PackageTags>lexer tokenizer parse tree syntax grammar token</PackageTags>
+		<PackageProjectUrl>https://bytecode77.com/bytecode-api</PackageProjectUrl>
+		<RepositoryType>git</RepositoryType>
+		<RepositoryUrl>https://github.com/bytecode77/bytecode-api</RepositoryUrl>
+		<PackageLicenseExpression>BSD-2-Clause</PackageLicenseExpression>
+		<PackageReadmeFile>.nuget\README.md</PackageReadmeFile>
+		<PackageIcon>.nuget\PackageIcon.png</PackageIcon>
+		<PackageOutputPath>../$Build</PackageOutputPath>
+	</PropertyGroup>
+	<ItemGroup Condition="'$(Configuration)' != 'Release'">
+		<ProjectReference Include="..\BytecodeApi\BytecodeApi.csproj" />
+	</ItemGroup>
+	<ItemGroup Condition="'$(Configuration)' == 'Release'">
+		<PackageReference Include="BytecodeApi" Version="3.*" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Include=".nuget\README.md" Pack="true" PackagePath=".nuget\" />
+		<None Include="..\.nuget\PackageIcon.png" Link=".nuget\PackageIcon.png" Pack="true" PackagePath=".nuget\" />
+	</ItemGroup>
+</Project>

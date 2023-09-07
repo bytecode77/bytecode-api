@@ -1,14 +1,19 @@
-﻿using System.Windows;
+﻿using BytecodeApi.Wpf.Interop;
+using System.Windows;
 
-namespace Playground.Wpf
+namespace Playground.Wpf;
+
+public partial class App : Application
 {
-	/// <summary>
-	/// Playground project for development and case testing of class libraries.
-	/// </summary>
-	public partial class App
+	public static SingleInstance SingleInstance { get; private set; } = null!;
+
+	private void Application_Startup(object sender, StartupEventArgs e)
 	{
-		private void Application_Startup(object sender, StartupEventArgs e)
+		SingleInstance = new SingleInstance("EXAMPLE_SINGLE_INSTANCE");
+		if (SingleInstance.CheckInstanceRunning())
 		{
+			SingleInstance.SendActivationMessage();
+			Shutdown();
 		}
 	}
 }

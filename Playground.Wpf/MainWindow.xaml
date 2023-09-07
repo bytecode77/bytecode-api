@@ -1,0 +1,12 @@
+<ui:ObservableWindow
+	x:Class="Playground.Wpf.MainWindow"
+	x:Name="mainWindow"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:local="clr-namespace:Playground.Wpf"
+	xmlns:ui="http://schemas.bytecode77.com/2023/xaml/presentation"
+	DataContext="{Binding ViewModel, ElementName=mainWindow}"
+	Title="MainWindow" Width="800" Height="450" WindowStartupLocation="CenterScreen" Loaded="MainWindow_Loaded">
+	<Grid>
+	</Grid>
+</ui:ObservableWindow>

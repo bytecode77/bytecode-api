@@ -1,34 +1,25 @@
-﻿using System.Reflection;
+﻿global using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Windows.Markup;
 
-[assembly: AssemblyTitle("BytecodeApi")]
-[assembly: AssemblyProduct("BytecodeApi")]
-[assembly: Guid("2d3ac17b-38a1-40f7-94a5-c94ed0eaef86")]
+[assembly: Guid("d3793ffa-fc22-4089-8225-76b14deea8d2")]
 
+[assembly: InternalsVisibleTo("BytecodeApi.CommandLineParser")]
+[assembly: InternalsVisibleTo("BytecodeApi.ConsoleUI")]
 [assembly: InternalsVisibleTo("BytecodeApi.Cryptography")]
-[assembly: InternalsVisibleTo("BytecodeApi.FileFormats")]
-[assembly: InternalsVisibleTo("BytecodeApi.FileIcons")]
-[assembly: InternalsVisibleTo("BytecodeApi.UI")]
+[assembly: InternalsVisibleTo("BytecodeApi.CsvParser")]
+[assembly: InternalsVisibleTo("BytecodeApi.IniParser")]
+[assembly: InternalsVisibleTo("BytecodeApi.LanguageGenerator")]
+[assembly: InternalsVisibleTo("BytecodeApi.Lexer")]
+[assembly: InternalsVisibleTo("BytecodeApi.Penetration")]
+[assembly: InternalsVisibleTo("BytecodeApi.PEParser")]
+[assembly: InternalsVisibleTo("BytecodeApi.PEResources")]
+[assembly: InternalsVisibleTo("BytecodeApi.Rest")]
+[assembly: InternalsVisibleTo("BytecodeApi.Win32")]
+[assembly: InternalsVisibleTo("BytecodeApi.Wmi")]
+[assembly: InternalsVisibleTo("BytecodeApi.Wpf")]
+
 #if DEBUG
 [assembly: InternalsVisibleTo("Playground.Console")]
 [assembly: InternalsVisibleTo("Playground.Wpf")]
 #endif
-
-[assembly: XmlnsDefinition("https://schemas.bytecode77.com/2019/xaml/api", "BytecodeApi")]
-[assembly: XmlnsDefinition("https://schemas.bytecode77.com/2019/xaml/api", "BytecodeApi.Comparers")]
-[assembly: XmlnsDefinition("https://schemas.bytecode77.com/2019/xaml/api", "BytecodeApi.Data")]
-[assembly: XmlnsDefinition("https://schemas.bytecode77.com/2019/xaml/api", "BytecodeApi.Extensions")]
-[assembly: XmlnsDefinition("https://schemas.bytecode77.com/2019/xaml/api", "BytecodeApi.IO")]
-[assembly: XmlnsDefinition("https://schemas.bytecode77.com/2019/xaml/api", "BytecodeApi.IO.Cli")]
-[assembly: XmlnsDefinition("https://schemas.bytecode77.com/2019/xaml/api", "BytecodeApi.IO.Debugging")]
-[assembly: XmlnsDefinition("https://schemas.bytecode77.com/2019/xaml/api", "BytecodeApi.IO.FileSystem")]
-[assembly: XmlnsDefinition("https://schemas.bytecode77.com/2019/xaml/api", "BytecodeApi.IO.Http")]
-[assembly: XmlnsDefinition("https://schemas.bytecode77.com/2019/xaml/api", "BytecodeApi.IO.Interop")]
-[assembly: XmlnsDefinition("https://schemas.bytecode77.com/2019/xaml/api", "BytecodeApi.IO.SystemInfo")]
-[assembly: XmlnsDefinition("https://schemas.bytecode77.com/2019/xaml/api", "BytecodeApi.IO.Wmi")]
-[assembly: XmlnsDefinition("https://schemas.bytecode77.com/2019/xaml/api", "BytecodeApi.Mathematics")]
-[assembly: XmlnsDefinition("https://schemas.bytecode77.com/2019/xaml/api", "BytecodeApi.Text")]
-[assembly: XmlnsDefinition("https://schemas.bytecode77.com/2019/xaml/api", "BytecodeApi.Threading")]
-[assembly: XmlnsPrefix("https://schemas.bytecode77.com/2019/xaml/api", "api")]

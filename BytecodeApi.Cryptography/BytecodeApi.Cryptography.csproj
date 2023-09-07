@@ -1,67 +1,43 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{19125B4E-9B75-49F4-A3C2-B6DFD51E2AEA}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BytecodeApi.Cryptography</RootNamespace>
-    <AssemblyName>BytecodeApi.Cryptography</AssemblyName>
-    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <Deterministic>true</Deterministic>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\BytecodeApi.Cryptography.xml</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\BytecodeApi.Cryptography.xml</DocumentationFile>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Xaml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\Global\GlobalAssemblyInfo.cs">
-      <Link>Properties\GlobalAssemblyInfo.cs</Link>
-    </Compile>
-    <Compile Include="AsymmetricContentEncryption.cs" />
-    <Compile Include="AsymmetricEncryption.cs" />
-    <Compile Include="AsymmetricKeyConvert.cs" />
-    <Compile Include="AsymmetricKeyType.cs" />
-    <Compile Include="ContentEncryption.cs" />
-    <Compile Include="Encryption.cs" />
-    <Compile Include="HashAlgorithms.cs" />
-    <Compile Include="Hashes.cs" />
-    <Compile Include="HashType.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\BytecodeApi\BytecodeApi.csproj">
-      <Project>{ea00307e-ce27-4a53-b7db-052181e1c24c}</Project>
-      <Name>BytecodeApi</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>mkdir "$(SolutionDir)$Build" 2&gt;NUL
-xcopy /Y "$(TargetPath)" "$(SolutionDir)$Build" &gt; NUL
-xcopy /Y "$(TargetDir)$(TargetName).xml" "$(SolutionDir)$Build" &gt; NUL</PostBuildEvent>
-  </PropertyGroup>
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<GeneratePackageOnBuild Condition="'$(Configuration)' == 'Release'">True</GeneratePackageOnBuild>
+	</PropertyGroup>
+	<PropertyGroup>
+		<Version>3.0.0</Version>
+		<AssemblyVersion>3.0.0</AssemblyVersion>
+		<FileVersion>3.0.0</FileVersion>
+	</PropertyGroup>
+	<PropertyGroup>
+		<Product>BytecodeApi.Cryptography</Product>
+		<Title>BytecodeApi.Cryptography</Title>
+		<Description>Library for encryption &amp; hashing and other cryptographic operations.</Description>
+		<Company>bytecode77</Company>
+		<Authors>Martin Fischer</Authors>
+		<Copyright>© bytecode77, 2023.</Copyright>
+	</PropertyGroup>
+	<PropertyGroup>
+		<PackageId>BytecodeApi.Cryptography</PackageId>
+		<PackageTags>encryption encrypt decryption hash aes rsa symmetric asymmetric pem der sha md5 crc32 crc64 adler32 ripemd160 tiger tiger2 whirlpool bloomfilter bloom filter</PackageTags>
+		<PackageProjectUrl>https://bytecode77.com/bytecode-api</PackageProjectUrl>
+		<RepositoryType>git</RepositoryType>
+		<RepositoryUrl>https://github.com/bytecode77/bytecode-api</RepositoryUrl>
+		<PackageLicenseExpression>BSD-2-Clause</PackageLicenseExpression>
+		<PackageReadmeFile>.nuget\README.md</PackageReadmeFile>
+		<PackageIcon>.nuget\PackageIcon.png</PackageIcon>
+		<PackageOutputPath>../$Build</PackageOutputPath>
+	</PropertyGroup>
+	<ItemGroup Condition="'$(Configuration)' != 'Release'">
+		<ProjectReference Include="..\BytecodeApi\BytecodeApi.csproj" />
+	</ItemGroup>
+	<ItemGroup Condition="'$(Configuration)' == 'Release'">
+		<PackageReference Include="BytecodeApi" Version="3.*" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Include=".nuget\README.md" Pack="true" PackagePath=".nuget\" />
+		<None Include="..\.nuget\PackageIcon.png" Link=".nuget\PackageIcon.png" Pack="true" PackagePath=".nuget\" />
+	</ItemGroup>
 </Project>

@@ -1,0 +1,46 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net7.0-windows</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<GeneratePackageOnBuild Condition="'$(Configuration)' == 'Release'">True</GeneratePackageOnBuild>
+	</PropertyGroup>
+	<PropertyGroup>
+		<Version>3.0.0</Version>
+		<AssemblyVersion>3.0.0</AssemblyVersion>
+		<FileVersion>3.0.0</FileVersion>
+	</PropertyGroup>
+	<PropertyGroup>
+		<Product>BytecodeApi.Wmi</Product>
+		<Title>BytecodeApi.Wmi</Title>
+		<Description>Library for efficient WMI querying.</Description>
+		<Company>bytecode77</Company>
+		<Authors>Martin Fischer</Authors>
+		<Copyright>© bytecode77, 2023.</Copyright>
+	</PropertyGroup>
+	<PropertyGroup>
+		<PackageId>BytecodeApi.Wmi</PackageId>
+		<PackageTags>wmi windows management instrumentation fluent query</PackageTags>
+		<PackageProjectUrl>https://bytecode77.com/bytecode-api</PackageProjectUrl>
+		<RepositoryType>git</RepositoryType>
+		<RepositoryUrl>https://github.com/bytecode77/bytecode-api</RepositoryUrl>
+		<PackageLicenseExpression>BSD-2-Clause</PackageLicenseExpression>
+		<PackageReadmeFile>.nuget\README.md</PackageReadmeFile>
+		<PackageIcon>.nuget\PackageIcon.png</PackageIcon>
+		<PackageOutputPath>../$Build</PackageOutputPath>
+	</PropertyGroup>
+	<ItemGroup Condition="'$(Configuration)' != 'Release'">
+		<ProjectReference Include="..\BytecodeApi\BytecodeApi.csproj" />
+	</ItemGroup>
+	<ItemGroup Condition="'$(Configuration)' == 'Release'">
+		<PackageReference Include="BytecodeApi" Version="3.*" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="System.Management" Version="7.0.0" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Include=".nuget\README.md" Pack="true" PackagePath=".nuget\" />
+		<None Include="..\.nuget\PackageIcon.png" Link=".nuget\PackageIcon.png" Pack="true" PackagePath=".nuget\" />
+	</ItemGroup>
+</Project>

@@ -1,48 +1,38 @@
 # BytecodeApi
 
-## Foundation Layer & Library
+## Foundation Layer
 
-BytecodeApi implements classes and extensions for general purpose use. In addition, specific classes implement more complex logic for both general app development and WPF apps.
+BytecodeApi implements classes and extensions for general purpose use. Especially, boilerplate code that is common ground in a lot of .NET projects is implemented in BytecodeApi's foundation layer.
 
-Especially, boilerplate code that is common ground in a lot of C# projects is implemented in BytecodeApi's foundation layer. In fact, BytecodeApi in used by many of my own projects. For this reason, each class and method has been reviewed numerous times, and refactored and improved over time.
+BytecodeApi is highly consistent, particularly in terms of structure, naming conventions and patterns. The code style resembles the patterns we know from the .NET Framework. The object model is therefore intuitive to use.
 
-BytecodeApi is highly consistent, particularly in terms of structure, naming conventions and patterns. The code style resembles the patterns we know from the .NET Framework. You will find it intuitive to use.
+## Packages
 
-## Feature Overview
-
-Features that are probably part of most bigger projects:
-
- - Extensions (string, IEnumerable, etc...)
- - Commandline parsing
- - File IO operations
- - Retrieving of system & OS objects
- - WMI wrapper
- - Compression
- - Encryption (symmetric & asymmetric)
- - Mathematical functions & bit calculation
- - Linguistics & text processing
- - Caching (memory & disk)
- - CSV parsing
- - INI parsing
- - PE file parsing
- - WPF
-   - MVVM classes
-   - Converters
-   - Single-Instance app
-
-This is a high-level overview of *some* features.
-
-## Examples
-
-The [example library](https://github.com/bytecode77/bytecode-api/tree/master/!Examples) demonstrates the usage of each class. While some classes are trivial, the included examples provide a full walk-through on more complex features.
+| Package																														| Description
+|:----------------------------------------------------------------------------------------------------------------------------- |:-
+| [![](http://bytecode77.com/public/fileicons/dll.png) BytecodeApi](BytecodeApi/README.md)										| Framework for C# development.
+| [![](http://bytecode77.com/public/fileicons/dll.png) BytecodeApi.CommandLineParser](BytecodeApi.CommandLineParser/README.md)	| Library for commandline parsing and handling.
+| [![](http://bytecode77.com/public/fileicons/dll.png) BytecodeApi.ConsoleUI](BytecodeApi.ConsoleUI/README.md)					| Console input & output library.
+| [![](http://bytecode77.com/public/fileicons/dll.png) BytecodeApi.Cryptography](BytecodeApi.Cryptography/README.md)			| Library for encryption & hashing and other cryptographic operations.
+| [![](http://bytecode77.com/public/fileicons/dll.png) BytecodeApi.CsvParser](BytecodeApi.CsvParser/README.md)					| Library for CSV parsing and writing.
+| [![](http://bytecode77.com/public/fileicons/dll.png) BytecodeApi.IniParser](BytecodeApi.IniParser/README.md)					| Library for INI file reading and writing.
+| [![](http://bytecode77.com/public/fileicons/dll.png) BytecodeApi.LanguageGenerator](BytecodeApi.LanguageGenerator/README.md)	| Library for arbitrary generation of words, sentences, names, and other language elements.
+| [![](http://bytecode77.com/public/fileicons/dll.png) BytecodeApi.Lexer](BytecodeApi.Lexer/README.md)							| General purpose tokenizer for parsing of any syntax.
+| [![](http://bytecode77.com/public/fileicons/dll.png) BytecodeApi.Penetration](BytecodeApi.Penetration/README.md)				| Basic implementations of certain penetration testing routines, such as code injection.
+| [![](http://bytecode77.com/public/fileicons/dll.png) BytecodeApi.PEParser](BytecodeApi.PEParser/README.md)					| Library for PE file parsing.
+| [![](http://bytecode77.com/public/fileicons/dll.png) BytecodeApi.PEResources](BytecodeApi.PEResources/README.md)				| Library for reading of native resources of executables & DLL files.
+| [![](http://bytecode77.com/public/fileicons/dll.png) BytecodeApi.Rest](BytecodeApi.Rest/README.md)							| Fluent REST client.
+| [![](http://bytecode77.com/public/fileicons/dll.png) BytecodeApi.Win32](BytecodeApi.Win32/README.md)							| Library for querying Windows specific operating system data.
+| [![](http://bytecode77.com/public/fileicons/dll.png) BytecodeApi.Wmi](BytecodeApi.Wmi/README.md)								| Library for efficient WMI querying.
+| [![](http://bytecode77.com/public/fileicons/dll.png) BytecodeApi.Wpf](BytecodeApi.Wpf/README.md)								| WPF & MVVM library and converter engine.
 
 ## Documentation
 
-All classes and members are documented with XML tags. The [online documentation](https://docs.bytecode77.com/bytecode-api/) is an up-to-date reference.
+All classes and members are documented with XML tags. A HTML help will follow soon.
 
 ## Downloads
 
-[![](http://bytecode77.com/public/fileicons/zip.png) BytecodeApi 2.0.1.zip](https://downloads.bytecode77.com/BytecodeApi%202.0.1.zip)
+Starting from version 3.x, BytecodeApi is available in the nuget store.
 
 ## Project Page
 

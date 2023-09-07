@@ -1,10 +1,4 @@
-﻿using System.Reflection;
+﻿global using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
-using System.Windows.Markup;
 
-[assembly: AssemblyTitle("BytecodeApi.Cryptography")]
-[assembly: AssemblyProduct("BytecodeApi.Cryptography")]
-[assembly: Guid("a33a2c79-0202-4946-9eaf-883cc8d4946b")]
-
-[assembly: XmlnsDefinition("https://schemas.bytecode77.com/2019/xaml/api", "BytecodeApi.Cryptography")]
-[assembly: XmlnsPrefix("https://schemas.bytecode77.com/2019/xaml/api", "api")]
+[assembly: Guid("7f074527-f0c5-4daf-ad95-cca68f095a36")]

@@ -1,149 +1,144 @@
-﻿using BytecodeApi.Extensions;
-using System;
+﻿using BytecodeApi.Cryptography.HashAlgorithms;
+using BytecodeApi.Extensions;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace BytecodeApi.Cryptography
+namespace BytecodeApi.Cryptography;
+
+/// <summary>
+/// Class to compute hashes of a specific <see cref="HashType" />.
+/// </summary>
+public static class Hashes
 {
 	/// <summary>
-	/// Class to compute hashes of a specific <see cref="HashType" />.
+	/// Computes the hash value for the specified <see cref="string" /> using the specified <see cref="HashType" />. The <see cref="string" /> is converted using the <see cref="Encoding.UTF8" /> encoding.
 	/// </summary>
-	public static class Hashes
+	/// <param name="data">The <see cref="string" /> to be used in the hash computation. The <see cref="string" /> is converted using the <see cref="Encoding.UTF8" /> encoding.</param>
+	/// <param name="type">The <see cref="HashType" /> specifying the algorithm that is used.</param>
+	/// <returns>
+	/// A <see cref="byte" />[] representing the fixed-length binary of the hash of the <paramref name="data" /> parameter.
+	/// </returns>
+	public static byte[] ComputeBytes(string data, HashType type)
 	{
-		/// <summary>
-		/// Computes the hash value for the specified <see cref="string" /> using the specified <see cref="HashType" />. The <see cref="string" /> is converted using the <see cref="Encoding.UTF8" /> encoding.
-		/// </summary>
-		/// <param name="data">The <see cref="string" /> to be used in the hash computation. The <see cref="string" /> is converted using the <see cref="Encoding.UTF8" /> encoding.</param>
-		/// <param name="type">The <see cref="HashType" /> specifying the algorithm that is used.</param>
-		/// <returns>
-		/// A <see cref="byte" />[] representing the fixed-length binary of the hash of the <paramref name="data" /> parameter.
-		/// </returns>
-		public static byte[] ComputeBytes(string data, HashType type)
-		{
-			return ComputeBytes(data, type, 1);
-		}
-		/// <summary>
-		/// Computes the hash value for the specified <see cref="string" /> using the specified <see cref="HashType" /> and repeats computation a specified number of times. The <see cref="string" /> is converted using the <see cref="Encoding.UTF8" /> encoding.
-		/// </summary>
-		/// <param name="data">The <see cref="string" /> to be used in the hash computation. The <see cref="string" /> is converted using the <see cref="Encoding.UTF8" /> encoding.</param>
-		/// <param name="type">The <see cref="HashType" /> specifying the algorithm that is used.</param>
-		/// <param name="passes">A <see cref="int" /> value indicating the number of times <paramref name="data" /> should be processed. For successive passes, the binary result of the previous pass is used as input value for the next pass.</param>
-		/// <returns>
-		/// A <see cref="byte" />[] representing the fixed-length binary of the hash of the <paramref name="data" /> parameter.
-		/// </returns>
-		public static byte[] ComputeBytes(string data, HashType type, int passes)
-		{
-			return ComputeBytes(data?.ToUTF8Bytes(), type, passes);
-		}
-		/// <summary>
-		/// Computes the hash value for the specified <see cref="byte" />[] using the specified <see cref="HashType" />.
-		/// </summary>
-		/// <param name="data">The <see cref="byte" />[] to be used in the hash computation.</param>
-		/// <param name="type">The <see cref="HashType" /> specifying the algorithm that is used.</param>
-		/// <returns>
-		/// A <see cref="byte" />[] representing the fixed-length binary of the hash of the <paramref name="data" /> parameter.
-		/// </returns>
-		public static byte[] ComputeBytes(byte[] data, HashType type)
-		{
-			return ComputeBytes(data, type, 1);
-		}
-		/// <summary>
-		/// Computes the hash value for the specified <see cref="byte" />[] using the specified <see cref="HashType" /> and repeats computation a specified number of times.
-		/// </summary>
-		/// <param name="data">The <see cref="byte" />[] to be used in the hash computation.</param>
-		/// <param name="type">The <see cref="HashType" /> specifying the algorithm that is used.</param>
-		/// <param name="passes">A <see cref="int" /> value indicating the number of times <paramref name="data" /> should be processed. For successive passes, the binary result of the previous pass is used as input value for the next pass.</param>
-		/// <returns>
-		/// A <see cref="byte" />[] representing the fixed-length binary of the hash of the <paramref name="data" /> parameter.
-		/// </returns>
-		public static byte[] ComputeBytes(byte[] data, HashType type, int passes)
-		{
-			Check.ArgumentNull(data, nameof(data));
-			Check.ArgumentOutOfRangeEx.Greater0(passes, nameof(passes));
+		return ComputeBytes(data, type, 1);
+	}
+	/// <summary>
+	/// Computes the hash value for the specified <see cref="string" /> using the specified <see cref="HashType" /> and repeats computation a specified number of times. The <see cref="string" /> is converted using the <see cref="Encoding.UTF8" /> encoding.
+	/// </summary>
+	/// <param name="data">The <see cref="string" /> to be used in the hash computation. The <see cref="string" /> is converted using the <see cref="Encoding.UTF8" /> encoding.</param>
+	/// <param name="type">The <see cref="HashType" /> specifying the algorithm that is used.</param>
+	/// <param name="passes">A <see cref="int" /> value indicating the number of times <paramref name="data" /> should be processed. For successive passes, the binary result of the previous pass is used as input value for the next pass.</param>
+	/// <returns>
+	/// A <see cref="byte" />[] representing the fixed-length binary of the hash of the <paramref name="data" /> parameter.
+	/// </returns>
+	public static byte[] ComputeBytes(string data, HashType type, int passes)
+	{
+		return ComputeBytes(data?.ToUTF8Bytes()!, type, passes);
+	}
+	/// <summary>
+	/// Computes the hash value for the specified <see cref="byte" />[] using the specified <see cref="HashType" />.
+	/// </summary>
+	/// <param name="data">The <see cref="byte" />[] to be used in the hash computation.</param>
+	/// <param name="type">The <see cref="HashType" /> specifying the algorithm that is used.</param>
+	/// <returns>
+	/// A <see cref="byte" />[] representing the fixed-length binary of the hash of the <paramref name="data" /> parameter.
+	/// </returns>
+	public static byte[] ComputeBytes(byte[] data, HashType type)
+	{
+		return ComputeBytes(data, type, 1);
+	}
+	/// <summary>
+	/// Computes the hash value for the specified <see cref="byte" />[] using the specified <see cref="HashType" /> and repeats computation a specified number of times.
+	/// </summary>
+	/// <param name="data">The <see cref="byte" />[] to be used in the hash computation.</param>
+	/// <param name="type">The <see cref="HashType" /> specifying the algorithm that is used.</param>
+	/// <param name="passes">A <see cref="int" /> value indicating the number of times <paramref name="data" /> should be processed. For successive passes, the binary result of the previous pass is used as input value for the next pass.</param>
+	/// <returns>
+	/// A <see cref="byte" />[] representing the fixed-length binary of the hash of the <paramref name="data" /> parameter.
+	/// </returns>
+	public static byte[] ComputeBytes(byte[] data, HashType type, int passes)
+	{
+		Check.ArgumentNull(data);
+		Check.ArgumentOutOfRangeEx.Greater0(passes);
 
-			if (type == HashType.Adler32)
-			{
-				Repeat(ref data, HashAlgorithms.Adler32);
-			}
-			else if (type == HashType.CRC32)
-			{
-				Repeat(ref data, HashAlgorithms.Crc32);
-			}
-			else if (type == HashType.CRC64)
-			{
-				Repeat(ref data, HashAlgorithms.Crc64);
-			}
-			else
-			{
-				using (HashAlgorithm hash = HashAlgorithm.Create(type.ToString()))
-				{
-					if (hash == null) throw Throw.InvalidEnumArgument(nameof(type), type);
-					else Repeat(ref data, hash.ComputeHash);
-				}
-			}
-
-			return data;
-
-			void Repeat(ref byte[] bytes, Func<byte[], byte[]> func)
-			{
-				for (int i = 0; i < passes; i++) bytes = func(bytes);
-			}
-		}
-		/// <summary>
-		/// Computes the hash value for the specified <see cref="string" /> using the specified <see cref="HashType" />. The <see cref="string" /> is converted using the <see cref="Encoding.UTF8" /> encoding. The result is the lowercase hexadecimal hash representation of the <paramref name="data" /> parameter.
-		/// </summary>
-		/// <param name="data">The <see cref="string" /> to be used in the hash computation. The <see cref="string" /> is converted using the <see cref="Encoding.UTF8" /> encoding.</param>
-		/// <param name="type">The <see cref="HashType" /> specifying the algorithm that is used.</param>
-		/// <returns>
-		/// The lowercase hexadecimal hash representation of the <paramref name="data" /> parameter.
-		/// </returns>
-		public static string Compute(string data, HashType type)
+		using HashAlgorithm hashAlgorithm = type switch
 		{
-			return Compute(data, type, 1);
-		}
-		/// <summary>
-		/// Computes the hash value for the specified <see cref="string" /> using the specified <see cref="HashType" /> and repeats computation a specified number of times. The <see cref="string" /> is converted using the <see cref="Encoding.UTF8" /> encoding. The result is the lowercase hexadecimal hash representation of the <paramref name="data" /> parameter.
-		/// </summary>
-		/// <param name="data">The <see cref="string" /> to be used in the hash computation. The <see cref="string" /> is converted using the <see cref="Encoding.UTF8" /> encoding.</param>
-		/// <param name="type">The <see cref="HashType" /> specifying the algorithm that is used.</param>
-		/// <param name="passes">A <see cref="int" /> value indicating the number of times <paramref name="data" /> should be processed. For successive passes, the binary result of the previous pass is used as input value for the next pass.</param>
-		/// <returns>
-		/// The lowercase hexadecimal hash representation of the <paramref name="data" /> parameter.
-		/// </returns>
-		public static string Compute(string data, HashType type, int passes)
-		{
-			Check.ArgumentNull(data, nameof(data));
-			Check.ArgumentOutOfRangeEx.Greater0(passes, nameof(passes));
+			HashType.Adler32 => Adler32.Create(),
+			HashType.CRC32 => CRC32.Create(),
+			HashType.CRC64 => CRC64.Create(),
+			HashType.MD5 => MD5.Create(),
+			HashType.RIPEMD160 => RIPEMD160.Create(),
+			HashType.SHA1 => SHA1.Create(),
+			HashType.SHA256 => SHA256.Create(),
+			HashType.SHA384 => SHA384.Create(),
+			HashType.SHA512 => SHA512.Create(),
+			HashType.Tiger => Tiger.Create(),
+			HashType.Tiger2 => Tiger2.Create(),
+			HashType.Whirlpool => Whirlpool.Create(),
+			_ => throw Throw.InvalidEnumArgument(nameof(type), type)
+		};
 
-			return ComputeBytes(data?.ToUTF8Bytes(), type, passes).ToHexadecimalString();
-		}
-		/// <summary>
-		/// Computes the hash value for the specified <see cref="byte" />[] using the specified <see cref="HashType" />. The result is the lowercase hexadecimal hash representation of the <paramref name="data" /> parameter.
-		/// </summary>
-		/// <param name="data">The <see cref="byte" />[] to be used in the hash computation.</param>
-		/// <param name="type">The <see cref="HashType" /> specifying the algorithm that is used.</param>
-		/// <returns>
-		/// The lowercase hexadecimal hash representation of the <paramref name="data" /> parameter.
-		/// </returns>
-		public static string Compute(byte[] data, HashType type)
+		for (int i = 0; i < passes; i++)
 		{
-			return Compute(data, type, 1);
+			data = hashAlgorithm.ComputeHash(data);
 		}
-		/// <summary>
-		/// Computes the hash value for the specified <see cref="byte" />[] using the specified <see cref="HashType" /> and repeats computation a specified number of times. The result is the lowercase hexadecimal hash representation of the <paramref name="data" /> parameter.
-		/// </summary>
-		/// <param name="data">The <see cref="byte" />[] to be used in the hash computation.</param>
-		/// <param name="type">The <see cref="HashType" /> specifying the algorithm that is used.</param>
-		/// <param name="passes">A <see cref="int" /> value indicating the number of times <paramref name="data" /> should be processed. For successive passes, the binary result of the previous pass is used as input value for the next pass.</param>
-		/// <returns>
-		/// The lowercase hexadecimal hash representation of the <paramref name="data" /> parameter.
-		/// </returns>
-		public static string Compute(byte[] data, HashType type, int passes)
-		{
-			Check.ArgumentNull(data, nameof(data));
-			Check.ArgumentOutOfRangeEx.Greater0(passes, nameof(passes));
 
-			return ComputeBytes(data, type, passes).ToHexadecimalString();
-		}
+		return data;
+	}
+	/// <summary>
+	/// Computes the hash value for the specified <see cref="string" /> using the specified <see cref="HashType" />. The <see cref="string" /> is converted using the <see cref="Encoding.UTF8" /> encoding. The result is the lowercase hexadecimal hash representation of the <paramref name="data" /> parameter.
+	/// </summary>
+	/// <param name="data">The <see cref="string" /> to be used in the hash computation. The <see cref="string" /> is converted using the <see cref="Encoding.UTF8" /> encoding.</param>
+	/// <param name="type">The <see cref="HashType" /> specifying the algorithm that is used.</param>
+	/// <returns>
+	/// The lowercase hexadecimal hash representation of the <paramref name="data" /> parameter.
+	/// </returns>
+	public static string Compute(string data, HashType type)
+	{
+		return Compute(data, type, 1);
+	}
+	/// <summary>
+	/// Computes the hash value for the specified <see cref="string" /> using the specified <see cref="HashType" /> and repeats computation a specified number of times. The <see cref="string" /> is converted using the <see cref="Encoding.UTF8" /> encoding. The result is the lowercase hexadecimal hash representation of the <paramref name="data" /> parameter.
+	/// </summary>
+	/// <param name="data">The <see cref="string" /> to be used in the hash computation. The <see cref="string" /> is converted using the <see cref="Encoding.UTF8" /> encoding.</param>
+	/// <param name="type">The <see cref="HashType" /> specifying the algorithm that is used.</param>
+	/// <param name="passes">A <see cref="int" /> value indicating the number of times <paramref name="data" /> should be processed. For successive passes, the binary result of the previous pass is used as input value for the next pass.</param>
+	/// <returns>
+	/// The lowercase hexadecimal hash representation of the <paramref name="data" /> parameter.
+	/// </returns>
+	public static string Compute(string data, HashType type, int passes)
+	{
+		Check.ArgumentNull(data);
+		Check.ArgumentOutOfRangeEx.Greater0(passes);
+
+		return ComputeBytes(data?.ToUTF8Bytes()!, type, passes).ToHexadecimalString();
+	}
+	/// <summary>
+	/// Computes the hash value for the specified <see cref="byte" />[] using the specified <see cref="HashType" />. The result is the lowercase hexadecimal hash representation of the <paramref name="data" /> parameter.
+	/// </summary>
+	/// <param name="data">The <see cref="byte" />[] to be used in the hash computation.</param>
+	/// <param name="type">The <see cref="HashType" /> specifying the algorithm that is used.</param>
+	/// <returns>
+	/// The lowercase hexadecimal hash representation of the <paramref name="data" /> parameter.
+	/// </returns>
+	public static string Compute(byte[] data, HashType type)
+	{
+		return Compute(data, type, 1);
+	}
+	/// <summary>
+	/// Computes the hash value for the specified <see cref="byte" />[] using the specified <see cref="HashType" /> and repeats computation a specified number of times. The result is the lowercase hexadecimal hash representation of the <paramref name="data" /> parameter.
+	/// </summary>
+	/// <param name="data">The <see cref="byte" />[] to be used in the hash computation.</param>
+	/// <param name="type">The <see cref="HashType" /> specifying the algorithm that is used.</param>
+	/// <param name="passes">A <see cref="int" /> value indicating the number of times <paramref name="data" /> should be processed. For successive passes, the binary result of the previous pass is used as input value for the next pass.</param>
+	/// <returns>
+	/// The lowercase hexadecimal hash representation of the <paramref name="data" /> parameter.
+	/// </returns>
+	public static string Compute(byte[] data, HashType type, int passes)
+	{
+		Check.ArgumentNull(data);
+		Check.ArgumentOutOfRangeEx.Greater0(passes);
+
+		return ComputeBytes(data, type, passes).ToHexadecimalString();
 	}
 }
