@@ -60,7 +60,7 @@ public static class Network
 	public static void WakeOnLan(PhysicalAddress physicalAddress, byte[]? password)
 	{
 		Check.ArgumentNull(physicalAddress);
-		Check.Argument(password == null || password.Length is 4 or 6, nameof(password), "The password must be either 4 or 6 bytes long, or null.");
+		Check.Argument(password?.Length is null or 4 or 6, nameof(password), "The password must be either 4 or 6 bytes long, or null.");
 
 		byte[] packet = Enumerable
 			.Repeat<byte>(0xff, 6)

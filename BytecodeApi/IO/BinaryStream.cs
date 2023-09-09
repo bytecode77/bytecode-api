@@ -1,4 +1,5 @@
 ﻿using BytecodeApi.Extensions;
+using BytecodeApi.Mathematics;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -338,7 +339,7 @@ public class BinaryStream : IDisposable
 		AssertCanRead();
 
 		string value = Reader!.ReadString();
-		BytesRead += Encoding.GetByteCount(value) + Compute7BitEncodedIntSize(value.Length);
+		BytesRead += Encoding.GetByteCount(value) + SevenBitInteger.GetByteCount(value.Length);
 		return value;
 	}
 	/// <summary>
@@ -593,7 +594,7 @@ public class BinaryStream : IDisposable
 		AssertCanWrite();
 
 		Writer!.Write(value);
-		BytesWritten += Encoding.GetByteCount(value) + Compute7BitEncodedIntSize(value.Length);
+		BytesWritten += Encoding.GetByteCount(value) + SevenBitInteger.GetByteCount(value.Length);
 	}
 	/// <summary>
 	/// Writes a <see cref="byte" />[] value to the underlying <see cref="Stream" />.
@@ -645,19 +646,6 @@ public class BinaryStream : IDisposable
 		BaseStream.Flush();
 	}
 
-	private static int Compute7BitEncodedIntSize(int value)
-	{
-		int size = 1;
-		uint remaining = (uint)value;
-
-		while (remaining > 127)
-		{
-			remaining >>= 7;
-			size++;
-		}
-
-		return size;
-	}
 	private void AssertCanRead()
 	{
 		Check.Argument(Reader != null, null, "The base stream is not readable");
