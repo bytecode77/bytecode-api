@@ -10,6 +10,130 @@ namespace BytecodeApi.Wpf.Extensions;
 public static class ApplicationExtensions
 {
 	/// <summary>
+	/// Executes the specified <see cref="Action" /> synchronously on the thread the <see cref="Dispatcher" /> is associated with.
+	/// </summary>
+	/// <param name="application">The <see cref="Application" /> to invoke the dispatcher in.</param>
+	/// <param name="callback">A delegate to invoke through the dispatcher.</param>
+	public static void Dispatch(this Application application, Action callback)
+	{
+		Check.ArgumentNull(application);
+		Check.ArgumentNull(callback);
+
+		application.Dispatcher.Invoke(callback);
+	}
+	/// <summary>
+	/// Executes the specified <see cref="Action" /> synchronously at the specified priority on the thread the <see cref="Dispatcher" /> is associated with.
+	/// </summary>
+	/// <param name="application">The <see cref="Application" /> to invoke the dispatcher in.</param>
+	/// <param name="callback">A delegate to invoke through the dispatcher.</param>
+	/// <param name="priority">The priority that determines in what order the specified callback is invoked relative to the other pending operations in the <see cref="Dispatcher" />.</param>
+	public static void Dispatch(this Application application, Action callback, DispatcherPriority priority)
+	{
+		Check.ArgumentNull(application);
+		Check.ArgumentNull(callback);
+
+		application.Dispatcher.Invoke(callback, priority);
+	}
+	/// <summary>
+	/// Executes the specified <see cref="Action" /> synchronously at the specified priority on the thread the <see cref="Dispatcher" /> is associated with.
+	/// </summary>
+	/// <param name="application">The <see cref="Application" /> to invoke the dispatcher in.</param>
+	/// <param name="callback">A delegate to invoke through the dispatcher.</param>
+	/// <param name="priority">The priority that determines in what order the specified callback is invoked relative to the other pending operations in the <see cref="Dispatcher" />.</param>
+	/// <param name="cancellationToken">An object that indicates whether to cancel the action.</param>
+	public static void Dispatch(this Application application, Action callback, DispatcherPriority priority, CancellationToken cancellationToken)
+	{
+		Check.ArgumentNull(application);
+		Check.ArgumentNull(callback);
+
+		application.Dispatcher.Invoke(callback, priority, cancellationToken);
+	}
+	/// <summary>
+	/// Executes the specified <see cref="Action" /> synchronously at the specified priority on the thread the <see cref="Dispatcher" /> is associated with.
+	/// </summary>
+	/// <param name="application">The <see cref="Application" /> to invoke the dispatcher in.</param>
+	/// <param name="callback">A delegate to invoke through the dispatcher.</param>
+	/// <param name="priority">The priority that determines in what order the specified callback is invoked relative to the other pending operations in the <see cref="Dispatcher" />.</param>
+	/// <param name="cancellationToken">An object that indicates whether to cancel the action.</param>
+	/// <param name="timeout">The minimum amount of time to wait for the operation to start.</param>
+	public static void Dispatch(this Application application, Action callback, DispatcherPriority priority, CancellationToken cancellationToken, TimeSpan timeout)
+	{
+		Check.ArgumentNull(application);
+		Check.ArgumentNull(callback);
+
+		application.Dispatcher.Invoke(callback, priority, cancellationToken, timeout);
+	}
+	/// <summary>
+	/// Executes the specified <see cref="Func{TResult}" /> synchronously on the thread the <see cref="Dispatcher" /> is associated with.
+	/// </summary>
+	/// <typeparam name="T">The return type of <paramref name="callback" />.</typeparam>
+	/// <param name="application">The <see cref="Application" /> to invoke the dispatcher in.</param>
+	/// <param name="callback">A delegate to invoke through the dispatcher.</param>
+	/// <returns>
+	/// The result of <paramref name="callback" />.
+	/// </returns>
+	public static T Dispatch<T>(this Application application, Func<T> callback)
+	{
+		Check.ArgumentNull(application);
+		Check.ArgumentNull(callback);
+
+		return application.Dispatcher.Invoke(callback);
+	}
+	/// <summary>
+	/// Executes the specified <see cref="Func{TResult}" /> synchronously at the specified priority on the thread the <see cref="Dispatcher" /> is associated with.
+	/// </summary>
+	/// <typeparam name="T">The return type of <paramref name="callback" />.</typeparam>
+	/// <param name="application">The <see cref="Application" /> to invoke the dispatcher in.</param>
+	/// <param name="callback">A delegate to invoke through the dispatcher.</param>
+	/// <param name="priority">The priority that determines in what order the specified callback is invoked relative to the other pending operations in the <see cref="Dispatcher" />.</param>
+	/// <returns>
+	/// The result of <paramref name="callback" />.
+	/// </returns>
+	public static T Dispatch<T>(this Application application, Func<T> callback, DispatcherPriority priority)
+	{
+		Check.ArgumentNull(application);
+		Check.ArgumentNull(callback);
+
+		return application.Dispatcher.Invoke(callback, priority);
+	}
+	/// <summary>
+	/// Executes the specified <see cref="Func{TResult}" /> synchronously at the specified priority on the thread the <see cref="Dispatcher" /> is associated with.
+	/// </summary>
+	/// <typeparam name="T">The return type of <paramref name="callback" />.</typeparam>
+	/// <param name="application">The <see cref="Application" /> to invoke the dispatcher in.</param>
+	/// <param name="callback">A delegate to invoke through the dispatcher.</param>
+	/// <param name="priority">The priority that determines in what order the specified callback is invoked relative to the other pending operations in the <see cref="Dispatcher" />.</param>
+	/// <param name="cancellationToken">An object that indicates whether to cancel the action.</param>
+	/// <returns>
+	/// The result of <paramref name="callback" />.
+	/// </returns>
+	public static T Dispatch<T>(this Application application, Func<T> callback, DispatcherPriority priority, CancellationToken cancellationToken)
+	{
+		Check.ArgumentNull(application);
+		Check.ArgumentNull(callback);
+
+		return application.Dispatcher.Invoke(callback, priority, cancellationToken);
+	}
+	/// <summary>
+	/// Executes the specified <see cref="Func{TResult}" /> synchronously at the specified priority on the thread the <see cref="Dispatcher" /> is associated with.
+	/// </summary>
+	/// <typeparam name="T">The return type of <paramref name="callback" />.</typeparam>
+	/// <param name="application">The <see cref="Application" /> to invoke the dispatcher in.</param>
+	/// <param name="callback">A delegate to invoke through the dispatcher.</param>
+	/// <param name="priority">The priority that determines in what order the specified callback is invoked relative to the other pending operations in the <see cref="Dispatcher" />.</param>
+	/// <param name="cancellationToken">An object that indicates whether to cancel the action.</param>
+	/// <param name="timeout">The minimum amount of time to wait for the operation to start.</param>
+	/// <returns>
+	/// The result of <paramref name="callback" />.
+	/// </returns>
+	public static T Dispatch<T>(this Application application, Func<T> callback, DispatcherPriority priority, CancellationToken cancellationToken, TimeSpan timeout)
+	{
+		Check.ArgumentNull(application);
+		Check.ArgumentNull(callback);
+
+		return application.Dispatcher.Invoke(callback, priority, cancellationToken, timeout);
+	}
+	/// <summary>
 	/// Searches for a user interface (UI) resource, such as a <see cref="Style" /> or <see cref="Brush" />, with the specified key, and throws an exception, if the requested resource is not found (see XAML Resources).
 	/// </summary>
 	/// <typeparam name="T">The return type of the resource.</typeparam>
