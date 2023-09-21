@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
+using System.Text;
 
 namespace BytecodeApi.IO;
 
@@ -90,6 +91,8 @@ public static class ProcessEx
 
 			Console.SetOut(streamWriter);
 			Console.SetError(streamWriter);
+			Console.OutputEncoding = Encoding.UTF8;
+			Console.InputEncoding = Encoding.UTF8;
 
 			if (setInStream)
 			{
