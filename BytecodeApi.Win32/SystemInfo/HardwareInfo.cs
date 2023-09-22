@@ -12,7 +12,7 @@ public static class HardwareInfo
 {
 	private static string[]? _ProcessorNames;
 	private static string[]? _VideoControllerNames;
-	private static long? _Memory;
+	private static long? _TotalMemory;
 	/// <summary>
 	/// Gets the names of all installed processors.
 	/// </summary>
@@ -65,17 +65,28 @@ public static class HardwareInfo
 	/// <summary>
 	/// Gets the total amount of installed physical memory.
 	/// </summary>
-	public static long Memory
+	public static long TotalMemory
 	{
 		get
 		{
-			if (_Memory == null)
+			if (_TotalMemory == null)
 			{
 				Native.MemoryStatusEx memoryStatus = new();
-				_Memory = Native.GlobalMemoryStatusEx(memoryStatus) ? (long)memoryStatus.TotalPhys : throw Throw.Win32();
+				_TotalMemory = Native.GlobalMemoryStatusEx(memoryStatus) ? (long)memoryStatus.TotalPhys : throw Throw.Win32();
 			}
 
-			return _Memory.Value;
+			return _TotalMemory.Value;
+		}
+	}
+	/// <summary>
+	/// Gets the total amount of available physical memory.
+	/// </summary>
+	public static long AvailableMemory
+	{
+		get
+		{
+			Native.MemoryStatusEx memoryStatus = new();
+			return Native.GlobalMemoryStatusEx(memoryStatus) ? (long)memoryStatus.AvailPhys : throw Throw.Win32();
 		}
 	}
 }
