@@ -1,5 +1,6 @@
 ﻿using BytecodeApi.Extensions;
 using BytecodeApi.Text;
+using System.Text.RegularExpressions;
 
 namespace BytecodeApi.Lexer;
 
@@ -43,9 +44,21 @@ public sealed class Lexer<TTokenType> where TTokenType : struct, IConvertible
 	/// </returns>
 	public Lexer<TTokenType> Ignore(string pattern)
 	{
+		return Ignore(pattern, RegexOptions.None);
+	}
+	/// <summary>
+	/// Specifies that tokens that match the given pattern are ignored.
+	/// </summary>
+	/// <param name="pattern">A <see cref="string" /> with a regular expression to match the token.</param>
+	/// <param name="regexOptions">The <see cref="RegexOptions" /> to be used to match the pattern.</param>
+	/// <returns>
+	/// A reference to this instance after the operation has completed.
+	/// </returns>
+	public Lexer<TTokenType> Ignore(string pattern, RegexOptions regexOptions)
+	{
 		Check.ArgumentNull(pattern);
 
-		Grammar.Add(new(true, default, pattern, null));
+		Grammar.Add(new(true, default, pattern, regexOptions, null));
 		return this;
 	}
 	/// <summary>
@@ -58,22 +71,49 @@ public sealed class Lexer<TTokenType> where TTokenType : struct, IConvertible
 	/// </returns>
 	public Lexer<TTokenType> Match(TTokenType type, string pattern)
 	{
-		return Match(type, pattern, null);
+		return Match(type, pattern, RegexOptions.None);
 	}
 	/// <summary>
 	/// Specifies that tokens of a specific type match the given pattern.
 	/// </summary>
 	/// <param name="type">The type of token that matches the given pattern.</param>
 	/// <param name="pattern">A <see cref="string" /> with a regular expression to match the token.</param>
-	/// <param name="postProcessValue">A conversion method that converts the parsed token - e.g., to remove quotes of a quoted string literal.</param>
+	/// <param name="regexOptions">The <see cref="RegexOptions" /> to be used to match the pattern.</param>
 	/// <returns>
 	/// A reference to this instance after the operation has completed.
 	/// </returns>
-	public Lexer<TTokenType> Match(TTokenType type, string pattern, Func<string, string>? postProcessValue)
+	public Lexer<TTokenType> Match(TTokenType type, string pattern, RegexOptions regexOptions)
+	{
+		return Match(type, pattern, regexOptions, null);
+	}
+	/// <summary>
+	/// Specifies that tokens of a specific type match the given pattern.
+	/// </summary>
+	/// <param name="type">The type of token that matches the given pattern.</param>
+	/// <param name="pattern">A <see cref="string" /> with a regular expression to match the token.</param>
+	/// <param name="getValue">A custom conversion method that converts the parsed <see cref="System.Text.RegularExpressions.Match" /> - e.g., to remove quotes of a quoted string literal.</param>
+	/// <returns>
+	/// A reference to this instance after the operation has completed.
+	/// </returns>
+	public Lexer<TTokenType> Match(TTokenType type, string pattern, Func<Match, string>? getValue)
+	{
+		return Match(type, pattern, RegexOptions.None, getValue);
+	}
+	/// <summary>
+	/// Specifies that tokens of a specific type match the given pattern.
+	/// </summary>
+	/// <param name="type">The type of token that matches the given pattern.</param>
+	/// <param name="pattern">A <see cref="string" /> with a regular expression to match the token.</param>
+	/// <param name="regexOptions">The <see cref="RegexOptions" /> to be used to match the pattern.</param>
+	/// <param name="getValue">A custom conversion method that converts the parsed <see cref="System.Text.RegularExpressions.Match" /> - e.g., to remove quotes of a quoted string literal.</param>
+	/// <returns>
+	/// A reference to this instance after the operation has completed.
+	/// </returns>
+	public Lexer<TTokenType> Match(TTokenType type, string pattern, RegexOptions regexOptions, Func<Match, string>? getValue)
 	{
 		Check.ArgumentNull(pattern);
 
-		Grammar.Add(new(false, type, pattern, postProcessValue));
+		Grammar.Add(new(false, type, pattern, regexOptions, getValue));
 		return this;
 	}
 
@@ -108,12 +148,9 @@ public sealed class Lexer<TTokenType> where TTokenType : struct, IConvertible
 			{
 				if (!match.Grammar.Ignore)
 				{
-					string value = match.Match.Value;
-
-					if (match.Grammar.PostProcessValue != null)
-					{
-						value = match.Grammar.PostProcessValue(value);
-					}
+					string value = match.Grammar.GetValue != null
+						? match.Grammar.GetValue(match.Match)
+						: match.Match.Value;
 
 					tokens.Add(new(line, match.Grammar.Type, value));
 				}
