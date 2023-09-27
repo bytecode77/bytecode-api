@@ -7,14 +7,14 @@ internal sealed class Grammar<TTokenType> where TTokenType : struct, IConvertibl
 	private readonly Regex Regex;
 	public bool Ignore { get; private init; }
 	public TTokenType Type { get; private init; }
-	public Func<string, string>? PostProcessValue { get; private init; }
+	public Func<Match, string>? GetValue { get; private init; }
 
-	public Grammar(bool ignore, TTokenType type, string pattern, Func<string, string>? postProcessValue)
+	public Grammar(bool ignore, TTokenType type, string pattern, RegexOptions regexOptions, Func<Match, string>? getValue)
 	{
-		Regex = new(@"\G(" + pattern + ")", RegexOptions.Compiled);
+		Regex = new(@"\G(" + pattern + ")", RegexOptions.Compiled | regexOptions);
 		Ignore = ignore;
 		Type = type;
-		PostProcessValue = postProcessValue;
+		GetValue = getValue;
 	}
 
 	public Match Match(string code, int position)

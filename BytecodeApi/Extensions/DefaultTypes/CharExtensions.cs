@@ -89,7 +89,7 @@ public static class CharExtensions
 	/// </returns>
 	public static bool IsHexadecimal(this char value)
 	{
-		return value >= '0' && value <= '9' || value >= 'a' && value <= 'f' || value >= 'A' && value <= 'F';
+		return value is >= '0' and <= '9' or >= 'a' and <= 'f' or >= 'A' and <= 'F';
 	}
 	/// <summary>
 	/// Indicates whether this <see langword="char" /> is categorized as a punctuation mark.

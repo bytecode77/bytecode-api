@@ -1,4 +1,4 @@
-﻿using BytecodeApi.Extensions;
+using BytecodeApi.Extensions;
 using BytecodeApi.Interop;
 using System.Drawing;
 using System.Runtime.InteropServices;
@@ -296,54 +296,6 @@ public static class ConvertEx
 		}
 
 		return sum;
-	}
-	/// <summary>
-	/// Converts a 32-bit integer into a compressed format.
-	/// </summary>
-	/// <param name="value">The <see cref="int" /> value to convert.</param>
-	/// <returns>
-	/// A new <see cref="byte" />[] that represents the specified 32-bit integer in compressed format.
-	/// </returns>
-	public static byte[] To7BitEncodedInt(int value)
-	{
-		List<byte> bytes = new();
-		uint remaining = (uint)value;
-
-		while (remaining > 127)
-		{
-			bytes.Add((byte)(remaining | 128));
-			remaining >>= 7;
-		}
-
-		bytes.Add((byte)remaining);
-		return bytes.ToArray();
-	}
-	/// <summary>
-	/// Converts a compressed 32-bit integer into a <see cref="int" /> value.
-	/// </summary>
-	/// <param name="value">The <see cref="byte" />[] value to convert with up to 4 bytes capacity.</param>
-	/// <returns>
-	/// A <see cref="int" /> value that was converted from the specified 32-bit integer in binary format.
-	/// </returns>
-	public static int From7BitEncodedInt(byte[] value)
-	{
-		Check.ArgumentNull(value);
-
-		int returnValue = 0;
-		int bitIndex = 0;
-
-		foreach (byte b in value)
-		{
-			returnValue |= (b & 127) << bitIndex;
-			bitIndex += 7;
-
-			if ((b & 128) == 0)
-			{
-				return returnValue;
-			}
-		}
-
-		throw Throw.Format("The value format is invalid.");
 	}
 	/// <summary>
 	/// Converts an integer to a roman numeral. If <paramref name="value" /> is not between 1 and 3999, an exception is thrown.

@@ -46,7 +46,7 @@ public static class Encryption
 		Check.ArgumentNull(iv);
 		Check.Argument(iv.Length == 16, nameof(iv), "Array must be a 128-bit sized byte array (16 bytes).");
 		Check.ArgumentNull(key);
-		Check.Argument(key.Length == 16 || key.Length == 32, nameof(key), "Array must be a 128-bit or 256-bit sized byte array (16 or 32 bytes).");
+		Check.Argument(key.Length is 16 or 32, nameof(key), "Array must be a 128-bit or 256-bit sized byte array (16 or 32 bytes).");
 
 		using Aes aes = Aes.Create();
 		aes.IV = iv;
@@ -77,7 +77,7 @@ public static class Encryption
 		Check.ArgumentNull(iv);
 		Check.Argument(iv.Length == 16, nameof(iv), "Array must be a 128-bit sized byte array (16 bytes).");
 		Check.ArgumentNull(key);
-		Check.Argument(key.Length == 16 || key.Length == 32, nameof(key), "Array must be a 128-bit or 256-bit sized byte array (16 or 32 bytes).");
+		Check.Argument(key.Length is 16 or 32, nameof(key), "Array must be a 128-bit or 256-bit sized byte array (16 or 32 bytes).");
 
 		using Aes aes = Aes.Create();
 		aes.IV = iv;
