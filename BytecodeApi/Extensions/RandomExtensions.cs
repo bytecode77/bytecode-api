@@ -273,4 +273,21 @@ public static class RandomExtensions
 
 		return list[random.Next(list.Count)];
 	}
+	/// <summary>
+	/// Returns a random value of the specified <see langword="enum" /> type.
+	/// </summary>
+	/// <typeparam name="T">The type of the <see cref="Enum" /> to be returned.</typeparam>
+	/// <param name="random">The <see cref="Random" /> object to be used for random number generation.</param>
+	/// <returns>
+	/// A random value of the specified <see langword="enum" /> type.
+	/// </returns>
+	public static T NextEnumValue<T>(this Random random) where T : struct, Enum
+	{
+		Check.ArgumentNull(random);
+
+		T[] values = EnumEx.GetValues<T>();
+		if (values.None()) throw Throw.Argument(nameof(T), "Enum does not have values.");
+
+		return random.NextObject(values);
+	}
 }
