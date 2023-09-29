@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Text.RegularExpressions;
 
 namespace BytecodeApi.Extensions;
 
@@ -111,7 +112,13 @@ public static class ReflectionExtensions
 
 		while (t.HasElementType)
 		{
-			suffix = new[] { "[]", "*", "&" }.First(name.EndsWith) + suffix;
+			Match match = Regex.Match(name, @"\[,*\]|\*|&", RegexOptions.RightToLeft);
+			if (!match.Success)
+			{
+				throw new InvalidOperationException("Could not parse element type.");
+			}
+
+			suffix = match.Value + suffix;
 
 			if (t.GetElementType() is Type elementType)
 			{
