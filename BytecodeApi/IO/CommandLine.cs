@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using BytecodeApi.Extensions;
+using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Text;
 
@@ -21,19 +22,26 @@ public static class CommandLine
 	{
 		Check.ArgumentNull(commandLine);
 
-		nint argumentsPtr = Native.CommandLineToArgvW(commandLine, out int count);
-		if (argumentsPtr == 0)
+		if (commandLine.IsNullOrWhiteSpace())
 		{
-			throw Throw.Win32();
+			return new string[0];
 		}
+		else
+		{
+			nint argumentsPtr = Native.CommandLineToArgvW(commandLine, out int count);
+			if (argumentsPtr == 0)
+			{
+				throw Throw.Win32();
+			}
 
-		try
-		{
-			return Create.Array(count, i => Marshal.PtrToStringUni(Marshal.ReadIntPtr(argumentsPtr, i * nint.Size)) ?? "");
-		}
-		finally
-		{
-			Native.LocalFree(argumentsPtr);
+			try
+			{
+				return Create.Array(count, i => Marshal.PtrToStringUni(Marshal.ReadIntPtr(argumentsPtr, i * nint.Size)) ?? "");
+			}
+			finally
+			{
+				Native.LocalFree(argumentsPtr);
+			}
 		}
 	}
 	/// <summary>

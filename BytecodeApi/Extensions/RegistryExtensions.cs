@@ -121,7 +121,7 @@ public static class RegistryExtensions
 		return key.GetInt64Value(name) ?? defaultValue;
 	}
 	/// <summary>
-	/// Retrieves a <see cref="string" /> value from this <see cref="RegistryKey" /> that is represented as a REG_SZ value. Returns <see langword="null" />, if the value does not exist in the registry or is not a REG_SZ value.
+	/// Retrieves a <see cref="string" /> value from this <see cref="RegistryKey" /> that is represented as a REG_SZ or REG_EXPAND_SZ value. Returns <see langword="null" />, if the value does not exist in the registry or is not a REG_SZ or REG_EXPAND_SZ value.
 	/// </summary>
 	/// <param name="key">The <see cref="RegistryKey" /> to read the value from.</param>
 	/// <param name="name">A <see cref="string" /> value specifying the name of the value to read.</param>
@@ -136,7 +136,7 @@ public static class RegistryExtensions
 		return key.GetValue(name) as string;
 	}
 	/// <summary>
-	/// Retrieves a <see cref="string" /> value from this <see cref="RegistryKey" /> that is represented as a REG_SZ value. Returns a default value, if the value does not exist in the registry or is not a REG_SZ value.
+	/// Retrieves a <see cref="string" /> value from this <see cref="RegistryKey" /> that is represented as a REG_SZ or REG_EXPAND_SZ value. Returns a default value, if the value does not exist in the registry or is not a REG_SZ or REG_EXPAND_SZ value.
 	/// </summary>
 	/// <param name="key">The <see cref="RegistryKey" /> to read the value from.</param>
 	/// <param name="name">A <see cref="string" /> value specifying the name of the value to read.</param>
@@ -148,6 +148,35 @@ public static class RegistryExtensions
 	public static string GetStringValue(this RegistryKey key, string? name, string defaultValue)
 	{
 		return key.GetStringValue(name) ?? defaultValue;
+	}
+	/// <summary>
+	/// Retrieves the original, unexpanded <see cref="string" /> value from this <see cref="RegistryKey" /> that is represented as a REG_SZ or REG_EXPAND_SZ value. Returns <see langword="null" />, if the value does not exist in the registry or is not a REG_SZ or REG_EXPAND_SZ value.
+	/// </summary>
+	/// <param name="key">The <see cref="RegistryKey" /> to read the value from.</param>
+	/// <param name="name">A <see cref="string" /> value specifying the name of the value to read.</param>
+	/// <returns>
+	/// The converted value, if it exists and conversion is possible;
+	/// otherwise, <see langword="null" />.
+	/// </returns>
+	public static string? GetExpandStringValue(this RegistryKey key, string? name)
+	{
+		Check.ArgumentNull(key);
+
+		return key.GetValue(name, null, RegistryValueOptions.DoNotExpandEnvironmentNames) as string;
+	}
+	/// <summary>
+	/// Retrieves the original, unexpanded <see cref="string" /> value from this <see cref="RegistryKey" /> that is represented as a REG_SZ or REG_EXPAND_SZ value. Returns a default value, if the value does not exist in the registry or is not a REG_SZ value.
+	/// </summary>
+	/// <param name="key">The <see cref="RegistryKey" /> to read the value from.</param>
+	/// <param name="name">A <see cref="string" /> value specifying the name of the value to read.</param>
+	/// <param name="defaultValue">The value that is used if retrieving or conversion failed.</param>
+	/// <returns>
+	/// The converted value, if it exists and conversion is possible;
+	/// otherwise, <paramref name="defaultValue" />.
+	/// </returns>
+	public static string GetExpandStringValue(this RegistryKey key, string? name, string defaultValue)
+	{
+		return key.GetExpandStringValue(name) ?? defaultValue;
 	}
 	/// <summary>
 	/// Retrieves a <see cref="DateTime" /> value from this <see cref="RegistryKey" /> that is represented as a REG_SZ value. Returns <see langword="null" />, if the value does not exist in the registry, is not a REG_SZ value, or does not match the format.
@@ -338,6 +367,25 @@ public static class RegistryExtensions
 		else
 		{
 			key.SetValue(name, value, RegistryValueKind.String);
+		}
+	}
+	/// <summary>
+	/// Writes a <see cref="string" /> value to this <see cref="RegistryKey" /> that is represented as a REG_EXPAND_SZ value. If <see langword="null" /> is provided, the value will be deleted.
+	/// </summary>
+	/// <param name="key">The <see cref="RegistryKey" /> to write the value to.</param>
+	/// <param name="name">A <see cref="string" /> value specifying the name of the value to write to.</param>
+	/// <param name="value">The <see cref="string" /> value to be written. If <see langword="null" /> is provided, the value will be deleted.</param>
+	public static void SetExpandStringValue(this RegistryKey key, string? name, string? value)
+	{
+		Check.ArgumentNull(key);
+
+		if (value == null)
+		{
+			key.DeleteValue(name ?? "", false);
+		}
+		else
+		{
+			key.SetValue(name, value, RegistryValueKind.ExpandString);
 		}
 	}
 	/// <summary>

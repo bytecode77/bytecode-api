@@ -26,6 +26,10 @@ public enum DateTimeConverterMethod
 	/// </summary>
 	Year,
 	/// <summary>
+	/// Returns the quarter (a number between 1 and 4) of the <see cref="DateTime" />? value as a <see cref="string" />.
+	/// </summary>
+	Quarter,
+	/// <summary>
 	/// Returns the month component of the <see cref="DateTime" />? value as a <see cref="string" />.
 	/// </summary>
 	Month,

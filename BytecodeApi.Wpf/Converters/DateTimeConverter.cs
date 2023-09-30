@@ -46,6 +46,7 @@ public sealed class DateTimeConverter : TwoWayConverterBase<DateTime?, string?>
 				DateTimeConverterMethod.LongDate => value.Value.ToLongDateString(),
 				DateTimeConverterMethod.LongTime => value.Value.ToLongTimeString(),
 				DateTimeConverterMethod.Year => value.Value.Year.ToString(),
+				DateTimeConverterMethod.Quarter => ((value.Value.Month - 1) / 3 + 1).ToString(),
 				DateTimeConverterMethod.Month => value.Value.Month.ToString(),
 				DateTimeConverterMethod.Day => value.Value.Day.ToString(),
 				DateTimeConverterMethod.Hour => value.Value.Hour.ToString(),
@@ -81,6 +82,7 @@ public sealed class DateTimeConverter : TwoWayConverterBase<DateTime?, string?>
 				DateTimeConverterMethod.LongDate or
 				DateTimeConverterMethod.LongTime => DateTime.TryParse(value as string, CultureInfo.CurrentCulture, out DateTime dateTime) ? dateTime : null,
 				DateTimeConverterMethod.Year or
+				DateTimeConverterMethod.Quarter or
 				DateTimeConverterMethod.Month or
 				DateTimeConverterMethod.Day or
 				DateTimeConverterMethod.Hour or
