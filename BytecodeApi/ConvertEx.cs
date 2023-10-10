@@ -141,7 +141,7 @@ public static class ConvertEx
 			}
 
 			int padding = 8 - result.Length % 8;
-			if (padding > 0 && padding < 8)
+			if (padding is > 0 and < 8)
 			{
 				result.Append('=', padding);
 			}
@@ -176,7 +176,7 @@ public static class ConvertEx
 
 		if (str.Length == 0)
 		{
-			return new byte[0];
+			return Array.Empty<byte>();
 		}
 		else
 		{
@@ -307,7 +307,7 @@ public static class ConvertEx
 	/// </returns>
 	public static string ToRomanNumber(int value)
 	{
-		Check.ArgumentOutOfRange(value >= 1 && value <= 3999, nameof(value), "Number must be in range of 1...3999.");
+		Check.ArgumentOutOfRange(value is >= 1 and <= 3999, nameof(value), "Number must be in range of 1...3999.");
 
 		// 1	I
 		// 5	V

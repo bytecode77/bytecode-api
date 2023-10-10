@@ -102,7 +102,7 @@ public static class Validate
 
 			foreach (char c in str.Where(c => !c.IsWhiteSpace()))
 			{
-				if (c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z' || c >= '0' && c <= '9' || c == '+' || c == '/')
+				if (c is >= 'a' and <= 'z' or >= 'A' and <= 'Z' or >= '0' and <= '9' or '+' or '/')
 				{
 					if (padding)
 					{
@@ -125,7 +125,7 @@ public static class Validate
 			return
 				contentLength == 0 && paddingLength == 0 ||
 				contentLength == 2 && paddingLength == 2 ||
-				contentLength == 3 && (paddingLength == 1 || paddingLength == 2);
+				contentLength == 3 && paddingLength is 1 or 2;
 		}
 	}
 	/// <summary>
@@ -159,7 +159,7 @@ public static class Validate
 
 			return
 				root?.Length >= 3 &&
-				(root[0] >= 'a' && root[0] <= 'z' || root[0] >= 'A' && root[0] <= 'Z') &&
+				root[0] is >= 'a' and <= 'z' or >= 'A' and <= 'Z' &&
 				root[1] == ':' &&
 				root[2] is '\\' or '/' &&
 				root.IndexOfAny(System.IO.Path.GetInvalidPathChars()) == -1 &&

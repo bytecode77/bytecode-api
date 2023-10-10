@@ -49,7 +49,7 @@ public sealed class Option : IEquatable<Option>
 		}
 
 		Arguments = arguments.ToReadOnlyCollection();
-		Alternatives = (alternatives ?? new string[0]).ToReadOnlyCollection();
+		Alternatives = (alternatives ?? Array.Empty<string>()).ToReadOnlyCollection();
 	}
 
 	/// <summary>

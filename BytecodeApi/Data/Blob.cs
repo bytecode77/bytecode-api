@@ -28,7 +28,7 @@ public class Blob
 	public Blob()
 	{
 		Name = "";
-		Content = new byte[0];
+		Content = Array.Empty<byte>();
 	}
 	/// <summary>
 	/// Initializes a new instance of the <see cref="Blob" /> class with the specified name.

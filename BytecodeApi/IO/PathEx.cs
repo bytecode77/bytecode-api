@@ -30,7 +30,7 @@ public static class PathEx
 		if (result > 0 && result < stringBuilder.Capacity)
 		{
 			path = stringBuilder.ToString(0, result);
-			if (path[0] >= 'a' && path[0] <= 'z' && path[1] == ':')
+			if (path[0] is >= 'a' and <= 'z' && path[1] == ':')
 			{
 				path = path[0].ToUpper() + path[1..];
 			}
@@ -52,7 +52,7 @@ public static class PathEx
 		Check.ArgumentNull(path);
 		Check.FileOrDirectoryNotFound(path);
 
-		if (path.Length > 2 && path[1] == ':' && path[0].ToUpper() >= 'A' && path[0].ToUpper() <= 'Z')
+		if (path.Length > 2 && path[1] == ':' && path[0] is >= 'a' and <= 'z' or >= 'A' and <= 'Z')
 		{
 			StringBuilder result = new(512);
 			int length = result.Capacity;

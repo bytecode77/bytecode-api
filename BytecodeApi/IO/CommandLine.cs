@@ -24,7 +24,7 @@ public static class CommandLine
 
 		if (commandLine.IsNullOrWhiteSpace())
 		{
-			return new string[0];
+			return Array.Empty<string>();
 		}
 		else
 		{
