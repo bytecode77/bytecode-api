@@ -130,6 +130,13 @@ public static class ConsoleWriter
 		}
 	}
 	/// <summary>
+	/// Writes a line terminator to the console.
+	/// </summary>
+	public static void WriteLine()
+	{
+		WriteLine("", new());
+	}
+	/// <summary>
 	/// Writes the specified <see cref="string" /> to the console without a timestamp, followed by a line terminator.
 	/// </summary>
 	/// <param name="message">The <see cref="string" /> to write.</param>
