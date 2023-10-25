@@ -47,15 +47,15 @@ public static class ConsoleWriter
 	{
 		Check.ArgumentNull(message);
 		Check.ArgumentNull(Theme);
-		Check.ArgumentNull(Theme.DefaultStyle);
+		Check.ArgumentNull(Theme.PreviewStyle);
 		Check.ArgumentNull(Theme.PreviewIcon);
 
 		lock (SyncRoot)
 		{
 			RemovePreviewLines();
 
-			message = $"{GetTimeStamp()}{Theme.PreviewIcon} {message}";
-			Theme.DefaultStyle.WriteLine(message);
+			message = $"{GetTimeStamp()}{Theme.PreviewIcon}{(Theme.PreviewIcon == "" ? "" : " ")}{message}";
+			Theme.PreviewStyle.WriteLine(message);
 
 			PreviewLineCount += (message.Length + Console.WindowWidth) / Console.WindowWidth;
 		}
@@ -71,7 +71,7 @@ public static class ConsoleWriter
 		Check.ArgumentNull(message);
 		Check.ArgumentNull(progressText);
 		Check.ArgumentNull(Theme);
-		Check.ArgumentNull(Theme.DefaultStyle);
+		Check.ArgumentNull(Theme.PreviewStyle);
 
 		Preview(message);
 
@@ -97,7 +97,7 @@ public static class ConsoleWriter
 				progressLine = $"{progressText} {progressLine}";
 			}
 
-			Theme.DefaultStyle.Write(progressLine);
+			Theme.PreviewStyle.Write(progressLine);
 			PreviewLineCount++;
 		}
 	}
@@ -109,9 +109,9 @@ public static class ConsoleWriter
 	{
 		Check.ArgumentNull(message);
 		Check.ArgumentNull(Theme);
-		Check.ArgumentNull(Theme.DefaultStyle);
+		Check.ArgumentNull(Theme.TextStyle);
 
-		Write(message, Theme.DefaultStyle);
+		Write(message, Theme.TextStyle);
 	}
 	/// <summary>
 	/// Writes the specified <see cref="string" /> to the console without a timestamp.
@@ -130,6 +130,13 @@ public static class ConsoleWriter
 		}
 	}
 	/// <summary>
+	/// Writes a line terminator to the console.
+	/// </summary>
+	public static void WriteLine()
+	{
+		WriteLine("", new());
+	}
+	/// <summary>
 	/// Writes the specified <see cref="string" /> to the console without a timestamp, followed by a line terminator.
 	/// </summary>
 	/// <param name="message">The <see cref="string" /> to write.</param>
@@ -137,9 +144,9 @@ public static class ConsoleWriter
 	{
 		Check.ArgumentNull(message);
 		Check.ArgumentNull(Theme);
-		Check.ArgumentNull(Theme.DefaultStyle);
+		Check.ArgumentNull(Theme.TextStyle);
 
-		WriteLine(message, Theme.DefaultStyle);
+		WriteLine(message, Theme.TextStyle);
 	}
 	/// <summary>
 	/// Writes the specified <see cref="string" /> to the console without a timestamp, followed by a line terminator.
@@ -165,13 +172,13 @@ public static class ConsoleWriter
 	{
 		Check.ArgumentNull(message);
 		Check.ArgumentNull(Theme);
-		Check.ArgumentNull(Theme.DefaultStyle);
+		Check.ArgumentNull(Theme.SuccessStyle);
 		Check.ArgumentNull(Theme.SuccessIcon);
 
 		lock (SyncRoot)
 		{
 			RemovePreviewLines();
-			Theme.DefaultStyle.WriteLine($"{GetTimeStamp()}{Theme.SuccessIcon} {message}");
+			Theme.SuccessStyle.WriteLine($"{GetTimeStamp()}{Theme.SuccessIcon}{(Theme.SuccessIcon == "" ? "" : " ")}{message}");
 		}
 	}
 	/// <summary>
@@ -182,13 +189,13 @@ public static class ConsoleWriter
 	{
 		Check.ArgumentNull(message);
 		Check.ArgumentNull(Theme);
-		Check.ArgumentNull(Theme.DefaultStyle);
+		Check.ArgumentNull(Theme.WarningStyle);
 		Check.ArgumentNull(Theme.WarningIcon);
 
 		lock (SyncRoot)
 		{
 			RemovePreviewLines();
-			Theme.WarningStyle.WriteLine($"{GetTimeStamp()}{Theme.WarningIcon} {message}");
+			Theme.WarningStyle.WriteLine($"{GetTimeStamp()}{Theme.WarningIcon}{(Theme.WarningIcon == "" ? "" : " ")}{message}");
 		}
 	}
 	/// <summary>
@@ -199,13 +206,13 @@ public static class ConsoleWriter
 	{
 		Check.ArgumentNull(message);
 		Check.ArgumentNull(Theme);
-		Check.ArgumentNull(Theme.DefaultStyle);
+		Check.ArgumentNull(Theme.ErrorStyle);
 		Check.ArgumentNull(Theme.ErrorIcon);
 
 		lock (SyncRoot)
 		{
 			RemovePreviewLines();
-			Theme.ErrorStyle.WriteLine($"{GetTimeStamp()}{Theme.ErrorIcon} {message}");
+			Theme.ErrorStyle.WriteLine($"{GetTimeStamp()}{Theme.ErrorIcon}{(Theme.ErrorIcon == "" ? "" : " ")}{message}");
 		}
 	}
 	/// <summary>
