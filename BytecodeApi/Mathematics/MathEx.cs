@@ -356,7 +356,7 @@ public static class MathEx
 	public static decimal Interpolate(decimal value, decimal valueMin, decimal valueMax, decimal returnMin, decimal returnMax, bool mapToValueRange)
 	{
 		decimal result = returnMin + (value - valueMin) * (returnMax - returnMin) / (valueMax - valueMin);
-		return mapToValueRange ? Math.Clamp(result, valueMin, valueMax) : result;
+		return mapToValueRange ? Math.Clamp(result, returnMin, returnMax) : result;
 	}
 	/// <summary>
 	/// Interpolates the specified <see cref="double" /> value by scaling its expected range to another. The result is not clipped.
@@ -389,7 +389,7 @@ public static class MathEx
 	public static double Interpolate(double value, double valueMin, double valueMax, double returnMin, double returnMax, bool mapToValueRange)
 	{
 		double result = returnMin + (value - valueMin) * (returnMax - returnMin) / (valueMax - valueMin);
-		return mapToValueRange ? Math.Clamp(result, valueMin, valueMax) : result;
+		return mapToValueRange ? Math.Clamp(result, returnMin, returnMax) : result;
 	}
 	/// <summary>
 	/// Interpolates the specified <see cref="float" /> value by scaling its expected range to another. The result is not clipped.
@@ -422,7 +422,7 @@ public static class MathEx
 	public static float Interpolate(float value, float valueMin, float valueMax, float returnMin, float returnMax, bool mapToValueRange)
 	{
 		float result = returnMin + (value - valueMin) * (returnMax - returnMin) / (valueMax - valueMin);
-		return mapToValueRange ? Math.Clamp(result, valueMin, valueMax) : result;
+		return mapToValueRange ? Math.Clamp(result, returnMin, returnMax) : result;
 	}
 	/// <summary>
 	/// Interpolates the specified <see cref="int" /> value by scaling its expected range to another. The result is not clipped.
@@ -455,7 +455,7 @@ public static class MathEx
 	public static int Interpolate(int value, int valueMin, int valueMax, int returnMin, int returnMax, bool mapToValueRange)
 	{
 		int result = returnMin + (value - valueMin) * (returnMax - returnMin) / (valueMax - valueMin);
-		return mapToValueRange ? Math.Clamp(result, valueMin, valueMax) : result;
+		return mapToValueRange ? Math.Clamp(result, returnMin, returnMax) : result;
 	}
 
 	/// <summary>
