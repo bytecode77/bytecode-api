@@ -32,7 +32,7 @@ public static class DateTimeExtensions
 		return dateTime == default ? null : dateTime;
 	}
 	/// <summary>
-	/// Returns a new <see cref="DateTime" /> that adds the specified number of business days to this <see cref="DateTime" /> value. Business days exclude Saturday and Sunday. The calculation is iterative. If <paramref name="days" /> is positive, days are added, otherwise days are subtracted.
+	/// Returns a new <see cref="DateTime" /> that adds the specified number of business days to this <see cref="DateTime" /> value. Business days exclude Saturday and Sunday. If <paramref name="days" /> is positive, days are added, otherwise days are subtracted.
 	/// <para>Example 1: Friday + 2 business days = Tuesday</para>
 	/// <para>Example 2: Monday - 2 business days = Thursday</para>
 	/// </summary>
@@ -146,7 +146,7 @@ public static class DateTimeExtensions
 	/// </returns>
 	public static DateTime GetFirstDayOfWeek(this DateTime dateTime)
 	{
-		return GetFirstDayOfWeek(dateTime, CultureInfo.CurrentCulture);
+		return dateTime.GetFirstDayOfWeek(CultureInfo.CurrentCulture);
 	}
 	/// <summary>
 	/// Returns a new <see cref="DateTime" /> representing the first day of the week using specified culture-specific calendar rules.

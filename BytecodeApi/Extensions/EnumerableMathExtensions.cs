@@ -311,7 +311,7 @@ public static class EnumerableMathExtensions
 
 		if (sorted.Length % 2 == 0)
 		{
-			return (sorted[sorted.Length / 2 - 1] + sorted[sorted.Length / 2]) / 2.0m;
+			return (sorted[sorted.Length / 2 - 1] + sorted[sorted.Length / 2]) / 2m;
 		}
 		else
 		{
@@ -337,7 +337,7 @@ public static class EnumerableMathExtensions
 		}
 		else if (sorted.Length % 2 == 0)
 		{
-			return (sorted[sorted.Length / 2 - 1] + sorted[sorted.Length / 2]) / 2.0m;
+			return (sorted[sorted.Length / 2 - 1] + sorted[sorted.Length / 2]) / 2m;
 		}
 		else
 		{
