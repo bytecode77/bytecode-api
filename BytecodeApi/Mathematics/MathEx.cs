@@ -238,6 +238,30 @@ public static class MathEx
 		return a <= b ? a : b;
 	}
 	/// <summary>
+	/// Returns the smaller of two <see cref="DateOnly" /> objects.
+	/// </summary>
+	/// <param name="a">The first of two <see cref="DateOnly" /> objects to compare.</param>
+	/// <param name="b">The second of two <see cref="DateOnly" /> objects to compare.</param>
+	/// <returns>
+	/// Parameter <paramref name="a" /> or <paramref name="b" />, whichever is smaller.
+	/// </returns>
+	public static DateOnly Min(DateOnly a, DateOnly b)
+	{
+		return a <= b ? a : b;
+	}
+	/// <summary>
+	/// Returns the smaller of two <see cref="TimeOnly" /> objects.
+	/// </summary>
+	/// <param name="a">The first of two <see cref="TimeOnly" /> objects to compare.</param>
+	/// <param name="b">The second of two <see cref="TimeOnly" /> objects to compare.</param>
+	/// <returns>
+	/// Parameter <paramref name="a" /> or <paramref name="b" />, whichever is smaller.
+	/// </returns>
+	public static TimeOnly Min(TimeOnly a, TimeOnly b)
+	{
+		return a <= b ? a : b;
+	}
+	/// <summary>
 	/// Returns the smaller of two <see cref="TimeSpan" /> objects.
 	/// </summary>
 	/// <param name="a">The first of two <see cref="TimeSpan" /> objects to compare.</param>
@@ -271,6 +295,30 @@ public static class MathEx
 	/// Parameter <paramref name="a" /> or <paramref name="b" />, whichever is larger.
 	/// </returns>
 	public static DateTime Max(DateTime a, DateTime b)
+	{
+		return a >= b ? a : b;
+	}
+	/// <summary>
+	/// Returns the larger of two <see cref="DateOnly" /> objects.
+	/// </summary>
+	/// <param name="a">The first of two <see cref="DateOnly" /> objects to compare.</param>
+	/// <param name="b">The second of two <see cref="DateOnly" /> objects to compare.</param>
+	/// <returns>
+	/// Parameter <paramref name="a" /> or <paramref name="b" />, whichever is larger.
+	/// </returns>
+	public static DateOnly Max(DateOnly a, DateOnly b)
+	{
+		return a >= b ? a : b;
+	}
+	/// <summary>
+	/// Returns the larger of two <see cref="TimeOnly" /> objects.
+	/// </summary>
+	/// <param name="a">The first of two <see cref="TimeOnly" /> objects to compare.</param>
+	/// <param name="b">The second of two <see cref="TimeOnly" /> objects to compare.</param>
+	/// <returns>
+	/// Parameter <paramref name="a" /> or <paramref name="b" />, whichever is larger.
+	/// </returns>
+	public static TimeOnly Max(TimeOnly a, TimeOnly b)
 	{
 		return a >= b ? a : b;
 	}
