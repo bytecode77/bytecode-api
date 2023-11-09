@@ -11,6 +11,10 @@ public abstract class RestClient : IDisposable
 	/// </summary>
 	public string BaseUrl { get; private init; }
 	/// <summary>
+	/// A <see cref="RestClientOptions" /> object with formatting options for this <see cref="RestClient" /> instance.
+	/// </summary>
+	protected internal RestClientOptions Options { get; set; }
+	/// <summary>
 	/// Gets the <see cref="System.Net.Http.HttpClient" /> that is used to process requests.
 	/// </summary>
 	protected internal HttpClient HttpClient { get; private init; }
@@ -24,6 +28,7 @@ public abstract class RestClient : IDisposable
 		Check.ArgumentNull(baseUrl);
 
 		BaseUrl = baseUrl.TrimEnd('/');
+		Options = new();
 		HttpClient = new();
 	}
 	/// <summary>
