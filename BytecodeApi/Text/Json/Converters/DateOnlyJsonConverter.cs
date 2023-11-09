@@ -9,6 +9,19 @@ namespace BytecodeApi.Text.Json.Converters;
 /// </summary>
 public sealed class DateOnlyJsonConverter : JsonConverter<DateOnly>
 {
+	private readonly string Format;
+
+	/// <summary>
+	/// Initializes a new instance of the <see cref="DateOnlyJsonConverter" /> class.
+	/// </summary>
+	/// <param name="format">The format that is used to convert <see cref="DateOnly" /> values.</param>
+	public DateOnlyJsonConverter(string format)
+	{
+		Check.ArgumentNull(format);
+
+		Format = format;
+	}
+
 	/// <summary>
 	/// Reads and converts the JSON value to a <see cref="DateOnly" /> value.
 	/// </summary>
@@ -23,13 +36,13 @@ public sealed class DateOnlyJsonConverter : JsonConverter<DateOnly>
 		return DateOnly.Parse(reader.GetString()!);
 	}
 	/// <summary>
-	/// Writes the <see cref="DateOnly" /> value as JSON with the format "yyyy-MM-dd".
+	/// Writes the <see cref="DateOnly" /> value as JSON.
 	/// </summary>
 	/// <param name="writer">The <see cref="Utf8JsonWriter" /> to write to.</param>
 	/// <param name="value">The <see cref="DateOnly" /> value to be converted.</param>
 	/// <param name="options">This parameter is ignored.</param>
 	public override void Write(Utf8JsonWriter writer, DateOnly value, JsonSerializerOptions options)
 	{
-		writer.WriteStringValue(value.ToStringInvariant("yyyy-MM-dd"));
+		writer.WriteStringValue(value.ToStringInvariant(Format));
 	}
 }

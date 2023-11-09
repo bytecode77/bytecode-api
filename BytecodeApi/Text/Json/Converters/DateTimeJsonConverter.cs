@@ -9,6 +9,19 @@ namespace BytecodeApi.Text.Json.Converters;
 /// </summary>
 public sealed class DateTimeJsonConverter : JsonConverter<DateTime>
 {
+	private readonly string Format;
+
+	/// <summary>
+	/// Initializes a new instance of the <see cref="DateTimeJsonConverter" /> class.
+	/// </summary>
+	/// <param name="format">The format that is used to convert <see cref="DateTime" /> values.</param>
+	public DateTimeJsonConverter(string format)
+	{
+		Check.ArgumentNull(format);
+
+		Format = format;
+	}
+
 	/// <summary>
 	/// Reads and converts the JSON value to a <see cref="DateTime" /> value.
 	/// </summary>
@@ -23,13 +36,13 @@ public sealed class DateTimeJsonConverter : JsonConverter<DateTime>
 		return DateTime.Parse(reader.GetString()!);
 	}
 	/// <summary>
-	/// Writes the <see cref="DateTime" /> value as JSON with the format "yyyy-MM-dd HH:mm:ss".
+	/// Writes the <see cref="DateTime" /> value as JSON.
 	/// </summary>
 	/// <param name="writer">The <see cref="Utf8JsonWriter" /> to write to.</param>
 	/// <param name="value">The <see cref="DateTime" /> value to be converted.</param>
 	/// <param name="options">This parameter is ignored.</param>
 	public override void Write(Utf8JsonWriter writer, DateTime value, JsonSerializerOptions options)
 	{
-		writer.WriteStringValue(value.ToStringInvariant("yyyy-MM-dd HH:mm:ss"));
+		writer.WriteStringValue(value.ToStringInvariant(Format));
 	}
 }
