@@ -1,5 +1,7 @@
+using BytecodeApi.Data;
 using BytecodeApi.Extensions;
 using System.Collections;
+using System.Net.Http.Headers;
 using System.Reflection;
 using System.Text;
 using System.Text.Encodings.Web;
@@ -147,6 +149,46 @@ public sealed class RestRequest
 		HttpContent = new FormUrlEncodedContent(content.ToDictionary(property => property.Key, property => property.Value?.ToString() ?? ""));
 		return this;
 	}
+	/// <summary>
+	/// Includes a file into the multipart request.
+	/// </summary>
+	/// <param name="name">The name of the HTTP content.</param>
+	/// <param name="file">A <see cref="Blob" /> with the file to send.</param>
+	/// <param name="contentType">The content type of <paramref name="file" />.</param>
+	/// <returns>
+	/// A reference to this instance after the operation has completed.
+	/// </returns>
+	public RestRequest MultipartFileContent(string name, Blob file, string contentType)
+	{
+		Check.ObjectDisposed<RestClient>(RestClient.Disposed);
+		Check.ArgumentNull(name);
+		Check.ArgumentNull(file);
+		Check.ArgumentNull(contentType);
+
+		ByteArrayContent fileContent = new(file.Content);
+		fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse(contentType);
+		AddMultipartContent().Add(fileContent, name, file.Name);
+		return this;
+	}
+	/// <summary>
+	/// Includes a <see cref="string" /> into the multipart request.
+	/// </summary>
+	/// <param name="name">The name of the HTTP content.</param>
+	/// <param name="content">The <see cref="string" /> content to be sent with the multipart request.</param>
+	/// <param name="contentType">The content type of <paramref name="content" />.</param>
+	/// <returns>
+	/// A reference to this instance after the operation has completed.
+	/// </returns>
+	public RestRequest MultipartStringContent(string name, string content, string contentType)
+	{
+		Check.ObjectDisposed<RestClient>(RestClient.Disposed);
+		Check.ArgumentNull(name);
+		Check.ArgumentNull(content);
+		Check.ArgumentNull(contentType);
+
+		AddMultipartContent().Add(new StringContent(content, Encoding.UTF8, contentType), name);
+		return this;
+	}
 
 	/// <summary>
 	/// Sends the request and reads the response <see cref="string" />.
@@ -241,5 +283,12 @@ public sealed class RestRequest
 		}
 
 		return $"{url}{(url.Contains('?') ? '&' : '?')}{UrlEncoder.Default.Encode(key)}={UrlEncoder.Default.Encode(value)}{fragment}";
+	}
+	private MultipartFormDataContent AddMultipartContent()
+	{
+		Check.InvalidOperation(HttpContent is null or MultipartFormDataContent, "Cannot mix multipart content with non-multipart content.");
+
+		HttpContent ??= new MultipartFormDataContent();
+		return (MultipartFormDataContent)HttpContent;
 	}
 }

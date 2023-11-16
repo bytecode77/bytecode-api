@@ -157,6 +157,18 @@ public static class ReflectionExtensions
 		}
 	}
 	/// <summary>
+	/// Returns the value of a static field.
+	/// </summary>
+	/// <typeparam name="T">The type to which the returned value is casted to.</typeparam>
+	/// <param name="field">The <see cref="FieldInfo" /> to retrieve the value from.</param>
+	/// <returns>
+	/// The value of a static field.
+	/// </returns>
+	public static T? GetValue<T>(this FieldInfo field)
+	{
+		return field.GetValue<T>(null);
+	}
+	/// <summary>
 	/// Returns the value of a field supported by a given <see cref="object" />.
 	/// </summary>
 	/// <typeparam name="T">The type to which the returned value is casted to.</typeparam>
@@ -170,6 +182,18 @@ public static class ReflectionExtensions
 		Check.ArgumentNull(field);
 
 		return (T?)field.GetValue(obj);
+	}
+	/// <summary>
+	/// Returns the value of a static property.
+	/// </summary>
+	/// <typeparam name="T">The type to which the returned value is casted to.</typeparam>
+	/// <param name="property">The <see cref="PropertyInfo" /> to retrieve the value from.</param>
+	/// <returns>
+	/// The value of a static property.
+	/// </returns>
+	public static T? GetValue<T>(this PropertyInfo property)
+	{
+		return property.GetValue<T>(null);
 	}
 	/// <summary>
 	/// Returns the value of a property supported by a given <see cref="object" />.
