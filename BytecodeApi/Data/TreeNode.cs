@@ -101,9 +101,7 @@ public class TreeNode<T> : IEnumerable<TreeNode<T>>, IEquatable<TreeNode<T>>
 	/// </returns>
 	public TreeNode<T> Add(T value)
 	{
-		TreeNode<T> node = new(value) { Parent = this };
-		Children.Add(node);
-		return node;
+		return Add(new TreeNode<T>(value));
 	}
 	/// <summary>
 	/// Adds the specified child node. If <paramref name="node" /> is already part of a tree, it will be removed from its current parent node.
@@ -121,6 +119,7 @@ public class TreeNode<T> : IEnumerable<TreeNode<T>>, IEquatable<TreeNode<T>>
 			node.Parent.Remove(node);
 		}
 
+		node.Parent = this;
 		Children.Add(node);
 		return node;
 	}
