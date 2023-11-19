@@ -9,6 +9,8 @@ public interface ICopy<T>
 	/// <summary>
 	/// Creates a new instance and copies all properties.
 	/// </summary>
-	/// <returns>A new instance with all properties copied from this instance.</returns>
+	/// <returns>
+	/// A new instance with all properties copied from this instance.
+	/// </returns>
 	public T Copy();
 }

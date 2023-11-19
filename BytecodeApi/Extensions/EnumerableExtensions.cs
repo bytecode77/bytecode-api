@@ -675,15 +675,22 @@ public static class EnumerableExtensions
 	/// <typeparam name="TSource">The type of the elements to remove.</typeparam>
 	/// <param name="source">The <see cref="ICollection{T}" /> to remove elements from.</param>
 	/// <param name="predicate">A function to test each element for a condition.</param>
-	public static void RemoveAll<TSource>(this ICollection<TSource> source, Func<TSource, bool> predicate)
+	/// <returns>
+	/// The number of removed elements.
+	/// </returns>
+	public static int RemoveAll<TSource>(this ICollection<TSource> source, Func<TSource, bool> predicate)
 	{
 		Check.ArgumentNull(source);
 		Check.ArgumentNull(predicate);
 
-		foreach (TSource item in source.Where(itm => predicate(itm)).ToArray())
+		TSource[] removed = source.Where(predicate).ToArray();
+
+		foreach (TSource item in removed)
 		{
 			source.Remove(item);
 		}
+
+		return removed.Length;
 	}
 	/// <summary>
 	/// Removes all elements that occur in the specified collection.

@@ -45,7 +45,7 @@ public sealed class Option : IEquatable<Option>
 			Check.ArgumentEx.ArrayElementsRequired(alternatives);
 			Check.ArgumentEx.ArrayValuesNotNull(alternatives);
 			Check.ArgumentEx.ArrayValuesNotStringEmpty(alternatives);
-			Check.Argument(alternatives.All(item => Validate.AlphaNumeric(item)), nameof(alternatives), "String must be alphanumeric.");
+			Check.Argument(alternatives.All(Validate.AlphaNumeric), nameof(alternatives), "String must be alphanumeric.");
 		}
 
 		Arguments = arguments.ToReadOnlyCollection();

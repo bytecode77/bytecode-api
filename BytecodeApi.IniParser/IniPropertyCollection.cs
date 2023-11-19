@@ -137,7 +137,8 @@ public sealed class IniPropertyCollection : ICollection<IniProperty>
 	/// <returns>
 	/// <see langword="true" />, if <paramref name="item" /> is successfully removed;
 	/// otherwise, <see langword="false" />.
-	/// This method also returns <see langword="false" />, if <paramref name="item" /> was not found in the <see cref="IniPropertyCollection" />.</returns>
+	/// This method also returns <see langword="false" />, if <paramref name="item" /> was not found in the <see cref="IniPropertyCollection" />.
+	/// </returns>
 	public bool Remove(IniProperty item)
 	{
 		return Properties.Remove(item);

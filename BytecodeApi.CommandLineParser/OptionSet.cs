@@ -185,7 +185,8 @@ public sealed class OptionSet : ICollection<Option>
 	/// <returns>
 	/// <see langword="true" />, if <paramref name="item" /> is successfully removed;
 	/// otherwise, <see langword="false" />.
-	/// This method also returns <see langword="false" />, if <paramref name="item" /> was not found in the <see cref="OptionSet" />.</returns>
+	/// This method also returns <see langword="false" />, if <paramref name="item" /> was not found in the <see cref="OptionSet" />.
+	/// </returns>
 	public bool Remove(Option item)
 	{
 		return Options.Remove(item);
