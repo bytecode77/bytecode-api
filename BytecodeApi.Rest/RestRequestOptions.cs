@@ -1,9 +1,9 @@
 ﻿namespace BytecodeApi.Rest;
 
 /// <summary>
-/// Represents a set of formatting options for a <see cref="RestClient" /> instance.
+/// Represents a set of options for REST requests.
 /// </summary>
-public sealed class RestClientOptions
+public sealed class RestRequestOptions
 {
 	/// <summary>
 	/// Gets or sets a value specifying the format that is used to convert <see cref="DateTime" /> values.
@@ -22,9 +22,9 @@ public sealed class RestClientOptions
 	public string QueryParameterTimeOnlyFormat { get; set; }
 
 	/// <summary>
-	/// Initializes a new instance of the <see cref="RestClientOptions" /> class with default formatting options.
+	/// Initializes a new instance of the <see cref="RestRequestOptions" /> class with default options.
 	/// </summary>
-	public RestClientOptions()
+	public RestRequestOptions()
 	{
 		QueryParameterDateTimeFormat = "yyyy-MM-ddTHH:mm:sszzz";
 		QueryParameterDateOnlyFormat = "yyyy-MM-dd";

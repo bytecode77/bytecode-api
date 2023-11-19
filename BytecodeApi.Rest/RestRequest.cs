@@ -38,7 +38,7 @@ public sealed class RestRequest
 	{
 		Check.ObjectDisposed<RestClient>(RestClient.Disposed);
 		Check.ArgumentNull(name);
-		Check.ArgumentNull(RestClient.Options);
+		Check.ArgumentNull(RestClient.RequestOptions);
 
 		if (value == null)
 		{
@@ -56,9 +56,9 @@ public sealed class RestRequest
 			{
 				string str => str,
 				Enum enumValue => Convert.ToInt32(enumValue).ToString(),
-				DateTime dateTimeParameter => dateTimeParameter.ToStringInvariant(RestClient.Options.QueryParameterDateTimeFormat),
-				DateOnly dateOnlyParameter => dateOnlyParameter.ToStringInvariant(RestClient.Options.QueryParameterDateOnlyFormat),
-				TimeOnly timeOnlyParameter => timeOnlyParameter.ToStringInvariant(RestClient.Options.QueryParameterTimeOnlyFormat),
+				DateTime dateTimeParameter => dateTimeParameter.ToStringInvariant(RestClient.RequestOptions.QueryParameterDateTimeFormat),
+				DateOnly dateOnlyParameter => dateOnlyParameter.ToStringInvariant(RestClient.RequestOptions.QueryParameterDateOnlyFormat),
+				TimeOnly timeOnlyParameter => timeOnlyParameter.ToStringInvariant(RestClient.RequestOptions.QueryParameterTimeOnlyFormat),
 				_ => value?.ToString() ?? ""
 			};
 
