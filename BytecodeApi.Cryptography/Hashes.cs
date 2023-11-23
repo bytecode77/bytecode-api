@@ -66,6 +66,8 @@ public static class Hashes
 			HashType.Adler32 => Adler32.Create(),
 			HashType.CRC32 => CRC32.Create(),
 			HashType.CRC64 => CRC64.Create(),
+			HashType.MD2 => MD2.Create(),
+			HashType.MD4 => MD4.Create(),
 			HashType.MD5 => MD5.Create(),
 			HashType.RIPEMD160 => RIPEMD160.Create(),
 			HashType.SHA1 => SHA1.Create(),

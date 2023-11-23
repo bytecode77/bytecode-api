@@ -26,6 +26,18 @@ public enum HashType
 	[Description("CRC64")]
 	CRC64,
 	/// <summary>
+	/// The MD2 algorithm is used.
+	/// <para>A <see cref="string.Empty" /> hashed by this algorithm will return "8350e5a3e24c153df2275c9f80692773".</para>
+	/// </summary>
+	[Description("MD2")]
+	MD2,
+	/// <summary>
+	/// The MD4 algorithm is used.
+	/// <para>A <see cref="string.Empty" /> hashed by this algorithm will return "31d6cfe0d16ae931b73c59d7e0c089c0".</para>
+	/// </summary>
+	[Description("MD4")]
+	MD4,
+	/// <summary>
 	/// The MD5 algorithm is used.
 	/// <para>A <see cref="string.Empty" /> hashed by this algorithm will return "d41d8cd98f00b204e9800998ecf8427e".</para>
 	/// </summary>

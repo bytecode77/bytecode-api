@@ -343,7 +343,7 @@ public sealed class RIPEMD160 : HashAlgorithm
 	}
 	private static uint G(uint x, uint y, uint z)
 	{
-		return (x & y) | (~x & z);
+		return x & y | ~x & z;
 	}
 	private static uint H(uint x, uint y, uint z)
 	{
@@ -351,7 +351,7 @@ public sealed class RIPEMD160 : HashAlgorithm
 	}
 	private static uint I(uint x, uint y, uint z)
 	{
-		return (x & z) | (y & ~z);
+		return x & z | y & ~z;
 	}
 	private static uint J(uint x, uint y, uint z)
 	{
