@@ -23,6 +23,14 @@ public class ObservableUserControl : UserControl, INotifyPropertyChanged, INotif
 	/// Occurs when the element is laid out, rendered, and ready for interaction. This event is fired only once.
 	/// </summary>
 	public event RoutedEventHandler? LoadedOnce;
+	/// <summary>
+	/// Occurs each time the element becomes visible.
+	/// </summary>
+	public event EventHandler? Shown;
+	/// <summary>
+	/// Occurs when the element becomes visible for the first time. This event is fired only once.
+	/// </summary>
+	public event EventHandler? ShownOnce;
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="ObservableUserControl" /> class.
@@ -30,6 +38,8 @@ public class ObservableUserControl : UserControl, INotifyPropertyChanged, INotif
 	public ObservableUserControl()
 	{
 		Loaded += ObservableUserControl_Loaded;
+		IsVisibleChanged += ObservableUserControl_IsVisibleChanged;
+		IsVisibleChanged += ObservableUserControl_IsVisibleChanged2;
 	}
 	private void ObservableUserControl_Loaded(object sender, RoutedEventArgs e)
 	{
@@ -40,6 +50,27 @@ public class ObservableUserControl : UserControl, INotifyPropertyChanged, INotif
 		finally
 		{
 			Loaded -= ObservableUserControl_Loaded;
+		}
+	}
+	private void ObservableUserControl_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+	{
+		if ((bool)e.NewValue)
+		{
+			Shown?.Invoke(sender, EventArgs.Empty);
+		}
+	}
+	private void ObservableUserControl_IsVisibleChanged2(object sender, DependencyPropertyChangedEventArgs e)
+	{
+		if ((bool)e.NewValue)
+		{
+			try
+			{
+				ShownOnce?.Invoke(sender, EventArgs.Empty);
+			}
+			finally
+			{
+				IsVisibleChanged -= ObservableUserControl_IsVisibleChanged2;
+			}
 		}
 	}
 
