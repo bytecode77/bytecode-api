@@ -281,7 +281,7 @@ public static class RandomNumberGeneratorExtensions
 	{
 		Check.ArgumentNull(randomNumberGenerator);
 
-		T[] values = EnumEx.GetValues<T>();
+		T[] values = Enum.GetValues<T>();
 		if (values.None()) throw Throw.Argument(nameof(T), "Enum does not have values.");
 
 		return randomNumberGenerator.GetObject(values);
