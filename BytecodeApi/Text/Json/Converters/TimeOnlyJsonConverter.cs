@@ -1,4 +1,5 @@
 ﻿using BytecodeApi.Extensions;
+using System.Globalization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -33,7 +34,7 @@ public sealed class TimeOnlyJsonConverter : JsonConverter<TimeOnly>
 	/// </returns>
 	public override TimeOnly Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
 	{
-		return TimeOnly.Parse(reader.GetString()!);
+		return TimeOnly.Parse(reader.GetString()!, CultureInfo.InvariantCulture);
 	}
 	/// <summary>
 	/// Writes the <see cref="TimeOnly" /> value as JSON.

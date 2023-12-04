@@ -1,4 +1,5 @@
 ﻿using BytecodeApi.Extensions;
+using System.Globalization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -33,7 +34,7 @@ public sealed class DateOnlyJsonConverter : JsonConverter<DateOnly>
 	/// </returns>
 	public override DateOnly Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
 	{
-		return DateOnly.Parse(reader.GetString()!);
+		return DateOnly.Parse(reader.GetString()!, CultureInfo.InvariantCulture);
 	}
 	/// <summary>
 	/// Writes the <see cref="DateOnly" /> value as JSON.

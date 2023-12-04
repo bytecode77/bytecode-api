@@ -1,4 +1,5 @@
 ﻿using BytecodeApi.Extensions;
+using System.Globalization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -33,7 +34,7 @@ public sealed class DateTimeJsonConverter : JsonConverter<DateTime>
 	/// </returns>
 	public override DateTime Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
 	{
-		return DateTime.Parse(reader.GetString()!);
+		return DateTime.Parse(reader.GetString()!, CultureInfo.InvariantCulture);
 	}
 	/// <summary>
 	/// Writes the <see cref="DateTime" /> value as JSON.

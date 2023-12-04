@@ -209,12 +209,54 @@ public sealed class RestRequest
 	/// <returns>
 	/// A <see cref="byte" />[], representing the REST response.
 	/// </returns>
-	public async Task<byte[]> ReadByteArray()
+	public Task<byte[]> ReadByteArray()
+	{
+		return ReadByteArray(null);
+	}
+	/// <summary>
+	/// Sends the request and reads the response as a <see cref="byte" />[].
+	/// </summary>
+	/// <param name="progressCallback">A delegate that is invoked with information about the progress of the download.</param>
+	/// <returns>
+	/// A <see cref="byte" />[], representing the REST response.
+	/// </returns>
+	public async Task<byte[]> ReadByteArray(ProgressCallback? progressCallback)
 	{
 		Check.ObjectDisposed<RestClient>(RestClient.Disposed);
 
-		using HttpResponseMessage response = await Send().ConfigureAwait(false);
-		return await response.Content.ReadAsByteArrayAsync().ConfigureAwait(false);
+		if (progressCallback == null)
+		{
+			using HttpResponseMessage response = await Send().ConfigureAwait(false);
+			return await response.Content.ReadAsByteArrayAsync().ConfigureAwait(false);
+		}
+		else
+		{
+			using HttpResponseMessage response = await Send(HttpCompletionOption.ResponseHeadersRead).ConfigureAwait(false);
+			using Stream stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+
+			using MemoryStream memoryStream = new(response.Content.Headers.ContentLength <= int.MaxValue ? (int)response.Content.Headers.ContentLength.Value : int.MaxValue);
+			byte[] buffer = new byte[4096];
+			int bytesRead;
+			long totalBytesRead = 0;
+			DateTime lastCallback = DateTime.MinValue;
+
+			do
+			{
+				bytesRead = await stream.ReadAsync(buffer).ConfigureAwait(false);
+				totalBytesRead += bytesRead;
+				memoryStream.Write(buffer, 0, bytesRead);
+
+				if (DateTime.Now - lastCallback > TimeSpan.FromMilliseconds(20))
+				{
+					lastCallback = DateTime.Now;
+					progressCallback(totalBytesRead, Math.Max(totalBytesRead, response.Content.Headers.ContentLength ?? 0));
+				}
+			}
+			while (bytesRead > 0);
+
+			progressCallback(totalBytesRead, Math.Max(totalBytesRead, response.Content.Headers.ContentLength ?? 0));
+			return memoryStream.ToArray();
+		}
 	}
 	/// <summary>
 	/// Sends the request and reads the response as a JSON object.
@@ -244,14 +286,14 @@ public sealed class RestRequest
 		return (await JsonSerializer.DeserializeAsync<T>(stream, serializerOptions).ConfigureAwait(false)) ?? throw new JsonException("Deserialization returned null value.");
 	}
 
-	private async Task<HttpResponseMessage> Send()
+	private async Task<HttpResponseMessage> Send(HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
 	{
 		HttpRequestMessage request = new(HttpMethod, Url)
 		{
 			Content = HttpContent
 		};
 
-		HttpResponseMessage response = await RestClient.HttpClient.SendAsync(request).ConfigureAwait(false);
+		HttpResponseMessage response = await RestClient.HttpClient.SendAsync(request, completionOption).ConfigureAwait(false);
 
 		if (response.IsSuccessStatusCode)
 		{
