@@ -3,7 +3,7 @@
 namespace BytecodeApi.Cryptography.HashAlgorithms;
 
 /// <summary>
-/// Computes the <see cref="CRC64" /> checksum for the input data.
+/// Computes the <see cref="CRC64" /> ECMA 182 checksum for the input data.
 /// </summary>
 public sealed class CRC64 : HashAlgorithm
 {
@@ -56,7 +56,7 @@ public sealed class CRC64 : HashAlgorithm
 	/// </summary>
 	public sealed override void Initialize()
 	{
-		CurrentHash = ulong.MaxValue;
+		CurrentHash = 0;
 	}
 	/// <summary>
 	/// Routes data written to the object into the hash algorithm for computing the hash.
@@ -79,7 +79,7 @@ public sealed class CRC64 : HashAlgorithm
 	/// </returns>
 	protected sealed override byte[] HashFinal()
 	{
-		byte[] hashBuffer = BitConverter.GetBytes(~CurrentHash);
+		byte[] hashBuffer = BitConverter.GetBytes(CurrentHash);
 		Array.Reverse(hashBuffer);
 
 		HashValue = hashBuffer;

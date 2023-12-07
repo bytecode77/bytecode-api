@@ -1,4 +1,3 @@
-using BytecodeApi.Extensions;
 using System.Security.Cryptography;
 
 namespace BytecodeApi.Cryptography.HashAlgorithms;
@@ -8,17 +7,16 @@ namespace BytecodeApi.Cryptography.HashAlgorithms;
 /// </summary>
 public sealed class MD2 : HashAlgorithm
 {
-	private static readonly int[] MD2Table;
-	private byte[] CurrentHash = null!;
-	private long HashedLength;
-	private int[] CheckSum = null!;
-	private int[] Buffer = null!;
-	private byte[] LastBlock = null!;
-	private int LastBlockLength;
+	private static readonly byte[] MD2Table;
+	private readonly byte[] CurrentState;
+	private readonly byte[] CheckSum;
+	private readonly byte[] Buffer;
+	private int Count;
+	private readonly byte[] X;
 
 	static MD2()
 	{
-		MD2Table = new int[]
+		MD2Table = new byte[]
 		{
 			0x29, 0x2e, 0x43, 0xc9, 0xa2, 0xd8, 0x7c, 0x01, 0x3d, 0x36, 0x54, 0xa1, 0xec, 0xf0, 0x06, 0x13,
 			0x62, 0xa7, 0x05, 0xf3, 0xc0, 0xc7, 0x73, 0x8c, 0x98, 0x93, 0x2b, 0xd9, 0xbc, 0x4c, 0x82, 0xca,
@@ -44,6 +42,13 @@ public sealed class MD2 : HashAlgorithm
 	public MD2()
 	{
 		HashSizeValue = 128;
+
+		CurrentState = new byte[16];
+		CheckSum = new byte[16];
+		Buffer = new byte[16];
+		Count = 0;
+		X = new byte[48];
+
 		Initialize();
 	}
 	/// <summary>
@@ -62,12 +67,11 @@ public sealed class MD2 : HashAlgorithm
 	/// </summary>
 	public sealed override void Initialize()
 	{
-		CurrentHash = new byte[16];
-		HashedLength = 0;
-		CheckSum = new int[16];
-		Buffer = new int[48];
-		LastBlock = new byte[16];
-		LastBlockLength = 0;
+		Array.Clear(CurrentState);
+		Array.Clear(CheckSum);
+		Array.Clear(Buffer);
+		Count = 0;
+		Array.Clear(X);
 	}
 	/// <summary>
 	/// Routes data written to the object into the hash algorithm for computing the hash.
@@ -77,34 +81,31 @@ public sealed class MD2 : HashAlgorithm
 	/// <param name="cbSize">The number of bytes in the <see cref="byte" />[] to use as data.</param>
 	protected sealed override void HashCore(byte[] array, int ibStart, int cbSize)
 	{
-		HashedLength += cbSize;
+		int i;
 
-		if (LastBlockLength > 0)
+		int index = Count;
+		Count = (index + cbSize) & 0xf;
+
+		int partLength = 16 - index;
+
+		if (cbSize >= partLength)
 		{
-			int remaining = 16 - LastBlockLength;
-			if (cbSize >= remaining)
+			System.Buffer.BlockCopy(array, ibStart, Buffer, index, partLength);
+			Transform(CurrentState, CheckSum, Buffer, 0);
+
+			for (i = partLength; i + 15 < cbSize; i += 16)
 			{
-				Array.Copy(array, ibStart, LastBlock, LastBlockLength, remaining);
-
-				Process(LastBlock);
-				ibStart += remaining;
-				cbSize -= remaining;
-				LastBlockLength = 0;
+				Transform(CurrentState, CheckSum, array, ibStart + i);
 			}
+
+			index = 0;
+		}
+		else
+		{
+			i = 0;
 		}
 
-		while (cbSize >= 16)
-		{
-			Process(array.AsSpan(ibStart, 16));
-			ibStart += 16;
-			cbSize -= 16;
-		}
-
-		if (cbSize > 0)
-		{
-			Array.Copy(array, ibStart, LastBlock, LastBlockLength, cbSize);
-			LastBlockLength += cbSize;
-		}
+		System.Buffer.BlockCopy(array, ibStart + i, Buffer, index, cbSize - i);
 	}
 	/// <summary>
 	/// Finalizes the hash computation after the last data is processed by the cryptographic hash algorithm.
@@ -114,78 +115,53 @@ public sealed class MD2 : HashAlgorithm
 	/// </returns>
 	protected sealed override byte[] HashFinal()
 	{
-		byte[] padding = GetPadding(LastBlock.AsSpan(0, LastBlockLength));
+		int index = Count;
+		int paddingLength = 16 - index;
 
-		for (int i = 0; i < padding.Length; i += 16)
+		if (paddingLength > 0)
 		{
-			Process(padding.AsSpan(i, 16));
-		}
+			byte[] padding = new byte[paddingLength];
 
-		byte[] finalBlock = new byte[16];
-		for (int i = 0; i < 16; i++)
-		{
-			finalBlock[i] = (byte)CheckSum[i];
-		}
-
-		ProcessBlockInternal(finalBlock);
-
-		HashValue = CurrentHash.ToArray();
-		return HashValue;
-	}
-	private void Process(ReadOnlySpan<byte> block)
-	{
-		ProcessBlockInternal(block);
-
-		for (int i = 0, j = CheckSum[15]; i < 16; i++)
-		{
-			j = block[i] ^ j;
-			j = CheckSum[i] ^= MD2Table[j];
-		}
-	}
-	private void ProcessBlockInternal(ReadOnlySpan<byte> block)
-	{
-		for (int i = 0; i < 16; i++)
-		{
-			Buffer[i] = CurrentHash[i];
-		}
-
-		for (int i = 16, j = 0; i < 32; i++, j++)
-		{
-			Buffer[i] = block[j];
-		}
-
-		for (int i = 32, j = 0; i < 48; i++, j++)
-		{
-			Buffer[i] = Buffer[j] ^ block[j];
-		}
-
-		for (int i = 0, j = 0; i < 18; i++)
-		{
-			for (int k = 0; k < 48; k++)
+			for (int i = 0; i < padding.Length; i++)
 			{
-				j = Buffer[k] ^= MD2Table[j];
+				padding[i] = (byte)paddingLength;
 			}
 
-			j = (j + i) & 0xff;
+			HashCore(padding, 0, paddingLength);
 		}
+
+		HashCore(CheckSum, 0, 16);
+
+		HashValue = CurrentState.ToArray();
+		return HashValue;
+	}
+
+	private void Transform(byte[] state, byte[] checksum, byte[] block, int index)
+	{
+		System.Buffer.BlockCopy(state, 0, X, 0, 16);
+		System.Buffer.BlockCopy(block, index, X, 16, 16);
 
 		for (int i = 0; i < 16; i++)
 		{
-			CurrentHash[i] = (byte)Buffer[i];
+			X[i + 32] = (byte)(state[i] ^ block[index + i]);
 		}
-	}
-	private byte[] GetPadding(ReadOnlySpan<byte> lastBlock)
-	{
-		byte[] padding = new byte[16];
 
-		lastBlock.CopyTo(padding);
-
-		byte paddingByte = (byte)(16 - (HashedLength & 0xf));
-		for (int i = lastBlock.Length; i < 16; i++)
+		int t = 0;
+		for (int i = 0; i < 18; i++)
 		{
-			padding[i] = paddingByte;
+			for (int j = 0; j < 48; j++)
+			{
+				t = X[j] ^= MD2Table[t];
+			}
+			t = (t + i) & 0xff;
 		}
 
-		return padding;
+		System.Buffer.BlockCopy(X, 0, state, 0, 16);
+
+		t = checksum[15];
+		for (int i = 0; i < 16; i++)
+		{
+			t = checksum[i] ^= MD2Table[block[index + i] ^ t];
+		}
 	}
 }

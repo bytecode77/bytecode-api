@@ -16,9 +16,9 @@ public sealed class Whirlpool : HashAlgorithm
 	private static readonly ulong[] C6;
 	private static readonly ulong[] C7;
 	private static readonly ulong[] RC;
-	private byte[] BitLength = null!;
-	private byte[] CurrentHash = null!;
-	private ulong[] CurrentBlock = null!;
+	private readonly byte[] BitLength;
+	private readonly byte[] CurrentHash;
+	private readonly ulong[] CurrentBlock;
 	private int BufferBits;
 	private int BufferPosition;
 
@@ -204,6 +204,11 @@ public sealed class Whirlpool : HashAlgorithm
 	public Whirlpool()
 	{
 		HashSizeValue = 512;
+
+		BitLength = new byte[32];
+		CurrentHash = new byte[64];
+		CurrentBlock = new ulong[8];
+
 		Initialize();
 	}
 	/// <summary>
@@ -222,9 +227,9 @@ public sealed class Whirlpool : HashAlgorithm
 	/// </summary>
 	public sealed override void Initialize()
 	{
-		BitLength = new byte[32];
-		CurrentHash = new byte[64];
-		CurrentBlock = new ulong[8];
+		Array.Clear(BitLength);
+		Array.Clear(CurrentHash);
+		Array.Clear(CurrentBlock);
 		BufferBits = 0;
 		BufferPosition = 0;
 	}

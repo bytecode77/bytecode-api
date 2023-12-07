@@ -12,10 +12,10 @@ public abstract class TigerBase : HashAlgorithm
 	private static readonly ulong[] T3;
 	private static readonly ulong[] T4;
 	private readonly byte PaddingByte;
-	private byte[] PartialBlock = null!;
+	private byte[] PartialBlock;
 	private long TotalBytesProcessed;
 	private int BufferFill;
-	private ulong[] Accumulator = null!;
+	private readonly ulong[] Accumulator;
 
 	static TigerBase()
 	{
@@ -102,7 +102,11 @@ public abstract class TigerBase : HashAlgorithm
 	internal TigerBase(byte paddingByte)
 	{
 		HashSizeValue = 192;
+
 		PaddingByte = paddingByte;
+		PartialBlock = new byte[64];
+		Accumulator = new ulong[3];
+
 		Initialize();
 	}
 
@@ -111,10 +115,12 @@ public abstract class TigerBase : HashAlgorithm
 	/// </summary>
 	public sealed override void Initialize()
 	{
-		PartialBlock = new byte[64];
+		Array.Clear(PartialBlock);
 		TotalBytesProcessed = 0;
 		BufferFill = 0;
-		Accumulator = new ulong[] { 0x0123456789abcdef, 0xfedcba9876543210, 0xf096a5b4c3b2e187 };
+		Accumulator[0] = 0x0123456789abcdef;
+		Accumulator[1] = 0xfedcba9876543210;
+		Accumulator[2] = 0xf096a5b4c3b2e187;
 	}
 	/// <summary>
 	/// Routes data written to the object into the hash algorithm for computing the hash.

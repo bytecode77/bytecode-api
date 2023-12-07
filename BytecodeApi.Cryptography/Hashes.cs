@@ -71,6 +71,7 @@ public static class Hashes
 			HashType.MD5 => MD5.Create(),
 			HashType.RIPEMD160 => RIPEMD160.Create(),
 			HashType.SHA1 => SHA1.Create(),
+			HashType.SHA224 => SHA224.Create(),
 			HashType.SHA256 => SHA256.Create(),
 			HashType.SHA384 => SHA384.Create(),
 			HashType.SHA512 => SHA512.Create(),

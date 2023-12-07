@@ -8,14 +8,11 @@ namespace BytecodeApi.Cryptography.HashAlgorithms;
 /// </summary>
 public sealed class MD4 : HashAlgorithm
 {
-	private uint CurrentHashA;
-	private uint CurrentHashB;
-	private uint CurrentHashC;
-	private uint CurrentHashD;
-	private BigInteger HashedLength;
-	private uint[] Buffer = null!;
-	private byte[] LastBlock = null!;
-	private int LastBlockLength;
+	private readonly uint[] CurrentState;
+	private readonly byte[] Buffer;
+	private readonly uint[] Count;
+	private readonly uint[] X;
+	private byte[] Digest;
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="MD4" /> class.
@@ -23,6 +20,13 @@ public sealed class MD4 : HashAlgorithm
 	public MD4()
 	{
 		HashSizeValue = 128;
+
+		CurrentState = new uint[4];
+		Buffer = new byte[64];
+		Count = new uint[2];
+		X = new uint[16];
+		Digest = new byte[16];
+
 		Initialize();
 	}
 	/// <summary>
@@ -41,14 +45,13 @@ public sealed class MD4 : HashAlgorithm
 	/// </summary>
 	public sealed override void Initialize()
 	{
-		CurrentHashA = 0x67452301;
-		CurrentHashB = 0xefcdab89;
-		CurrentHashC = 0x98badcfe;
-		CurrentHashD = 0x10325476;
-		HashedLength = 0;
-		Buffer = new uint[16];
-		LastBlock = new byte[64];
-		LastBlockLength = 0;
+		CurrentState[0] = 0x67452301;
+		CurrentState[1] = 0xefcdab89;
+		CurrentState[2] = 0x98badcfe;
+		CurrentState[3] = 0x10325476;
+		Array.Clear(Buffer);
+		Array.Clear(Count);
+		Array.Clear(X);
 	}
 	/// <summary>
 	/// Routes data written to the object into the hash algorithm for computing the hash.
@@ -58,34 +61,33 @@ public sealed class MD4 : HashAlgorithm
 	/// <param name="cbSize">The number of bytes in the <see cref="byte" />[] to use as data.</param>
 	protected sealed override void HashCore(byte[] array, int ibStart, int cbSize)
 	{
-		HashedLength += cbSize;
+		int index = (int)((Count[0] >> 3) & 0x3f);
+		Count[0] += (uint)(cbSize << 3);
 
-		if (LastBlockLength > 0)
+		if (Count[0] < cbSize << 3)
 		{
-			int remaining = 64 - LastBlockLength;
-			if (cbSize >= remaining)
+			Count[1]++;
+		}
+
+		Count[1] += (uint)(cbSize >> 29);
+
+		int partLength = 64 - index;
+		int i = 0;
+
+		if (cbSize >= partLength)
+		{
+			System.Buffer.BlockCopy(array, ibStart, Buffer, index, partLength);
+			Transform(CurrentState, Buffer, 0);
+
+			for (i = partLength; i + 63 < cbSize; i += 64)
 			{
-				Array.Copy(array, ibStart, LastBlock, LastBlockLength, remaining);
-
-				Process(LastBlock, 0, 64);
-				ibStart += remaining;
-				cbSize -= remaining;
-				LastBlockLength = 0;
+				Transform(CurrentState, array, ibStart + i);
 			}
+
+			index = 0;
 		}
 
-		while (cbSize >= 64)
-		{
-			Process(array, ibStart, 64);
-			ibStart += 64;
-			cbSize -= 64;
-		}
-
-		if (cbSize > 0)
-		{
-			Array.Copy(array, ibStart, LastBlock, LastBlockLength, cbSize);
-			LastBlockLength += cbSize;
-		}
+		System.Buffer.BlockCopy(array, ibStart + i, Buffer, index, cbSize - i);
 	}
 	/// <summary>
 	/// Finalizes the hash computation after the last data is processed by the cryptographic hash algorithm.
@@ -95,80 +97,20 @@ public sealed class MD4 : HashAlgorithm
 	/// </returns>
 	protected sealed override byte[] HashFinal()
 	{
-		byte[] padding = GetPadding(LastBlock.AsSpan(0, LastBlockLength));
+		byte[] countBits = new byte[8];
+		Encode(countBits, Count);
 
-		for (int i = 0; i < padding.Length; i += 64)
-		{
-			Process(padding, i, 64);
-		}
+		uint index = (Count[0] >> 3) & 0x3f;
+		int paddingLength = (int)((index < 56) ? 56 - index : 120 - index);
 
-		byte[] hashBuffer = new byte[16];
-		System.Buffer.BlockCopy(BitConverter.GetBytes(CurrentHashA), 0, hashBuffer, 0, 4);
-		System.Buffer.BlockCopy(BitConverter.GetBytes(CurrentHashB), 0, hashBuffer, 4, 4);
-		System.Buffer.BlockCopy(BitConverter.GetBytes(CurrentHashC), 0, hashBuffer, 8, 4);
-		System.Buffer.BlockCopy(BitConverter.GetBytes(CurrentHashD), 0, hashBuffer, 12, 4);
+		HashCore(GetPadding(paddingLength), 0, paddingLength);
+		HashCore(countBits, 0, 8);
+		Encode(Digest, CurrentState);
 
-		HashValue = hashBuffer;
-		return hashBuffer;
+		HashValue = Digest.ToArray();
+		return HashValue;
 	}
-	private void Process(byte[] block, int offset, int length)
-	{
-		System.Buffer.BlockCopy(block, offset, Buffer, 0, length);
 
-		uint a = CurrentHashA;
-		uint b = CurrentHashB;
-		uint c = CurrentHashC;
-		uint d = CurrentHashD;
-
-		for (int i = 0; i < 16; i += 4)
-		{
-			a = uint.RotateLeft(a + Buffer[i + 0] + F(b, c, d), 3);
-			d = uint.RotateLeft(d + Buffer[i + 1] + F(a, b, c), 7);
-			c = uint.RotateLeft(c + Buffer[i + 2] + F(d, a, b), 11);
-			b = uint.RotateLeft(b + Buffer[i + 3] + F(c, d, a), 19);
-		}
-
-		for (int i = 16, j = 0; i < 32; i += 4, j++)
-		{
-			a = uint.RotateLeft(a + Buffer[j + 00] + 0x5a827999 + G(b, c, d), 3);
-			d = uint.RotateLeft(d + Buffer[j + 04] + 0x5a827999 + G(a, b, c), 5);
-			c = uint.RotateLeft(c + Buffer[j + 08] + 0x5a827999 + G(d, a, b), 9);
-			b = uint.RotateLeft(b + Buffer[j + 12] + 0x5a827999 + G(c, d, a), 13);
-		}
-
-		for (int i = 32, j = 0; i < 48; i += 4, j++)
-		{
-			int index = (j << 1) + -3 * (j >> 1);
-
-			a = uint.RotateLeft(a + Buffer[index + 00] + 0x6ed9eba1 + H(b, c, d), 3);
-			d = uint.RotateLeft(d + Buffer[index + 08] + 0x6ed9eba1 + H(a, b, c), 9);
-			c = uint.RotateLeft(c + Buffer[index + 04] + 0x6ed9eba1 + H(d, a, b), 11);
-			b = uint.RotateLeft(b + Buffer[index + 12] + 0x6ed9eba1 + H(c, d, a), 15);
-		}
-
-		CurrentHashA += a;
-		CurrentHashB += b;
-		CurrentHashC += c;
-		CurrentHashD += d;
-	}
-	private byte[] GetPadding(ReadOnlySpan<byte> lastBlock)
-	{
-		int paddingBlocks = lastBlock.Length + 8 > 64 ? 2 : 1;
-		byte[] padding = new byte[paddingBlocks * 64];
-
-		lastBlock.CopyTo(padding);
-
-		padding[lastBlock.Length] = 0x80;
-
-		byte[] messageLengthInBits = (HashedLength << 3).ToByteArray();
-		int endOffset = padding.Length - 8;
-		for (int i = 0; i < messageLengthInBits.Length; i++)
-		{
-			padding[endOffset + i] = messageLengthInBits[i];
-		}
-
-		return padding;
-	}
 	private static uint F(uint x, uint y, uint z)
 	{
 		return x & y | ~x & z;
@@ -180,5 +122,112 @@ public sealed class MD4 : HashAlgorithm
 	private static uint H(uint x, uint y, uint z)
 	{
 		return x ^ y ^ z;
+	}
+	private static void FF(ref uint a, uint b, uint c, uint d, uint x, byte s)
+	{
+		a = BitOperations.RotateLeft(a + F(b, c, d) + x, s);
+	}
+	private static void GG(ref uint a, uint b, uint c, uint d, uint x, byte s)
+	{
+		a = BitOperations.RotateLeft(a + G(b, c, d) + x + 0x5a827999, s);
+	}
+	private static void HH(ref uint a, uint b, uint c, uint d, uint x, byte s)
+	{
+		a = BitOperations.RotateLeft(a + H(b, c, d) + x + 0x6ed9eba1, s);
+	}
+	private static void Encode(byte[] output, uint[] input)
+	{
+		for (int i = 0, j = 0; j < output.Length; i++, j += 4)
+		{
+			output[j] = (byte)input[i];
+			output[j + 1] = (byte)(input[i] >> 8);
+			output[j + 2] = (byte)(input[i] >> 16);
+			output[j + 3] = (byte)(input[i] >> 24);
+		}
+	}
+	private static void Decode(uint[] output, byte[] input, int index)
+	{
+		for (int i = 0, j = index; i < output.Length; i++, j += 4)
+		{
+			output[i] = (uint)(input[j] | input[j + 1] << 8 | input[j + 2] << 16 | input[j + 3] << 24);
+		}
+	}
+	private void Transform(uint[] state, byte[] block, int index)
+	{
+		uint a = state[0];
+		uint b = state[1];
+		uint c = state[2];
+		uint d = state[3];
+
+		Decode(X, block, index);
+
+		FF(ref a, b, c, d, X[0], 3);
+		FF(ref d, a, b, c, X[1], 7);
+		FF(ref c, d, a, b, X[2], 11);
+		FF(ref b, c, d, a, X[3], 19);
+		FF(ref a, b, c, d, X[4], 3);
+		FF(ref d, a, b, c, X[5], 7);
+		FF(ref c, d, a, b, X[6], 11);
+		FF(ref b, c, d, a, X[7], 19);
+		FF(ref a, b, c, d, X[8], 3);
+		FF(ref d, a, b, c, X[9], 7);
+		FF(ref c, d, a, b, X[10], 11);
+		FF(ref b, c, d, a, X[11], 19);
+		FF(ref a, b, c, d, X[12], 3);
+		FF(ref d, a, b, c, X[13], 7);
+		FF(ref c, d, a, b, X[14], 11);
+		FF(ref b, c, d, a, X[15], 19);
+
+		GG(ref a, b, c, d, X[0], 3);
+		GG(ref d, a, b, c, X[4], 5);
+		GG(ref c, d, a, b, X[8], 9);
+		GG(ref b, c, d, a, X[12], 13);
+		GG(ref a, b, c, d, X[1], 3);
+		GG(ref d, a, b, c, X[5], 5);
+		GG(ref c, d, a, b, X[9], 9);
+		GG(ref b, c, d, a, X[13], 13);
+		GG(ref a, b, c, d, X[2], 3);
+		GG(ref d, a, b, c, X[6], 5);
+		GG(ref c, d, a, b, X[10], 9);
+		GG(ref b, c, d, a, X[14], 13);
+		GG(ref a, b, c, d, X[3], 3);
+		GG(ref d, a, b, c, X[7], 5);
+		GG(ref c, d, a, b, X[11], 9);
+		GG(ref b, c, d, a, X[15], 13);
+
+		HH(ref a, b, c, d, X[0], 3);
+		HH(ref d, a, b, c, X[8], 9);
+		HH(ref c, d, a, b, X[4], 11);
+		HH(ref b, c, d, a, X[12], 15);
+		HH(ref a, b, c, d, X[2], 3);
+		HH(ref d, a, b, c, X[10], 9);
+		HH(ref c, d, a, b, X[6], 11);
+		HH(ref b, c, d, a, X[14], 15);
+		HH(ref a, b, c, d, X[1], 3);
+		HH(ref d, a, b, c, X[9], 9);
+		HH(ref c, d, a, b, X[5], 11);
+		HH(ref b, c, d, a, X[13], 15);
+		HH(ref a, b, c, d, X[3], 3);
+		HH(ref d, a, b, c, X[11], 9);
+		HH(ref c, d, a, b, X[7], 11);
+		HH(ref b, c, d, a, X[15], 15);
+
+		state[0] += a;
+		state[1] += b;
+		state[2] += c;
+		state[3] += d;
+	}
+	private static byte[] GetPadding(int length)
+	{
+		if (length > 0)
+		{
+			byte[] padding = new byte[length];
+			padding[0] = 0x80;
+			return padding;
+		}
+		else
+		{
+			return new byte[0];
+		}
 	}
 }
