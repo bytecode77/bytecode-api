@@ -11,3 +11,10 @@ See: [Examples](https://github.com/bytecode77/bytecode-api/blob/master/BytecodeA
 ### 3.0.0 (08.09.2023)
 
 * Initial release
+
+### 3.0.1 (10.12.2023)
+
+* **new:** `RestClient.RequestOptions` property
+* **new:** `RestRequest.MultipartFileContent` and `MultipartStringContent` methods
+* **new:** `RestRequest.ReadByteArray` with progress callback
+* **new:** `RestRequestOptions` class

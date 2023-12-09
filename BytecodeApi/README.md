@@ -188,6 +188,40 @@ The `ZipCompression` class is an adapter between ZIP file compression and `BlobC
 </details>
 
 <details>
+<summary>TreeNode</summary>
+
+A `TreeNode` is a generic, hierarchical data structure. Each `TreeNode` has a value and children.
+
+```
+TreeNode<string> tree = new("My root node");
+
+tree.Add("child node 1");
+tree.Add("child node 2");
+TreeNode<string> child3 = tree.Add("child node 3");
+
+child3.Add("child node 3 child 1");
+```
+
+To construct a `TreeNode` statically, use `TreeNodeBuilder`:
+
+```
+TreeNode<string> tree = TreeNodeBuilder
+	.BeginTree("My root node")
+		.Begin("child node 1")
+		.End()
+		.Begin("child node 2")
+		.End()
+		.Begin("child node 3")
+			.Begin("child node 3 child 1")
+			.End()
+		.End()
+	.EndTree();
+```
+
+The `TreeNode` class has various methods for iteration to flatten, access ancestors, siblings, children, etc. A link to its parent node allows navigation up the tree.
+</details>
+
+<details>
 <summary>Money & Currency</summary>
 
 The `Money` datatype wraps an amount with a currency:
@@ -477,3 +511,16 @@ string wrappedTo80chars = Wording.WrapText("A whole paragraph with 1000 words [.
 * **new:** `RandomExtensions.NextEnumValue` method
 * **new:** `RandomNumberGeneratorExtensions.GetEnumValue` method
 * **new:** `RegistryExtensions.GetExpandStringValue` and `SetExpandStringValue` method
+
+### 3.0.4 (10.12.2023)
+
+* **new:** `BytecodeApi.Data.TreeNode` class
+* **new:** `DateOnlyExtensions` class
+* **new:** `ReflectionExtensions.GetValue` method overloads
+* **new:** `CliCommand.Execute` method overload
+* **new:** `MathEx.Min` and `Max` method overloads for `DateOnly` and `TimeOnly`
+* **new:** `DateOnlyJsonConverter` constructor with format parameter
+* **new:** `TimeOnlyJsonConverter` constructor with format parameter
+* **bugfix:** `MathEx.Interpolate` mapToValueRange parameter did not work correcly
+* **removed:** `EnumerableExtensions.Sort` and `SortDescending` method
+* **removed:** `EnumEx.GetValues` method overload

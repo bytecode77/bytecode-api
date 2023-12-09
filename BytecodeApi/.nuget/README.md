@@ -22,3 +22,16 @@ See: [Examples](https://github.com/bytecode77/bytecode-api/blob/master/BytecodeA
 * **new:** `RandomExtensions.NextEnumValue` method
 * **new:** `RandomNumberGeneratorExtensions.GetEnumValue` method
 * **new:** `RegistryExtensions.GetExpandStringValue` and `SetExpandStringValue` method
+
+### 3.0.4 (10.12.2023)
+
+* **new:** `BytecodeApi.Data.TreeNode` class
+* **new:** `DateOnlyExtensions` class
+* **new:** `ReflectionExtensions.GetValue` method overloads
+* **new:** `CliCommand.Execute` method overload
+* **new:** `MathEx.Min` and `Max` method overloads for `DateOnly` and `TimeOnly`
+* **new:** `DateOnlyJsonConverter` constructor with format parameter
+* **new:** `TimeOnlyJsonConverter` constructor with format parameter
+* **bugfix:** `MathEx.Interpolate` mapToValueRange parameter did not work correcly
+* **removed:** `EnumerableExtensions.Sort` and `SortDescending` method
+* **removed:** `EnumEx.GetValues` method overload

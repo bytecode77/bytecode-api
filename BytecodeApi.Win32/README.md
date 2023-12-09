@@ -108,7 +108,8 @@ foreach (DeviceTypeInfo deviceType in devices.DeviceTypes)
 ```
 HardwareInfo.ProcessorNames;
 HardwareInfo.VideoControllerNames;
-HardwareInfo.Memory;
+HardwareInfo.TotalMemory;
+HardwareInfo.AvailableMemory;
 ```
 </details>
 

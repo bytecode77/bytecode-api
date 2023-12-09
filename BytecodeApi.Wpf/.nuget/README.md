@@ -20,3 +20,9 @@ See: [Examples](https://github.com/bytecode77/bytecode-api/blob/master/BytecodeA
 
 * **new:** `DateOnlyConverterMethod.Quarter`
 * **new:** `DateTimeConverterMethod.Quarter`
+
+### 3.0.3 (10.12.2023)
+
+* **new:** `ObservableUserControl.Shown` and `ShownOnce` events
+* **new:** `ObservableItemsControl.Shown` and `ShownOnce` events
+* **change:** `BindingErrorTraceListener` trace level changed from `Information` to `Error`
