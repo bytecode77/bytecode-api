@@ -97,3 +97,9 @@ new OptionSet("-", "--")
 ```
 
 </details>
+
+## Changelog
+
+### 3.0.0 (08.09.2023)
+
+* Initial release

@@ -460,3 +460,20 @@ string joined = Wording.JoinStrings(", ", " and ", "head", "shoulders", "knees",
 string wrappedTo80chars = Wording.WrapText("A whole paragraph with 1000 words [...]", 80, false);
 ```
 </details>
+
+## Changelog
+
+### 3.0.1 (08.09.2023)
+
+* Initial release
+
+### 3.0.2 (27.09.2023)
+
+* **new:** `SevenBitInteger` class
+* **removed:** `ConvertEx.To7BitEncodedInt` and `From7BitEncodedInt`
+
+### 3.0.3 (30.09.2023)
+
+* **new:** `RandomExtensions.NextEnumValue` method
+* **new:** `RandomNumberGeneratorExtensions.GetEnumValue` method
+* **new:** `RegistryExtensions.GetExpandStringValue` and `SetExpandStringValue` method

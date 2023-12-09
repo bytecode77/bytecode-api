@@ -197,3 +197,14 @@ foreach(TcpViewEntry entry in tcp.Entries)
 }
 ```
 </details>
+
+## Changelog
+
+### 3.0.0 (08.09.2023)
+
+* Initial release
+
+### 3.0.1 (27.09.2023)
+
+* **new:** `HardwareInfo.TotalMemory` and `AvailableMemory`
+* **removed:** `HardwareInfo.Memory`
