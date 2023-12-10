@@ -497,21 +497,6 @@ string wrappedTo80chars = Wording.WrapText("A whole paragraph with 1000 words [.
 
 ## Changelog
 
-### 3.0.1 (08.09.2023)
-
-* Initial release
-
-### 3.0.2 (27.09.2023)
-
-* **new:** `SevenBitInteger` class
-* **removed:** `ConvertEx.To7BitEncodedInt` and `From7BitEncodedInt`
-
-### 3.0.3 (30.09.2023)
-
-* **new:** `RandomExtensions.NextEnumValue` method
-* **new:** `RandomNumberGeneratorExtensions.GetEnumValue` method
-* **new:** `RegistryExtensions.GetExpandStringValue` and `SetExpandStringValue` method
-
 ### 3.0.4 (10.12.2023)
 
 * **new:** `BytecodeApi.Data.TreeNode` class
@@ -524,3 +509,18 @@ string wrappedTo80chars = Wording.WrapText("A whole paragraph with 1000 words [.
 * **bugfix:** `MathEx.Interpolate` mapToValueRange parameter did not work correcly
 * **removed:** `EnumerableExtensions.Sort` and `SortDescending` method
 * **removed:** `EnumEx.GetValues` method overload
+
+### 3.0.3 (30.09.2023)
+
+* **new:** `RandomExtensions.NextEnumValue` method
+* **new:** `RandomNumberGeneratorExtensions.GetEnumValue` method
+* **new:** `RegistryExtensions.GetExpandStringValue` and `SetExpandStringValue` method
+
+### 3.0.2 (27.09.2023)
+
+* **new:** `SevenBitInteger` class
+* **removed:** `ConvertEx.To7BitEncodedInt` and `From7BitEncodedInt`
+
+### 3.0.1 (08.09.2023)
+
+* Initial release
