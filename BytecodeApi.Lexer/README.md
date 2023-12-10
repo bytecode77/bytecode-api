@@ -42,3 +42,14 @@ string formula = "(3 + 4) * 15 / ((-10 - 5) * 3)";
 TokenCollection<FormulaTokenType> tokens = lexer.Parse(formula);
 ```
 </details>
+
+## Changelog
+
+### 3.0.0 (08.09.2023)
+
+* Initial release
+
+### 3.0.1 (27.09.2023)
+
+* **new:** `Lexer` method overloads with `RegexOptions` parameter
+* **change:** Replaced `Func<string, string>?` parameters with `Func<Match, string>?`

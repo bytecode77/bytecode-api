@@ -125,6 +125,17 @@ public sealed class CliCommand
 	/// <summary>
 	/// Executes this <see cref="CliCommand" /> and returns a <see cref="CliResult" /> object with the result, or <see langword="null" />, if the operation timed out.
 	/// </summary>
+	/// <param name="timeout">The amount of time to wait for the process to exit.</param>
+	/// <returns>
+	/// A <see cref="CliResult" /> object with the result, or <see langword="null" />, if the operation timed out.
+	/// </returns>
+	public CliResult? Execute(TimeSpan timeout)
+	{
+		return Execute((int)timeout.TotalMilliseconds);
+	}
+	/// <summary>
+	/// Executes this <see cref="CliCommand" /> and returns a <see cref="CliResult" /> object with the result, or <see langword="null" />, if the operation timed out.
+	/// </summary>
 	/// <param name="timeout">The amount of time, in milliseconds, to wait for the process to exit.</param>
 	/// <returns>
 	/// A <see cref="CliResult" /> object with the result, or <see langword="null" />, if the operation timed out.

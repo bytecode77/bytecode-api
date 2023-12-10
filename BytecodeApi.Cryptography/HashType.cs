@@ -20,11 +20,23 @@ public enum HashType
 	[Description("CRC32")]
 	CRC32,
 	/// <summary>
-	/// The CRC64 algorithm is used.
+	/// The CRC64 ECMA 182 algorithm is used.
 	/// <para>A <see cref="string.Empty" /> hashed by this algorithm will return "0000000000000000".</para>
 	/// </summary>
 	[Description("CRC64")]
 	CRC64,
+	/// <summary>
+	/// The MD2 algorithm is used.
+	/// <para>A <see cref="string.Empty" /> hashed by this algorithm will return "8350e5a3e24c153df2275c9f80692773".</para>
+	/// </summary>
+	[Description("MD2")]
+	MD2,
+	/// <summary>
+	/// The MD4 algorithm is used.
+	/// <para>A <see cref="string.Empty" /> hashed by this algorithm will return "31d6cfe0d16ae931b73c59d7e0c089c0".</para>
+	/// </summary>
+	[Description("MD4")]
+	MD4,
 	/// <summary>
 	/// The MD5 algorithm is used.
 	/// <para>A <see cref="string.Empty" /> hashed by this algorithm will return "d41d8cd98f00b204e9800998ecf8427e".</para>
@@ -43,6 +55,12 @@ public enum HashType
 	/// </summary>
 	[Description("SHA-1")]
 	SHA1,
+	/// <summary>
+	/// The SHA-224 algorithm is used.
+	/// <para>A <see cref="string.Empty" /> hashed by this algorithm will return "d14a028c2a3a2bc9476102bb288234c415a2b01f828ea62ac5b3e42f".</para>
+	/// </summary>
+	[Description("SHA-224")]
+	SHA224,
 	/// <summary>
 	/// The SHA-256 algorithm is used.
 	/// <para>A <see cref="string.Empty" /> hashed by this algorithm will return "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855".</para>

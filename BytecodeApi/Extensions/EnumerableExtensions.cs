@@ -532,60 +532,6 @@ public static class EnumerableExtensions
 		return first.Except(new[] { second }, comparer);
 	}
 	/// <summary>
-	/// Sorts the elements of a sequence in ascending order.
-	/// </summary>
-	/// <typeparam name="TSource">The type of the elements of <paramref name="source" />.</typeparam>
-	/// <param name="source">A sequence of values to sort.</param>
-	/// <returns>
-	/// An <see cref="IOrderedEnumerable{T}" /> whose elements are sorted.
-	/// </returns>
-	public static IOrderedEnumerable<TSource> Sort<TSource>(this IEnumerable<TSource> source)
-	{
-		return source.Sort(null);
-	}
-	/// <summary>
-	/// Sorts the elements of a sequence in ascending order using a specified comparer.
-	/// </summary>
-	/// <typeparam name="TSource">The type of the elements of <paramref name="source" />.</typeparam>
-	/// <param name="source">A sequence of values to sort.</param>
-	/// <param name="comparer">An <see cref="IComparer{T}" /> to compare the elements.</param>
-	/// <returns>
-	/// An <see cref="IOrderedEnumerable{T}" /> whose elements are sorted.
-	/// </returns>
-	public static IOrderedEnumerable<TSource> Sort<TSource>(this IEnumerable<TSource> source, IComparer<TSource>? comparer)
-	{
-		Check.ArgumentNull(source);
-
-		return source.OrderBy(itm => itm, comparer);
-	}
-	/// <summary>
-	/// Sorts the elements of a sequence in descending order.
-	/// </summary>
-	/// <typeparam name="TSource">The type of the elements of <paramref name="source" />.</typeparam>
-	/// <param name="source">A sequence of values to sort.</param>
-	/// <returns>
-	/// An <see cref="IOrderedEnumerable{T}" /> whose elements are sorted in descending order.
-	/// </returns>
-	public static IOrderedEnumerable<TSource> SortDescending<TSource>(this IEnumerable<TSource> source)
-	{
-		return source.SortDescending(null);
-	}
-	/// <summary>
-	/// Sorts the elements of a sequence in descending order using a specified comparer.
-	/// </summary>
-	/// <typeparam name="TSource">The type of the elements of <paramref name="source" />.</typeparam>
-	/// <param name="source">A sequence of values to sort.</param>
-	/// <param name="comparer">An <see cref="IComparer{T}" /> to compare the elements.</param>
-	/// <returns>
-	/// An <see cref="IOrderedEnumerable{T}" /> whose elements are sorted in descending order.
-	/// </returns>
-	public static IOrderedEnumerable<TSource> SortDescending<TSource>(this IEnumerable<TSource> source, IComparer<TSource>? comparer)
-	{
-		Check.ArgumentNull(source);
-
-		return source.OrderByDescending(itm => itm, comparer);
-	}
-	/// <summary>
 	/// Randomizes the order of the elements of a sequence.
 	/// </summary>
 	/// <typeparam name="TSource">The type of the elements of <paramref name="source" />.</typeparam>
@@ -675,15 +621,22 @@ public static class EnumerableExtensions
 	/// <typeparam name="TSource">The type of the elements to remove.</typeparam>
 	/// <param name="source">The <see cref="ICollection{T}" /> to remove elements from.</param>
 	/// <param name="predicate">A function to test each element for a condition.</param>
-	public static void RemoveAll<TSource>(this ICollection<TSource> source, Func<TSource, bool> predicate)
+	/// <returns>
+	/// The number of removed elements.
+	/// </returns>
+	public static int RemoveAll<TSource>(this ICollection<TSource> source, Func<TSource, bool> predicate)
 	{
 		Check.ArgumentNull(source);
 		Check.ArgumentNull(predicate);
 
-		foreach (TSource item in source.Where(itm => predicate(itm)).ToArray())
+		TSource[] removed = source.Where(predicate).ToArray();
+
+		foreach (TSource item in removed)
 		{
 			source.Remove(item);
 		}
+
+		return removed.Length;
 	}
 	/// <summary>
 	/// Removes all elements that occur in the specified collection.

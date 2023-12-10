@@ -1,5 +1,7 @@
+using BytecodeApi.Data;
 using BytecodeApi.Extensions;
 using System.Collections;
+using System.Net.Http.Headers;
 using System.Reflection;
 using System.Text;
 using System.Text.Encodings.Web;
@@ -36,6 +38,7 @@ public sealed class RestRequest
 	{
 		Check.ObjectDisposed<RestClient>(RestClient.Disposed);
 		Check.ArgumentNull(name);
+		Check.ArgumentNull(RestClient.RequestOptions);
 
 		if (value == null)
 		{
@@ -53,8 +56,9 @@ public sealed class RestRequest
 			{
 				string str => str,
 				Enum enumValue => Convert.ToInt32(enumValue).ToString(),
-				DateTime dateTimeParameter => dateTimeParameter.ToStringInvariant("yyyy-MM-dd HH:mm:ss"),
-				DateOnly dateOnlyParameter => dateOnlyParameter.ToStringInvariant("yyyy-MM-dd"),
+				DateTime dateTimeParameter => dateTimeParameter.ToStringInvariant(RestClient.RequestOptions.QueryParameterDateTimeFormat),
+				DateOnly dateOnlyParameter => dateOnlyParameter.ToStringInvariant(RestClient.RequestOptions.QueryParameterDateOnlyFormat),
+				TimeOnly timeOnlyParameter => timeOnlyParameter.ToStringInvariant(RestClient.RequestOptions.QueryParameterTimeOnlyFormat),
 				_ => value?.ToString() ?? ""
 			};
 
@@ -145,6 +149,46 @@ public sealed class RestRequest
 		HttpContent = new FormUrlEncodedContent(content.ToDictionary(property => property.Key, property => property.Value?.ToString() ?? ""));
 		return this;
 	}
+	/// <summary>
+	/// Includes a file into the multipart request.
+	/// </summary>
+	/// <param name="name">The name of the HTTP content.</param>
+	/// <param name="file">A <see cref="Blob" /> with the file to send.</param>
+	/// <param name="contentType">The content type of <paramref name="file" />.</param>
+	/// <returns>
+	/// A reference to this instance after the operation has completed.
+	/// </returns>
+	public RestRequest MultipartFileContent(string name, Blob file, string contentType)
+	{
+		Check.ObjectDisposed<RestClient>(RestClient.Disposed);
+		Check.ArgumentNull(name);
+		Check.ArgumentNull(file);
+		Check.ArgumentNull(contentType);
+
+		ByteArrayContent fileContent = new(file.Content);
+		fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse(contentType);
+		AddMultipartContent().Add(fileContent, name, file.Name);
+		return this;
+	}
+	/// <summary>
+	/// Includes a <see cref="string" /> into the multipart request.
+	/// </summary>
+	/// <param name="name">The name of the HTTP content.</param>
+	/// <param name="content">The <see cref="string" /> content to be sent with the multipart request.</param>
+	/// <param name="contentType">The content type of <paramref name="content" />.</param>
+	/// <returns>
+	/// A reference to this instance after the operation has completed.
+	/// </returns>
+	public RestRequest MultipartStringContent(string name, string content, string contentType)
+	{
+		Check.ObjectDisposed<RestClient>(RestClient.Disposed);
+		Check.ArgumentNull(name);
+		Check.ArgumentNull(content);
+		Check.ArgumentNull(contentType);
+
+		AddMultipartContent().Add(new StringContent(content, Encoding.UTF8, contentType), name);
+		return this;
+	}
 
 	/// <summary>
 	/// Sends the request and reads the response <see cref="string" />.
@@ -165,12 +209,54 @@ public sealed class RestRequest
 	/// <returns>
 	/// A <see cref="byte" />[], representing the REST response.
 	/// </returns>
-	public async Task<byte[]> ReadByteArray()
+	public Task<byte[]> ReadByteArray()
+	{
+		return ReadByteArray(null);
+	}
+	/// <summary>
+	/// Sends the request and reads the response as a <see cref="byte" />[].
+	/// </summary>
+	/// <param name="progressCallback">A delegate that is invoked with information about the progress of the download.</param>
+	/// <returns>
+	/// A <see cref="byte" />[], representing the REST response.
+	/// </returns>
+	public async Task<byte[]> ReadByteArray(ProgressCallback? progressCallback)
 	{
 		Check.ObjectDisposed<RestClient>(RestClient.Disposed);
 
-		using HttpResponseMessage response = await Send().ConfigureAwait(false);
-		return await response.Content.ReadAsByteArrayAsync().ConfigureAwait(false);
+		if (progressCallback == null)
+		{
+			using HttpResponseMessage response = await Send().ConfigureAwait(false);
+			return await response.Content.ReadAsByteArrayAsync().ConfigureAwait(false);
+		}
+		else
+		{
+			using HttpResponseMessage response = await Send(HttpCompletionOption.ResponseHeadersRead).ConfigureAwait(false);
+			using Stream stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+
+			using MemoryStream memoryStream = new(response.Content.Headers.ContentLength <= int.MaxValue ? (int)response.Content.Headers.ContentLength.Value : int.MaxValue);
+			byte[] buffer = new byte[4096];
+			int bytesRead;
+			long totalBytesRead = 0;
+			DateTime lastCallback = DateTime.MinValue;
+
+			do
+			{
+				bytesRead = await stream.ReadAsync(buffer).ConfigureAwait(false);
+				totalBytesRead += bytesRead;
+				memoryStream.Write(buffer, 0, bytesRead);
+
+				if (DateTime.Now - lastCallback > TimeSpan.FromMilliseconds(20))
+				{
+					lastCallback = DateTime.Now;
+					progressCallback(totalBytesRead, Math.Max(totalBytesRead, response.Content.Headers.ContentLength ?? 0));
+				}
+			}
+			while (bytesRead > 0);
+
+			progressCallback(totalBytesRead, Math.Max(totalBytesRead, response.Content.Headers.ContentLength ?? 0));
+			return memoryStream.ToArray();
+		}
 	}
 	/// <summary>
 	/// Sends the request and reads the response as a JSON object.
@@ -200,14 +286,14 @@ public sealed class RestRequest
 		return (await JsonSerializer.DeserializeAsync<T>(stream, serializerOptions).ConfigureAwait(false)) ?? throw new JsonException("Deserialization returned null value.");
 	}
 
-	private async Task<HttpResponseMessage> Send()
+	private async Task<HttpResponseMessage> Send(HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
 	{
 		HttpRequestMessage request = new(HttpMethod, Url)
 		{
 			Content = HttpContent
 		};
 
-		HttpResponseMessage response = await RestClient.HttpClient.SendAsync(request).ConfigureAwait(false);
+		HttpResponseMessage response = await RestClient.HttpClient.SendAsync(request, completionOption).ConfigureAwait(false);
 
 		if (response.IsSuccessStatusCode)
 		{
@@ -239,5 +325,12 @@ public sealed class RestRequest
 		}
 
 		return $"{url}{(url.Contains('?') ? '&' : '?')}{UrlEncoder.Default.Encode(key)}={UrlEncoder.Default.Encode(value)}{fragment}";
+	}
+	private MultipartFormDataContent AddMultipartContent()
+	{
+		Check.InvalidOperation(HttpContent is null or MultipartFormDataContent, "Cannot mix multipart content with non-multipart content.");
+
+		HttpContent ??= new MultipartFormDataContent();
+		return (MultipartFormDataContent)HttpContent;
 	}
 }

@@ -9,6 +9,8 @@ public interface IDeepCopy<T>
 	/// <summary>
 	/// Creates a new instance and copies all properties, including navigation properties.
 	/// </summary>
-	/// <returns>A new instance with all properties, including navigation properties, copied from this instance.</returns>
+	/// <returns>
+	/// A new instance with all properties, including navigation properties, copied from this instance.
+	/// </returns>
 	public T DeepCopy();
 }

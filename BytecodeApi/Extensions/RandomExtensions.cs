@@ -285,7 +285,7 @@ public static class RandomExtensions
 	{
 		Check.ArgumentNull(random);
 
-		T[] values = EnumEx.GetValues<T>();
+		T[] values = Enum.GetValues<T>();
 		if (values.None()) throw Throw.Argument(nameof(T), "Enum does not have values.");
 
 		return random.NextObject(values);

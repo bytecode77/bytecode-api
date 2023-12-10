@@ -38,7 +38,9 @@ public sealed class CsvDelimiterDetector
 	/// <para><see cref="MinRowsToTest" /> = 2</para>
 	/// <para><see cref="MaxRowsToTest" /> = 10</para>
 	/// </summary>
-	/// <returns>CsvDelimiterDetector.</returns>
+	/// <returns>
+	/// A new <see cref="CsvDelimiterDetector" /> with default values.
+	/// </returns>
 	public static CsvDelimiterDetector CreateDefault()
 	{
 		return new(new[] { ",", ";", "\t", "|" }, 2, 10);

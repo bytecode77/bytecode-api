@@ -65,7 +65,7 @@ public static class ImageExtensions
 	{
 		Check.ArgumentNull(image);
 		Check.ArgumentNull(path);
-		Check.ArgumentOutOfRange(quality >= 0 && quality <= 100, nameof(quality), "Jpeg quality must be in range of 0...100.");
+		Check.ArgumentOutOfRange(quality is >= 0 and <= 100, nameof(quality), "Jpeg quality must be in range of 0...100.");
 
 		using FileStream file = File.Create(path);
 		image.SaveJpeg(file, quality);
@@ -89,7 +89,7 @@ public static class ImageExtensions
 	{
 		Check.ArgumentNull(image);
 		Check.ArgumentNull(stream);
-		Check.ArgumentOutOfRange(quality >= 0 && quality <= 100, nameof(quality), "Jpeg quality must be in range of 0...100.");
+		Check.ArgumentOutOfRange(quality is >= 0 and <= 100, nameof(quality), "Jpeg quality must be in range of 0...100.");
 
 		using EncoderParameters encoderParameters = new(1);
 		using EncoderParameter encoderParameter = new(Encoder.Quality, quality);
@@ -119,7 +119,7 @@ public static class ImageExtensions
 	public static byte[] ToArrayJpeg(this Image image, int quality)
 	{
 		Check.ArgumentNull(image);
-		Check.ArgumentOutOfRange(quality >= 0 && quality <= 100, nameof(quality), "Jpeg quality must be in range of 0...100.");
+		Check.ArgumentOutOfRange(quality is >= 0 and <= 100, nameof(quality), "Jpeg quality must be in range of 0...100.");
 
 		using MemoryStream memoryStream = new();
 		image.SaveJpeg(memoryStream, quality);

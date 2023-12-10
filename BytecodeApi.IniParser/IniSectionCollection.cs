@@ -135,7 +135,8 @@ public sealed class IniSectionCollection : ICollection<IniSection>
 	/// <returns>
 	/// <see langword="true" />, if <paramref name="item" /> is successfully removed;
 	/// otherwise, <see langword="false" />.
-	/// This method also returns <see langword="false" />, if <paramref name="item" /> was not found in the <see cref="IniSectionCollection" />.</returns>
+	/// This method also returns <see langword="false" />, if <paramref name="item" /> was not found in the <see cref="IniSectionCollection" />.
+	/// </returns>
 	public bool Remove(IniSection item)
 	{
 		return Sections.Remove(item);

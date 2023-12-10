@@ -108,7 +108,8 @@ foreach (DeviceTypeInfo deviceType in devices.DeviceTypes)
 ```
 HardwareInfo.ProcessorNames;
 HardwareInfo.VideoControllerNames;
-HardwareInfo.Memory;
+HardwareInfo.TotalMemory;
+HardwareInfo.AvailableMemory;
 ```
 </details>
 
@@ -197,3 +198,14 @@ foreach(TcpViewEntry entry in tcp.Entries)
 }
 ```
 </details>
+
+## Changelog
+
+### 3.0.0 (08.09.2023)
+
+* Initial release
+
+### 3.0.1 (27.09.2023)
+
+* **new:** `HardwareInfo.TotalMemory` and `AvailableMemory`
+* **removed:** `HardwareInfo.Memory`

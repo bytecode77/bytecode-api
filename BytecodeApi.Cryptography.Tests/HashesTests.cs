@@ -1,3 +1,9 @@
+using BytecodeApi.Mathematics;
+using SharpHash.Base;
+using SharpHash.Interfaces;
+using System.ComponentModel;
+using System.Text;
+
 namespace BytecodeApi.Cryptography.Tests;
 
 public class HashesTests
@@ -10,8 +16,14 @@ public class HashesTests
 	[InlineData(HashType.CRC32, "Hello, world!", "ebe6c6e6")]
 	[InlineData(HashType.CRC32, "The quick brown fox jumps over the lazy dog", "414fa339")]
 	[InlineData(HashType.CRC64, "", "0000000000000000")]
-	[InlineData(HashType.CRC64, "Hello, world!", "6a0081d99fa4821f")]
-	[InlineData(HashType.CRC64, "The quick brown fox jumps over the lazy dog", "bcd8bb366d256116")]
+	[InlineData(HashType.CRC64, "Hello, world!", "1f73c2abcf65431e")]
+	[InlineData(HashType.CRC64, "The quick brown fox jumps over the lazy dog", "41e05242ffa9883b")]
+	[InlineData(HashType.MD2, "", "8350e5a3e24c153df2275c9f80692773")]
+	[InlineData(HashType.MD2, "Hello, world!", "8cca0e965edd0e223b744f9cedf8e141")]
+	[InlineData(HashType.MD2, "The quick brown fox jumps over the lazy dog", "03d85a0d629d2c442e987525319fc471")]
+	[InlineData(HashType.MD4, "", "31d6cfe0d16ae931b73c59d7e0c089c0")]
+	[InlineData(HashType.MD4, "Hello, world!", "0abe9ee1f376caa1bcecad9042f16e73")]
+	[InlineData(HashType.MD4, "The quick brown fox jumps over the lazy dog", "1bee69a46ba811185c194762abaeae90")]
 	[InlineData(HashType.MD5, "", "d41d8cd98f00b204e9800998ecf8427e")]
 	[InlineData(HashType.MD5, "Hello, world!", "6cd3556deb0da54bca060b4c39479839")]
 	[InlineData(HashType.MD5, "The quick brown fox jumps over the lazy dog", "9e107d9d372bb6826bd81d3542a419d6")]
@@ -21,6 +33,9 @@ public class HashesTests
 	[InlineData(HashType.SHA1, "", "da39a3ee5e6b4b0d3255bfef95601890afd80709")]
 	[InlineData(HashType.SHA1, "Hello, world!", "943a702d06f34599aee1f8da8ef9f7296031d699")]
 	[InlineData(HashType.SHA1, "The quick brown fox jumps over the lazy dog", "2fd4e1c67a2d28fced849ee1bb76e7391b93eb12")]
+	[InlineData(HashType.SHA224, "", "d14a028c2a3a2bc9476102bb288234c415a2b01f828ea62ac5b3e42f")]
+	[InlineData(HashType.SHA224, "Hello, world!", "8552d8b7a7dc5476cb9e25dee69a8091290764b7f2a64fe6e78e9568")]
+	[InlineData(HashType.SHA224, "The quick brown fox  over the lazy dog", "e67581164cd0e855e8175d5d0920edb907a9980d686ed0ef19b37fb8")]
 	[InlineData(HashType.SHA256, "", "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855")]
 	[InlineData(HashType.SHA256, "Hello, world!", "315f5bdb76d078c43b8ac0064e4a0164612b1fce77c869345bfc94c75894edd3")]
 	[InlineData(HashType.SHA256, "The quick brown fox jumps over the lazy dog", "d7a8fbb307d7809469ca9abcb0082e4f8d5651e46d3cdb762d02d0bf37c9e592")]
@@ -50,5 +65,41 @@ public class HashesTests
 	public void Hashes_Compute_WithPasses(HashType hashType, string str, int passes, string expected)
 	{
 		Assert.Equal(expected, Hashes.Compute(str, hashType, passes));
+	}
+
+	[Theory]
+	[InlineData(HashType.Adler32)]
+	[InlineData(HashType.CRC32)]
+	[InlineData(HashType.CRC64)]
+	[InlineData(HashType.MD2)]
+	[InlineData(HashType.MD4)]
+	[InlineData(HashType.RIPEMD160)]
+	[InlineData(HashType.SHA224)]
+	[InlineData(HashType.Tiger)]
+	[InlineData(HashType.Tiger2)]
+	[InlineData(HashType.Whirlpool)]
+	public void CrossCompare(HashType hashType)
+	{
+		// Use SharpHash to cross-test hashing algorithms.
+		IHash hash = hashType switch
+		{
+			HashType.Adler32 => HashFactory.Checksum.CreateAdler32(),
+			HashType.CRC32 => HashFactory.Checksum.CreateCRC32_PKZIP(),
+			HashType.CRC64 => HashFactory.Checksum.CreateCRC64_ECMA_182(),
+			HashType.MD2 => HashFactory.Crypto.CreateMD2(),
+			HashType.MD4 => HashFactory.Crypto.CreateMD4(),
+			HashType.RIPEMD160 => HashFactory.Crypto.CreateRIPEMD160(),
+			HashType.SHA224 => HashFactory.Crypto.CreateSHA2_224(),
+			HashType.Tiger => HashFactory.Crypto.CreateTiger(24, HashRounds.Rounds3),
+			HashType.Tiger2 => HashFactory.Crypto.CreateTiger2(24, HashRounds.Rounds3),
+			HashType.Whirlpool => HashFactory.Crypto.CreateWhirlPool(),
+			_ => throw new InvalidEnumArgumentException()
+		};
+
+		for (int i = 1; i < 10000; i++)
+		{
+			string str = Create.AlphaNumericString(MathEx.Random.Next(10, 1000));
+			Assert.Equal(hash.ComputeString(str, Encoding.UTF8).ToString(), Hashes.Compute(str, hashType), true);
+		}
 	}
 }

@@ -29,7 +29,7 @@ public class IniFile
 	{
 		GlobalProperties = new(null);
 		Sections = new();
-		ErrorLines = new IniErrorLine[0].ToReadOnlyCollection();
+		ErrorLines = Array.Empty<IniErrorLine>().ToReadOnlyCollection();
 	}
 	/// <summary>
 	/// Creates an <see cref="IniFile" /> object from the specified file.

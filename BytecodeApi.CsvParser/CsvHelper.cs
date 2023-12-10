@@ -30,7 +30,7 @@ internal static class CsvHelper
 
 			try
 			{
-				string[] row = parser.ReadFields() ?? new string[0];
+				string[] row = parser.ReadFields() ?? Array.Empty<string>();
 
 				if (!ignoreEmptyLines || !row.All(column => column == ""))
 				{

@@ -19,7 +19,7 @@ public class BindingErrorTraceListener : TraceListener
 	{
 		TraceSource traceSource = PresentationTraceSources.DataBindingSource;
 		traceSource.Listeners.Add(this);
-		traceSource.Switch.Level = SourceLevels.Information;
+		traceSource.Switch.Level = SourceLevels.Error;
 	}
 
 	/// <summary>

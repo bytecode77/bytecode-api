@@ -85,7 +85,7 @@ public static class Desktop
 	/// </returns>
 	public static Bitmap CaptureScreen(bool allScreens)
 	{
-		Vector2 dpi = Dpi / 96.0f;
+		Vector2 dpi = Dpi / 96f;
 		int left = allScreens ? (int)(SystemParameters.VirtualScreenLeft * dpi.X) : 0;
 		int top = allScreens ? (int)(SystemParameters.VirtualScreenTop * dpi.Y) : 0;
 		int width = (int)((allScreens ? SystemParameters.VirtualScreenWidth : SystemParameters.PrimaryScreenWidth) * dpi.X);

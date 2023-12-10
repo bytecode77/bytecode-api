@@ -9,7 +9,17 @@ public sealed class ConsoleWriterTheme
 	/// Specifies the style for normal text.
 	/// <para>The default value is <see langword="new" /> <see cref="ConsoleStyle" />(<see cref="ConsoleColor.Gray" />, <see cref="ConsoleColor.Black" />).</para>
 	/// </summary>
-	public ConsoleStyle DefaultStyle { get; set; }
+	public ConsoleStyle TextStyle { get; set; }
+	/// <summary>
+	/// Specifies the style for a preview message.
+	/// <para>The default value is <see langword="new" /> <see cref="ConsoleStyle" />(<see cref="ConsoleColor.Gray" />, <see cref="ConsoleColor.Black" />).</para>
+	/// </summary>
+	public ConsoleStyle PreviewStyle { get; set; }
+	/// <summary>
+	/// Specifies the style for a success message.
+	/// <para>The default value is <see langword="new" /> <see cref="ConsoleStyle" />(<see cref="ConsoleColor.Gray" />, <see cref="ConsoleColor.Black" />).</para>
+	/// </summary>
+	public ConsoleStyle SuccessStyle { get; set; }
 	/// <summary>
 	/// Specifies the style for a warning message.
 	/// <para>The default value is <see langword="new" /> <see cref="ConsoleStyle" />(<see cref="ConsoleColor.Yellow" />, <see cref="ConsoleColor.Black" />).</para>
@@ -76,7 +86,9 @@ public sealed class ConsoleWriterTheme
 	/// </summary>
 	public ConsoleWriterTheme()
 	{
-		DefaultStyle = new();
+		TextStyle = new();
+		PreviewStyle = new();
+		SuccessStyle = new();
 		WarningStyle = new(ConsoleColor.Yellow);
 		ErrorStyle = new(ConsoleColor.Red);
 		ShowTimeStamp = true;

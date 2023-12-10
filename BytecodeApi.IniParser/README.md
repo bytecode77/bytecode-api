@@ -130,3 +130,9 @@ IniFileFormattingOptions formattingOptions = new()
 iniFile.Save(@"C:\path\to\file.ini", Encoding.UTF8, formattingOptions);
 ```
 </details>
+
+## Changelog
+
+### 3.0.0 (08.09.2023)
+
+* Initial release

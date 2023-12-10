@@ -32,3 +32,9 @@ resourceFile.ChangeIcon(new Icon(@"C:\path\to\icon.ico"));
 resourceFile.DeleteResources();
 ```
 </details>
+
+## Changelog
+
+### 3.0.0 (08.09.2023)
+
+* Initial release

@@ -40,6 +40,7 @@ public class MyService : RestClient
   - `StringContent`
   - `JsonContent`
   - `FormUrlEncodedContent`
+  - `MultipartFileContent` and `MultipartStringContent`
 - Finally, execute the REST request by calling either of the following:
   - `ReadString`
   - `ReadByteArray`
@@ -66,3 +67,36 @@ catch (RestException ex)
 ```
 
 </details>
+
+<details>
+<summary>RestRequestOptions</summary>
+
+Modify the properties in `RestClient.RequestOptions` to configure formats, etc. of REST request:
+
+```
+public class MyService : RestClient
+{
+	public MyService(string baseUrl) : base(baseUrl)
+	{
+		RequestOptions.QueryParameterDateTimeFormat = "dd.MM.yyyy HH:mm:ss";
+		RequestOptions.QueryParameterDateOnlyFormat = "dd.MM.yyyy";
+		RequestOptions.QueryParameterTimeOnlyFormat = "HH:mm:ss";
+	}
+}
+```
+
+The configured formats are used in `RestRequest.QueryParameter`.
+</details>
+
+## Changelog
+
+### 3.0.0 (08.09.2023)
+
+* Initial release
+
+### 3.0.1 (10.12.2023)
+
+* **new:** `RestClient.RequestOptions` property
+* **new:** `RestRequest.MultipartFileContent` and `MultipartStringContent` methods
+* **new:** `RestRequest.ReadByteArray` with progress callback
+* **new:** `RestRequestOptions` class

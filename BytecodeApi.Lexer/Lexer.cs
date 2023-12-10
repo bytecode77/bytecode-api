@@ -42,7 +42,7 @@ public sealed class Lexer<TTokenType> where TTokenType : struct, IConvertible
 	/// <returns>
 	/// A reference to this instance after the operation has completed.
 	/// </returns>
-	public Lexer<TTokenType> Ignore(string pattern)
+	public Lexer<TTokenType> Ignore([StringSyntax(StringSyntaxAttribute.Regex)] string pattern)
 	{
 		return Ignore(pattern, RegexOptions.None);
 	}
@@ -54,7 +54,7 @@ public sealed class Lexer<TTokenType> where TTokenType : struct, IConvertible
 	/// <returns>
 	/// A reference to this instance after the operation has completed.
 	/// </returns>
-	public Lexer<TTokenType> Ignore(string pattern, RegexOptions regexOptions)
+	public Lexer<TTokenType> Ignore([StringSyntax(StringSyntaxAttribute.Regex)] string pattern, RegexOptions regexOptions)
 	{
 		Check.ArgumentNull(pattern);
 
@@ -69,7 +69,7 @@ public sealed class Lexer<TTokenType> where TTokenType : struct, IConvertible
 	/// <returns>
 	/// A reference to this instance after the operation has completed.
 	/// </returns>
-	public Lexer<TTokenType> Match(TTokenType type, string pattern)
+	public Lexer<TTokenType> Match(TTokenType type, [StringSyntax(StringSyntaxAttribute.Regex)] string pattern)
 	{
 		return Match(type, pattern, RegexOptions.None);
 	}
@@ -82,7 +82,7 @@ public sealed class Lexer<TTokenType> where TTokenType : struct, IConvertible
 	/// <returns>
 	/// A reference to this instance after the operation has completed.
 	/// </returns>
-	public Lexer<TTokenType> Match(TTokenType type, string pattern, RegexOptions regexOptions)
+	public Lexer<TTokenType> Match(TTokenType type, [StringSyntax(StringSyntaxAttribute.Regex)] string pattern, RegexOptions regexOptions)
 	{
 		return Match(type, pattern, regexOptions, null);
 	}
@@ -95,7 +95,7 @@ public sealed class Lexer<TTokenType> where TTokenType : struct, IConvertible
 	/// <returns>
 	/// A reference to this instance after the operation has completed.
 	/// </returns>
-	public Lexer<TTokenType> Match(TTokenType type, string pattern, Func<Match, string>? getValue)
+	public Lexer<TTokenType> Match(TTokenType type, [StringSyntax(StringSyntaxAttribute.Regex)] string pattern, Func<Match, string>? getValue)
 	{
 		return Match(type, pattern, RegexOptions.None, getValue);
 	}
@@ -109,7 +109,7 @@ public sealed class Lexer<TTokenType> where TTokenType : struct, IConvertible
 	/// <returns>
 	/// A reference to this instance after the operation has completed.
 	/// </returns>
-	public Lexer<TTokenType> Match(TTokenType type, string pattern, RegexOptions regexOptions, Func<Match, string>? getValue)
+	public Lexer<TTokenType> Match(TTokenType type, [StringSyntax(StringSyntaxAttribute.Regex)] string pattern, RegexOptions regexOptions, Func<Match, string>? getValue)
 	{
 		Check.ArgumentNull(pattern);
 

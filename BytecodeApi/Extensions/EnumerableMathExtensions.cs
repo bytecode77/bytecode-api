@@ -110,7 +110,7 @@ public static class EnumerableMathExtensions
 	{
 		Check.ArgumentNull(source);
 
-		int[] sorted = source.Sort().ToArray();
+		int[] sorted = source.Order().ToArray();
 		Check.ArgumentEx.EnumerableElementsRequired(sorted.Length > 0, nameof(source));
 
 		if (sorted.Length % 2 == 0)
@@ -133,7 +133,7 @@ public static class EnumerableMathExtensions
 	{
 		Check.ArgumentNull(source);
 
-		int[] sorted = source.ExceptNull().Sort().ToArray();
+		int[] sorted = source.ExceptNull().Order().ToArray();
 
 		if (sorted.Length == 0)
 		{
@@ -159,7 +159,7 @@ public static class EnumerableMathExtensions
 	{
 		Check.ArgumentNull(source);
 
-		long[] sorted = source.Sort().ToArray();
+		long[] sorted = source.Order().ToArray();
 		Check.ArgumentEx.EnumerableElementsRequired(sorted.Length > 0, nameof(source));
 
 		if (sorted.Length % 2 == 0)
@@ -182,7 +182,7 @@ public static class EnumerableMathExtensions
 	{
 		Check.ArgumentNull(source);
 
-		long[] sorted = source.ExceptNull().Sort().ToArray();
+		long[] sorted = source.ExceptNull().Order().ToArray();
 
 		if (sorted.Length == 0)
 		{
@@ -208,7 +208,7 @@ public static class EnumerableMathExtensions
 	{
 		Check.ArgumentNull(source);
 
-		float[] sorted = source.Sort().ToArray();
+		float[] sorted = source.Order().ToArray();
 		Check.ArgumentEx.EnumerableElementsRequired(sorted.Length > 0, nameof(source));
 
 		if (sorted.Length % 2 == 0)
@@ -231,7 +231,7 @@ public static class EnumerableMathExtensions
 	{
 		Check.ArgumentNull(source);
 
-		float[] sorted = source.ExceptNull().Sort().ToArray();
+		float[] sorted = source.ExceptNull().Order().ToArray();
 
 		if (sorted.Length == 0)
 		{
@@ -257,7 +257,7 @@ public static class EnumerableMathExtensions
 	{
 		Check.ArgumentNull(source);
 
-		double[] sorted = source.Sort().ToArray();
+		double[] sorted = source.Order().ToArray();
 		Check.ArgumentEx.EnumerableElementsRequired(sorted.Length > 0, nameof(source));
 
 		if (sorted.Length % 2 == 0)
@@ -280,7 +280,7 @@ public static class EnumerableMathExtensions
 	{
 		Check.ArgumentNull(source);
 
-		double[] sorted = source.ExceptNull().Sort().ToArray();
+		double[] sorted = source.ExceptNull().Order().ToArray();
 
 		if (sorted.Length == 0)
 		{
@@ -306,12 +306,12 @@ public static class EnumerableMathExtensions
 	{
 		Check.ArgumentNull(source);
 
-		decimal[] sorted = source.Sort().ToArray();
+		decimal[] sorted = source.Order().ToArray();
 		Check.ArgumentEx.EnumerableElementsRequired(sorted.Length > 0, nameof(source));
 
 		if (sorted.Length % 2 == 0)
 		{
-			return (sorted[sorted.Length / 2 - 1] + sorted[sorted.Length / 2]) / 2.0m;
+			return (sorted[sorted.Length / 2 - 1] + sorted[sorted.Length / 2]) / 2m;
 		}
 		else
 		{
@@ -329,7 +329,7 @@ public static class EnumerableMathExtensions
 	{
 		Check.ArgumentNull(source);
 
-		decimal[] sorted = source.ExceptNull().Sort().ToArray();
+		decimal[] sorted = source.ExceptNull().Order().ToArray();
 
 		if (sorted.Length == 0)
 		{
@@ -337,7 +337,7 @@ public static class EnumerableMathExtensions
 		}
 		else if (sorted.Length % 2 == 0)
 		{
-			return (sorted[sorted.Length / 2 - 1] + sorted[sorted.Length / 2]) / 2.0m;
+			return (sorted[sorted.Length / 2 - 1] + sorted[sorted.Length / 2]) / 2m;
 		}
 		else
 		{

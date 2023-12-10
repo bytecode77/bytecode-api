@@ -23,6 +23,14 @@ public class ObservableItemsControl : ItemsControl, INotifyPropertyChanged, INot
 	/// Occurs when the element is laid out, rendered, and ready for interaction. This event is fired only once.
 	/// </summary>
 	public event RoutedEventHandler? LoadedOnce;
+	/// <summary>
+	/// Occurs each time the element becomes visible.
+	/// </summary>
+	public event EventHandler? Shown;
+	/// <summary>
+	/// Occurs when the element becomes visible for the first time. This event is fired only once.
+	/// </summary>
+	public event EventHandler? ShownOnce;
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="ObservableItemsControl" /> class.
@@ -30,6 +38,8 @@ public class ObservableItemsControl : ItemsControl, INotifyPropertyChanged, INot
 	public ObservableItemsControl()
 	{
 		Loaded += ObservableItemsControl_Loaded;
+		IsVisibleChanged += ObservableItemsControl_IsVisibleChanged;
+		IsVisibleChanged += ObservableItemsControl_IsVisibleChanged2;
 	}
 	private void ObservableItemsControl_Loaded(object sender, RoutedEventArgs e)
 	{
@@ -40,6 +50,27 @@ public class ObservableItemsControl : ItemsControl, INotifyPropertyChanged, INot
 		finally
 		{
 			Loaded -= ObservableItemsControl_Loaded;
+		}
+	}
+	private void ObservableItemsControl_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+	{
+		if ((bool)e.NewValue)
+		{
+			Shown?.Invoke(sender, EventArgs.Empty);
+		}
+	}
+	private void ObservableItemsControl_IsVisibleChanged2(object sender, DependencyPropertyChangedEventArgs e)
+	{
+		if ((bool)e.NewValue)
+		{
+			try
+			{
+				ShownOnce?.Invoke(sender, EventArgs.Empty);
+			}
+			finally
+			{
+				IsVisibleChanged -= ObservableItemsControl_IsVisibleChanged2;
+			}
 		}
 	}
 

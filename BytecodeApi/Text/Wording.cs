@@ -285,11 +285,11 @@ public static class Wording
 		for (int i = 0; i < str.Length; i++)
 		{
 			char c = newString[i];
-			if (c >= 'a' && c <= 'z')
+			if (c is >= 'a' and <= 'z')
 			{
 				newString[i] = (char)(c + 13 > 'z' ? c - 13 : c + 13);
 			}
-			else if (c >= 'A' && c <= 'Z')
+			else if (c is >= 'A' and <= 'Z')
 			{
 				newString[i] = (char)(c + 13 > 'Z' ? c - 13 : c + 13);
 			}

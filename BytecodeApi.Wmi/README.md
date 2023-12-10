@@ -48,3 +48,9 @@ Retrieve all namespaces from a namespace:
 WmiNamespace[] namespaces = WmiContext.Root
 	.GetNamespaces();
 ```
+
+## Changelog
+
+### 3.0.0 (08.09.2023)
+
+* Initial release

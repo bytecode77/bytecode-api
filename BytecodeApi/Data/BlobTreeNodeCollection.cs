@@ -93,7 +93,8 @@ public sealed class BlobTreeNodeCollection : ICollection<BlobTreeNode>
 	/// <returns>
 	/// <see langword="true" />, if <paramref name="item" /> is successfully removed;
 	/// otherwise, <see langword="false" />.
-	/// This method also returns <see langword="false" />, if <paramref name="item" /> was not found in the <see cref="BlobTreeNodeCollection" />.</returns>
+	/// This method also returns <see langword="false" />, if <paramref name="item" /> was not found in the <see cref="BlobTreeNodeCollection" />.
+	/// </returns>
 	public bool Remove(BlobTreeNode item)
 	{
 		return Nodes.Remove(item);

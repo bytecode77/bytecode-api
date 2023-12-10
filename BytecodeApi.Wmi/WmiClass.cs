@@ -90,7 +90,7 @@ public sealed class WmiClass : IWmiQueryable
 		Check.ArgumentNull(methodName);
 
 		using ManagementClass managementClass = new(Namespace.FullPath, Name, new ObjectGetOptions());
-		return managementClass.InvokeMethod(methodName, args ?? new object[0]);
+		return managementClass.InvokeMethod(methodName, args ?? Array.Empty<object>());
 	}
 	/// <summary>
 	/// Invokes a method on this <see cref="WmiClass" />.

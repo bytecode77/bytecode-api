@@ -7,9 +7,9 @@
 		<GeneratePackageOnBuild Condition="'$(Configuration)' == 'Release'">True</GeneratePackageOnBuild>
 	</PropertyGroup>
 	<PropertyGroup>
-		<Version>3.0.0</Version>
-		<AssemblyVersion>3.0.0</AssemblyVersion>
-		<FileVersion>3.0.0</FileVersion>
+		<Version>3.0.1</Version>
+		<AssemblyVersion>3.0.1</AssemblyVersion>
+		<FileVersion>3.0.1</FileVersion>
 	</PropertyGroup>
 	<PropertyGroup>
 		<Product>BytecodeApi.Cryptography</Product>
@@ -21,7 +21,7 @@
 	</PropertyGroup>
 	<PropertyGroup>
 		<PackageId>BytecodeApi.Cryptography</PackageId>
-		<PackageTags>encryption encrypt decryption hash aes rsa symmetric asymmetric pem der sha md5 crc32 crc64 adler32 ripemd160 tiger tiger2 whirlpool bloomfilter bloom filter</PackageTags>
+		<PackageTags>encryption encrypt decryption hash aes rsa symmetric asymmetric pem der sha sha224 md5 crc32 crc64 adler32 ripemd160 tiger tiger2 whirlpool bloomfilter bloom filter</PackageTags>
 		<PackageProjectUrl>https://bytecode77.com/bytecode-api</PackageProjectUrl>
 		<RepositoryType>git</RepositoryType>
 		<RepositoryUrl>https://github.com/bytecode77/bytecode-api</RepositoryUrl>

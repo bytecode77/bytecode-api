@@ -70,3 +70,9 @@ string randomText = textGenerator.Generate();
 
 * `NameGenerator` to generate first/last names
 * `LoremIpsumGenerator` to generate text placeholders with lorem ipsum paragraphs.
+
+## Changelog
+
+### 3.0.0 (08.09.2023)
+
+* Initial release

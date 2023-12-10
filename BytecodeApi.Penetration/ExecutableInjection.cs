@@ -199,7 +199,7 @@ public static class ExecutableInjection
 		}
 		else if (parameters.Length == 1 && parameters.First().ParameterType == typeof(string[]))
 		{
-			invoke = () => method.Invoke(null, new[] { args ?? new string[0] });
+			invoke = () => method.Invoke(null, new[] { args ?? Array.Empty<string>() });
 		}
 		else
 		{

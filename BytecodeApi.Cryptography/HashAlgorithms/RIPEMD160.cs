@@ -8,9 +8,9 @@ namespace BytecodeApi.Cryptography.HashAlgorithms;
 /// </summary>
 public sealed class RIPEMD160 : HashAlgorithm
 {
-	private uint[] CurrentHash = null!;
-	private uint[] CurrentChunk = null!;
-	private byte[] UnhashedBuffer = null!;
+	private readonly uint[] CurrentHash;
+	private readonly uint[] CurrentChunk;
+	private readonly byte[] UnhashedBuffer;
 	private long HashedLength;
 	private int UnhashedBufferLength;
 
@@ -20,6 +20,11 @@ public sealed class RIPEMD160 : HashAlgorithm
 	public RIPEMD160()
 	{
 		HashSizeValue = 160;
+
+		CurrentHash = new uint[5];
+		CurrentChunk = new uint[16];
+		UnhashedBuffer = new byte[64];
+
 		Initialize();
 	}
 	/// <summary>
@@ -38,16 +43,13 @@ public sealed class RIPEMD160 : HashAlgorithm
 	/// </summary>
 	public sealed override void Initialize()
 	{
-		CurrentHash = new uint[]
-		{
-			0x67452301,
-			0xefcdab89,
-			0x98badcfe,
-			0x10325476,
-			0xc3d2e1f0
-		};
-		CurrentChunk = new uint[16];
-		UnhashedBuffer = new byte[64];
+		CurrentHash[0] = 0x67452301;
+		CurrentHash[1] = 0xefcdab89;
+		CurrentHash[2] = 0x98badcfe;
+		CurrentHash[3] = 0x10325476;
+		CurrentHash[4] = 0xc3d2e1f0;
+		Array.Clear(CurrentChunk);
+		Array.Clear(UnhashedBuffer);
 		HashedLength = 0;
 		UnhashedBufferLength = 0;
 	}
@@ -343,7 +345,7 @@ public sealed class RIPEMD160 : HashAlgorithm
 	}
 	private static uint G(uint x, uint y, uint z)
 	{
-		return (x & y) | (~x & z);
+		return x & y | ~x & z;
 	}
 	private static uint H(uint x, uint y, uint z)
 	{
@@ -351,7 +353,7 @@ public sealed class RIPEMD160 : HashAlgorithm
 	}
 	private static uint I(uint x, uint y, uint z)
 	{
-		return (x & z) | (y & ~z);
+		return x & z | y & ~z;
 	}
 	private static uint J(uint x, uint y, uint z)
 	{
