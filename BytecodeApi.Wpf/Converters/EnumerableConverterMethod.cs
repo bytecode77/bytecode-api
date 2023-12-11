@@ -36,6 +36,11 @@ public enum EnumerableConverterMethod
 	/// </summary>
 	Count,
 	/// <summary>
+	/// Returns <see langword="true" />, if the specified parameter was found in the <see cref="IEnumerable" /> value;
+	/// <see langword="false" />.
+	/// </summary>
+	Contains,
+	/// <summary>
 	/// Bypasses a number of elements in the <see cref="IEnumerable" /> value as specified in the <see cref="int" /> parameter and then returns the remaining elements.
 	/// </summary>
 	Skip,

@@ -35,7 +35,9 @@ public sealed class StringConverter : ConverterBase<string?, object?>
 		return Method switch
 		{
 			StringConverterMethod.Concat => value + parameter,
+			StringConverterMethod.ConcatIfNotEmpty => value.IsNullOrEmpty() ? value : value + parameter,
 			StringConverterMethod.ConcatBefore => parameter + value,
+			StringConverterMethod.ConcatBeforeIfNotEmpty => value.IsNullOrEmpty() ? value : parameter + value,
 			StringConverterMethod.Trim => value?.Trim(),
 			StringConverterMethod.TrimStart => value?.TrimStart(),
 			StringConverterMethod.TrimStartString => value?.TrimStartString(parameter?.ToString() ?? ""),

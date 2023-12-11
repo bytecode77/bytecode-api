@@ -10,9 +10,17 @@ public enum StringConverterMethod
 	/// </summary>
 	Concat,
 	/// <summary>
+	/// Concatenates the value and parameter and returns the combined <see cref="string" />. If value is empty, the parameter is not concatenated.
+	/// </summary>
+	ConcatIfNotEmpty,
+	/// <summary>
 	/// Concatenates the parameter before the value and returns the combined <see cref="string" />.
 	/// </summary>
 	ConcatBefore,
+	/// <summary>
+	/// Concatenates the parameter before the value and returns the combined <see cref="string" />. If value is empty, the parameter is not concatenated.
+	/// </summary>
+	ConcatBeforeIfNotEmpty,
 	/// <summary>
 	/// Removes all leading and trailing white-space characters from the <see cref="string" /> value.
 	/// </summary>
