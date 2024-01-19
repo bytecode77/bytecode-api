@@ -1371,18 +1371,4 @@ public static class StringExtensions
 			return chunks;
 		}
 	}
-	/// <summary>
-	/// Replaces all occurrences of linebreaks ("\n" and "\r\n") in this <see cref="string" /> with a specified replacement value.
-	/// </summary>
-	/// <param name="str">The <see cref="string" /> to be processed.</param>
-	/// <param name="newValue">The <see cref="string" /> which will replace "\n" and "\r\n" occurrences in this <see cref="string" />.</param>
-	/// <returns>
-	/// The original value of this <see cref="string" /> where "\r" and "\r\n" have been replaced with <paramref name="newValue" />.
-	/// </returns>
-	public static string ReplaceLineBreaks(this string str, string? newValue)
-	{
-		Check.ArgumentNull(str);
-
-		return str.Replace("\r\n", "\n").Replace("\n", newValue);
-	}
 }
