@@ -21,7 +21,7 @@ public sealed class RestException : Exception
 	/// </summary>
 	/// <param name="statusCode">The error code that is associated with this <see cref="RestException" />.</param>
 	/// <param name="content">The HTTP body that is associated with this <see cref="RestException" />.</param>
-	public RestException(HttpStatusCode statusCode, string content)
+	public RestException(HttpStatusCode statusCode, string content) : base("The REST response was not successful.")
 	{
 		Check.ArgumentNull(content);
 

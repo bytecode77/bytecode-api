@@ -38,7 +38,7 @@ public static class TextBoxExtensions
 	/// <summary>
 	/// Sets the insertion position index of the caret to the end of this <see cref="PasswordBox" />.
 	/// </summary>
-	/// <param name="passwordBox"></param>
+	/// <param name="passwordBox">The <see cref="PasswordBox" /> to be processed.</param>
 	public static void MoveCaretToEnd(this PasswordBox passwordBox)
 	{
 		Check.ArgumentNull(passwordBox);
