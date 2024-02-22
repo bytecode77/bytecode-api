@@ -224,10 +224,35 @@ public sealed class RestRequest
 	{
 		Check.ObjectDisposed<RestClient>(RestClient.Disposed);
 
+		return (await ReadFile(progressCallback).ConfigureAwait(false)).Content;
+	}
+	/// <summary>
+	/// Sends the request and reads the response as a <see cref="byte" />[], including the filename from the Content-Disposition.
+	/// </summary>
+	/// <returns>
+	/// A new <see cref="Blob" /> that contains both the filename from the Content-Disposition, and the file content.
+	/// </returns>
+	public Task<Blob> ReadFile()
+	{
+		return ReadFile(null);
+	}
+	/// <summary>
+	/// Sends the request and reads the response as a <see cref="byte" />[], including the filename from the Content-Disposition.
+	/// </summary>
+	/// <param name="progressCallback">A delegate that is invoked with information about the progress of the download.</param>
+	/// <returns>
+	/// A new <see cref="Blob" /> that contains both the filename from the Content-Disposition, and the file content.
+	/// </returns>
+	public async Task<Blob> ReadFile(ProgressCallback? progressCallback)
+	{
+		Check.ObjectDisposed<RestClient>(RestClient.Disposed);
+
 		if (progressCallback == null)
 		{
 			using HttpResponseMessage response = await Send().ConfigureAwait(false);
-			return await response.Content.ReadAsByteArrayAsync().ConfigureAwait(false);
+			return new(
+				response.Content.Headers.ContentDisposition?.FileNameStar ?? "",
+				await response.Content.ReadAsByteArrayAsync().ConfigureAwait(false));
 		}
 		else
 		{
@@ -255,7 +280,10 @@ public sealed class RestRequest
 			while (bytesRead > 0);
 
 			progressCallback(totalBytesRead, Math.Max(totalBytesRead, response.Content.Headers.ContentLength ?? 0));
-			return memoryStream.ToArray();
+
+			return new(
+				response.Content.Headers.ContentDisposition?.FileNameStar ?? "",
+				memoryStream.ToArray());
 		}
 	}
 	/// <summary>
