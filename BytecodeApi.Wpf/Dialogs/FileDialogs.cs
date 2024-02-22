@@ -42,9 +42,23 @@ public static class FileDialogs
 	/// </returns>
 	public static string? Open(string[]? extensions, string? extensionsDescription)
 	{
+		return Open(extensions, extensionsDescription, null);
+	}
+	/// <summary>
+	/// Displays an open file dialog with a filter that allows any file with one of the specified extensions to be opened. Returns a <see cref="string" /> representing the full path to the selected file and <see langword="null" />, if selection has been canceled by the user.
+	/// </summary>
+	/// <param name="extensions">The collection of extensions that are allowed to be opened.</param>
+	/// <param name="extensionsDescription">The description to be used. If <see langword="null" />, the <see cref="FileExtensionInfo" /> class is used to retrieve the description.</param>
+	/// <param name="initialDirectory">A <see cref="string" /> specifying the initial directory.</param>
+	/// <returns>
+	/// A <see cref="string" /> representing the full path to the selected file and <see langword="null" />, if selection has been canceled by the user.
+	/// </returns>
+	public static string? Open(string[]? extensions, string? extensionsDescription, string? initialDirectory)
+	{
 		OpenFileDialog dialog = new()
 		{
-			Filter = GetFilter(extensions, extensionsDescription)
+			Filter = GetFilter(extensions, extensionsDescription),
+			InitialDirectory = initialDirectory ?? ""
 		};
 
 		return dialog.ShowDialog() == true ? dialog.FileName : null;
@@ -68,10 +82,23 @@ public static class FileDialogs
 	/// </returns>
 	public static string[]? OpenMultiple(params string[]? extensions)
 	{
+		return OpenMultiple(extensions, null);
+	}
+	/// <summary>
+	/// Displays an open file dialog with a filter that allows any file with one of the specified extensions to be opened. The extension description is retrieved using the <see cref="FileExtensionInfo" /> class. Returns a <see cref="string" />[] representing the full path to all selected files and <see langword="null" />, if selection has been canceled by the user.
+	/// </summary>
+	/// <param name="extensions">The collection of extensions that are allowed to be opened. The extension description is retrieved using the <see cref="FileExtensionInfo" /> class.</param>
+	/// <param name="initialDirectory">A <see cref="string" /> specifying the initial directory.</param>
+	/// <returns>
+	/// A <see cref="string" />[] representing the full path to all selected files and <see langword="null" />, if selection has been canceled by the user.
+	/// </returns>
+	public static string[]? OpenMultiple(string[]? extensions, string? initialDirectory)
+	{
 		OpenFileDialog dialog = new()
 		{
 			Filter = GetFilter(extensions),
-			Multiselect = true
+			Multiselect = true,
+			InitialDirectory = initialDirectory ?? ""
 		};
 
 		return dialog.ShowDialog() == true ? dialog.FileNames : null;
@@ -141,6 +168,19 @@ public static class FileDialogs
 	/// </returns>
 	public static string? Save(string? fileName, string? extension)
 	{
+		return Save(fileName, extension, null);
+	}
+	/// <summary>
+	/// Displays a save file dialog and automatically adds an extension to the filename, if the user omits an extension.
+	/// </summary>
+	/// <param name="fileName">A <see cref="string" /> specifying the initial filename that can be changed by the user.</param>
+	/// <param name="extension">A <see cref="string" /> specifying the extension to be added.</param>
+	/// <param name="initialDirectory">A <see cref="string" /> specifying the initial directory.</param>
+	/// <returns>
+	/// A <see cref="string" /> representing the full path to the saved file and <see langword="null" />, if selection has been canceled by the user.
+	/// </returns>
+	public static string? Save(string? fileName, string? extension, string? initialDirectory)
+	{
 		extension ??= Path.GetExtension(fileName).ToNullIfEmpty();
 		extension = extension?.TrimStart('.');
 
@@ -150,6 +190,7 @@ public static class FileDialogs
 			Filter = GetFilter(extension),
 			DefaultExt = extension,
 			AddExtension = extension != null,
+			InitialDirectory = initialDirectory ?? ""
 		};
 
 		if (dialog.ShowDialog() == true)
