@@ -1,4 +1,6 @@
-﻿namespace BytecodeApi;
+﻿using BytecodeApi.Extensions;
+
+namespace BytecodeApi;
 
 /// <summary>
 /// Provides constants and <see langword="static" /> methods that extend the <see cref="DateTime" /> class.
@@ -14,6 +16,28 @@ public static class DateTimeEx
 	/// </summary>
 	public const double AverageDaysInMonth = AverageDaysInYear / 12;
 
+	/// <summary>
+	/// Determines whether a combination of year, month and day represents a valid date.
+	/// </summary>
+	/// <param name="year">The year of the date.</param>
+	/// <param name="month">The month of the date.</param>
+	/// <param name="day">The day of the date.</param>
+	/// <returns>
+	/// <see langword="true" />, if the combination of year, month and day represents a valid date;
+	/// otherwise, <see langword="false" />.
+	/// </returns>
+	public static bool IsValidDate(int year, int month, int day)
+	{
+		if (year is >= 1 and <= 9999 && month is >= 1 and <= 12 && day is >= 1 and <= 31)
+		{
+			int daysInMonth = DateTime.DaysInMonth(year, month);
+			return day >= daysInMonth && day <= daysInMonth;
+		}
+		else
+		{
+			return false;
+		}
+	}
 	/// <summary>
 	/// Converts a <see cref="int" /> value representing a unix time stamp to a <see cref="DateTime" /> object, using the <see cref="DateTimeKind.Unspecified" /> kind.
 	/// </summary>
@@ -91,5 +115,28 @@ public static class DateTimeEx
 		}
 
 		return age;
+	}
+	/// <summary>
+	/// Calculates the age from a birthday.
+	/// </summary>
+	/// <param name="birthday">A <see cref="DateOnly" /> value representing the birhtday to calculate the age from.</param>
+	/// <returns>
+	/// An equivalent <see cref="int" /> value representing an age, calculated from <paramref name="birthday" />.
+	/// </returns>
+	public static int CalculateAgeFromBirthday(DateOnly birthday)
+	{
+		return CalculateAgeFromBirthday(birthday, DateTime.Now.ToDateOnly());
+	}
+	/// <summary>
+	/// Calculates the age from a birthday at a specified point in time.
+	/// </summary>
+	/// <param name="birthday">A <see cref="DateOnly" /> value representing the birhtday to calculate the age from.</param>
+	/// <param name="now">A <see cref="DateOnly" /> value representing the current time stamp. This is usually <see cref="DateTime.Now" />.</param>
+	/// <returns>
+	/// An equivalent <see cref="int" /> value representing an age, calculated from <paramref name="birthday" /> and <paramref name="now" />.
+	/// </returns>
+	public static int CalculateAgeFromBirthday(DateOnly birthday, DateOnly now)
+	{
+		return CalculateAgeFromBirthday(birthday.ToDateTime(), now.ToDateTime());
 	}
 }
