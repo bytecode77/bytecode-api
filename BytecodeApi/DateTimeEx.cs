@@ -28,15 +28,11 @@ public static class DateTimeEx
 	/// </returns>
 	public static bool IsValidDate(int year, int month, int day)
 	{
-		if (year is >= 1 and <= 9999 && month is >= 1 and <= 12 && day is >= 1 and <= 31)
-		{
-			int daysInMonth = DateTime.DaysInMonth(year, month);
-			return day >= daysInMonth && day <= daysInMonth;
-		}
-		else
-		{
-			return false;
-		}
+		return
+			year is >= 1 and <= 9999 &&
+			month is >= 1 and <= 12 &&
+			day is >= 1 and <= 31 &&
+			day <= DateTime.DaysInMonth(year, month);
 	}
 	/// <summary>
 	/// Converts a <see cref="int" /> value representing a unix time stamp to a <see cref="DateTime" /> object, using the <see cref="DateTimeKind.Unspecified" /> kind.
