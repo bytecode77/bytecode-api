@@ -49,6 +49,16 @@ public sealed class MathConverter : ConverterBase<object?, object?>
 				_ => -System.Convert.ToInt32(value)
 			};
 		}
+		else if (Method == MathConverterMethod.Abs)
+		{
+			return value switch
+			{
+				decimal => Math.Abs(System.Convert.ToDecimal(value)),
+				double => Math.Abs(System.Convert.ToDouble(value)),
+				float => Math.Abs(System.Convert.ToSingle(value)),
+				_ => Math.Abs(System.Convert.ToInt32(value))
+			};
+		}
 
 		if (parameter is not byte and not sbyte and not char and not decimal and not double and not float and not int and not uint and not short and not ushort)
 		{
