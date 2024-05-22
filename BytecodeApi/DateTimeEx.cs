@@ -35,6 +35,30 @@ public static class DateTimeEx
 			day <= DateTime.DaysInMonth(year, month);
 	}
 	/// <summary>
+	/// Computes the number of months between two <see cref="DateTime" /> values.
+	/// </summary>
+	/// <param name="a">The first <see cref="DateTime" /> value.</param>
+	/// <param name="b">The second <see cref="DateTime" /> value.</param>
+	/// <returns>
+	/// The number of months between two <see cref="DateTime" /> values.
+	/// </returns>
+	public static int GetMonthsDifference(DateTime a, DateTime b)
+	{
+		return (b.Year - a.Year) * 12 + b.Month - a.Month;
+	}
+	/// <summary>
+	/// Computes the number of months between two <see cref="DateOnly" /> values.
+	/// </summary>
+	/// <param name="a">The first <see cref="DateOnly" /> value.</param>
+	/// <param name="b">The second <see cref="DateOnly" /> value.</param>
+	/// <returns>
+	/// The number of months between two <see cref="DateOnly" /> values.
+	/// </returns>
+	public static int GetMonthsDifference(DateOnly a, DateOnly b)
+	{
+		return (b.Year - a.Year) * 12 + b.Month - a.Month;
+	}
+	/// <summary>
 	/// Converts a <see cref="int" /> value representing a unix time stamp to a <see cref="DateTime" /> object, using the <see cref="DateTimeKind.Unspecified" /> kind.
 	/// </summary>
 	/// <param name="seconds">The seconds starting from 01.01.1970 00:00:00.</param>
