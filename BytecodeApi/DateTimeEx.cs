@@ -145,18 +145,24 @@ public static class DateTimeEx
 	/// </returns>
 	public static int CalculateAgeFromBirthday(DateOnly birthday)
 	{
-		return CalculateAgeFromBirthday(birthday, DateTime.Now.ToDateOnly());
+		return CalculateAgeFromBirthday(birthday, DateTime.Today.ToDateOnly());
 	}
 	/// <summary>
 	/// Calculates the age from a birthday at a specified point in time.
 	/// </summary>
 	/// <param name="birthday">A <see cref="DateOnly" /> value representing the birhtday to calculate the age from.</param>
-	/// <param name="now">A <see cref="DateOnly" /> value representing the current time stamp. This is usually <see cref="DateTime.Now" />.</param>
+	/// <param name="now">A <see cref="DateOnly" /> value representing the current date. This is usually <see cref="DateTime.Now" />.</param>
 	/// <returns>
 	/// An equivalent <see cref="int" /> value representing an age, calculated from <paramref name="birthday" /> and <paramref name="now" />.
 	/// </returns>
 	public static int CalculateAgeFromBirthday(DateOnly birthday, DateOnly now)
 	{
-		return CalculateAgeFromBirthday(birthday.ToDateTime(), now.ToDateTime());
+		int age = now.Year - birthday.Year;
+		if (now < birthday.AddYears(age))
+		{
+			age--;
+		}
+
+		return age;
 	}
 }
