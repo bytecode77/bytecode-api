@@ -8,6 +8,12 @@ See: [Examples](https://github.com/bytecode77/bytecode-api/blob/master/BytecodeA
 
 ## Changelog
 
+### 3.0.5 (27.07.2024)
+
+* **new:** `CliCommand.ExecuteAsync` method
+* **removed:** `StringExtensions.ReplaceLineBreaks`
+* **new:** `DateTimeEx.IsValidDate` and `GetMonthsDifference` method
+
 ### 3.0.4 (10.12.2023)
 
 * **new:** `BytecodeApi.Data.TreeNode` class

@@ -8,6 +8,18 @@ See: [Examples](https://github.com/bytecode77/bytecode-api/blob/master/BytecodeA
 
 ## Changelog
 
+### 3.0.4 (27.07.2024)
+
+* **change:** `BooleanConverter` now implements the `TwoWayConverterBase`
+* **new:** `EnumerableConverterMethod.Contains`
+* **new:** `StringConverterMethod.ConcatIfNotEmpty` and `ConcatBeforeIfNotEmpty`
+* **new:** `MathConverterMethod.Abs`
+* **new:** `ThicknessConverter`
+* **new:** `TextBlockService.TextWrapping` property
+* **new:** `Dialog` class adds support for checkboxes
+* **new:** `FileDialogs` method overloads with `initialDirectory` parameter
+* **new:** `TextBoxExtensions.GetSelectionStart` and `GetSelectionLength` methods
+
 ### 3.0.3 (10.12.2023)
 
 * **new:** `ObservableUserControl.Shown` and `ShownOnce` events

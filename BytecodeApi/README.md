@@ -497,6 +497,12 @@ string wrappedTo80chars = Wording.WrapText("A whole paragraph with 1000 words [.
 
 ## Changelog
 
+### 3.0.5 (27.07.2024)
+
+* **new:** `CliCommand.ExecuteAsync` method
+* **removed:** `StringExtensions.ReplaceLineBreaks`
+* **new:** `DateTimeEx.IsValidDate` and `GetMonthsDifference` method
+
 ### 3.0.4 (10.12.2023)
 
 * **new:** `BytecodeApi.Data.TreeNode` class
