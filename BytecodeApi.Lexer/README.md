@@ -45,11 +45,11 @@ TokenCollection<FormulaTokenType> tokens = lexer.Parse(formula);
 
 ## Changelog
 
-### 3.0.0 (08.09.2023)
-
-* Initial release
-
 ### 3.0.1 (27.09.2023)
 
 * **new:** `Lexer` method overloads with `RegexOptions` parameter
 * **change:** Replaced `Func<string, string>?` parameters with `Func<Match, string>?`
+
+### 3.0.0 (08.09.2023)
+
+* Initial release

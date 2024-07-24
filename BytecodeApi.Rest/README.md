@@ -90,9 +90,9 @@ The configured formats are used in `RestRequest.QueryParameter`.
 
 ## Changelog
 
-### 3.0.0 (08.09.2023)
+### 3.0.2 (27.07.2024)
 
-* Initial release
+* **new:** `RestRequest.ReadFile` method
 
 ### 3.0.1 (10.12.2023)
 
@@ -100,3 +100,7 @@ The configured formats are used in `RestRequest.QueryParameter`.
 * **new:** `RestRequest.MultipartFileContent` and `MultipartStringContent` methods
 * **new:** `RestRequest.ReadByteArray` with progress callback
 * **new:** `RestRequestOptions` class
+
+### 3.0.0 (08.09.2023)
+
+* Initial release

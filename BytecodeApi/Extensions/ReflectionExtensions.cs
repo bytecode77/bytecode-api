@@ -115,7 +115,7 @@ public static class ReflectionExtensions
 			Match match = Regex.Match(name, @"\[,*\]|\*|&", RegexOptions.RightToLeft);
 			if (!match.Success)
 			{
-				throw new InvalidOperationException("Could not parse element type.");
+				throw Throw.InvalidOperation("Could not parse element type.");
 			}
 
 			suffix = match.Value + suffix;

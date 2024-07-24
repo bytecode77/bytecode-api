@@ -6,7 +6,7 @@ namespace BytecodeApi.Wpf.Converters;
 /// <summary>
 /// Represents the converter that converts <see cref="bool" />? values. The <see cref="Convert(bool?)" /> method returns an <see cref="object" /> based on the specified <see cref="BooleanConverterMethod" /> parameter.
 /// </summary>
-public sealed class BooleanConverter : ConverterBase<bool?>
+public sealed class BooleanConverter : TwoWayConverterBase<bool?>
 {
 	/// <summary>
 	/// Specifies the method that is used to convert the <see cref="bool" />? value.
@@ -45,5 +45,36 @@ public sealed class BooleanConverter : ConverterBase<bool?>
 			BooleanConverterMethod.GridLengthZeroStarInverse => value == true ? new GridLength(0) : new(1, GridUnitType.Star),
 			_ => throw Throw.InvalidEnumArgument(nameof(Method), Method)
 		};
+	}
+	/// <summary>
+	/// Converts a value back to its corresponding <see cref="bool" />? value.
+	/// </summary>
+	/// <param name="value">The value to convert back.</param>
+	/// <returns>
+	/// A <see cref="bool" />? with the result of the conversion.
+	/// </returns>
+	public override object? ConvertBack(object? value)
+	{
+		if (value == null)
+		{
+			return null;
+		}
+		else
+		{
+			return Method switch
+			{
+				BooleanConverterMethod.Default => value is bool and true,
+				BooleanConverterMethod.Inverse => value is not bool or not true,
+				BooleanConverterMethod.Visibility => (value as Visibility?)?.ToBoolean() == true,
+				BooleanConverterMethod.VisibilityInverse => (value as Visibility?)?.ToBoolean() != true,
+				BooleanConverterMethod.VisibilityHidden => (value as Visibility?)?.ToBoolean() == true,
+				BooleanConverterMethod.VisibilityHiddenInverse => (value as Visibility?)?.ToBoolean() != true,
+				BooleanConverterMethod.GridLengthZeroAuto or
+				BooleanConverterMethod.GridLengthZeroAutoInverse or
+				BooleanConverterMethod.GridLengthZeroStar or
+				BooleanConverterMethod.GridLengthZeroStarInverse => DependencyProperty.UnsetValue,
+				_ => throw Throw.InvalidEnumArgument(nameof(Method), Method)
+			};
+		}
 	}
 }

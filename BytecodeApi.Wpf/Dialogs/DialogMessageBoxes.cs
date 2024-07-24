@@ -305,7 +305,7 @@ public static class DialogMessageBoxes
 		{
 			DialogResult.Yes => true,
 			DialogResult.No => false,
-			_ => null,
+			_ => null
 		};
 	}
 }

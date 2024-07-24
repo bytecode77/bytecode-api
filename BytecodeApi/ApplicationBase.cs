@@ -47,8 +47,7 @@ public static class ApplicationBase
 	/// <summary>
 	/// Gets a <see cref="bool" /> value indicating whether <see cref="Debugger.IsAttached" /> was <see langword="true" /> the first time this property is retrieved, or if this executable is located in a directory named like "\bin\Debug", "\bin\x86\Debug", or "\bin\x64\Debug".
 	/// </summary>
-	[SupportedOSPlatform("windows")]
-	public static bool DebugMode => _DebugMode ??= Debugger.IsAttached || new[] { @"\bin\Debug", @"\bin\x86\Debug", @"\bin\x64\Debug" }.Any(path => Path.Contains($@"{path}\", StringComparison.OrdinalIgnoreCase) || Path.EndsWith(path, StringComparison.OrdinalIgnoreCase));
+	public static bool DebugMode => _DebugMode ??= Debugger.IsAttached || new[] { @"\bin\Debug", @"\bin\x86\Debug", @"\bin\x64\Debug", @"\$Build" }.Any(path => Path.Replace('/', '\\').Contains($@"{path}\", StringComparison.OrdinalIgnoreCase) || Path.Replace('/', '\\').EndsWith(path, StringComparison.OrdinalIgnoreCase));
 
 	/// <summary>
 	/// Restarts the current <see cref="System.Diagnostics.Process" /> with elevated privileges. Returns <see langword="null" />, if the process is already elevated; <see langword="false" />, if elevation failed; <see langword="true" /> if the restart was successful.

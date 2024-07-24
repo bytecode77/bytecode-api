@@ -35,7 +35,9 @@ public sealed class StringConverter : ConverterBase<string?, object?>
 		return Method switch
 		{
 			StringConverterMethod.Concat => value + parameter,
+			StringConverterMethod.ConcatIfNotEmpty => value.IsNullOrEmpty() ? value : value + parameter,
 			StringConverterMethod.ConcatBefore => parameter + value,
+			StringConverterMethod.ConcatBeforeIfNotEmpty => value.IsNullOrEmpty() ? value : parameter + value,
 			StringConverterMethod.Trim => value?.Trim(),
 			StringConverterMethod.TrimStart => value?.TrimStart(),
 			StringConverterMethod.TrimStartString => value?.TrimStartString(parameter?.ToString() ?? ""),
@@ -60,7 +62,7 @@ public sealed class StringConverter : ConverterBase<string?, object?>
 			StringConverterMethod.Reverse => value?.Reverse(),
 			StringConverterMethod.Contains => value?.Contains(parameter?.ToString() ?? "") == true,
 			StringConverterMethod.ContainsIgnoreCase => value?.Contains(parameter?.ToString() ?? "", StringComparison.OrdinalIgnoreCase) == true,
-			StringConverterMethod.ReplaceLineBreaks => value?.ReplaceLineBreaks(parameter?.ToString()),
+			StringConverterMethod.ReplaceLineBreaks => value?.ReplaceLineEndings(parameter?.ToString() ?? ""),
 			StringConverterMethod.TrimText => value != null && parameter is int ? Wording.TrimText(value, (int)parameter) : null,
 			StringConverterMethod.StringDistanceLevenshtein => value != null && parameter is string ? StringDistance.Levenshtein(value, (string)parameter) : null,
 			StringConverterMethod.StringDistanceDamerauLevenshtein => value != null && parameter is string ? StringDistance.DamerauLevenshtein(value, (string)parameter) : null,

@@ -14,6 +14,10 @@ public class Dialog
 	/// </summary>
 	public static string Caption { get; set; }
 	private readonly TaskDialogPage Page;
+	/// <summary>
+	/// Gets a <see cref="bool" /> value indicating the state of the CheckBox, if this dialog has one. Call <see cref="CheckBox(string)" /> to create a dialog with a CheckBox.
+	/// </summary>
+	public bool IsChecked => Page.Verification?.Checked == true;
 
 	static Dialog()
 	{
@@ -226,6 +230,25 @@ public class Dialog
 			Tag = result,
 			ShowShieldIcon = showShieldIcon
 		});
+		return this;
+	}
+	public Dialog CheckBox(string text)
+	{
+		return CheckBox(text, false);
+	}
+	/// <summary>
+	/// Adds a CheckBox to the task dialog.
+	/// </summary>
+	/// <param name="text">The text of the CheckBox.</param>
+	/// <param name="isChecked">The default check state of the CheckBox.</param>
+	/// <returns>
+	/// This instance of <see cref="Dialog" />.
+	/// </returns>
+	public Dialog CheckBox(string text, bool isChecked)
+	{
+		Check.ArgumentNull(text);
+
+		Page.Verification = new(text, isChecked);
 		return this;
 	}
 

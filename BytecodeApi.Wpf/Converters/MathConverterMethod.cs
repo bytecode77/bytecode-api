@@ -31,6 +31,10 @@ public enum MathConverterMethod
 	/// </summary>
 	Negate,
 	/// <summary>
+	/// Returns the absolute value.
+	/// </summary>
+	Abs,
+	/// <summary>
 	/// Divides the value by parameter and returns the remainder:
 	/// <para>value % parameter</para>
 	/// </summary>

@@ -18,8 +18,8 @@ public class NewLine : FrameworkElement
 
 		BindingOperations.SetBinding(this, WidthProperty, new Binding()
 		{
-			RelativeSource = new RelativeSource(RelativeSourceMode.FindAncestor, typeof(WrapPanel), 1),
-			Path = new PropertyPath(nameof(ActualWidth))
+			RelativeSource = new(RelativeSourceMode.FindAncestor, typeof(WrapPanel), 1),
+			Path = new(nameof(ActualWidth))
 		});
 	}
 }

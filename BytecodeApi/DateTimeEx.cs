@@ -1,4 +1,6 @@
-﻿namespace BytecodeApi;
+﻿using BytecodeApi.Extensions;
+
+namespace BytecodeApi;
 
 /// <summary>
 /// Provides constants and <see langword="static" /> methods that extend the <see cref="DateTime" /> class.
@@ -14,6 +16,48 @@ public static class DateTimeEx
 	/// </summary>
 	public const double AverageDaysInMonth = AverageDaysInYear / 12;
 
+	/// <summary>
+	/// Determines whether a combination of year, month and day represents a valid date.
+	/// </summary>
+	/// <param name="year">The year of the date.</param>
+	/// <param name="month">The month of the date.</param>
+	/// <param name="day">The day of the date.</param>
+	/// <returns>
+	/// <see langword="true" />, if the combination of year, month and day represents a valid date;
+	/// otherwise, <see langword="false" />.
+	/// </returns>
+	public static bool IsValidDate(int year, int month, int day)
+	{
+		return
+			year is >= 1 and <= 9999 &&
+			month is >= 1 and <= 12 &&
+			day is >= 1 and <= 31 &&
+			day <= DateTime.DaysInMonth(year, month);
+	}
+	/// <summary>
+	/// Computes the number of months between two <see cref="DateTime" /> values.
+	/// </summary>
+	/// <param name="a">The first <see cref="DateTime" /> value.</param>
+	/// <param name="b">The second <see cref="DateTime" /> value.</param>
+	/// <returns>
+	/// The number of months between two <see cref="DateTime" /> values.
+	/// </returns>
+	public static int GetMonthsDifference(DateTime a, DateTime b)
+	{
+		return (b.Year - a.Year) * 12 + b.Month - a.Month;
+	}
+	/// <summary>
+	/// Computes the number of months between two <see cref="DateOnly" /> values.
+	/// </summary>
+	/// <param name="a">The first <see cref="DateOnly" /> value.</param>
+	/// <param name="b">The second <see cref="DateOnly" /> value.</param>
+	/// <returns>
+	/// The number of months between two <see cref="DateOnly" /> values.
+	/// </returns>
+	public static int GetMonthsDifference(DateOnly a, DateOnly b)
+	{
+		return (b.Year - a.Year) * 12 + b.Month - a.Month;
+	}
 	/// <summary>
 	/// Converts a <see cref="int" /> value representing a unix time stamp to a <see cref="DateTime" /> object, using the <see cref="DateTimeKind.Unspecified" /> kind.
 	/// </summary>
@@ -83,6 +127,35 @@ public static class DateTimeEx
 	/// An equivalent <see cref="int" /> value representing an age, calculated from <paramref name="birthday" /> and <paramref name="now" />.
 	/// </returns>
 	public static int CalculateAgeFromBirthday(DateTime birthday, DateTime now)
+	{
+		int age = now.Year - birthday.Year;
+		if (now < birthday.AddYears(age))
+		{
+			age--;
+		}
+
+		return age;
+	}
+	/// <summary>
+	/// Calculates the age from a birthday.
+	/// </summary>
+	/// <param name="birthday">A <see cref="DateOnly" /> value representing the birhtday to calculate the age from.</param>
+	/// <returns>
+	/// An equivalent <see cref="int" /> value representing an age, calculated from <paramref name="birthday" />.
+	/// </returns>
+	public static int CalculateAgeFromBirthday(DateOnly birthday)
+	{
+		return CalculateAgeFromBirthday(birthday, DateTime.Today.ToDateOnly());
+	}
+	/// <summary>
+	/// Calculates the age from a birthday at a specified point in time.
+	/// </summary>
+	/// <param name="birthday">A <see cref="DateOnly" /> value representing the birhtday to calculate the age from.</param>
+	/// <param name="now">A <see cref="DateOnly" /> value representing the current date. This is usually <see cref="DateTime.Now" />.</param>
+	/// <returns>
+	/// An equivalent <see cref="int" /> value representing an age, calculated from <paramref name="birthday" /> and <paramref name="now" />.
+	/// </returns>
+	public static int CalculateAgeFromBirthday(DateOnly birthday, DateOnly now)
 	{
 		int age = now.Year - birthday.Year;
 		if (now < birthday.AddYears(age))

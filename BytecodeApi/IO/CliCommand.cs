@@ -188,5 +188,36 @@ public sealed class CliCommand
 			output.AppendLine(e.Data);
 		}
 	}
-	//TODO:FEATURE: ExecuteAsync
+	/// <summary>
+	/// Executes this <see cref="CliCommand" /> and returns a <see cref="CliResult" /> object with the result.
+	/// </summary>
+	/// <returns>
+	/// A <see cref="CliResult" /> object with the result.
+	/// </returns>
+	public Task<CliResult> ExecuteAsync()
+	{
+		return ExecuteAsync(Timeout.Infinite)!;
+	}
+	/// <summary>
+	/// Executes this <see cref="CliCommand" /> and returns a <see cref="CliResult" /> object with the result, or <see langword="null" />, if the operation timed out.
+	/// </summary>
+	/// <param name="timeout">The amount of time to wait for the process to exit.</param>
+	/// <returns>
+	/// A <see cref="CliResult" /> object with the result, or <see langword="null" />, if the operation timed out.
+	/// </returns>
+	public Task<CliResult?> ExecuteAsync(TimeSpan timeout)
+	{
+		return ExecuteAsync((int)timeout.TotalMilliseconds);
+	}
+	/// <summary>
+	/// Executes this <see cref="CliCommand" /> and returns a <see cref="CliResult" /> object with the result, or <see langword="null" />, if the operation timed out.
+	/// </summary>
+	/// <param name="timeout">The amount of time, in milliseconds, to wait for the process to exit.</param>
+	/// <returns>
+	/// A <see cref="CliResult" /> object with the result, or <see langword="null" />, if the operation timed out.
+	/// </returns>
+	public async Task<CliResult?> ExecuteAsync(int timeout)
+	{
+		return await Task.Run(() => Execute(timeout));
+	}
 }

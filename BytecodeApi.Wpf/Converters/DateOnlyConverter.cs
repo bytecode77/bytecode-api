@@ -53,9 +53,9 @@ public sealed class DateOnlyConverter : TwoWayConverterBase<DateOnly?, string?>
 		}
 	}
 	/// <summary>
-	/// Converts a <see cref="string" /> value back to its corresponding <see cref="DateOnly" />? value.
+	/// Converts a value back to its corresponding <see cref="DateOnly" />? value.
 	/// </summary>
-	/// <param name="value">The <see cref="string" /> value to convert back.</param>
+	/// <param name="value">The value to convert back.</param>
 	/// <param name="parameter">A parameter <see cref="string" /> that specifies the format used in some of the <see cref="DateOnlyConverterMethod" /> methods.</param>
 	/// <returns>
 	/// A <see cref="DateOnly" />? with the result of the conversion.

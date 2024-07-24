@@ -34,7 +34,7 @@ public static class TempDirectory
 
 		string path = Path.Combine(CreateDirectory(), fileName);
 		File.WriteAllBytes(path, content);
-		new FileInfo(path).Attributes |= FileAttributes.NotContentIndexed | FileAttributes.Temporary;
+		new FileInfo(path).Attributes |= FileAttributes.NotContentIndexed | FileAttributes.Temporary | FileAttributes.ReadOnly;
 		return path;
 	}
 	/// <summary>

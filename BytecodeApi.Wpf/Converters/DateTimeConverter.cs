@@ -60,9 +60,9 @@ public sealed class DateTimeConverter : TwoWayConverterBase<DateTime?, string?>
 		}
 	}
 	/// <summary>
-	/// Converts a <see cref="string" /> value back to its corresponding <see cref="DateTime" />? value.
+	/// Converts a value back to its corresponding <see cref="DateTime" />? value.
 	/// </summary>
-	/// <param name="value">The <see cref="string" /> value to convert back.</param>
+	/// <param name="value">The value to convert back.</param>
 	/// <param name="parameter">A parameter <see cref="string" /> that specifies the format used in some of the <see cref="DateTimeConverterMethod" /> methods.</param>
 	/// <returns>
 	/// A <see cref="DateTime" />? with the result of the conversion.

@@ -344,6 +344,27 @@ public static class EnumerableExtensions
 		}
 	}
 	/// <summary>
+	/// Performs an <see cref="Action{T1, T2}" /> on each element of a sequence and returns the elements after invoking <paramref name="action" />.
+	/// </summary>
+	/// <typeparam name="TSource">The type of the elements of <paramref name="source" />.</typeparam>
+	/// <param name="source">An <see cref="IEnumerable{T}" /> to process.</param>
+	/// <param name="action">The action to perform on each element of <paramref name="source" />. The second parameter represents the index of the source element.</param>
+	/// <returns>
+	/// An <see cref="IEnumerable{T}" /> that contains all elements from the input sequence.
+	/// </returns>
+	public static IEnumerable<TSource> Each<TSource>(this IEnumerable<TSource> source, Action<TSource, int> action)
+	{
+		Check.ArgumentNull(source);
+		Check.ArgumentNull(action);
+
+		int i = 0;
+		foreach (TSource item in source)
+		{
+			action(item, i++);
+			yield return item;
+		}
+	}
+	/// <summary>
 	/// Filters the elements of an <see cref="IEnumerable" /> based on a specified type. Objects must be of type <typeparamref name="TResult" />. Objects of classes that inherit <typeparamref name="TResult" /> are not returned.
 	/// </summary>
 	/// <typeparam name="TResult">The type to filter the elements of the sequence on.</typeparam>
@@ -668,6 +689,23 @@ public static class EnumerableExtensions
 		foreach (TSource item in source)
 		{
 			action(item);
+		}
+	}
+	/// <summary>
+	/// Performs the specified <see cref="Action" /> on each element of this <see cref="IEnumerable{T}" />.
+	/// </summary>
+	/// <typeparam name="TSource">The type of the elements to process.</typeparam>
+	/// <param name="source">A sequence of values to process.</param>
+	/// <param name="action">The action to perform on each element of <paramref name="source" />. The second parameter represents the index of the source element.</param>
+	public static void ForEach<TSource>(this IEnumerable<TSource> source, Action<TSource, int> action)
+	{
+		Check.ArgumentNull(source);
+		Check.ArgumentNull(action);
+
+		int i = 0;
+		foreach (TSource item in source)
+		{
+			action(item, i++);
 		}
 	}
 }
