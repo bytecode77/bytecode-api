@@ -113,7 +113,7 @@ public sealed class RestRequest
 	/// <returns>
 	/// A reference to this instance after the operation has completed.
 	/// </returns>
-	public RestRequest JsonContent<T>(T content)
+	public RestRequest JsonContent<T>(T? content)
 	{
 		return JsonContent(content, null);
 	}
@@ -126,10 +126,9 @@ public sealed class RestRequest
 	/// <returns>
 	/// A reference to this instance after the operation has completed.
 	/// </returns>
-	public RestRequest JsonContent<T>(T content, JsonSerializerOptions? serializerOptions)
+	public RestRequest JsonContent<T>(T? content, JsonSerializerOptions? serializerOptions)
 	{
 		Check.ObjectDisposed<RestClient>(RestClient.Disposed);
-		Check.ArgumentNull(content);
 
 		return StringContent(JsonSerializer.Serialize(content, serializerOptions), "application/json");
 	}
