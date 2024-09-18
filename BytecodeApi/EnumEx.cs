@@ -20,7 +20,7 @@ public static class EnumEx
 		Check.ArgumentNull(enumType);
 		Check.Argument(enumType.IsEnum, nameof(enumType), "Type provided must be an Enum.");
 
-		return Enum.GetValues(enumType).ToArray<Enum>();
+		return Enum.GetValues(enumType).Cast<Enum>().Order().ToArray();
 	}
 	/// <summary>
 	/// Gets a lookup <see cref="Dictionary{TKey, TValue}" /> with all distinct <see langword="enum" /> values and descriptions for the specified <see cref="Enum" /> type. The description is taken from the <see cref="DescriptionAttribute.Description" /> attribute, or <see langword="null" />, if the attribute was not found.
@@ -45,7 +45,7 @@ public static class EnumEx
 	/// </returns>
 	public static Dictionary<T, string?> GetDescriptionLookup<T>() where T : struct, Enum
 	{
-		return Enum.GetValues<T>().Distinct().ToDictionary(item => item, item => item.GetDescription());
+		return Enum.GetValues<T>().Order().Distinct().ToDictionary(item => item, item => item.GetDescription());
 	}
 	/// <summary>
 	/// Tries to find an <see langword="enum" /> value by the description found in the <see cref="DescriptionAttribute" /> attribute of the <see langword="enum" /> value. If the <see langword="enum" /> value was not found, <see langword="null" /> is returned.
