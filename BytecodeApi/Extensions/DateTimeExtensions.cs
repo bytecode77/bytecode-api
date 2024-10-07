@@ -103,6 +103,20 @@ public static class DateTimeExtensions
 		return count;
 	}
 	/// <summary>
+	/// Determines whether the specified <see cref="DateTime" /> is equal to this instance. The <paramref name="part" /> parameter specifies which fraction is considered during comparison.
+	/// </summary>
+	/// <param name="dateTime">The <see cref="DateTime" /> value to be compared to <paramref name="other" />.</param>
+	/// <param name="other">A <see cref="DateTime" /> to compare with <paramref name="dateTime" />.</param>
+	/// <param name="part">The <see cref="DateTimePart" /> specifying, which fraction is considered during comparison.</param>
+	/// <returns>
+	/// <see langword="true" />, if the specified <see cref="DateTime" /> is equal to this instance;
+	/// otherwise, <see langword="false" />.
+	/// </returns>
+	public static bool Equals(this DateTime dateTime, DateTime other, DateTimePart part)
+	{
+		return dateTime.GetPart(part) == other.GetPart(part);
+	}
+	/// <summary>
 	/// Compares the value of this <see cref="DateTime" /> instance to a specified <see cref="DateTime" /> value and returns an integer that indicates whether this instance is earlier than, the same as, or later than the specified <see cref="DateTime" /> value. The <paramref name="part" /> parameter specifies which fraction is considered during comparison.
 	/// </summary>
 	/// <param name="dateTime">The <see cref="DateTime" /> value to be compared to <paramref name="other" />.</param>
