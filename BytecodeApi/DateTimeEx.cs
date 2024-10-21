@@ -59,6 +59,56 @@ public static class DateTimeEx
 		return (b.Year - a.Year) * 12 + b.Month - a.Month;
 	}
 	/// <summary>
+	/// Computes the number of months between two <see cref="DateTime" /> values, including fractional months.
+	/// </summary>
+	/// <param name="a">The first <see cref="DateTime" /> value.</param>
+	/// <param name="b">The second <see cref="DateTime" /> value.</param>
+	/// <returns>
+	/// The number of months between two <see cref="DateTime" /> values, including fractional months.
+	/// </returns>
+	public static double GetTotalMonthsDifference(DateTime a, DateTime b)
+	{
+		return GetTotalMonthsDifference(a.ToDateOnly(), b.ToDateOnly());
+	}
+	/// <summary>
+	/// Computes the number of months between two <see cref="DateOnly" /> values, including fractional months.
+	/// </summary>
+	/// <param name="a">The first <see cref="DateOnly" /> value.</param>
+	/// <param name="b">The second <see cref="DateOnly" /> value.</param>
+	/// <returns>
+	/// The number of months between two <see cref="DateOnly" /> values, including fractional months.
+	/// </returns>
+	public static double GetTotalMonthsDifference(DateOnly a, DateOnly b)
+	{
+		bool negative = false;
+		if (a > b)
+		{
+			negative = true;
+			(a, b) = (b, a);
+		}
+
+		double difference = 0;
+
+		if (a.Day > 1)
+		{
+			// The starting month is partial.
+			difference += 1 - (double)(a.Day - 1) / a.GetDaysInMonth();
+			a = a.GetPart(DateOnlyPart.YearMonth).AddMonths(1);
+		}
+
+		if (b.Day < b.GetDaysInMonth())
+		{
+			// The end month is partial.
+			difference += (double)b.Day / b.GetDaysInMonth();
+			b = b.GetPart(DateOnlyPart.YearMonth).AddDays(-1);
+		}
+
+		// Add whole months.
+		difference += GetMonthsDifference(a, b) + 1;
+
+		return negative ? -difference : difference;
+	}
+	/// <summary>
 	/// Converts a <see cref="int" /> value representing a unix time stamp to a <see cref="DateTime" /> object, using the <see cref="DateTimeKind.Unspecified" /> kind.
 	/// </summary>
 	/// <param name="seconds">The seconds starting from 01.01.1970 00:00:00.</param>
