@@ -89,22 +89,30 @@ public static class DateTimeEx
 
 		double difference = 0;
 
-		if (a.Day > 1)
+		if (a.Day - 1 == b.Day)
 		{
-			// The starting month is partial.
-			difference += 1 - (double)(a.Day - 1) / a.GetDaysInMonth();
-			a = a.GetPart(DateOnlyPart.YearMonth).AddMonths(1);
+			// Full month with day offset (e.g. as 16.03. - 15.06.)
+			difference = GetMonthsDifference(a, b);
 		}
-
-		if (b.Day < b.GetDaysInMonth())
+		else
 		{
-			// The end month is partial.
-			difference += (double)b.Day / b.GetDaysInMonth();
-			b = b.GetPart(DateOnlyPart.YearMonth).AddDays(-1);
-		}
+			if (a.Day > 1)
+			{
+				// The starting month is partial.
+				difference += 1 - (double)(a.Day - 1) / a.GetDaysInMonth();
+				a = a.GetPart(DateOnlyPart.YearMonth).AddMonths(1);
+			}
 
-		// Add whole months.
-		difference += GetMonthsDifference(a, b) + 1;
+			if (b.Day < b.GetDaysInMonth())
+			{
+				// The end month is partial.
+				difference += (double)b.Day / b.GetDaysInMonth();
+				b = b.GetPart(DateOnlyPart.YearMonth).AddDays(-1);
+			}
+
+			// Add whole months.
+			difference += GetMonthsDifference(a, b) + 1;
+		}
 
 		return negative ? -difference : difference;
 	}
