@@ -119,6 +119,30 @@ public class Dialog
 		return this;
 	}
 	/// <summary>
+	/// Sets the icon of the task dialog.
+	/// </summary>
+	/// <param name="icon">A custom icon for the task dialog.</param>
+	/// <returns>
+	/// This instance of <see cref="Dialog" />.
+	/// </returns>
+	public Dialog Icon(System.Drawing.Bitmap icon)
+	{
+		Page.Icon = new(icon);
+		return this;
+	}
+	/// <summary>
+	/// Sets the icon of the task dialog.
+	/// </summary>
+	/// <param name="icon">A custom icon for the task dialog.</param>
+	/// <returns>
+	/// This instance of <see cref="Dialog" />.
+	/// </returns>
+	public Dialog Icon(System.Drawing.Icon icon)
+	{
+		Page.Icon = new(icon);
+		return this;
+	}
+	/// <summary>
 	/// Specifies that the task dialog window has a close button.
 	/// </summary>
 	/// <returns>
