@@ -60,7 +60,8 @@ public sealed class MathConverter : ConverterBase<object?, object?>
 			};
 		}
 
-		if (parameter is not byte and not sbyte and not char and not decimal and not double and not float and not int and not uint and not short and not ushort)
+		if (Method is not MathConverterMethod.Increment and not MathConverterMethod.Decrement &&
+			parameter is not byte and not sbyte and not char and not decimal and not double and not float and not int and not uint and not short and not ushort)
 		{
 			throw Throw.UnsupportedType(nameof(parameter));
 		}
@@ -74,6 +75,8 @@ public sealed class MathConverter : ConverterBase<object?, object?>
 			{
 				MathConverterMethod.Add => a + b,
 				MathConverterMethod.Subtract => a - b,
+				MathConverterMethod.Increment => a + 1,
+				MathConverterMethod.Decrement => a - 1,
 				MathConverterMethod.Multiply => a * b,
 				MathConverterMethod.Divide => a / b,
 				MathConverterMethod.Modulo => a % b,
@@ -90,6 +93,8 @@ public sealed class MathConverter : ConverterBase<object?, object?>
 			{
 				MathConverterMethod.Add => a + b,
 				MathConverterMethod.Subtract => a - b,
+				MathConverterMethod.Increment => a + 1,
+				MathConverterMethod.Decrement => a - 1,
 				MathConverterMethod.Multiply => a * b,
 				MathConverterMethod.Divide => a / b,
 				MathConverterMethod.Modulo => a % b,
@@ -106,6 +111,8 @@ public sealed class MathConverter : ConverterBase<object?, object?>
 			{
 				MathConverterMethod.Add => a + b,
 				MathConverterMethod.Subtract => a - b,
+				MathConverterMethod.Increment => a + 1,
+				MathConverterMethod.Decrement => a - 1,
 				MathConverterMethod.Multiply => a * b,
 				MathConverterMethod.Divide => a / b,
 				MathConverterMethod.Modulo => a % b,
@@ -122,6 +129,8 @@ public sealed class MathConverter : ConverterBase<object?, object?>
 			{
 				MathConverterMethod.Add => a + b,
 				MathConverterMethod.Subtract => a - b,
+				MathConverterMethod.Increment => a + 1,
+				MathConverterMethod.Decrement => a - 1,
 				MathConverterMethod.Multiply => a * b,
 				MathConverterMethod.Divide => a / b,
 				MathConverterMethod.Modulo => a % b,
