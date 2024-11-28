@@ -16,7 +16,7 @@ public static class Desktop
 	{
 		get
 		{
-			using Graphics graphics = Graphics.FromHwnd(0);
+			using System.Drawing.Graphics graphics = System.Drawing.Graphics.FromHwnd(0);
 			nint desktop = graphics.GetHdc();
 			return new(Native.GetDeviceCaps(desktop, 88), Native.GetDeviceCaps(desktop, 90));
 		}
@@ -114,11 +114,11 @@ public static class Desktop
 		(success ? SystemSounds.Beep : SystemSounds.Hand).Play();
 	}
 	/// <summary>
-	/// Captures the entire virutal screen and returns a <see cref="Bitmap" /> with the image.
+	/// Captures the entire virutal screen and returns a <see cref="System.Drawing.Bitmap" /> with the image.
 	/// </summary>
 	/// <param name="allScreens"><see langword="true" /> to capture all screens, <see langword="false" /> to only capture the primary screen.</param>
 	/// <returns>
-	/// A <see cref="Bitmap" /> with the image of the captured screen.
+	/// A <see cref="System.Drawing.Bitmap" /> with the image of the captured screen.
 	/// </returns>
 	public static System.Drawing.Bitmap CaptureScreen(bool allScreens)
 	{
