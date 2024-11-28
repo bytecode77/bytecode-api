@@ -17,7 +17,7 @@
 		<Description>Basic implementations of certain penetration testing routines, such as code injection.</Description>
 		<Company>bytecode77</Company>
 		<Authors>Martin Fischer</Authors>
-		<Copyright>© bytecode77, 2023.</Copyright>
+		<Copyright>© bytecode77, 2024.</Copyright>
 	</PropertyGroup>
 	<PropertyGroup>
 		<PackageId>BytecodeApi.Penetration</PackageId>

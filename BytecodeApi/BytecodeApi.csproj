@@ -8,9 +8,9 @@
 		<GeneratePackageOnBuild Condition="'$(Configuration)' == 'Release'">True</GeneratePackageOnBuild>
 	</PropertyGroup>
 	<PropertyGroup>
-		<Version>3.0.5</Version>
-		<AssemblyVersion>3.0.5</AssemblyVersion>
-		<FileVersion>3.0.5</FileVersion>
+		<Version>3.0.6</Version>
+		<AssemblyVersion>3.0.6</AssemblyVersion>
+		<FileVersion>3.0.6</FileVersion>
 	</PropertyGroup>
 	<PropertyGroup>
 		<Product>BytecodeApi</Product>
@@ -18,7 +18,7 @@
 		<Description>Framework for C# development.</Description>
 		<Company>bytecode77</Company>
 		<Authors>Martin Fischer</Authors>
-		<Copyright>© bytecode77, 2023.</Copyright>
+		<Copyright>© bytecode77, 2024.</Copyright>
 	</PropertyGroup>
 	<PropertyGroup>
 		<PackageId>BytecodeApi</PackageId>

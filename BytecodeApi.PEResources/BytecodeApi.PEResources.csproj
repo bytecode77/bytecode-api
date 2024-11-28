@@ -18,7 +18,7 @@
 		<Description>Library for reading of native resources of executables &amp; DLL files.</Description>
 		<Company>bytecode77</Company>
 		<Authors>Martin Fischer</Authors>
-		<Copyright>© bytecode77, 2023.</Copyright>
+		<Copyright>© bytecode77, 2024.</Copyright>
 	</PropertyGroup>
 	<PropertyGroup>
 		<PackageId>BytecodeApi.PEResources</PackageId>

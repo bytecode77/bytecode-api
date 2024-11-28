@@ -90,6 +90,10 @@ The configured formats are used in `RestRequest.QueryParameter`.
 
 ## Changelog
 
+### 3.0.3 (28.11.2024)
+
+* **new:** `RestRequest.Header` method
+
 ### 3.0.2 (27.07.2024)
 
 * **new:** `RestRequest.ReadFile` method
