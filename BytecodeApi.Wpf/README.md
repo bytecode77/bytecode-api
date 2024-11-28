@@ -249,6 +249,11 @@ if (FileDialogs.OpenFolder(@"C:\path\to\directory") is string directory)
 
 ## Changelog
 
+### 3.0.5 (28.11.2024)
+
+* **new:** `Dialog.Icon` method
+* **new:** `TabItemConverter` class
+
 ### 3.0.4 (27.07.2024)
 
 * **change:** `BooleanConverter` now implements the `TwoWayConverterBase`

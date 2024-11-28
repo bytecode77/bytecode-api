@@ -103,6 +103,37 @@ public static class DateOnlyExtensions
 		return count;
 	}
 	/// <summary>
+	/// Gets the number of days in the month of the specified <see cref="DateOnly" />.
+	/// </summary>
+	/// <param name="dateOnly">A <see cref="DateOnly" />, pointing to the month that is used in the calculation.</param>
+	/// <returns>
+	/// The number of days in the month of the specified <see cref="DateOnly" />.
+	/// </returns>
+	public static int GetDaysInMonth(this DateOnly dateOnly)
+	{
+		return DateTime.DaysInMonth(dateOnly.Year, dateOnly.Month);
+	}
+	/// <summary>
+	/// Returns a new <see cref="DateOnly" /> that adds the specified number of months, including fractions of a month.
+	/// </summary>
+	/// <param name="dateOnly">The original <see cref="DateOnly" /> value.</param>
+	/// <param name="months">A number of months. This number can be negative or positive. If the number is fractional, the fraction is multiplied by the number of days in the month after the whole months were added.</param>
+	/// <returns>
+	/// A new <see cref="DateOnly" /> whose value is the sum of the original <see cref="DateOnly" /> value and <paramref name="months" />.
+	/// </returns>
+	public static DateOnly AddMonths(this DateOnly dateOnly, double months)
+	{
+		dateOnly = dateOnly.AddMonths((int)months);
+
+		months %= 1;
+		if (months != 0)
+		{
+			dateOnly = dateOnly.AddDays((int)Math.Round(months * dateOnly.GetDaysInMonth()));
+		}
+
+		return dateOnly;
+	}
+	/// <summary>
 	/// Compares the value of this <see cref="DateOnly" /> instance to a specified <see cref="DateOnly" /> value and returns an integer that indicates whether this instance is earlier than, the same as, or later than the specified <see cref="DateOnly" /> value. The <paramref name="part" /> parameter specifies which fraction is considered during comparison.
 	/// </summary>
 	/// <param name="dateOnly">The <see cref="DateOnly" /> value to be compared to <paramref name="other" />.</param>

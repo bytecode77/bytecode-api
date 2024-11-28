@@ -497,6 +497,12 @@ string wrappedTo80chars = Wording.WrapText("A whole paragraph with 1000 words [.
 
 ## Changelog
 
+### 3.0.6 (28.11.2024)
+
+* **new:** `CSharp.RunTask` method
+* **new:** `EnumerableExtensions.Union` method
+* **new:** `DateTimeEx`, `DateTimeExtensions` and `DateOnlyExtensions` methods
+
 ### 3.0.5 (27.07.2024)
 
 * **new:** `CliCommand.ExecuteAsync` method

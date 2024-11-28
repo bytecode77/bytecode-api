@@ -47,7 +47,7 @@ public sealed class StringEmptyConverter : ConverterBase<string?>
 		{
 			StringEmptyConverterMethod.NotNullOrEmpty => !value.IsNullOrEmpty(),
 			StringEmptyConverterMethod.NotNullOrWhiteSpace => !value.IsNullOrWhiteSpace(),
-			_ => throw Throw.InvalidEnumArgument(nameof(Result), Result)
+			_ => throw Throw.InvalidEnumArgument(nameof(Method), Method)
 		};
 
 		return new BooleanConverter(Result).Convert(result);

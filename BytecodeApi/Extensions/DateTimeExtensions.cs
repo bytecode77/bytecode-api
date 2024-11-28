@@ -103,6 +103,51 @@ public static class DateTimeExtensions
 		return count;
 	}
 	/// <summary>
+	/// Gets the number of days in the month of the specified <see cref="DateTime" />.
+	/// </summary>
+	/// <param name="dateTime">A <see cref="DateTime" />, pointing to the month that is used in the calculation.</param>
+	/// <returns>
+	/// The number of days in the month of the specified <see cref="DateTime" />.
+	/// </returns>
+	public static int GetDaysInMonth(this DateTime dateTime)
+	{
+		return DateTime.DaysInMonth(dateTime.Year, dateTime.Month);
+	}
+	/// <summary>
+	/// Returns a new <see cref="DateTime" /> that adds the specified number of months, including fractions of a month.
+	/// </summary>
+	/// <param name="dateTime">The original <see cref="DateTime" /> value.</param>
+	/// <param name="months">A number of months. This number can be negative or positive. If the number is fractional, the fraction is multiplied by the number of days in the month after the whole months were added.</param>
+	/// <returns>
+	/// A new <see cref="DateTime" /> whose value is the sum of the original <see cref="DateTime" /> value and <paramref name="months" />.
+	/// </returns>
+	public static DateTime AddMonths(this DateTime dateTime, double months)
+	{
+		dateTime = dateTime.AddMonths((int)months);
+
+		months %= 1;
+		if (months != 0)
+		{
+			dateTime = dateTime.AddDays((int)Math.Round(months * dateTime.GetDaysInMonth()));
+		}
+
+		return dateTime;
+	}
+	/// <summary>
+	/// Determines whether the specified <see cref="DateTime" /> is equal to this instance. The <paramref name="part" /> parameter specifies which fraction is considered during comparison.
+	/// </summary>
+	/// <param name="dateTime">The <see cref="DateTime" /> value to be compared to <paramref name="other" />.</param>
+	/// <param name="other">A <see cref="DateTime" /> to compare with <paramref name="dateTime" />.</param>
+	/// <param name="part">The <see cref="DateTimePart" /> specifying, which fraction is considered during comparison.</param>
+	/// <returns>
+	/// <see langword="true" />, if the specified <see cref="DateTime" /> is equal to this instance;
+	/// otherwise, <see langword="false" />.
+	/// </returns>
+	public static bool Equals(this DateTime dateTime, DateTime other, DateTimePart part)
+	{
+		return dateTime.GetPart(part) == other.GetPart(part);
+	}
+	/// <summary>
 	/// Compares the value of this <see cref="DateTime" /> instance to a specified <see cref="DateTime" /> value and returns an integer that indicates whether this instance is earlier than, the same as, or later than the specified <see cref="DateTime" /> value. The <paramref name="part" /> parameter specifies which fraction is considered during comparison.
 	/// </summary>
 	/// <param name="dateTime">The <see cref="DateTime" /> value to be compared to <paramref name="other" />.</param>

@@ -18,14 +18,35 @@ public sealed class RestRequest
 	private readonly HttpMethod HttpMethod;
 	private string Url;
 	private HttpContent? HttpContent;
+	private readonly Dictionary<string, string> Headers;
 
 	internal RestRequest(RestClient restClient, HttpMethod method, string url)
 	{
 		RestClient = restClient;
 		HttpMethod = method;
 		Url = url;
+		Headers = new();
 	}
 
+	/// <summary>
+	/// Adds a HTTP header to this REST request.
+	/// </summary>
+	/// <param name="name">The name of the header.</param>
+	/// <param name="value">The value of the header</param>
+	/// <returns>
+	/// A reference to this instance after the operation has completed.
+	/// </returns>
+	public RestRequest Header(string name, string value)
+	{
+		Check.ObjectDisposed<RestClient>(RestClient.Disposed);
+		Check.ArgumentNull(name);
+		Check.ArgumentNull(value);
+		Check.ArgumentNull(RestClient.RequestOptions);
+
+		Headers[name] = value;
+
+		return this;
+	}
 	/// <summary>
 	/// Adds a query parameter to this REST request.
 	/// </summary>
@@ -92,7 +113,7 @@ public sealed class RestRequest
 	/// <returns>
 	/// A reference to this instance after the operation has completed.
 	/// </returns>
-	public RestRequest JsonContent<T>(T content)
+	public RestRequest JsonContent<T>(T? content)
 	{
 		return JsonContent(content, null);
 	}
@@ -105,10 +126,9 @@ public sealed class RestRequest
 	/// <returns>
 	/// A reference to this instance after the operation has completed.
 	/// </returns>
-	public RestRequest JsonContent<T>(T content, JsonSerializerOptions? serializerOptions)
+	public RestRequest JsonContent<T>(T? content, JsonSerializerOptions? serializerOptions)
 	{
 		Check.ObjectDisposed<RestClient>(RestClient.Disposed);
-		Check.ArgumentNull(content);
 
 		return StringContent(JsonSerializer.Serialize(content, serializerOptions), "application/json");
 	}
@@ -320,6 +340,11 @@ public sealed class RestRequest
 		{
 			Content = HttpContent
 		};
+
+		foreach (KeyValuePair<string, string> header in Headers)
+		{
+			request.Headers.Add(header.Key, header.Value);
+		}
 
 		HttpResponseMessage response = await RestClient.HttpClient.SendAsync(request, completionOption).ConfigureAwait(false);
 

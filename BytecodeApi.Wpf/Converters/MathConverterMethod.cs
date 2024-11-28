@@ -16,6 +16,16 @@ public enum MathConverterMethod
 	/// </summary>
 	Subtract,
 	/// <summary>
+	/// Increments value by one:
+	/// <para>value + 1</para>
+	/// </summary>
+	Increment,
+	/// <summary>
+	/// Decrements value by one:
+	/// <para>value - 1</para>
+	/// </summary>
+	Decrement,
+	/// <summary>
 	/// Multiplies the value and parameter:
 	/// <para>value * parameter</para>
 	/// </summary>

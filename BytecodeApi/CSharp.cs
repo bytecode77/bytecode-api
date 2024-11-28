@@ -39,6 +39,27 @@ public static class CSharp
 		}
 	}
 	/// <summary>
+	/// Performs an <see cref="Action" /> and disposes all objects in the specified array that are <see cref="IDisposable" />.
+	/// </summary>
+	/// <param name="objects">An array of objects to be disposed.</param>
+	/// <param name="action">The <see cref="Action" /> to be performed before the <see cref="IDisposable.Dispose" /> method is called. This is equivalent to the body of the <see langword="using" /> statement.</param>
+	public static void Using(object?[] objects, Action action)
+	{
+		Check.ArgumentNull(action);
+
+		try
+		{
+			action();
+		}
+		finally
+		{
+			foreach (object? obj in objects)
+			{
+				(obj as IDisposable)?.Dispose();
+			}
+		}
+	}
+	/// <summary>
 	/// Copies the contents of properties and fields of an <see cref="object" /> to another <see cref="object" /> of a different <see cref="Type" /> by comparing property and field names. A new instance of <typeparamref name="TDest" /> is created.
 	/// <para>Values are only copied, if the property or field is of equivalent type. This includes conversion between mixed <see cref="Nullable" /> values (e.g. <see cref="int" /> and <see cref="int" />?), and between <see cref="Enum" /> and numeric values. Differing types are attempted to convert (e.g. <see cref="int" /> and <see cref="long" />). If conversion fails, the default value of the destination type is used.</para>
 	/// </summary>
@@ -703,5 +724,28 @@ public static class CSharp
 		stopwatch.Stop();
 
 		return stopwatch.Elapsed;
+	}
+
+	/// <summary>
+	/// Runs the specified <see cref="Task" /> synchronously and waits for the task to finish.
+	/// </summary>
+	/// <param name="task">The task to run.</param>
+	public static void RunTask(Func<Task> task)
+	{
+		Task.Run(async () => await task()).Wait();
+	}
+	/// <summary>
+	/// Runs the specified <see cref="Task{TResult}" /> synchronously and waits for the task to finish.
+	/// </summary>
+	/// <typeparam name="T">The type of the <see cref="Task{TResult}" />.</typeparam>
+	/// <param name="task">The task to run.</param>
+	/// <returns>
+	/// The value that <paramref name="task" /> returned.
+	/// </returns>
+	public static T RunTask<T>(Func<Task<T>> task)
+	{
+		T result = default!;
+		Task.Run(async () => result = await task()).Wait();
+		return result;
 	}
 }

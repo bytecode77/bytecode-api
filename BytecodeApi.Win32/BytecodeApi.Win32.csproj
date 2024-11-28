@@ -7,9 +7,9 @@
 		<GeneratePackageOnBuild Condition="'$(Configuration)' == 'Release'">True</GeneratePackageOnBuild>
 	</PropertyGroup>
 	<PropertyGroup>
-		<Version>3.0.1</Version>
-		<AssemblyVersion>3.0.1</AssemblyVersion>
-		<FileVersion>3.0.1</FileVersion>
+		<Version>3.0.2</Version>
+		<AssemblyVersion>3.0.2</AssemblyVersion>
+		<FileVersion>3.0.2</FileVersion>
 	</PropertyGroup>
 	<PropertyGroup>
 		<Product>BytecodeApi.Win32</Product>
@@ -17,7 +17,7 @@
 		<Description>Library for querying Windows specific operating system data.</Description>
 		<Company>bytecode77</Company>
 		<Authors>Martin Fischer</Authors>
-		<Copyright>© bytecode77, 2023.</Copyright>
+		<Copyright>© bytecode77, 2024.</Copyright>
 	</PropertyGroup>
 	<PropertyGroup>
 		<PackageId>BytecodeApi.Win32</PackageId>

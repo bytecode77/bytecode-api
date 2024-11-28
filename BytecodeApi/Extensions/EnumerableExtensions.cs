@@ -553,6 +553,35 @@ public static class EnumerableExtensions
 		return first.Except(new[] { second }, comparer);
 	}
 	/// <summary>
+	/// Produces the set union of a sequence and one element.
+	/// </summary>
+	/// <typeparam name="TSource">The type of the elements of the input sequence and the second element.</typeparam>
+	/// <param name="first">An <see cref="IEnumerable{T}" /> whose distinct elements will be returned.</param>
+	/// <param name="second">The second element, which will be removed from the returned sequence, if it also occurs in the first sequence.</param>
+	/// <returns>
+	/// An <see cref="IEnumerable{T}" /> that contains the set union of the elements from the input sequence and the second element.
+	/// </returns>
+	public static IEnumerable<TSource> Union<TSource>(this IEnumerable<TSource> first, TSource second)
+	{
+		return first.Union(second, null);
+	}
+	/// <summary>
+	/// Produces the set union of a sequence and one element.
+	/// </summary>
+	/// <typeparam name="TSource">The type of the elements of the input sequence and the second element.</typeparam>
+	/// <param name="first">An <see cref="IEnumerable{T}" /> whose distinct elements will be returned.</param>
+	/// <param name="second">The second element, which will be removed from the returned sequence, if it also occurs in the first sequence.</param>
+	/// <param name="comparer">An <see cref="IComparer{T}" /> to compare the elements.</param>
+	/// <returns>
+	/// An <see cref="IEnumerable{T}" /> that contains the set union of the elements from the input sequence and the second element.
+	/// </returns>
+	public static IEnumerable<TSource> Union<TSource>(this IEnumerable<TSource> first, TSource second, IEqualityComparer<TSource>? comparer)
+	{
+		Check.ArgumentNull(first);
+
+		return first.Union(new[] { second }, comparer);
+	}
+	/// <summary>
 	/// Randomizes the order of the elements of a sequence.
 	/// </summary>
 	/// <typeparam name="TSource">The type of the elements of <paramref name="source" />.</typeparam>
