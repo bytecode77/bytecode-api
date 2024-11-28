@@ -115,6 +115,20 @@ public abstract class RestClient : IDisposable
 		return new(this, HttpMethod.Delete, url);
 	}
 	/// <summary>
+	/// Performs a PURGE request on the specified URL.
+	/// </summary>
+	/// <param name="url">The URL to perform the request on.</param>
+	/// <returns>
+	/// A <see cref="RestRequest" /> object to be used to further refine, and then send the request.
+	/// </returns>
+	protected RestRequest Purge(string url)
+	{
+		Check.ObjectDisposed<RestClient>(Disposed);
+		Check.ArgumentNull(url);
+
+		return new(this, new("PURGE"), url);
+	}
+	/// <summary>
 	/// Performs a HEAD request on the specified URL.
 	/// </summary>
 	/// <param name="url">The URL to perform the request on.</param>
