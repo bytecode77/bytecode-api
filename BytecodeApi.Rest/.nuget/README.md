@@ -8,6 +8,10 @@ See: [Examples](https://github.com/bytecode77/bytecode-api/blob/master/BytecodeA
 
 ## Changelog
 
+### 3.0.3 (28.11.2024)
+
+* **new:** `RestRequest.Header` method
+
 ### 3.0.2 (27.07.2024)
 
 * **new:** `RestRequest.ReadFile` method

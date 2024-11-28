@@ -8,6 +8,11 @@ See: [Examples](https://github.com/bytecode77/bytecode-api/blob/master/BytecodeA
 
 ## Changelog
 
+### 3.0.5 (28.11.2024)
+
+* **new:** `Dialog.Icon` method
+* **new:** `TabItemConverter` class
+
 ### 3.0.4 (27.07.2024)
 
 * **change:** `BooleanConverter` now implements the `TwoWayConverterBase`
