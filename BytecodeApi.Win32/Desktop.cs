@@ -1,7 +1,4 @@
-﻿using System.Drawing;
-using System.Drawing.Imaging;
-using System.Media;
-using System.Numerics;
+﻿using System.Media;
 using System.Runtime.InteropServices;
 using System.Windows;
 
@@ -15,13 +12,53 @@ public static class Desktop
 	/// <summary>
 	/// Gets the screen DPI. A value of 96 corresponds to 100% font scaling.
 	/// </summary>
-	public static Vector2 Dpi
+	public static Point Dpi
 	{
 		get
 		{
 			using Graphics graphics = Graphics.FromHwnd(0);
 			nint desktop = graphics.GetHdc();
 			return new(Native.GetDeviceCaps(desktop, 88), Native.GetDeviceCaps(desktop, 90));
+		}
+	}
+	/// <summary>
+	/// Gets the current mouse position in screen coordinates.
+	/// </summary>
+	public static Point MousePosition
+	{
+		get
+		{
+			Point dpi = Dpi;
+
+			return new(
+				System.Windows.Forms.Control.MousePosition.X * 96.0 / dpi.X,
+				System.Windows.Forms.Control.MousePosition.Y * 96.0 / dpi.Y);
+		}
+	}
+	/// <summary>
+	/// Gets a <see cref="bool" /> value indicating whether the left mouse button is pressed.
+	/// </summary>
+	public static bool IsLeftMouseButtonPressed => Native.GetAsyncKeyState(1) != 0;
+	/// <summary>
+	/// Gets a <see cref="bool" /> value indicating whether the right mouse button is pressed.
+	/// </summary>
+	public static bool IsRightMouseButtonPressed => Native.GetAsyncKeyState(2) != 0;
+	/// <summary>
+	/// Gets a <see cref="Rect" />[] that represent the bounds of all screens.
+	/// </summary>
+	public static Rect[] Screens
+	{
+		get
+		{
+			Point dpi = Dpi;
+
+			return System.Windows.Forms.Screen.AllScreens
+				.Select(screen => new Rect(
+					screen.Bounds.X * 96.0 / dpi.X,
+					screen.Bounds.Y * 96.0 / dpi.Y,
+					screen.Bounds.Width * 96.0 / dpi.X,
+					screen.Bounds.Height * 96.0 / dpi.Y))
+				.ToArray();
 		}
 	}
 	/// <summary>
@@ -83,16 +120,16 @@ public static class Desktop
 	/// <returns>
 	/// A <see cref="Bitmap" /> with the image of the captured screen.
 	/// </returns>
-	public static Bitmap CaptureScreen(bool allScreens)
+	public static System.Drawing.Bitmap CaptureScreen(bool allScreens)
 	{
-		Vector2 dpi = Dpi / 96f;
-		int left = allScreens ? (int)(SystemParameters.VirtualScreenLeft * dpi.X) : 0;
-		int top = allScreens ? (int)(SystemParameters.VirtualScreenTop * dpi.Y) : 0;
-		int width = (int)((allScreens ? SystemParameters.VirtualScreenWidth : SystemParameters.PrimaryScreenWidth) * dpi.X);
-		int height = (int)((allScreens ? SystemParameters.VirtualScreenHeight : SystemParameters.PrimaryScreenHeight) * dpi.Y);
+		Point dpi = Dpi;
+		int left = allScreens ? (int)(SystemParameters.VirtualScreenLeft * dpi.X / 96.0) : 0;
+		int top = allScreens ? (int)(SystemParameters.VirtualScreenTop * dpi.Y / 96.0) : 0;
+		int width = (int)((allScreens ? SystemParameters.VirtualScreenWidth : SystemParameters.PrimaryScreenWidth) * dpi.X / 96.0);
+		int height = (int)((allScreens ? SystemParameters.VirtualScreenHeight : SystemParameters.PrimaryScreenHeight) * dpi.Y / 96.0);
 
-		Bitmap bitmap = new(width, height, PixelFormat.Format32bppArgb);
-		using Graphics graphics = Graphics.FromImage(bitmap);
+		System.Drawing.Bitmap bitmap = new(width, height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+		using System.Drawing.Graphics graphics = System.Drawing.Graphics.FromImage(bitmap);
 		graphics.CopyFromScreen(left, top, 0, 0, bitmap.Size);
 
 		return bitmap;
@@ -149,4 +186,6 @@ file static class Native
 	public static extern nint SendMessage(nint handle, uint msg, int wParam, int lParam);
 	[DllImport("gdi32.dll", CharSet = CharSet.Auto, SetLastError = true, ExactSpelling = true)]
 	public static extern int GetDeviceCaps(nint dc, int index);
+	[DllImport("user32.dll")]
+	public static extern short GetAsyncKeyState(int vKey);
 }
