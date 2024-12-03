@@ -89,9 +89,10 @@ public static class DateTimeEx
 
 		double difference = 0;
 
-		if (a.Day - 1 == b.Day)
+		if (Math.Min(a.Day, b.GetDaysInMonth()) - 1 == b.Day)
 		{
-			// Full month with day offset (e.g. as 16.03. - 15.06.)
+			// Full month with 1 day offset (e.g. 16.03. - 15.06.)
+			// This includes "end of month days" (e.g. 30.01. - 27.02. is two full months)
 			difference = GetMonthsDifference(a, b);
 		}
 		else

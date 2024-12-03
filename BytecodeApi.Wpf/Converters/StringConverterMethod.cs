@@ -22,6 +22,21 @@ public enum StringConverterMethod
 	/// </summary>
 	ConcatBeforeIfNotEmpty,
 	/// <summary>
+	/// Splits the <see cref="string" /> value by the separator in the parameter <see cref="string" />.
+	/// Returns a new <see cref="string" />[] containing the individual values.
+	/// </summary>
+	Split,
+	/// <summary>
+	/// Splits the <see cref="string" /> value by the separator in the parameter <see cref="string" /> and removes empty entries.
+	/// Returns a new <see cref="string" />[] containing the individual values.
+	/// </summary>
+	SplitRemoveEmpty,
+	/// <summary>
+	/// Splits the <see cref="string" /> value by the separator in the parameter <see cref="string" />, removes empty entries, and trims the resulting values.
+	/// Returns a new <see cref="string" />[] containing the individual values.
+	/// </summary>
+	SplitRemoveEmptyTrim,
+	/// <summary>
 	/// Removes all leading and trailing white-space characters from the <see cref="string" /> value.
 	/// </summary>
 	Trim,
