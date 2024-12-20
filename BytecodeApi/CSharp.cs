@@ -732,7 +732,7 @@ public static class CSharp
 	/// <param name="task">The task to run.</param>
 	public static void RunTask(Func<Task> task)
 	{
-		RunTask(task());
+		Task.Run(async () => await task()).Wait();
 	}
 	/// <summary>
 	/// Runs the specified <see cref="Task" /> synchronously and waits for the task to finish.
@@ -752,7 +752,9 @@ public static class CSharp
 	/// </returns>
 	public static T RunTask<T>(Func<Task<T>> task)
 	{
-		return RunTask(task());
+		T result = default!;
+		Task.Run(async () => result = await task()).Wait();
+		return result;
 	}
 	/// <summary>
 	/// Runs the specified <see cref="Task{TResult}" /> synchronously and waits for the task to finish.
