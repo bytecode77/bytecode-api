@@ -211,6 +211,16 @@ public sealed class RestRequest
 	}
 
 	/// <summary>
+	/// Sends the request without reading the response body.
+	/// </summary>
+	public async Task Execute()
+	{
+		Check.ObjectDisposed<RestClient>(RestClient.Disposed);
+
+		using HttpResponseMessage response = await Send(HttpCompletionOption.ResponseHeadersRead).ConfigureAwait(false);
+		await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+	}
+	/// <summary>
 	/// Sends the request and reads the response <see cref="string" />.
 	/// </summary>
 	/// <returns>
