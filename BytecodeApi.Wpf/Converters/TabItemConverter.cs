@@ -30,7 +30,7 @@ public sealed class TabItemConverter : ConverterBase<TabItem?>
 	/// </returns>
 	public override object? Convert(TabItem? value)
 	{
-		TabControl tabControl = value?.Parent as TabControl;
+		TabControl? tabControl = value?.Parent as TabControl;
 		if (value == null || tabControl == null)
 		{
 			return null;

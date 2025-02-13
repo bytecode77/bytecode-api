@@ -150,7 +150,7 @@ public class TreeNode<T> : IEnumerable<TreeNode<T>>, IEquatable<TreeNode<T>>
 	/// <returns>
 	/// The number of removed child nodes.
 	/// </returns>
-	public int RemoveAll(Predicate<TreeNode<T>> predicate)
+	public int RemoveAll(Func<TreeNode<T>, bool> predicate)
 	{
 		Check.ArgumentNull(predicate);
 
@@ -175,7 +175,7 @@ public class TreeNode<T> : IEnumerable<TreeNode<T>>, IEquatable<TreeNode<T>>
 	/// <returns>
 	/// The number of removed child nodes.
 	/// </returns>
-	public int RemoveAll(Predicate<T> predicate)
+	public int RemoveAll(Func<T, bool> predicate)
 	{
 		Check.ArgumentNull(predicate);
 

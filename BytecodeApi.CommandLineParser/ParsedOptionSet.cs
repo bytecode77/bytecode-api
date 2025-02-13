@@ -239,12 +239,12 @@ public sealed class ParsedOptionSet
 		/// Performs a custom validation on the values. If the <see cref="Option" /> was not found, this validation succeeds.
 		/// </summary>
 		/// <param name="argument">A <see cref="string" /> that identifies an <see cref="Option" />.</param>
-		/// <param name="validate">The <see cref="Predicate{T}" /> that determines whether the validation succeeded.</param>
+		/// <param name="validate">The <see cref="Func{T, TResult}" /> that determines whether the validation succeeded.</param>
 		/// <param name="failed">A custom handler that is invoked, if the condition is not met.</param>
 		/// <returns>
 		/// A reference to the instance of <see cref="CommandLineParser.ParsedOptionSet" /> after the operation has completed.
 		/// </returns>
-		public ParsedOptionSet Custom(string argument, Predicate<string[]> validate, Action failed)
+		public ParsedOptionSet Custom(string argument, Func<string[], bool> validate, Action failed)
 		{
 			Check.ArgumentNull(argument);
 			Check.ArgumentEx.StringNotEmpty(argument);
@@ -463,11 +463,11 @@ public sealed class ParsedOptionSet
 		/// Performs a custom validation on the values and throws a <see cref="CommandLineParserException" />, if the validation failed. If the <see cref="Option" /> was not found, this validation succeeds.
 		/// </summary>
 		/// <param name="argument">A <see cref="string" /> that identifies an <see cref="Option" />.</param>
-		/// <param name="validate">The <see cref="Predicate{T}" /> that determines whether the validation succeeded.</param>
+		/// <param name="validate">The <see cref="Func{T, TResult}" /> that determines whether the validation succeeded.</param>
 		/// <returns>
 		/// A reference to the instance of <see cref="CommandLineParser.ParsedOptionSet" /> after the operation has completed.
 		/// </returns>
-		public ParsedOptionSet Custom(string argument, Predicate<string[]> validate)
+		public ParsedOptionSet Custom(string argument, Func<string[], bool> validate)
 		{
 			Check.ArgumentNull(argument);
 			Check.ArgumentEx.StringNotEmpty(argument);

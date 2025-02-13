@@ -78,12 +78,12 @@ public static class DependencyObjectExtensions
 	/// <typeparam name="T">The explicit type of the parent to search for.</typeparam>
 	/// <param name="dependencyObject">The <see cref="DependencyObject" /> to traverse the tree from.</param>
 	/// <param name="treeType">A <see cref="UITreeType" /> value indicating whether to use the <see cref="LogicalTreeHelper" /> or the <see cref="VisualTreeHelper" />.</param>
-	/// <param name="predicate">The <see cref="Predicate{T}" /> that determines whether the parent of the specified type is returned.</param>
+	/// <param name="predicate">The <see cref="Func{T, TResult}" /> that determines whether the parent of the specified type is returned.</param>
 	/// <returns>
 	/// The closest visual or logical parent of this <see cref="DependencyObject" />, depending on <paramref name="treeType" /> and <paramref name="predicate" />, that is of type <typeparamref name="T" />, if found;
 	/// otherwise, <see langword="null" />.
 	/// </returns>
-	public static T? FindParent<T>(this DependencyObject dependencyObject, UITreeType treeType, Predicate<T>? predicate) where T : DependencyObject
+	public static T? FindParent<T>(this DependencyObject dependencyObject, UITreeType treeType, Func<T, bool>? predicate) where T : DependencyObject
 	{
 		Check.ArgumentNull(dependencyObject);
 
@@ -129,11 +129,11 @@ public static class DependencyObjectExtensions
 	/// <typeparam name="T">The explicit type of the children to search for.</typeparam>
 	/// <param name="dependencyObject">The <see cref="DependencyObject" /> to traverse the tree recursively.</param>
 	/// <param name="treeType">A <see cref="UITreeType" /> value indicating whether to use the <see cref="LogicalTreeHelper" /> or the <see cref="VisualTreeHelper" />.</param>
-	/// <param name="predicate">The <see cref="Predicate{T}" /> that determines whether the child is included in the result.</param>
+	/// <param name="predicate">The <see cref="Func{T, TResult}" /> that determines whether the child is included in the result.</param>
 	/// <returns>
 	/// An array of the specified type with all children, depending on <paramref name="treeType" /> and <paramref name="predicate" />, that can be casted to <typeparamref name="T" />. If no children have been found, an empty array is returned.
 	/// </returns>
-	public static T[] FindChildren<T>(this DependencyObject dependencyObject, UITreeType treeType, Predicate<T>? predicate) where T : DependencyObject
+	public static T[] FindChildren<T>(this DependencyObject dependencyObject, UITreeType treeType, Func<T, bool>? predicate) where T : DependencyObject
 	{
 		Check.ArgumentNull(dependencyObject);
 
@@ -159,16 +159,29 @@ public static class DependencyObjectExtensions
 		return result.ToArray();
 	}
 	/// <summary>
+	/// Finds the first child of this <see cref="DependencyObject" /> matching the specified type by traversing either the visual or the logical tree recursively. If no child was found, <see langword="null" /> is returned.
+	/// </summary>
+	/// <typeparam name="T">The explicit type of the children to search for.</typeparam>
+	/// <param name="dependencyObject">The <see cref="DependencyObject" /> to traverse the tree recursively.</param>
+	/// <param name="treeType">A <see cref="UITreeType" /> value indicating whether to use the <see cref="LogicalTreeHelper" /> or the <see cref="VisualTreeHelper" />.</param>
+	/// <returns>
+	/// The first child of the specified type, depending on <paramref name="treeType" />, that can be casted to <typeparamref name="T" />. If no child was found, <see langword="null" /> is returned.
+	/// </returns>
+	public static T? FindChild<T>(this DependencyObject dependencyObject, UITreeType treeType) where T : DependencyObject
+	{
+		return dependencyObject.FindChild<T>(treeType, null);
+	}
+	/// <summary>
 	/// Finds the first child of this <see cref="DependencyObject" /> matching the specified type and satisfying a specified condition by traversing either the visual or the logical tree recursively. If no child was found, <see langword="null" /> is returned.
 	/// </summary>
 	/// <typeparam name="T">The explicit type of the children to search for.</typeparam>
 	/// <param name="dependencyObject">The <see cref="DependencyObject" /> to traverse the tree recursively.</param>
 	/// <param name="treeType">A <see cref="UITreeType" /> value indicating whether to use the <see cref="LogicalTreeHelper" /> or the <see cref="VisualTreeHelper" />.</param>
-	/// <param name="predicate">The <see cref="Predicate{T}" /> that determines whether the child is included in the result.</param>
+	/// <param name="predicate">The <see cref="Func{T, TResult}" /> that determines whether the child is included in the result.</param>
 	/// <returns>
 	/// The first child of the specified type that satisfies a specified condition, depending on <paramref name="treeType" />, that can be casted to <typeparamref name="T" />. If no child was found, <see langword="null" /> is returned.
 	/// </returns>
-	public static T? FindChild<T>(this DependencyObject dependencyObject, UITreeType treeType, Predicate<T>? predicate) where T : DependencyObject
+	public static T? FindChild<T>(this DependencyObject dependencyObject, UITreeType treeType, Func<T, bool>? predicate) where T : DependencyObject
 	{
 		Check.ArgumentNull(dependencyObject);
 
