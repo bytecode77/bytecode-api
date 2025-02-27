@@ -45,6 +45,7 @@ public static class CSharp
 	/// <param name="action">The <see cref="Action" /> to be performed before the <see cref="IDisposable.Dispose" /> method is called. This is equivalent to the body of the <see langword="using" /> statement.</param>
 	public static void Using(object?[] objects, Action action)
 	{
+		Check.ArgumentNull(objects);
 		Check.ArgumentNull(action);
 
 		try

@@ -63,6 +63,23 @@ public static class Wording
 		return strings.IsNullOrEmpty() ? "" : strings.Take(strings.Length - 1).AsString(separator) + (strings.Length > 1 ? lastSeparator : "") + strings[^1];
 	}
 	/// <summary>
+	/// Concatenates all values in the specified <see cref="string" /> collection, where <paramref name="lastSeparator" /> is used for the last separator.
+	/// <para>Example with 1 value: A</para>
+	/// <para>Example with 2 values: A and B</para>
+	/// <para>Example with 3 values: A, B and C</para>
+	/// <para>Example with 4 values: A, B, C and D</para>
+	/// </summary>
+	/// <param name="separator">A <see cref="string" /> value specifying the separator between each <see cref="string" /> value.</param>
+	/// <param name="lastSeparator">A <see cref="string" /> value specifying the separator between the last two <see cref="string" /> values.</param>
+	/// <param name="strings">The collection of <see cref="string" /> objects that is concatenated.</param>
+	/// <returns>
+	/// A <see cref="string" />, where the values of <paramref name="strings" /> is concatenated by the specified separators, or <see cref="string.Empty" />, if the collection is empty.
+	/// </returns>
+	public static string JoinStrings(string separator, string lastSeparator, IEnumerable<string> strings)
+	{
+		return JoinStrings(separator, lastSeparator, strings.ToArray());
+	}
+	/// <summary>
 	/// Converts the value of the specified <see cref="TimeSpan" /> to a human readable <see cref="string" /> representation by displaying the two most significant elements of either days, hours, minutes or seconds that are greater than zero, separated by a comma.
 	/// <para>Example: "12:00:03" is converted to "12h, 3s"</para>
 	/// </summary>
