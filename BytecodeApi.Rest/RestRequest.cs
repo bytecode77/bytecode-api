@@ -343,6 +343,33 @@ public sealed class RestRequest
 		using Stream stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
 		return (await JsonSerializer.DeserializeAsync<T>(stream, serializerOptions).ConfigureAwait(false)) ?? throw new JsonException("Deserialization returned null value.");
 	}
+	/// <summary>
+	/// Sends the request and reads server-sent events.
+	/// </summary>
+	/// <param name="eventCallback">A delegate that is invoked with the the server-sent event data.</param>
+	public async Task ReadEvents(ServerSentEventCallback eventCallback)
+	{
+		Check.ObjectDisposed<RestClient>(RestClient.Disposed);
+
+		using HttpResponseMessage response = await Send(HttpCompletionOption.ResponseHeadersRead).ConfigureAwait(false);
+		using Stream stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+		using StreamReader reader = new(stream);
+
+		while (!reader.EndOfStream)
+		{
+			if (reader.ReadLine() is string line && !line.IsNullOrWhiteSpace())
+			{
+				if (line.Contains(':'))
+				{
+					eventCallback?.Invoke(line.SubstringUntil(':'), line.SubstringFrom(':'));
+				}
+				else
+				{
+					eventCallback?.Invoke("", line);
+				}
+			}
+		}
+	}
 
 	private async Task<HttpResponseMessage> Send(HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
 	{
