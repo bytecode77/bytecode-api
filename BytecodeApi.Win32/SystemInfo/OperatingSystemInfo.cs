@@ -1,6 +1,8 @@
 using BytecodeApi.Extensions;
+using BytecodeApi.IO;
 using BytecodeApi.Wmi;
 using Microsoft.Win32;
+using System.Text.RegularExpressions;
 
 namespace BytecodeApi.Win32.SystemInfo;
 
@@ -13,6 +15,7 @@ public static class OperatingSystemInfo
 	private static DateTime? _InstallDate;
 	private static string[]? _InstalledAntiVirusSoftware;
 	private static Version[]? _FrameworkVersions;
+	private static string? _JavaVersion;
 	/// <summary>
 	/// Gets the name of the operating system.
 	/// <para>Examples: "Windows 7 Professional", "Windows 10 Pro"</para>
@@ -189,6 +192,45 @@ public static class OperatingSystemInfo
 					}
 				}
 			}
+		}
+	}
+	/// <summary>
+	/// Gets the installed Java version, or <see langword="null" />, if Java is not installed.
+	/// </summary>
+	public static string? JavaVersion
+	{
+		get
+		{
+			if (_JavaVersion == null)
+			{
+				CliResult? result;
+
+				try
+				{
+					result = CliCommand
+						.FileName("java")
+						.Arguments("-version")
+						.Hidden()
+						.Execute();
+				}
+				catch
+				{
+					// File "java" not found.
+					result = null;
+				}
+
+				if (result == null)
+				{
+					_JavaVersion = "";
+				}
+				else
+				{
+					Match match = Regex.Match(result.Output, "^\\s*java version \"(.+)\"");
+					_JavaVersion = match.Success ? match.Groups[1].Value : "";
+				}
+			}
+
+			return _JavaVersion.ToNullIfEmpty();
 		}
 	}
 }
