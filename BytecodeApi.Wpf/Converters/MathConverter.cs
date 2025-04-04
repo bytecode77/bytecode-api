@@ -3,7 +3,7 @@
 /// <summary>
 /// Represents the converter that performs mathematical calculations on numeric value and parameter types. The <see cref="Convert(object, object)" /> method returns a numeric value based on the specified <see cref="MathConverterMethod" /> parameter and the types of the value and parameter.
 /// </summary>
-public sealed class MathConverter : ConverterBase<object?, object?>
+public sealed class MathConverter : ConverterBase<object, object>
 {
 	/// <summary>
 	/// Specifies the method that is used to perform mathematical calculations on the value and parameter.

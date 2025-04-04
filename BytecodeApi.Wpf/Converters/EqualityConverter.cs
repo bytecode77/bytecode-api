@@ -3,7 +3,7 @@
 /// <summary>
 /// Represents the converter that converts objects or <see cref="IComparable" /> values based on equality to the specified parameter. The <see cref="Convert(object, object)" /> method returns an <see cref="object" /> based on the specified <see cref="EqualityConverterMethod" /> and <see cref="BooleanConverterMethod" /> parameters.
 /// </summary>
-public sealed class EqualityConverter : ConverterBase<object?, object?>
+public sealed class EqualityConverter : ConverterBase<object, object>
 {
 	/// <summary>
 	/// Specifies the method that is used to compare the value and parameter.

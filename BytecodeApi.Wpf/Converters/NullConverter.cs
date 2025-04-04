@@ -3,7 +3,7 @@
 /// <summary>
 /// Represents the converter that converts objects based on whether the value is <see langword="null" />. The <see cref="Convert(object)" /> method returns an <see cref="object" /> based on the specified <see cref="BooleanConverterMethod" /> parameter.
 /// </summary>
-public sealed class NullConverter : ConverterBase<object?>
+public sealed class NullConverter : ConverterBase<object>
 {
 	/// <summary>
 	/// Specifies how the <see cref="bool" /> result is converted before the <see cref="Convert(object)" /> method returns.

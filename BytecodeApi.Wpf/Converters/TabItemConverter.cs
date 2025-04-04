@@ -5,7 +5,7 @@ namespace BytecodeApi.Wpf.Converters;
 /// <summary>
 /// Represents the converter that converts <see cref="TabItem" />? values. The <see cref="Convert(TabItem?)" /> method returns an <see cref="object" /> based on the specified <see cref="TabItemConverterMethod" /> parameter.
 /// </summary>
-public sealed class TabItemConverter : ConverterBase<TabItem?>
+public sealed class TabItemConverter : ConverterBase<TabItem>
 {
 	/// <summary>
 	/// Specifies the method that is used to convert the <see cref="TabItem" />? value.

@@ -5,7 +5,7 @@ namespace BytecodeApi.Wpf.Converters;
 /// <summary>
 /// Represents the converter that converts path strings. The <see cref="Convert(string, string)" /> method returns a <see cref="string" /> based on the specified <see cref="PathConverterMethod" /> parameter.
 /// </summary>
-public sealed class PathConverter : ConverterBase<string?, string?>
+public sealed class PathConverter : ConverterBase<string, string>
 {
 	/// <summary>
 	/// Specifies the method that is used to convert the path in the <see cref="string" /> value.

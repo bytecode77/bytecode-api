@@ -6,7 +6,7 @@ namespace BytecodeApi.Wpf.Converters;
 /// <summary>
 /// Represents the converter that converts <see cref="IEnumerable" /> values. The <see cref="Convert(IEnumerable, object)" /> method returns an <see cref="object" /> based on the specified <see cref="EnumerableConverterMethod" /> parameter.
 /// </summary>
-public sealed class EnumerableConverter : ConverterBase<IEnumerable?, object?>
+public sealed class EnumerableConverter : ConverterBase<IEnumerable, object>
 {
 	/// <summary>
 	/// Specifies the method that is used to convert the <see cref="IEnumerable" /> value.

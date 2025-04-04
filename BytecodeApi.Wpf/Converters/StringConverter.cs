@@ -6,7 +6,7 @@ namespace BytecodeApi.Wpf.Converters;
 /// <summary>
 /// Represents the converter that converts or manipulates strings. The <see cref="Convert(object?, object)" /> method returns an <see cref="object" /> based on the specified <see cref="StringConverterMethod" /> parameter.
 /// </summary>
-public sealed class StringConverter : ConverterBase<object?, object?>
+public sealed class StringConverter : ConverterBase<object, object>
 {
 	/// <summary>
 	/// Specifies the method that is used to convert the <see cref="string" /> value.

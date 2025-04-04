@@ -3,7 +3,7 @@
 /// <summary>
 /// Represents the converter that converts <see cref="Version" /> values. The <see cref="Convert(Version)" /> method returns a <see cref="string" /> based on the specified <see cref="FieldCount" /> parameter.
 /// </summary>
-public sealed class VersionConverter : ConverterBase<Version?>
+public sealed class VersionConverter : ConverterBase<Version>
 {
 	/// <summary>
 	/// Specifies the number of components to return from the given <see cref="Version" />. The value ranges from 0 to 4.

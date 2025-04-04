@@ -5,7 +5,7 @@ namespace BytecodeApi.Wpf.Converters;
 /// <summary>
 /// Represents the converter that converts <see cref="long" />? values (or values that are convertible to <see cref="long" />) representing a byte size to an equivalent <see cref="string" /> representation. The <see cref="Convert(object)" /> method returns a <see cref="string" /> based on the specified parameters using the <see cref="ByteSize.Format()" /> method.
 /// </summary>
-public sealed class ByteSizeConverter : ConverterBase<object?>
+public sealed class ByteSizeConverter : ConverterBase<object>
 {
 	/// <summary>
 	/// Specifies the <see cref="ByteSizeUnit" /> that is used to format the result <see cref="string" />, or <see langword="null" /> to use the <see cref="ByteSize.ClosestUnit" /> property.

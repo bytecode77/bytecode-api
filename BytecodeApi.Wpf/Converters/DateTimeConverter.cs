@@ -7,7 +7,7 @@ namespace BytecodeApi.Wpf.Converters;
 /// <summary>
 /// Represents the converter that converts <see cref="DateTime" />? values. The <see cref="Convert(DateTime?, string)" /> method returns a <see cref="string" /> based on the specified <see cref="DateTimeConverterMethod" /> parameter.
 /// </summary>
-public sealed class DateTimeConverter : TwoWayConverterBase<DateTime?, string?>
+public sealed class DateTimeConverter : TwoWayConverterBase<DateTime?, string>
 {
 	/// <summary>
 	/// Specifies the method that is used to convert the <see cref="DateTime" />? value.

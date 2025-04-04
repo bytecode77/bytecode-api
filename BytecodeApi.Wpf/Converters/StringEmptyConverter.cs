@@ -5,7 +5,7 @@ namespace BytecodeApi.Wpf.Converters;
 /// <summary>
 /// Represents the converter that converts <see cref="string" /> values based on <see cref="string" /> emptiness. The <see cref="Convert(string)" /> method returns an <see cref="object" /> based on the specified <see cref="StringEmptyConverterMethod" /> and <see cref="BooleanConverterMethod" /> parameters.
 /// </summary>
-public sealed class StringEmptyConverter : ConverterBase<string?>
+public sealed class StringEmptyConverter : ConverterBase<string>
 {
 	/// <summary>
 	/// Specifies the method that is used to check the <see cref="string" /> value for emptiness.

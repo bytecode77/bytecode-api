@@ -3,7 +3,7 @@
 /// <summary>
 /// Represents the converter that converts objects based on whether the value is <see langword="null" /> and returns the parameter instead.
 /// </summary>
-public sealed class CoalesceConverter : ConverterBase<object?, object?>
+public sealed class CoalesceConverter : ConverterBase<object, object>
 {
 	/// <summary>
 	/// Initializes a new instance of the <see cref="CoalesceConverter" /> class.

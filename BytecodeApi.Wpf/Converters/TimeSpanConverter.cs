@@ -5,7 +5,7 @@ namespace BytecodeApi.Wpf.Converters;
 /// <summary>
 /// Represents the converter that converts <see cref="TimeSpan" />? values. The <see cref="Convert(TimeSpan?, string)" /> method returns a <see cref="string" /> based on the specified <see cref="TimeSpanConverterMethod" /> parameter.
 /// </summary>
-public sealed class TimeSpanConverter : ConverterBase<TimeSpan?, string?>
+public sealed class TimeSpanConverter : ConverterBase<TimeSpan?, string>
 {
 	/// <summary>
 	/// Specifies the method that is used to convert the <see cref="TimeSpan" />? value.

@@ -7,7 +7,7 @@ namespace BytecodeApi.Wpf.Converters;
 /// <summary>
 /// Represents the converter that converts <see cref="Image" />, <see cref="Icon" /> or <see cref="byte" />[] values to an image source. The <see cref="Convert(object)" /> method returns an <see cref="BitmapSource" /> created from the specified value. The value must be an <see cref="Image" />, an <see cref="Icon" /> or a <see cref="byte" />[].
 /// </summary>
-public sealed class ImageSourceConverter : ConverterBase<object?>
+public sealed class ImageSourceConverter : ConverterBase<object>
 {
 	/// <summary>
 	/// Initializes a new instance of the <see cref="ImageSourceConverter" /> class.
