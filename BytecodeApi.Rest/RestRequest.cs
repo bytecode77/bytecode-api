@@ -350,22 +350,66 @@ public sealed class RestRequest
 	public async Task ReadEvents(ServerSentEventCallback eventCallback)
 	{
 		Check.ObjectDisposed<RestClient>(RestClient.Disposed);
+		Check.ArgumentNull(eventCallback);
 
 		using HttpResponseMessage response = await Send(HttpCompletionOption.ResponseHeadersRead).ConfigureAwait(false);
 		using Stream stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
 		using StreamReader reader = new(stream);
 
+		// https://html.spec.whatwg.org/multipage/server-sent-events.html
+
+		string eventType = "message";
+		string? eventId = null;
+		StringBuilder data = new();
+
 		while (!reader.EndOfStream)
 		{
-			if (reader.ReadLine() is string line && !line.IsNullOrWhiteSpace())
+			if (reader.ReadLine() is string line)
 			{
-				if (line.Contains(':'))
+				if (line == "")
 				{
-					eventCallback?.Invoke(line.SubstringUntil(':'), line.SubstringFrom(':'));
+					eventCallback(eventType, data.ToString().Trim(), eventId);
+
+					eventType = "message";
+					data.Clear();
 				}
-				else
+				else if (line.StartsWith(':'))
 				{
-					eventCallback?.Invoke("", line);
+					// Ignore
+				}
+				else if (line.Contains(':'))
+				{
+					string field;
+					string value;
+
+					if (line.Contains(':'))
+					{
+						field = line.SubstringUntil(':');
+						value = line.SubstringFrom(':');
+
+						if (value.StartsWith(' '))
+						{
+							value = value[1..];
+						}
+					}
+					else
+					{
+						field = line;
+						value = "";
+					}
+
+					switch (field)
+					{
+						case "event":
+							eventType = value;
+							break;
+						case "data":
+							data.AppendLine(value);
+							break;
+						case "id" when !value.Contains('\0'):
+							eventId = value.ToNullIfEmpty();
+							break;
+					}
 				}
 			}
 		}
