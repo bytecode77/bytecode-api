@@ -41,48 +41,93 @@ public sealed class TokenCollection<TTokenType> : ICollection<Token<TTokenType>>
 	/// <param name="tokens">A collection of <see cref="Token{TTokenType}" /> objects to add to this <see cref="TokenCollection{TTokenType}" />.</param>
 	public TokenCollection(IEnumerable<Token<TTokenType>> tokens) : this()
 	{
+		Check.ArgumentNull(tokens);
+
 		Tokens.AddRange(tokens);
 	}
 
 	/// <summary>
 	/// Adds a <see cref="Token{TTokenType}" /> to the end of the <see cref="TokenCollection{TTokenType}" />.
 	/// </summary>
-	/// <param name="item">The <see cref="Token{TTokenType}" /> to be added to the end of the <see cref="TokenCollection{TTokenType}" />.</param>
-	public void Add(Token<TTokenType> item)
+	/// <param name="token">The <see cref="Token{TTokenType}" /> to be added to the end of the <see cref="TokenCollection{TTokenType}" />.</param>
+	public void Add(Token<TTokenType> token)
 	{
-		Tokens.Add(item);
+		Check.ArgumentNull(token);
+
+		Tokens.Add(token);
+	}
+	/// <summary>
+	/// Inserts the token at the specified index.
+	/// </summary>
+	/// <param name="index">The index at which the token should be inserted.</param>
+	/// <param name="token">The <see cref="Token{TTokenType}" /> to be inserted.</param>
+	public void Insert(int index, Token<TTokenType> token)
+	{
+		Check.ArgumentNull(token);
+
+		Tokens.Insert(index, token);
+	}
+	/// <summary>
+	/// Inserts the tokens of the given collection at a given index.
+	/// </summary>
+	/// <param name="index">The index at which the tokens should be inserted.</param>
+	/// <param name="tokens">A collection of <see cref="Token{TTokenType}" /> objects to insert.</param>
+	public void InsertRange(int index, IEnumerable<Token<TTokenType>> tokens)
+	{
+		Check.ArgumentNull(tokens);
+
+		Tokens.InsertRange(index, tokens);
 	}
 	/// <summary>
 	/// Removes the first occurrence of a specific <see cref="Token{TTokenType}" /> from the <see cref="TokenCollection{TTokenType}" />.
 	/// </summary>
-	/// <param name="item">The <see cref="Token{TTokenType}" /> to remove from the <see cref="TokenCollection{TTokenType}" />.</param>
+	/// <param name="token">The <see cref="Token{TTokenType}" /> to remove from the <see cref="TokenCollection{TTokenType}" />.</param>
 	/// <returns>
-	/// <see langword="true" />, if <paramref name="item" /> is successfully removed;
+	/// <see langword="true" />, if <paramref name="token" /> is successfully removed;
 	/// otherwise, <see langword="false" />.
-	/// This method also returns <see langword="false" />, if <paramref name="item" /> was not found in the <see cref="TokenCollection{TTokenType}" />.
+	/// This method also returns <see langword="false" />, if <paramref name="token" /> was not found in the <see cref="TokenCollection{TTokenType}" />.
 	/// </returns>
-	public bool Remove(Token<TTokenType> item)
+	public bool Remove(Token<TTokenType> token)
 	{
-		return Tokens.Remove(item);
+		Check.ArgumentNull(token);
+
+		return Tokens.Remove(token);
 	}
 	/// <summary>
-	/// Removes all elements from the <see cref="TokenCollection{TTokenType}" />.
+	/// Removes a range of tokens from the <see cref="TokenCollection{TTokenType}" />.
+	/// </summary>
+	/// <param name="index">The starting index of the range of tokens to remove.</param>
+	/// <param name="count">The number of tokens to remove.</param>
+	public void RemoveRange(int index, int count)
+	{
+		Tokens.RemoveRange(index, count);
+	}
+	/// <summary>
+	/// Removes the <see cref="Token{TTokenType}" /> at the given index.
+	/// </summary>
+	/// <param name="index">The index of the <see cref="Token{TTokenType}" /> to remove.</param>
+	public void RemoveAt(int index)
+	{
+		Tokens.RemoveAt(index);
+	}
+	/// <summary>
+	/// Removes all tokens from the <see cref="TokenCollection{TTokenType}" />.
 	/// </summary>
 	public void Clear()
 	{
 		Tokens.Clear();
 	}
 	/// <summary>
-	/// Determines whether an element is in the <see cref="TokenCollection{TTokenType}" />.
+	/// Determines whether a <see cref="Token{TTokenType}" /> is in the <see cref="TokenCollection{TTokenType}" />.
 	/// </summary>
-	/// <param name="item">The <see cref="Token{TTokenType}" /> to locate in the <see cref="TokenCollection{TTokenType}" />.</param>
+	/// <param name="token">The <see cref="Token{TTokenType}" /> to locate in the <see cref="TokenCollection{TTokenType}" />.</param>
 	/// <returns>
-	/// <see langword="true" />, if <paramref name="item" /> is found in the <see cref="TokenCollection{TTokenType}" />;
+	/// <see langword="true" />, if <paramref name="token" /> is found in the <see cref="TokenCollection{TTokenType}" />;
 	/// otherwise, <see langword="false" />.
 	/// </returns>
-	public bool Contains(Token<TTokenType> item)
+	public bool Contains(Token<TTokenType> token)
 	{
-		return Tokens.Contains(item);
+		return Tokens.Contains(token);
 	}
 	void ICollection<Token<TTokenType>>.CopyTo(Token<TTokenType>[] array, int arrayIndex)
 	{
@@ -140,11 +185,22 @@ public sealed class TokenCollection<TTokenType> : ICollection<Token<TTokenType>>
 	/// Returns a <see cref="string" /> that represents this instance.
 	/// </summary>
 	/// <returns>
-	/// A <see cref="string" /> that represents this instance containing all tokens separated by a whitespace character.
+	/// A <see cref="string" /> with all tokens concatenated.
 	/// </returns>
 	public override string ToString()
 	{
-		return Tokens.Select(token => token.Value).AsString(" ");
+		return ToString(null);
+	}
+	/// <summary>
+	/// Returns a <see cref="string" /> that represents this instance.
+	/// </summary>
+	/// <param name="separator">A <see cref="string" /> value specifying the separator between each token.</param>
+	/// <returns>
+	/// A <see cref="string" /> with all tokens concatenated, separated by the specified separator.
+	/// </returns>
+	public string ToString(string? separator)
+	{
+		return Tokens.Select(token => token.Value).AsString(separator);
 	}
 	/// <summary>
 	/// Returns an enumerator that iterates through the <see cref="TokenCollection{TTokenType}" />.

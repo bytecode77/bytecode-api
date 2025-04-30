@@ -54,7 +54,7 @@ public sealed class Token<TTokenType> where TTokenType : struct, IConvertible
 	/// </returns>
 	public bool Is(params TTokenType[] types)
 	{
-		return types.Any(t => Type.Equals(t));
+		return types.Any(type => Type.Equals(type));
 	}
 	/// <summary>
 	/// Checks, if this token is of a given type and matches a given value.
@@ -67,7 +67,71 @@ public sealed class Token<TTokenType> where TTokenType : struct, IConvertible
 	/// </returns>
 	public bool Is(TTokenType type, string value)
 	{
-		return Type.Equals(type) && Value == value;
+		return Is(type, value, false);
+	}
+	/// <summary>
+	/// Checks, if this token is of a given type and matches a given value.
+	/// </summary>
+	/// <param name="type">The type to check this token against.</param>
+	/// <param name="value">The value to match this token against.</param>
+	/// <param name="ignoreCase"><see langword="true" /> to ignore character casing during value comparison.</param>
+	/// <returns>
+	/// <see langword="true" />, if this token is of the given type and matches the given value;
+	/// otherwise, <see langword="false" />.
+	/// </returns>
+	public bool Is(TTokenType type, string value, bool ignoreCase)
+	{
+		return Type.Equals(type) && Value.Equals(value, ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal);
+	}
+	/// <summary>
+	/// Checks, if this token matches a given value.
+	/// </summary>
+	/// <param name="value">The value to match this token against.</param>
+	/// <returns>
+	/// <see langword="true" />, if this token matches the given value;
+	/// otherwise, <see langword="false" />.
+	/// </returns>
+	public bool Is(string value)
+	{
+		return Is(value, false);
+	}
+	/// <summary>
+	/// Checks, if this token matches a given value.
+	/// </summary>
+	/// <param name="value">The value to match this token against.</param>
+	/// <param name="ignoreCase"><see langword="true" /> to ignore character casing during value comparison.</param>
+	/// <returns>
+	/// <see langword="true" />, if this token matches the given value;
+	/// otherwise, <see langword="false" />.
+	/// </returns>
+	public bool Is(string value, bool ignoreCase)
+	{
+		return Value.Equals(value, ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal);
+	}
+	/// <summary>
+	/// Checks, if this token matches any of the given values.
+	/// </summary>
+	/// <param name="values">A collection of values to check this token against.</param>
+	/// <returns>
+	/// <see langword="true" />, if this token matches any of the given values;
+	/// otherwise, <see langword="false" />.
+	/// </returns>
+	public bool Is(params string[] values)
+	{
+		return Is(values, false);
+	}
+	/// <summary>
+	/// Checks, if this token matches any of the given values.
+	/// </summary>
+	/// <param name="values">A collection of values to check this token against.</param>
+	/// <param name="ignoreCase"><see langword="true" /> to ignore character casing during value comparison.</param>
+	/// <returns>
+	/// <see langword="true" />, if this token matches any of the given values;
+	/// otherwise, <see langword="false" />.
+	/// </returns>
+	public bool Is(string[] values, bool ignoreCase)
+	{
+		return values.Any(value => value.Equals(Value, ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal));
 	}
 
 	/// <summary>
