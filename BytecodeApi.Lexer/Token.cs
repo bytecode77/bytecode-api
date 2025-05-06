@@ -27,6 +27,9 @@ public sealed class Token<TTokenType> where TTokenType : struct, IConvertible
 	/// <param name="value">A <see cref="string" /> with the value of the token.</param>
 	public Token(int lineNumber, TTokenType type, string value)
 	{
+		Check.ArgumentNull(value);
+		Check.ArgumentEx.StringNotEmpty(value);
+
 		LineNumber = lineNumber;
 		Type = type;
 		Value = value;
@@ -54,6 +57,9 @@ public sealed class Token<TTokenType> where TTokenType : struct, IConvertible
 	/// </returns>
 	public bool Is(params TTokenType[] types)
 	{
+		Check.ArgumentNull(types);
+		Check.ArgumentEx.ArrayElementsRequired(types);
+
 		return types.Any(type => Type.Equals(type));
 	}
 	/// <summary>
@@ -131,6 +137,9 @@ public sealed class Token<TTokenType> where TTokenType : struct, IConvertible
 	/// </returns>
 	public bool Is(string[] values, bool ignoreCase)
 	{
+		Check.ArgumentNull(values);
+		Check.ArgumentEx.ArrayElementsRequired(values);
+
 		return values.Any(value => value.Equals(Value, ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal));
 	}
 
