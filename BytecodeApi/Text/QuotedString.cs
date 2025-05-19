@@ -92,7 +92,7 @@ public readonly struct QuotedString : IEquatable<QuotedString>
 	/// </returns>
 	public override int GetHashCode()
 	{
-		return CSharp.GetHashCode(OriginalString);
+		return HashCode.Combine(OriginalString);
 	}
 
 	/// <summary>

@@ -51,37 +51,6 @@ public static class EnumerableConvertExtensions
 		return source.ToList().AsReadOnly();
 	}
 	/// <summary>
-	/// Converts this <see cref="IEnumerable{T}" /> to a <see cref="Dictionary{TKey, TValue}" />.
-	/// </summary>
-	/// <typeparam name="TKey">The type of the key of the returned <see cref="Dictionary{TKey, TValue}" />.</typeparam>
-	/// <typeparam name="TValue">The type of the value of the returned <see cref="Dictionary{TKey, TValue}" />.</typeparam>
-	/// <param name="source">The collection of <see cref="KeyValuePair{TKey, TValue}" /> objects to convert.</param>
-	/// <returns>
-	/// A new <see cref="Dictionary{TKey, TValue}" /> that contains all <see cref="KeyValuePair{TKey, TValue}" /> objects in this <see cref="IEnumerable" />.
-	/// </returns>
-	public static Dictionary<TKey, TValue> ToDictionary<TValue, TKey>(this IEnumerable<KeyValuePair<TKey, TValue>> source) where TKey : notnull
-	{
-		Check.ArgumentNull(source);
-
-		return source.ToDictionary(itm => itm.Key, itm => itm.Value);
-	}
-	/// <summary>
-	/// Converts this <see cref="IEnumerable{T}" /> to a <see cref="Dictionary{TKey, TValue}" /> using the specified equality comparer.
-	/// </summary>
-	/// <typeparam name="TKey">The type of the key of the returned <see cref="Dictionary{TKey, TValue}" />.</typeparam>
-	/// <typeparam name="TValue">The type of the value of the returned <see cref="Dictionary{TKey, TValue}" />.</typeparam>
-	/// <param name="source">The collection of <see cref="KeyValuePair{TKey, TValue}" /> objects to convert.</param>
-	/// <param name="comparer">The <see cref="IEqualityComparer{T}" /> implementation to use when creating the new <see cref="Dictionary{TKey, TValue}" />.</param>
-	/// <returns>
-	/// A new <see cref="Dictionary{TKey, TValue}" /> that contains all <see cref="KeyValuePair{TKey, TValue}" /> objects in this <see cref="IEnumerable" />.
-	/// </returns>
-	public static Dictionary<TKey, TValue> ToDictionary<TValue, TKey>(this IEnumerable<KeyValuePair<TKey, TValue>> source, IEqualityComparer<TKey>? comparer) where TKey : notnull
-	{
-		Check.ArgumentNull(source);
-
-		return source.ToDictionary(itm => itm.Key, itm => itm.Value, comparer);
-	}
-	/// <summary>
 	/// Converts this <see cref="IEnumerable{T}" /> to a <see cref="Dictionary{TKey, TValue}" />, where Item1 of the <see cref="Tuple{T1, T2}" /> is representing the key and Item2 is representing the value.
 	/// </summary>
 	/// <typeparam name="TKey">The type of the key of the returned <see cref="Dictionary{TKey, TValue}" />.</typeparam>
@@ -202,35 +171,6 @@ public static class EnumerableConvertExtensions
 		Check.ArgumentNull(source);
 
 		return new(source.Cast<TSource>(), comparer);
-	}
-	/// <summary>
-	/// Converts this <see cref="IEnumerable{T}" /> to a <see cref="HashSet{T}" />.
-	/// </summary>
-	/// <typeparam name="TSource">The type of the <see cref="IEnumerable{T}" />.</typeparam>
-	/// <param name="source">The <see cref="IEnumerable{T}" /> to convert.</param>
-	/// <returns>
-	/// A new <see cref="HashSet{T}" /> that contains all values in this <see cref="IEnumerable" />.
-	/// </returns>
-	public static HashSet<TSource> ToHashSet<TSource>(this IEnumerable<TSource> source)
-	{
-		Check.ArgumentNull(source);
-
-		return new(source);
-	}
-	/// <summary>
-	/// Converts this <see cref="IEnumerable{T}" /> to a <see cref="HashSet{T}" /> using the specified equality comparer.
-	/// </summary>
-	/// <typeparam name="TSource">The type of the <see cref="IEnumerable{T}" />.</typeparam>
-	/// <param name="source">The <see cref="IEnumerable{T}" /> to convert.</param>
-	/// <param name="comparer">The <see cref="IEqualityComparer{T}" /> implementation to use when creating the new <see cref="HashSet{T}" />.</param>
-	/// <returns>
-	/// A new <see cref="HashSet{T}" /> that contains all values in this <see cref="IEnumerable" />.
-	/// </returns>
-	public static HashSet<TSource> ToHashSet<TSource>(this IEnumerable<TSource> source, IEqualityComparer<TSource>? comparer)
-	{
-		Check.ArgumentNull(source);
-
-		return new(source, comparer);
 	}
 	/// <summary>
 	/// Converts this <see cref="IEnumerable" /> to an <see cref="ObservableCollection{T}" /> of the specified type.

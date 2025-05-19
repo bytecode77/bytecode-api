@@ -190,7 +190,7 @@ internal static class Check
 		[DebuggerHidden, MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void Handle(nint handle, [CallerArgumentExpression(nameof(handle))] string? parameterName = null)
 		{
-			if (handle == 0 || handle == -1)
+			if (handle is 0 or -1)
 			{
 				throw new ArgumentException(ExceptionMessages.Argument.InvalidHandle, parameterName);
 			}

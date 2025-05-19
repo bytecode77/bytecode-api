@@ -34,7 +34,7 @@ public sealed class CsvRowCollection : ICollection<CsvRow>
 	/// </summary>
 	public CsvRowCollection()
 	{
-		Rows = new();
+		Rows = [];
 	}
 
 	/// <summary>

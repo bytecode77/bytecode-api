@@ -1190,7 +1190,7 @@ public static class StringExtensions
 					{
 						StringBuilder stringBuilder = new(str.Length);
 
-						char separator = casing == StringCasing.LowerSnakeCase || casing == StringCasing.UpperSnakeCase ? '_' : '-';
+						char separator = casing is StringCasing.LowerSnakeCase or StringCasing.UpperSnakeCase ? '_' : '-';
 						int position = 0;
 						bool skip = false;
 
@@ -1224,7 +1224,7 @@ public static class StringExtensions
 
 						return stringBuilder
 							.ToString()
-							.ChangeCasing(casing == StringCasing.LowerSnakeCase || casing == StringCasing.LowerKebabCase ? StringCasing.Lower : StringCasing.Upper);
+							.ChangeCasing(casing is StringCasing.LowerSnakeCase or StringCasing.LowerKebabCase ? StringCasing.Lower : StringCasing.Upper);
 					}
 				default:
 					throw Throw.InvalidEnumArgument(nameof(casing), casing);
@@ -1340,7 +1340,7 @@ public static class StringExtensions
 		if (removeEmptyEntries) splitOptions |= StringSplitOptions.RemoveEmptyEntries;
 		if (trimLines) splitOptions |= StringSplitOptions.TrimEntries;
 
-		return str.Split(new[] { "\r\n", "\n" }, splitOptions);
+		return str.Split(["\r\n", "\n"], splitOptions);
 	}
 	/// <summary>
 	/// Splits this <see cref="string" /> into chunks of a given size. The last <see cref="string" /> may be smaller than <paramref name="chunkSize" />.
@@ -1357,7 +1357,7 @@ public static class StringExtensions
 
 		if (str.Length <= chunkSize)
 		{
-			return new[] { str };
+			return [str];
 		}
 		else
 		{

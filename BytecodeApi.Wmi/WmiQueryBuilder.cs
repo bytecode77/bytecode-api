@@ -14,7 +14,7 @@ public sealed class WmiQueryBuilder : IWmiQueryable
 	internal WmiQueryBuilder(WmiClass @class)
 	{
 		Class = @class;
-		Conditions = new();
+		Conditions = [];
 	}
 	internal WmiQueryBuilder(WmiQueryBuilder query) : this(@query.Class)
 	{

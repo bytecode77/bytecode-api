@@ -128,7 +128,7 @@ public static class Wording
 			bool sign = timeSpan < TimeSpan.Zero;
 			if (sign) timeSpan = -timeSpan;
 
-			List<string> elements = new();
+			List<string> elements = [];
 			if (timeSpan.Days > 0) elements.Add(timeSpan.Days + "d");
 			if (timeSpan.Hours > 0) elements.Add(timeSpan.Hours + "h");
 			if (timeSpan.Minutes > 0) elements.Add(timeSpan.Minutes + "m");
@@ -151,7 +151,7 @@ public static class Wording
 		Check.ArgumentNull(text);
 		Check.ArgumentOutOfRangeEx.Greater0(width);
 
-		char[] separators = new[] { ' ', '\t', '\r', '\n' };
+		char[] separators = [' ', '\t', '\r', '\n'];
 		StringBuilder stringBuilder = new();
 
 		int index = 0;

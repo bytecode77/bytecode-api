@@ -37,7 +37,7 @@ public static class DependencyObjectExtensions
 	{
 		Check.ArgumentNull(dependencyObject);
 
-		List<DependencyObject> result = new();
+		List<DependencyObject> result = [];
 
 		for (DependencyObject? obj = dependencyObject; obj != null;)
 		{
@@ -137,7 +137,7 @@ public static class DependencyObjectExtensions
 	{
 		Check.ArgumentNull(dependencyObject);
 
-		List<T> result = new();
+		List<T> result = [];
 
 		IEnumerable<DependencyObject> children = treeType switch
 		{

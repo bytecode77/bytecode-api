@@ -47,7 +47,7 @@ public sealed class AlternateDataStreamInfo
 			Native.Win32StreamId streamId = new();
 			int streamHeaderSize = Marshal.SizeOf(streamId);
 
-			List<AlternateDataStream> streams = new();
+			List<AlternateDataStream> streams = [];
 
 			for (bool done = false; !done;)
 			{

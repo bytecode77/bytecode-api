@@ -256,6 +256,13 @@ public class Dialog
 		});
 		return this;
 	}
+	/// <summary>
+	/// Adds a CheckBox to the task dialog.
+	/// </summary>
+	/// <param name="text">The text of the CheckBox.</param>
+	/// <returns>
+	/// This instance of <see cref="Dialog" />.
+	/// </returns>
 	public Dialog CheckBox(string text)
 	{
 		return CheckBox(text, false);

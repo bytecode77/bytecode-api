@@ -28,7 +28,7 @@ public class IniFile
 	public IniFile()
 	{
 		GlobalProperties = new(null);
-		Sections = new();
+		Sections = [];
 		ErrorLines = Array.Empty<IniErrorLine>().ToReadOnlyCollection();
 	}
 	/// <summary>
@@ -166,7 +166,7 @@ public class IniFile
 		IniFile ini = new();
 		IniSection section = ini.GlobalProperties;
 		bool ignoreSection = false;
-		List<IniErrorLine> errorLines = new();
+		List<IniErrorLine> errorLines = [];
 
 		using StreamReader reader = new(stream, encoding, true, -1, leaveOpen);
 
@@ -192,7 +192,7 @@ public class IniFile
 
 				AbortIf(!parsingOptions.AllowSectionNameClosingBracket && newSection.Contains(']'));
 
-				IniSection? duplicate = ini.Sections.FirstOrDefault(sect => sect.Name?.Equals(newSection, parsingOptions.DuplicateSectionNameIgnoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal) == true);
+				IniSection? duplicate = ini.Sections.FirstOrDefault(sect => string.Equals(sect.Name, newSection, parsingOptions.DuplicateSectionNameIgnoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal));
 				bool create = false;
 
 				switch (parsingOptions.DuplicateSectionNameBehavior)
@@ -337,7 +337,7 @@ public class IniFile
 	{
 		Check.ArgumentNull(name);
 
-		return Sections.FirstOrDefault(section => section.Name?.Equals(name, ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal) == true);
+		return Sections.FirstOrDefault(section => string.Equals(section.Name, name, ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal));
 	}
 
 	/// <summary>

@@ -32,7 +32,7 @@ public sealed class Lexer<TTokenType> where TTokenType : struct, IConvertible
 
 	internal Lexer()
 	{
-		Grammar = new();
+		Grammar = [];
 	}
 
 	/// <summary>
@@ -128,7 +128,7 @@ public sealed class Lexer<TTokenType> where TTokenType : struct, IConvertible
 	{
 		Check.ArgumentNull(code);
 
-		TokenCollection<TTokenType> tokens = new();
+		TokenCollection<TTokenType> tokens = [];
 
 		for (int position = 0, line = 1; position < code.Length;)
 		{

@@ -1,5 +1,5 @@
-﻿using BytecodeApi.Mathematics;
-using System.Collections;
+﻿using System.Collections;
+using System.Security.Cryptography;
 
 namespace BytecodeApi.Extensions;
 
@@ -283,7 +283,7 @@ public static class BitArrayExtensions
 			{
 				if (bufferPosition >= buffer.Length << 3)
 				{
-					MathEx.RandomNumberGenerator.GetBytes(buffer);
+					RandomNumberGenerator.Fill(buffer);
 					bufferPosition = 0;
 				}
 
@@ -297,7 +297,7 @@ public static class BitArrayExtensions
 			{
 				if (bufferPosition >= buffer.Length << 3)
 				{
-					MathEx.Random.NextBytes(buffer);
+					Random.Shared.NextBytes(buffer);
 					bufferPosition = 0;
 				}
 

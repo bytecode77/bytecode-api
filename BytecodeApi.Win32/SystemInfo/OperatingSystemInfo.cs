@@ -55,25 +55,14 @@ public static class OperatingSystemInfo
 	/// <summary>
 	/// Gets an array containing a list of installed antivirus software.
 	/// </summary>
-	public static string[] InstalledAntiVirusSoftware
-	{
-		get
-		{
-			if (_InstalledAntiVirusSoftware == null)
-			{
-				_InstalledAntiVirusSoftware = WmiContext.Root
-					.GetNamespace("SecurityCenter2")
-					.GetClass("AntiVirusProduct")
-					.Select("displayName")
-					.ToArray()
-					.Select(obj => obj.Properties["displayName"].GetValue<string>()?.Trim().ToNullIfEmpty())
-					.ExceptNull()
-					.ToArray();
-			}
-
-			return _InstalledAntiVirusSoftware;
-		}
-	}
+	public static string[] InstalledAntiVirusSoftware => _InstalledAntiVirusSoftware ??= WmiContext.Root
+		.GetNamespace("SecurityCenter2")
+		.GetClass("AntiVirusProduct")
+		.Select("displayName")
+		.ToArray()
+		.Select(obj => obj.Properties["displayName"].GetValue<string>()?.Trim().ToNullIfEmpty())
+		.ExceptNull()
+		.ToArray();
 	/// <summary>
 	/// Gets the default browser of the current user, or <see langword="null" />, if it could not be determined.
 	/// </summary>
@@ -101,11 +90,11 @@ public static class OperatingSystemInfo
 					{
 						return KnownBrowser.Firefox;
 					}
-					else if (program.StartsWithAny(new[] { "Opera", "OperaStable" }, StringComparison.OrdinalIgnoreCase))
+					else if (program.StartsWithAny(["Opera", "OperaStable"], StringComparison.OrdinalIgnoreCase))
 					{
 						return KnownBrowser.Opera;
 					}
-					else if (program.StartsWithAny(new[] { "Safari", "SafariHTML" }, StringComparison.OrdinalIgnoreCase))
+					else if (program.StartsWithAny(["Safari", "SafariHTML"], StringComparison.OrdinalIgnoreCase))
 					{
 						return KnownBrowser.Safari;
 					}
@@ -143,7 +132,7 @@ public static class OperatingSystemInfo
 		{
 			if (_FrameworkVersions == null)
 			{
-				List<Version> versions = new();
+				List<Version> versions = [];
 				GetFramework4(versions);
 				GetFramework5(versions);
 

@@ -124,7 +124,7 @@ public sealed class KeyboardShortcut : ObservableObject, IEquatable<KeyboardShor
 	{
 		get
 		{
-			List<string> modifiers = new();
+			List<string> modifiers = [];
 
 			if (IsCtrl) modifiers.Add("Ctrl");
 			if (IsShift) modifiers.Add("Shift");
@@ -217,7 +217,7 @@ public sealed class KeyboardShortcut : ObservableObject, IEquatable<KeyboardShor
 	/// </returns>
 	public override int GetHashCode()
 	{
-		return CSharp.GetHashCode((int)Modifiers << 10, Key);
+		return HashCode.Combine((int)Modifiers << 10, Key);
 	}
 
 	/// <summary>

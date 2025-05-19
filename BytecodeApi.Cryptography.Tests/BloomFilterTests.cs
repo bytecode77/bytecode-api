@@ -12,11 +12,11 @@ public class BloomFilterTests
 	[InlineData(true, true)]
 	public void BloomFilterTests_AddAndContains(bool secondHashFunction, bool thirdHashFunction)
 	{
-		string[] data = new[] { "hello", "world", "foo", "bar", "bloom", "filters", "are", "great" };
+		string[] data = ["hello", "world", "foo", "bar", "bloom", "filters", "are", "great"];
 
 		for (int i = 0; i < 1000; i++)
 		{
-			BloomFilter<string> bloomFilter = new(MathEx.Random.Next(64, 1024 * 1024 + 1));
+			BloomFilter<string> bloomFilter = new(Random.Shared.Next(64, 1024 * 1024 + 1));
 
 			bloomFilter.HashFunctions.Add(str => BitConverter.ToUInt32(Hashes.ComputeBytes(str.ToUTF8Bytes(), HashType.CRC32)));
 

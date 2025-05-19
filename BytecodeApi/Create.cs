@@ -1,6 +1,7 @@
 ﻿using BytecodeApi.Extensions;
 using BytecodeApi.Mathematics;
 using BytecodeApi.Text;
+using System.Security.Cryptography;
 
 namespace BytecodeApi;
 
@@ -119,11 +120,11 @@ public static class Create
 
 		if (cryptographic)
 		{
-			return MathEx.RandomNumberGenerator.GetBytes(size).ToHexadecimalString();
+			return RandomNumberGenerator.GetBytes(size).ToHexadecimalString();
 		}
 		else
 		{
-			return MathEx.Random.NextBytes(size).ToHexadecimalString();
+			return Random.Shared.GetBytes(size).ToHexadecimalString();
 		}
 	}
 	/// <summary>
@@ -186,7 +187,7 @@ public static class Create
 		{
 			for (int i = 0; i < length; i++)
 			{
-				newString[i] = MathEx.Random.NextObject(charset);
+				newString[i] = Random.Shared.GetObject(charset);
 			}
 		}
 

@@ -82,7 +82,7 @@ public readonly struct WmiProperty : IEquatable<WmiProperty>
 	/// </returns>
 	public override int GetHashCode()
 	{
-		return CSharp.GetHashCode(Name, Value);
+		return HashCode.Combine(Name, Value);
 	}
 
 	/// <summary>

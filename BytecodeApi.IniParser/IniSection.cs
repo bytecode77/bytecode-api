@@ -24,7 +24,7 @@ public sealed class IniSection
 	public IniSection(string? name)
 	{
 		Name = name;
-		Properties = new();
+		Properties = [];
 	}
 
 	/// <summary>

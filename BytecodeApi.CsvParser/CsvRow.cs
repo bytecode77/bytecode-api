@@ -64,24 +64,14 @@ public sealed class CsvRow : IReadOnlyCollection<CsvCell>
 	/// </summary>
 	public CsvRow()
 	{
-		Cells = new();
+		Cells = [];
 		LineNumber = -1;
 	}
 	/// <summary>
 	/// Initializes a new instance of the <see cref="CsvRow" /> class with a collection of cells.
 	/// </summary>
 	/// <param name="cells">The collection of cells to be added to this <see cref="CsvRow" />.</param>
-	public CsvRow(IEnumerable<CsvCell> cells) : this()
-	{
-		Check.ArgumentNull(cells);
-
-		Cells.AddRange(cells);
-	}
-	/// <summary>
-	/// Initializes a new instance of the <see cref="CsvRow" /> class with a collection of cells.
-	/// </summary>
-	/// <param name="cells">The collection of cells to be added to this <see cref="CsvRow" />.</param>
-	public CsvRow(params CsvCell[] cells) : this()
+	public CsvRow(params IEnumerable<CsvCell> cells) : this()
 	{
 		Check.ArgumentNull(cells);
 
@@ -91,17 +81,7 @@ public sealed class CsvRow : IReadOnlyCollection<CsvCell>
 	/// Initializes a new instance of the <see cref="CsvRow" /> class with a collection of cells.
 	/// </summary>
 	/// <param name="cells">The collection of cells to be added to this <see cref="CsvRow" />, represented as <see cref="string" /> objects.</param>
-	public CsvRow(IEnumerable<string> cells) : this()
-	{
-		Check.ArgumentNull(cells);
-
-		Cells.AddRange(cells.Select(cell => new CsvCell(cell)));
-	}
-	/// <summary>
-	/// Initializes a new instance of the <see cref="CsvRow" /> class with a collection of cells.
-	/// </summary>
-	/// <param name="cells">The collection of cells to be added to this <see cref="CsvRow" />, represented as <see cref="string" /> objects.</param>
-	public CsvRow(params string[] cells) : this()
+	public CsvRow(params IEnumerable<string> cells) : this()
 	{
 		Check.ArgumentNull(cells);
 

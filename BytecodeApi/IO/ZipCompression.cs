@@ -200,7 +200,7 @@ public static class ZipCompression
 		{
 			BlobTreeNode node = tree.Root;
 
-			foreach (string pathPart in entry.FullName.TrimEndString(entry.Name, StringComparison.OrdinalIgnoreCase, true).TrimEnd('\\', '/').Split(new[] { '\\' }, StringSplitOptions.RemoveEmptyEntries))
+			foreach (string pathPart in entry.FullName.TrimEndString(entry.Name, StringComparison.OrdinalIgnoreCase, true).TrimEnd('\\', '/').Split('\\', StringSplitOptions.RemoveEmptyEntries))
 			{
 				if (node.Node(pathPart, true) is BlobTreeNode childNode)
 				{

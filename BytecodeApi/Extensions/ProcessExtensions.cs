@@ -243,7 +243,7 @@ public static class ProcessExtensions
 		return process.Modules
 			.Cast<ProcessModule>()
 			.Select(module => Path.GetFileName(module.FileName).ToLower())
-			.Any(module => module == "mscorlib.dll" || module == "mscorlib.ni.dll" || module == "system.runtime.dll");
+			.Any(module => module is "mscorlib.dll" or "mscorlib.ni.dll" or "system.runtime.dll");
 	}
 	internal static nint OpenToken(this Process process, uint desiredAccess)
 	{

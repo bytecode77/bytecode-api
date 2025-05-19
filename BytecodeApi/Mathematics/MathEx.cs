@@ -9,12 +9,6 @@ namespace BytecodeApi.Mathematics;
 /// </summary>
 public static class MathEx
 {
-	private static readonly ThreadLocal<Random> _Random = new(() => new(Interlocked.Increment(ref RandomSeed)));
-	private static int RandomSeed = Environment.TickCount;
-	/// <summary>
-	/// Represents a singleton <see cref="System.Random" /> object. This property is thread safe.
-	/// </summary>
-	public static Random Random => _Random.Value!;
 	/// <summary>
 	/// Represents a singleton <see cref="System.Security.Cryptography.RandomNumberGenerator" /> object. This field is thread safe.
 	/// </summary>
@@ -744,7 +738,7 @@ public static class MathEx
 	{
 		Check.ArgumentOutOfRangeEx.Greater0(n);
 
-		List<int> result = new();
+		List<int> result = [];
 
 		for (int i = 2; n > 1; i++)
 		{
@@ -768,7 +762,7 @@ public static class MathEx
 	{
 		Check.ArgumentOutOfRangeEx.Greater0(n);
 
-		List<long> result = new();
+		List<long> result = [];
 
 		for (long i = 2; n > 1; i++)
 		{

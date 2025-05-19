@@ -25,7 +25,7 @@ public sealed class RestRequest
 		RestClient = restClient;
 		HttpMethod = method;
 		Url = url;
-		Headers = new();
+		Headers = [];
 	}
 
 	/// <summary>
@@ -280,6 +280,7 @@ public sealed class RestRequest
 		if (progressCallback == null)
 		{
 			using HttpResponseMessage response = await Send().ConfigureAwait(false);
+
 			return new(
 				response.Content.Headers.ContentDisposition?.FileNameStar ?? "",
 				await response.Content.ReadAsByteArrayAsync().ConfigureAwait(false));

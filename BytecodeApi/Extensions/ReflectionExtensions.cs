@@ -58,7 +58,7 @@ public static class ReflectionExtensions
 	{
 		Check.ArgumentNull(type);
 
-		List<string> nestedTypes = new();
+		List<string> nestedTypes = [];
 		Type? t = type;
 
 		do
@@ -134,7 +134,7 @@ public static class ReflectionExtensions
 
 		if (namingConvention == TypeNaming.CSharp)
 		{
-			name = TypeNames.ValueOrDefault(name, name)!;
+			name = TypeNames.GetValueOrDefault(name, name)!;
 		}
 
 		if (t.IsGenericType)

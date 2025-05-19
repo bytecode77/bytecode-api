@@ -231,7 +231,7 @@ public sealed class OutlookDataObject : IDataObject
 		}
 		else if (medium.tymed == TYMED.TYMED_HGLOBAL)
 		{
-			return GetDataFromHGlobalMethod.Invoke<MemoryStream>(OleDataObject, new object[] { DataFormats.GetFormat(formatetc.cfFormat).Name, medium.unionmember });
+			return GetDataFromHGlobalMethod.Invoke<MemoryStream>(OleDataObject, [DataFormats.GetFormat(formatetc.cfFormat).Name, medium.unionmember]);
 		}
 		else
 		{
@@ -346,7 +346,7 @@ public sealed class OutlookDataObject : IDataObject
 	{
 		if (GetData("FileGroupDescriptor") is string[] fileNames)
 		{
-			BlobCollection files = new();
+			BlobCollection files = [];
 
 			for (int i = 0; i < fileNames.Length; i++)
 			{

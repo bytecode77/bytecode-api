@@ -12,7 +12,7 @@ namespace BytecodeApi.Wpf.Markup;
 [MarkupExtensionReturnType(typeof(Delegate))]
 public sealed class EventBindingExtension : MarkupExtension
 {
-	private static readonly MethodInfo? EventHandlerImplMethod = typeof(EventBindingExtension).GetMethod(nameof(EventHandlerImpl), new[] { typeof(object), typeof(string) });
+	private static readonly MethodInfo? EventHandlerImplMethod = typeof(EventBindingExtension).GetMethod(nameof(EventHandlerImpl), [typeof(object), typeof(string)]);
 	/// <summary>
 	/// Gets or sets the <see cref="ICommand" /> that is invoked when the event is fired. The <see cref="ICommandSource.CommandParameter" /> property of the <see cref="FrameworkElement" /> is passed as parameters to the <see cref="ICommand" /> instance.
 	/// </summary>
@@ -77,7 +77,7 @@ public sealed class EventBindingExtension : MarkupExtension
 			}
 
 			MethodInfo handler = eventHandlerType.GetMethod("Invoke") ?? throw CreateException();
-			DynamicMethod method = new("", handler.ReturnType, new[] { typeof(object), typeof(object) });
+			DynamicMethod method = new("", handler.ReturnType, [typeof(object), typeof(object)]);
 
 			ILGenerator ilGenerator = method.GetILGenerator();
 			ilGenerator.Emit(OpCodes.Ldarg, 0);

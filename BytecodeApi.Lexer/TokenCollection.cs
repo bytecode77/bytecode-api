@@ -33,7 +33,7 @@ public sealed class TokenCollection<TTokenType> : ICollection<Token<TTokenType>>
 	/// </summary>
 	public TokenCollection()
 	{
-		Tokens = new();
+		Tokens = [];
 	}
 	/// <summary>
 	/// Initializes a new instance of the <see cref="TokenCollection{TTokenType}" /> class with the specified collection of tokens.
@@ -149,6 +149,7 @@ public sealed class TokenCollection<TTokenType> : ICollection<Token<TTokenType>>
 	/// Searches the <see cref="TokenCollection{TTokenType}" /> for the first occurrence of a token of a given type. If not found, returns -1.
 	/// </summary>
 	/// <param name="type">The type to check this token against.</param>
+	/// <param name="track">The <see cref="BracketType" /> flags that specify, which types of brackets to keep track of. Matches inside these brackets will be ignored.</param>
 	/// <returns>
 	/// The index of the first occurrence of the token and -1, if not found.
 	/// </returns>
@@ -1099,9 +1100,9 @@ public sealed class TokenCollection<TTokenType> : ICollection<Token<TTokenType>>
 		Check.ArgumentOutOfRangeEx.GreaterEqual0(count);
 		Check.ArgumentEx.OffsetAndLengthOutOfBounds(startIndex, count, Tokens.Count);
 
-		List<TokenCollection<TTokenType>> parts = new();
+		List<TokenCollection<TTokenType>> parts = [];
 
-		TokenCollection<TTokenType> currentPart = new();
+		TokenCollection<TTokenType> currentPart = [];
 		int parenthesisCount = 0;
 		int bracketCount = 0;
 		int braceCount = 0;
@@ -1121,7 +1122,7 @@ public sealed class TokenCollection<TTokenType> : ICollection<Token<TTokenType>>
 				Tokens[i].Is(separator))
 			{
 				parts.Add(currentPart);
-				currentPart = new();
+				currentPart = [];
 			}
 			else
 			{

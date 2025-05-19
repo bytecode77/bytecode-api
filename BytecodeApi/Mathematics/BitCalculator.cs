@@ -148,7 +148,7 @@ public static class BitCalculator
 	/// </returns>
 	public static sbyte SetBit(sbyte value, int index, bool bit)
 	{
-		if (index >= 0 && index < 8)
+		if (index is >= 0 and < 8)
 		{
 			return (sbyte)(bit ? value | (sbyte)(1 << index) : value & ~(1 << index));
 		}
@@ -652,7 +652,7 @@ public static class BitCalculator
 	/// </returns>
 	public static BitArray GetBitArray(byte value)
 	{
-		return new(new[] { value });
+		return new([value]);
 	}
 	/// <summary>
 	/// Converts the specified <see cref="sbyte" /> value to a <see cref="BitArray" />.
@@ -674,7 +674,7 @@ public static class BitCalculator
 	/// </returns>
 	public static BitArray GetBitArray(int value)
 	{
-		return new(new[] { value });
+		return new([value]);
 	}
 	/// <summary>
 	/// Converts the specified <see cref="uint" /> value to a <see cref="BitArray" />.
@@ -696,7 +696,7 @@ public static class BitCalculator
 	/// </returns>
 	public static BitArray GetBitArray(long value)
 	{
-		return new(new int[] { (int)value, (int)(value >> 32) });
+		return new([(int)value, (int)(value >> 32)]);
 	}
 	/// <summary>
 	/// Converts the specified <see cref="ulong" /> value to a <see cref="BitArray" />.
@@ -718,7 +718,7 @@ public static class BitCalculator
 	/// </returns>
 	public static BitArray GetBitArray(short value)
 	{
-		return new(new byte[] { (byte)value, (byte)(value >> 8) });
+		return new([(byte)value, (byte)(value >> 8)]);
 	}
 	/// <summary>
 	/// Converts the specified <see cref="ushort" /> value to a <see cref="BitArray" />.

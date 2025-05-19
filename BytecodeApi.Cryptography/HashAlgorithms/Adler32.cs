@@ -59,13 +59,13 @@ public sealed class Adler32 : HashAlgorithm
 	/// </returns>
 	protected sealed override byte[] HashFinal()
 	{
-		HashValue = new[]
-		{
+		HashValue =
+		[
 			(byte)(CurrentHashB >> 8),
 			(byte)(CurrentHashB & 0xff),
 			(byte)(CurrentHashA >> 8),
 			(byte)(CurrentHashA & 0xff)
-		};
+		];
 
 		return HashValue;
 	}

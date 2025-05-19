@@ -291,37 +291,6 @@ public static class EnumerableExtensions
 			_ => throw Throw.InvalidOperation("Sequence contains more than one element.")
 		};
 	}
-	/// <summary>
-	/// Gets the value associated with the specified key from this <see cref="IDictionary{TKey, TValue}" />, or returns a default value if it was not found.
-	/// </summary>
-	/// <typeparam name="TKey">The type of the key of this <see cref="IDictionary{TKey, TValue}" />.</typeparam>
-	/// <typeparam name="TValue">The type of the value of this <see cref="IDictionary{TKey, TValue}" />.</typeparam>
-	/// <param name="dictionary">The <see cref="IDictionary{TKey, TValue}" /> to search.</param>
-	/// <param name="key">The key of the value to get.</param>
-	/// <returns>
-	/// The value associated with the specified key, or a default value if it was not found.
-	/// </returns>
-	public static TValue? ValueOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key) where TKey : notnull
-	{
-		return dictionary.ValueOrDefault(key, default);
-	}
-	/// <summary>
-	/// Gets the value associated with the specified key from this <see cref="IDictionary{TKey, TValue}" />, or returns a default value if it was not found.
-	/// </summary>
-	/// <typeparam name="TKey">The type of the key of this <see cref="IDictionary{TKey, TValue}" />.</typeparam>
-	/// <typeparam name="TValue">The type of the value of this <see cref="IDictionary{TKey, TValue}" />.</typeparam>
-	/// <param name="dictionary">The <see cref="IDictionary{TKey, TValue}" /> to search.</param>
-	/// <param name="key">The key of the value to get.</param>
-	/// <param name="defaultValue">The value that is used if the key was not found.</param>
-	/// <returns>
-	/// The value associated with the specified key, or a default value if it was not found.
-	/// </returns>
-	public static TValue? ValueOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key, TValue? defaultValue) where TKey : notnull
-	{
-		Check.ArgumentNull(dictionary);
-
-		return dictionary.TryGetValue(key, out TValue? value) ? value : defaultValue;
-	}
 
 	/// <summary>
 	/// Performs an <see cref="Action{T}" /> on each element of a sequence and returns the elements after invoking <paramref name="action" />.
@@ -550,7 +519,7 @@ public static class EnumerableExtensions
 	{
 		Check.ArgumentNull(first);
 
-		return first.Except(new[] { second }, comparer);
+		return first.Except([second], comparer);
 	}
 	/// <summary>
 	/// Produces the set union of a sequence and one element.
@@ -579,7 +548,7 @@ public static class EnumerableExtensions
 	{
 		Check.ArgumentNull(first);
 
-		return first.Union(new[] { second }, comparer);
+		return first.Union([second], comparer);
 	}
 	/// <summary>
 	/// Randomizes the order of the elements of a sequence.
@@ -593,7 +562,7 @@ public static class EnumerableExtensions
 	{
 		Check.ArgumentNull(source);
 
-		return source.OrderBy(itm => MathEx.Random.Next());
+		return source.OrderBy(itm => Random.Shared.Next());
 	}
 	/// <summary>
 	/// Exchanges keys with values in this <see cref="IDictionary{TKey, TValue}" /> and returns a new <see cref="Dictionary{TKey, TValue}" />, where keys and values are swapped.

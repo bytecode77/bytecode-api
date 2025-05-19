@@ -20,7 +20,7 @@ public sealed class CurrencyConverter
 	/// </summary>
 	public CurrencyConverter()
 	{
-		Conversions = new();
+		Conversions = [];
 	}
 
 	/// <summary>

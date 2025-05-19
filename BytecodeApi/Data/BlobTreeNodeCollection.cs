@@ -52,7 +52,7 @@ public sealed class BlobTreeNodeCollection : ICollection<BlobTreeNode>
 	/// </summary>
 	public BlobTreeNodeCollection()
 	{
-		Nodes = new();
+		Nodes = [];
 	}
 	/// <summary>
 	/// Initializes a new instance of the <see cref="BlobTreeNodeCollection" /> class with the specified collection of nodes.

@@ -12,7 +12,7 @@ internal static class CsvHelper
 		{
 			TextFieldType = FieldType.Delimited,
 			TrimWhiteSpace = true,
-			Delimiters = new[] { delimiter }
+			Delimiters = [delimiter]
 		};
 
 		// The only way to retrieve the file line number:

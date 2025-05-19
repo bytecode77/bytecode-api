@@ -162,7 +162,7 @@ public readonly struct Money : IComparable, IComparable<Money>, IEquatable<Money
 	/// </returns>
 	public override int GetHashCode()
 	{
-		return CSharp.GetHashCode(Amount, Currency);
+		return HashCode.Combine(Amount, Currency);
 	}
 
 	/// <summary>

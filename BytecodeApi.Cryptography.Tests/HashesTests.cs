@@ -98,7 +98,7 @@ public class HashesTests
 
 		for (int i = 1; i < 10000; i++)
 		{
-			string str = Create.AlphaNumericString(MathEx.Random.Next(10, 1000));
+			string str = Create.AlphaNumericString(Random.Shared.Next(10, 1000));
 			Assert.Equal(hash.ComputeString(str, Encoding.UTF8).ToString(), Hashes.Compute(str, hashType), true);
 		}
 	}

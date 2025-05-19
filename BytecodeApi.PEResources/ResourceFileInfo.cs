@@ -64,7 +64,7 @@ public class ResourceFileInfo
 	{
 		Check.FileNotFound(Path);
 
-		List<int> icons = new();
+		List<int> icons = [];
 		nint module = 0;
 
 		try
@@ -135,8 +135,8 @@ public class ResourceFileInfo
 		Check.ArgumentNull(icon);
 
 		Native.IconDir iconDir = new();
-		List<Native.IconDirEntry> iconEntry = new();
-		List<byte[]> iconData = new();
+		List<Native.IconDirEntry> iconEntry = [];
+		List<byte[]> iconData = [];
 
 		using (BinaryReader reader = new(new MemoryStream(icon.ToArray())))
 		{

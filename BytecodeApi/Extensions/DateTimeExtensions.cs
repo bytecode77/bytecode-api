@@ -94,7 +94,7 @@ public static class DateTimeExtensions
 
 		for (DateTime i = dateTime.Date; i <= value.Date; i = i.AddDays(1))
 		{
-			if (i.DayOfWeek != DayOfWeek.Saturday && i.DayOfWeek != DayOfWeek.Sunday)
+			if (i.DayOfWeek is not DayOfWeek.Saturday and not DayOfWeek.Sunday)
 			{
 				count++;
 			}

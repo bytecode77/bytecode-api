@@ -26,8 +26,8 @@ public sealed class DeviceInfo
 	internal DeviceInfo(IDictionary<string, object> attributes)
 	{
 		Attributes = attributes.ToReadOnlyDictionary();
-		Name = Attributes.ValueOrDefault("Name") as string;
-		Description = Attributes.ValueOrDefault("Description") as string;
+		Name = Attributes.GetValueOrDefault("Name") as string;
+		Description = Attributes.GetValueOrDefault("Description") as string;
 	}
 
 	/// <summary>

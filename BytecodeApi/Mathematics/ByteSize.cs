@@ -581,7 +581,7 @@ public readonly struct ByteSize : IComparable, IComparable<ByteSize>, IEquatable
 	/// </returns>
 	public override int GetHashCode()
 	{
-		return CSharp.GetHashCode(Bytes);
+		return HashCode.Combine(Bytes);
 	}
 
 	/// <summary>

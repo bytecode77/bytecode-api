@@ -88,7 +88,7 @@ public sealed class Option : IEquatable<Option>
 	/// </returns>
 	public override int GetHashCode()
 	{
-		return CSharp.GetHashCode(Arguments.Concat(Alternatives).ToArray());
+		return HashCode.Combine(Arguments.Concat(Alternatives).ToArray());
 	}
 
 	/// <summary>

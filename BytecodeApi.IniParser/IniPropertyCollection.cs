@@ -47,7 +47,7 @@ public sealed class IniPropertyCollection : ICollection<IniProperty>
 	/// </summary>
 	public IniPropertyCollection()
 	{
-		Properties = new();
+		Properties = [];
 	}
 
 	/// <summary>
@@ -65,7 +65,7 @@ public sealed class IniPropertyCollection : ICollection<IniProperty>
 	/// <param name="ignoreCase"><see langword="true" /> to ignore character casing during name comparison.</param>
 	public void ProcessDuplicates(IniDuplicatePropertyNameBehavior behavior, bool ignoreCase)
 	{
-		List<IniProperty> removedProperties = new();
+		List<IniProperty> removedProperties = [];
 
 		switch (behavior)
 		{

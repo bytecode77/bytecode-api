@@ -38,7 +38,7 @@ SentenceGenerator sentenceGenerator = new()
 	MinWords = 3,
 	MaxWords = 10,
 	CommaChance = .2,
-	FinishPunctuation = new[] { '.', '.', '.', '?', '!' }
+	FinishPunctuation = ['.', '.', '.', '?', '!']
 };
 
 string randomSentence = sentenceGenerator.Generate();

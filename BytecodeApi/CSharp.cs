@@ -215,29 +215,6 @@ public static class CSharp
 	}
 
 	/// <summary>
-	/// Calculates the hashcode for a set of objects by using XOR (i.e. a ^ b ^ c ...). This is a helper method for GetHashCode method implementations that do not require value specific handling.
-	/// </summary>
-	/// <param name="objects">A set of objects, where <see cref="object.GetHashCode" /> is called on each <see cref="object" /> that is not <see langword="null" />.</param>
-	/// <returns>
-	/// The combined hashcode of all objects in the given set.
-	/// </returns>
-	public static int GetHashCode(params object?[] objects)
-	{
-		Check.ArgumentNull(objects);
-
-		unchecked
-		{
-			int hashCode = 0;
-			foreach (object? obj in objects)
-			{
-				hashCode ^= obj?.GetHashCode() ?? 0;
-			}
-
-			return hashCode;
-		}
-	}
-
-	/// <summary>
 	/// Invokes an <see cref="Action" /> and handles any exception. Returns <see langword="true" /> on successful execution and <see langword="false" />, if an exception was thrown.
 	/// </summary>
 	/// <param name="action">The <see cref="Action" /> to be invoked.</param>

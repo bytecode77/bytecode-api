@@ -50,7 +50,7 @@ public class CsvFile
 	/// </summary>
 	public CsvFile()
 	{
-		Rows = new();
+		Rows = [];
 		IsColumnCountConsistent = true;
 	}
 
@@ -488,7 +488,7 @@ public class CsvFile
 
 		if (Headers?.Any() == true)
 		{
-			CsvIterator.ToStream(stream, new[] { new CsvRow(Headers) }, Delimiter, alwaysQuote, encoding, true);
+			CsvIterator.ToStream(stream, [new CsvRow(Headers)], Delimiter, alwaysQuote, encoding, true);
 		}
 
 		CsvIterator.ToStream(stream, Rows, Delimiter, alwaysQuote, encoding, leaveOpen);

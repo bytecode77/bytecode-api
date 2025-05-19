@@ -228,7 +228,7 @@ public sealed class ObservableTuple<T1> : ObservableObject, IEquatable<Observabl
 	/// </returns>
 	public override int GetHashCode()
 	{
-		return CSharp.GetHashCode(Item1);
+		return HashCode.Combine(Item1);
 	}
 
 	/// <summary>
@@ -341,7 +341,7 @@ public sealed class ObservableTuple<T1, T2> : ObservableObject, IEquatable<Obser
 	/// </returns>
 	public override int GetHashCode()
 	{
-		return CSharp.GetHashCode(Item1, Item2);
+		return HashCode.Combine(Item1, Item2);
 	}
 
 	/// <summary>
@@ -467,7 +467,7 @@ public sealed class ObservableTuple<T1, T2, T3> : ObservableObject, IEquatable<O
 	/// </returns>
 	public override int GetHashCode()
 	{
-		return CSharp.GetHashCode(Item1, Item2, Item3);
+		return HashCode.Combine(Item1, Item2, Item3);
 	}
 
 	/// <summary>
@@ -606,7 +606,7 @@ public sealed class ObservableTuple<T1, T2, T3, T4> : ObservableObject, IEquatab
 	/// </returns>
 	public override int GetHashCode()
 	{
-		return CSharp.GetHashCode(Item1, Item2, Item3, Item4);
+		return HashCode.Combine(Item1, Item2, Item3, Item4);
 	}
 
 	/// <summary>
@@ -758,7 +758,7 @@ public sealed class ObservableTuple<T1, T2, T3, T4, T5> : ObservableObject, IEqu
 	/// </returns>
 	public override int GetHashCode()
 	{
-		return CSharp.GetHashCode(Item1, Item2, Item3, Item4, Item5);
+		return HashCode.Combine(Item1, Item2, Item3, Item4, Item5);
 	}
 
 	/// <summary>
@@ -923,7 +923,7 @@ public sealed class ObservableTuple<T1, T2, T3, T4, T5, T6> : ObservableObject, 
 	/// </returns>
 	public override int GetHashCode()
 	{
-		return CSharp.GetHashCode(Item1, Item2, Item3, Item4, Item5, Item6);
+		return HashCode.Combine(Item1, Item2, Item3, Item4, Item5, Item6);
 	}
 
 	/// <summary>
@@ -1101,7 +1101,7 @@ public sealed class ObservableTuple<T1, T2, T3, T4, T5, T6, T7> : ObservableObje
 	/// </returns>
 	public override int GetHashCode()
 	{
-		return CSharp.GetHashCode(Item1, Item2, Item3, Item4, Item5, Item6, Item7);
+		return HashCode.Combine(Item1, Item2, Item3, Item4, Item5, Item6, Item7);
 	}
 
 	/// <summary>
@@ -1292,7 +1292,7 @@ public sealed class ObservableTuple<T1, T2, T3, T4, T5, T6, T7, T8> : Observable
 	/// </returns>
 	public override int GetHashCode()
 	{
-		return CSharp.GetHashCode(Item1, Item2, Item3, Item4, Item5, Item6, Item7, Item8);
+		return HashCode.Combine(Item1, Item2, Item3, Item4, Item5, Item6, Item7, Item8);
 	}
 
 	/// <summary>

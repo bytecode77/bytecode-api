@@ -164,7 +164,7 @@ public static class DateTimeEx
 	public static int? ToUnixTimeStamp(DateTime dateTime, DateTimeKind kind)
 	{
 		double seconds = (dateTime - new DateTime(1970, 1, 1, 0, 0, 0, kind)).TotalSeconds;
-		return seconds > 0 && seconds <= int.MaxValue ? (int)seconds : null;
+		return seconds is > 0 and <= int.MaxValue ? (int)seconds : null;
 	}
 	/// <summary>
 	/// Calculates the age from a birthday.

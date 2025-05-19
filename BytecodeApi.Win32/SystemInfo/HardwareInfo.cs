@@ -22,7 +22,7 @@ public static class HardwareInfo
 		{
 			if (_ProcessorNames == null)
 			{
-				List<string> names = new();
+				List<string> names = [];
 
 				using RegistryKey key = Registry.LocalMachine.OpenSubKey(@"HARDWARE\DESCRIPTION\System\CentralProcessor") ?? throw Throw.Win32();
 				foreach (string subKeyName in key.GetSubKeyNames())
@@ -43,25 +43,14 @@ public static class HardwareInfo
 	/// <summary>
 	/// Gets the names of all installed video controllers.
 	/// </summary>
-	public static string[] VideoControllerNames
-	{
-		get
-		{
-			if (_VideoControllerNames == null)
-			{
-				_VideoControllerNames = WmiContext.Root
-					.GetNamespace("CIMV2")
-					.GetClass("Win32_VideoController")
-					.Select("Name")
-					.ToArray()
-					.Select(obj => obj.Properties["Name"].GetValue<string>()?.Trim().ToNullIfEmpty())
-					.ExceptNull()
-					.ToArray();
-			}
-
-			return _VideoControllerNames;
-		}
-	}
+	public static string[] VideoControllerNames => _VideoControllerNames ??= WmiContext.Root
+		.GetNamespace("CIMV2")
+		.GetClass("Win32_VideoController")
+		.Select("Name")
+		.ToArray()
+		.Select(obj => obj.Properties["Name"].GetValue<string>()?.Trim().ToNullIfEmpty())
+		.ExceptNull()
+		.ToArray();
 	/// <summary>
 	/// Gets the total amount of installed physical memory.
 	/// </summary>
