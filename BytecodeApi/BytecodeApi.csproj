@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFramework>net7.0</TargetFramework>
+		<TargetFramework>net9.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
@@ -32,7 +32,7 @@
 		<PackageOutputPath>../$Build</PackageOutputPath>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="System.Drawing.Common" Version="7.0.0" />
+		<PackageReference Include="System.Drawing.Common" Version="9.0.5" />
 		<PackageReference Include="System.Reflection.Emit" Version="4.7.0" />
 	</ItemGroup>
 	<ItemGroup>

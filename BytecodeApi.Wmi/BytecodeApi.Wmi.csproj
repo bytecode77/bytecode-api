@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFramework>net7.0-windows</TargetFramework>
+		<TargetFramework>net9.0-windows</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
@@ -37,7 +37,7 @@
 		<PackageReference Include="BytecodeApi" Version="3.*" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="System.Management" Version="7.0.0" />
+		<PackageReference Include="System.Management" Version="9.0.5" />
 	</ItemGroup>
 	<ItemGroup>
 		<None Include=".nuget\README.md" Pack="true" PackagePath=".nuget\" />
