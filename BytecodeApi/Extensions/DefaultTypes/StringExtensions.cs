@@ -35,6 +35,45 @@ public static class StringExtensions
 		return string.IsNullOrWhiteSpace(str);
 	}
 	/// <summary>
+	/// Determines whether this <see cref="string" /> is equal to any of the specified strings in <paramref name="values" />.
+	/// </summary>
+	/// <param name="str">The <see cref="string" /> to test.</param>
+	/// <param name="values">An array of <see cref="string" /> values to compare to <paramref name="str" />.</param>
+	/// <returns>
+	/// <see langword="true" />, if this <see cref="string" /> is equal to any of the specified strings in <paramref name="values" />.
+	/// otherwise, <see langword="false" />.
+	/// </returns>
+	public static bool EqualsAny(this string str, params string[] values)
+	{
+		return str.EqualsAny(values, StringComparison.CurrentCulture);
+	}
+	/// <summary>
+	/// Determines whether this <see cref="string" /> is equal to any of the specified strings in <paramref name="values" />.
+	/// </summary>
+	/// <param name="str">The <see cref="string" /> to test.</param>
+	/// <param name="values">An array of <see cref="string" /> values to compare to <paramref name="str" />.</param>
+	/// <param name="comparison">A <see cref="StringComparison" /> value that determines how strings are compared.</param>
+	/// <returns>
+	/// <see langword="true" />, if this <see cref="string" /> is equal to any of the specified strings in <paramref name="values" />.
+	/// otherwise, <see langword="false" />.
+	/// </returns>
+	public static bool EqualsAny(this string str, string[] values, StringComparison comparison)
+	{
+		Check.ArgumentNull(str);
+		Check.ArgumentNull(values);
+		Check.ArgumentEx.ArrayValuesNotNull(values);
+
+		foreach (string value in values)
+		{
+			if (str.Equals(value, comparison))
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+	/// <summary>
 	/// Determines whether the beginning of this <see cref="string" /> matches any of the specified strings in <paramref name="values" />.
 	/// </summary>
 	/// <param name="str">The <see cref="string" /> to test.</param>

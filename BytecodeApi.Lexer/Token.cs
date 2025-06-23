@@ -1,4 +1,6 @@
-﻿namespace BytecodeApi.Lexer;
+﻿using BytecodeApi.Extensions;
+
+namespace BytecodeApi.Lexer;
 
 /// <summary>
 /// Represents a token that was parsed using a lexer.
@@ -140,7 +142,7 @@ public sealed class Token<TTokenType> where TTokenType : struct, IConvertible
 		Check.ArgumentNull(values);
 		Check.ArgumentEx.ArrayElementsRequired(values);
 
-		return values.Any(value => value.Equals(Value, ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal));
+		return Value.EqualsAny(values, ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal);
 	}
 
 	/// <summary>
