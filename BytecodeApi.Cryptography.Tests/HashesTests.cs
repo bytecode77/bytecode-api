@@ -2,6 +2,7 @@ using BytecodeApi.Mathematics;
 using SharpHash.Base;
 using SharpHash.Interfaces;
 using System.ComponentModel;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace BytecodeApi.Cryptography.Tests;
@@ -27,6 +28,9 @@ public class HashesTests
 	[InlineData(HashType.MD5, "", "d41d8cd98f00b204e9800998ecf8427e")]
 	[InlineData(HashType.MD5, "Hello, world!", "6cd3556deb0da54bca060b4c39479839")]
 	[InlineData(HashType.MD5, "The quick brown fox jumps over the lazy dog", "9e107d9d372bb6826bd81d3542a419d6")]
+	[InlineData(HashType.RIPEMD128, "", "cdf26213a150dc3ecb610f18f6b38b46")]
+	[InlineData(HashType.RIPEMD128, "Hello, world!", "3cbb446fc20277b2a4e4b8b8b40aa962")]
+	[InlineData(HashType.RIPEMD128, "The quick brown fox jumps over the lazy dog", "3fa9b57f053c053fbe2735b2380db596")]
 	[InlineData(HashType.RIPEMD160, "", "9c1185a5c5e9fc54612808977ee8f548b2258d31")]
 	[InlineData(HashType.RIPEMD160, "Hello, world!", "58262d1fbdbe4530d8865d3518c6d6e41002610f")]
 	[InlineData(HashType.RIPEMD160, "The quick brown fox jumps over the lazy dog", "37f332f68db77bd9d7edd4969571ad671cf9dd3b")]
@@ -73,6 +77,7 @@ public class HashesTests
 	[InlineData(HashType.CRC64)]
 	[InlineData(HashType.MD2)]
 	[InlineData(HashType.MD4)]
+	[InlineData(HashType.RIPEMD128)]
 	[InlineData(HashType.RIPEMD160)]
 	[InlineData(HashType.SHA224)]
 	[InlineData(HashType.Tiger)]
@@ -88,6 +93,7 @@ public class HashesTests
 			HashType.CRC64 => HashFactory.Checksum.CreateCRC64_ECMA_182(),
 			HashType.MD2 => HashFactory.Crypto.CreateMD2(),
 			HashType.MD4 => HashFactory.Crypto.CreateMD4(),
+			HashType.RIPEMD128 => HashFactory.Crypto.CreateRIPEMD128(),
 			HashType.RIPEMD160 => HashFactory.Crypto.CreateRIPEMD160(),
 			HashType.SHA224 => HashFactory.Crypto.CreateSHA2_224(),
 			HashType.Tiger => HashFactory.Crypto.CreateTiger(24, HashRounds.Rounds3),
@@ -98,8 +104,11 @@ public class HashesTests
 
 		for (int i = 1; i < 10000; i++)
 		{
-			string str = Create.AlphaNumericString(Random.Shared.Next(10, 1000));
-			Assert.Equal(hash.ComputeString(str, Encoding.UTF8).ToString(), Hashes.Compute(str, hashType), true);
+			int length = Random.Shared.Next(1, 1000);
+			byte[] data = new byte[length];
+			RandomNumberGenerator.Fill(data);
+
+			Assert.Equal(hash.ComputeBytes(data).ToString(), Hashes.Compute(data, hashType), true);
 		}
 	}
 }
