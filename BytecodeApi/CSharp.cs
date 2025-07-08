@@ -244,6 +244,28 @@ public static class CSharp
 	/// <see langword="true" />, on successful execution and
 	/// <see langword="false" />, if an exception was thrown.
 	/// </returns>
+	public static async Task<bool> Try(Func<Task> task)
+	{
+		Check.ArgumentNull(task);
+
+		try
+		{
+			await task();
+			return true;
+		}
+		catch
+		{
+			return false;
+		}
+	}
+	/// <summary>
+	/// Schedules a <see cref="Task" /> and handles any exception. Returns <see langword="true" /> on successful execution and <see langword="false" />, if an exception was thrown.
+	/// </summary>
+	/// <param name="task">The <see cref="Task" /> to be scheduled.</param>
+	/// <returns>
+	/// <see langword="true" />, on successful execution and
+	/// <see langword="false" />, if an exception was thrown.
+	/// </returns>
 	public static async Task<bool> Try(Task task)
 	{
 		Check.ArgumentNull(task);
@@ -312,6 +334,66 @@ public static class CSharp
 		try
 		{
 			return func();
+		}
+		catch
+		{
+			return defaultValue();
+		}
+	}
+	/// <summary>
+	/// Schedules a <see cref="Task{TResult}" /> and handles any exception. Returns the result of <paramref name="task" /> on successful execution and <see langword="default" />(<typeparamref name="T" />) if an exception was thrown.
+	/// </summary>
+	/// <typeparam name="T">The return type of <paramref name="task" />.</typeparam>
+	/// <param name="task">The <see cref="Task{TResult}" /> to be scheduled.</param>
+	/// <returns>
+	/// The result of <paramref name="task" />, on successful execution and
+	/// <see langword="default" />(<typeparamref name="T" />), if an exception was thrown.
+	/// </returns>
+	public static Task<T?> Try<T>(Func<Task<T?>> task)
+	{
+		return Try(task, default(T));
+	}
+	/// <summary>
+	/// Schedules a <see cref="Task{TResult}" /> and handles any exception. Returns the result of <paramref name="task" /> on successful execution and <paramref name="defaultValue" />, if an exception was thrown.
+	/// </summary>
+	/// <typeparam name="T">The return type of <paramref name="task" />.</typeparam>
+	/// <param name="task">The <see cref="Task{TResult}" /> to be scheduled.</param>
+	/// <param name="defaultValue">The default value that is returned if an exception was thrown.</param>
+	/// <returns>
+	/// The result of <paramref name="task" />, on successful execution and
+	/// <paramref name="defaultValue" />, if an exception was thrown.
+	/// </returns>
+	public static async Task<T> Try<T>(Func<Task<T>> task, T defaultValue)
+	{
+		Check.ArgumentNull(task);
+
+		try
+		{
+			return await task();
+		}
+		catch
+		{
+			return defaultValue;
+		}
+	}
+	/// <summary>
+	/// Schedules a <see cref="Task{TResult}" /> and handles any exception. Returns the result of <paramref name="task" /> on successful execution and invokes and returns <paramref name="defaultValue" />, if an exception was thrown.
+	/// </summary>
+	/// <typeparam name="T">The return type of <paramref name="task" />.</typeparam>
+	/// <param name="task">The <see cref="Task{TResult}" /> to be scheduled.</param>
+	/// <param name="defaultValue">The <see cref="Func{TResult}" /> that is invoked and whose result is returned, if an exception was thrown.</param>
+	/// <returns>
+	/// The result of <paramref name="task" />, on successful execution and
+	/// The result of <paramref name="defaultValue" />, if an exception was thrown.
+	/// </returns>
+	public static async Task<T> Try<T>(Func<Task<T>> task, Func<T> defaultValue)
+	{
+		Check.ArgumentNull(task);
+		Check.ArgumentNull(defaultValue);
+
+		try
+		{
+			return await task();
 		}
 		catch
 		{
@@ -682,6 +764,23 @@ public static class CSharp
 
 		Stopwatch stopwatch = Stopwatch.StartNew();
 		action();
+		stopwatch.Stop();
+
+		return stopwatch.Elapsed;
+	}
+	/// <summary>
+	/// Schedules a <see cref="Task" /> and measures the time until <paramref name="task" /> finished.
+	/// </summary>
+	/// <param name="task">The <see cref="Task" /> to be scheduled.</param>
+	/// <returns>
+	/// A <see cref="TimeSpan" /> value with the time <paramref name="task" /> took to finish.
+	/// </returns>
+	public static async Task<TimeSpan> MeasureTime(Func<Task> task)
+	{
+		Check.ArgumentNull(task);
+
+		Stopwatch stopwatch = Stopwatch.StartNew();
+		await task();
 		stopwatch.Stop();
 
 		return stopwatch.Elapsed;
