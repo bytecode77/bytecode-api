@@ -14,9 +14,18 @@ namespace BytecodeApi.Rest;
 /// </summary>
 public sealed class RestRequest
 {
-	private readonly RestClient RestClient;
-	private readonly HttpMethod HttpMethod;
-	private string Url;
+	/// <summary>
+	/// Gets the <see cref="BytecodeApi.Rest.RestClient" /> from which this <see cref="RestRequest" /> has been initiated.
+	/// </summary>
+	public RestClient RestClient { get; private init; }
+	/// <summary>
+	/// Gets the <see cref="System.Net.Http.HttpMethod" /> of this <see cref="RestRequest" />.
+	/// </summary>
+	public HttpMethod HttpMethod { get; private init; }
+	/// <summary>
+	/// Gets the URL of this <see cref="RestRequest" />.
+	/// </summary>
+	public string Url { get; private set; }
 	private HttpContent? HttpContent;
 	private readonly Dictionary<string, string> Headers;
 
@@ -294,7 +303,7 @@ public sealed class RestRequest
 			byte[] buffer = new byte[4096];
 			int bytesRead;
 			long totalBytesRead = 0;
-			DateTime lastCallback = DateTime.MinValue;
+			DateTime lastCallback = default;
 
 			do
 			{

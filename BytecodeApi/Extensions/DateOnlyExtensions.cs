@@ -215,6 +215,6 @@ public static class DateOnlyExtensions
 	/// </returns>
 	public static DateTime ToDateTime(this DateOnly dateOnly)
 	{
-		return dateOnly.ToDateTime(TimeOnly.MinValue);
+		return dateOnly.ToDateTime(default);
 	}
 }
