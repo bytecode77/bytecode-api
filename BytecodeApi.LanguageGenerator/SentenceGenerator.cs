@@ -1,5 +1,4 @@
 ﻿using BytecodeApi.Extensions;
-using BytecodeApi.Mathematics;
 using System.Text;
 
 namespace BytecodeApi.LanguageGenerator;
