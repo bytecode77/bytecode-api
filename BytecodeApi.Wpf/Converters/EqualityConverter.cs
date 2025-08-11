@@ -70,6 +70,6 @@ public sealed class EqualityConverter : ConverterBase<object, object>
 			result = false;
 		}
 
-		return new BooleanConverter(Result).Convert(result);
+		return new BooleanConverter(Result).Convert(result, null);
 	}
 }

@@ -62,6 +62,6 @@ public sealed class RangeConverter : ConverterBase<IComparable>
 			(IsMinExclusive ? value.CompareTo(Min) > 0 : value.CompareTo(Min) >= 0) &&
 			(IsMaxExclusive ? value.CompareTo(Max) < 0 : value.CompareTo(Max) <= 0);
 
-		return new BooleanConverter(Result).Convert(result);
+		return new BooleanConverter(Result).Convert(result, null);
 	}
 }

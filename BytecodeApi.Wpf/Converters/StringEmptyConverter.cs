@@ -50,6 +50,6 @@ public sealed class StringEmptyConverter : ConverterBase<string>
 			_ => throw Throw.InvalidEnumArgument(nameof(Method), Method)
 		};
 
-		return new BooleanConverter(Result).Convert(result);
+		return new BooleanConverter(Result).Convert(result, null);
 	}
 }

@@ -49,6 +49,6 @@ public sealed class TypeConverter : ConverterBase<object, Type>
 			_ => throw Throw.InvalidEnumArgument(nameof(Method), Method)
 		};
 
-		return new BooleanConverter(Result).Convert(result);
+		return new BooleanConverter(Result).Convert(result, null);
 	}
 }

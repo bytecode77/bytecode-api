@@ -36,6 +36,6 @@ public sealed class EnumerableAnyConverter : ConverterBase<IEnumerable>
 	/// </returns>
 	public override object? Convert(IEnumerable? value)
 	{
-		return new BooleanConverter(Result).Convert(value?.Cast<object?>().Any() == true);
+		return new BooleanConverter(Result).Convert(value?.Cast<object?>().Any() == true, null);
 	}
 }

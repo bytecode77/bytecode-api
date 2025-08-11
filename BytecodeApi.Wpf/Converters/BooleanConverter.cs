@@ -4,9 +4,9 @@ using System.Windows;
 namespace BytecodeApi.Wpf.Converters;
 
 /// <summary>
-/// Represents the converter that converts <see cref="bool" />? values. The <see cref="Convert(bool?)" /> method returns an <see cref="object" /> based on the specified <see cref="BooleanConverterMethod" /> parameter.
+/// Represents the converter that converts <see cref="bool" />? values. The <see cref="Convert(bool?, object?)" /> method returns an <see cref="object" /> based on the specified <see cref="BooleanConverterMethod" /> parameter.
 /// </summary>
-public sealed class BooleanConverter : TwoWayConverterBase<bool?>
+public sealed class BooleanConverter : TwoWayConverterBase<bool?, object>
 {
 	/// <summary>
 	/// Specifies the method that is used to convert the <see cref="bool" />? value.
@@ -26,10 +26,11 @@ public sealed class BooleanConverter : TwoWayConverterBase<bool?>
 	/// Converts the <see cref="bool" />? value based on the specified <see cref="BooleanConverterMethod" /> parameter.
 	/// </summary>
 	/// <param name="value">The <see cref="bool" />? value to convert.</param>
+	/// <param name="parameter">A parameter <see cref="object" /> that specifies the parameter used in some of the <see cref="BooleanConverterMethod" /> methods.</param>
 	/// <returns>
 	/// An <see cref="object" /> with the result of the conversion.
 	/// </returns>
-	public override object? Convert(bool? value)
+	public override object? Convert(bool? value, object? parameter)
 	{
 		return Method switch
 		{
@@ -43,6 +44,12 @@ public sealed class BooleanConverter : TwoWayConverterBase<bool?>
 			BooleanConverterMethod.GridLengthZeroAutoInverse => value == true ? new(0) : GridLength.Auto,
 			BooleanConverterMethod.GridLengthZeroStar => value == true ? new GridLength(1, GridUnitType.Star) : new(0),
 			BooleanConverterMethod.GridLengthZeroStarInverse => value == true ? new GridLength(0) : new(1, GridUnitType.Star),
+			BooleanConverterMethod.GridLengthValueAuto => value == true ? new((parameter as int?) ?? 0) : GridLength.Auto,
+			BooleanConverterMethod.GridLengthValueAutoInverse => value == true ? GridLength.Auto : new((parameter as int?) ?? 0),
+			BooleanConverterMethod.GridLengthValueStar => value == true ? new((parameter as int?) ?? 0) : new GridLength(1, GridUnitType.Star),
+			BooleanConverterMethod.GridLengthValueStarInverse => value == true ? new GridLength(1, GridUnitType.Star) : new((parameter as int?) ?? 0),
+			BooleanConverterMethod.GridLengthValueZero => value == true ? new GridLength((parameter as int?) ?? 0) : new(0),
+			BooleanConverterMethod.GridLengthValueZeroInverse => value == true ? new GridLength(0) : new((parameter as int?) ?? 0),
 			_ => throw Throw.InvalidEnumArgument(nameof(Method), Method)
 		};
 	}
@@ -50,10 +57,11 @@ public sealed class BooleanConverter : TwoWayConverterBase<bool?>
 	/// Converts a value back to its corresponding <see cref="bool" />? value.
 	/// </summary>
 	/// <param name="value">The value to convert back.</param>
+	/// <param name="parameter">A parameter <see cref="object" /> that specifies the parameter used in some of the <see cref="BooleanConverterMethod" /> methods.</param>
 	/// <returns>
 	/// A <see cref="bool" />? with the result of the conversion.
 	/// </returns>
-	public override object? ConvertBack(object? value)
+	public override object? ConvertBack(object? value, object? parameter)
 	{
 		if (value == null)
 		{
@@ -72,7 +80,13 @@ public sealed class BooleanConverter : TwoWayConverterBase<bool?>
 				BooleanConverterMethod.GridLengthZeroAuto or
 				BooleanConverterMethod.GridLengthZeroAutoInverse or
 				BooleanConverterMethod.GridLengthZeroStar or
-				BooleanConverterMethod.GridLengthZeroStarInverse => DependencyProperty.UnsetValue,
+				BooleanConverterMethod.GridLengthZeroStarInverse or
+				BooleanConverterMethod.GridLengthValueAuto or
+				BooleanConverterMethod.GridLengthValueAutoInverse or
+				BooleanConverterMethod.GridLengthValueStar or
+				BooleanConverterMethod.GridLengthValueStarInverse or
+				BooleanConverterMethod.GridLengthValueZero or
+				BooleanConverterMethod.GridLengthValueZeroInverse => DependencyProperty.UnsetValue,
 				_ => throw Throw.InvalidEnumArgument(nameof(Method), Method)
 			};
 		}

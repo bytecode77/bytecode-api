@@ -34,6 +34,6 @@ public sealed class NullConverter : ConverterBase<object>
 	/// </returns>
 	public override object? Convert(object? value)
 	{
-		return new BooleanConverter(Result).Convert(value != null);
+		return new BooleanConverter(Result).Convert(value != null, null);
 	}
 }

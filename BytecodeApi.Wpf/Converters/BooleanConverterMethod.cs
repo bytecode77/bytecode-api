@@ -47,4 +47,28 @@ public enum BooleanConverterMethod
 	/// Returns <see langword="new" /> <see cref="GridLength" />(0), if the <see cref="bool" />? value is <see langword="true" />; otherwise, <see langword="new" /> <see cref="GridLength" />(1, <see cref="GridUnitType.Star" />).
 	/// </summary>
 	GridLengthZeroStarInverse,
+	/// <summary>
+	/// Returns <see langword="new" /> <see cref="GridLength" />(parameter), if the <see cref="bool" />? value is <see langword="true" />; otherwise, <see cref="GridLength.Auto" />.
+	/// </summary>
+	GridLengthValueAuto,
+	/// <summary>
+	/// Returns <see cref="GridLength.Auto" />, if the <see cref="bool" />? value is <see langword="true" />; otherwise, <see langword="new" /> <see cref="GridLength" />(parameter).
+	/// </summary>
+	GridLengthValueAutoInverse,
+	/// <summary>
+	/// Returns <see langword="new" /> <see cref="GridLength" />(parameter), if the <see cref="bool" />? value is <see langword="true" />; otherwise, <see langword="new" /> <see cref="GridLength" />(1, <see cref="GridUnitType.Star" />).
+	/// </summary>
+	GridLengthValueStar,
+	/// <summary>
+	/// Returns <see langword="new" /> <see cref="GridLength" />(1, <see cref="GridUnitType.Star" />), if the <see cref="bool" />? value is <see langword="true" />; otherwise, <see langword="new" /> <see cref="GridLength" />(parameter).
+	/// </summary>
+	GridLengthValueStarInverse,
+	/// <summary>
+	/// Returns <see langword="new" /> <see cref="GridLength" />(parameter), if the <see cref="bool" />? value is <see langword="true" />; otherwise, <see langword="new" /> <see cref="GridLength" />(0).
+	/// </summary>
+	GridLengthValueZero,
+	/// <summary>
+	/// Returns <see langword="new" /> <see cref="GridLength" />(0), if the <see cref="bool" />? value is <see langword="true" />; otherwise, <see langword="new" /> <see cref="GridLength" />(parameter).
+	/// </summary>
+	GridLengthValueZeroInverse
 }
