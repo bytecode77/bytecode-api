@@ -35,7 +35,7 @@ public static class Network
 		byte[] packet = Enumerable
 			.Repeat<byte>(0xff, 6)
 			.Concat(Enumerable.Repeat(physicalAddress.GetAddressBytes(), 16).SelectMany())
-			.Concat(password ?? Array.Empty<byte>())
+			.Concat(password ?? [])
 			.ToArray();
 
 		using UdpClient client = new();

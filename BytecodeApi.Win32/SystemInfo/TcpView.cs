@@ -106,7 +106,7 @@ public sealed class TcpView
 			}
 			else
 			{
-				return Array.Empty<TRow>();
+				return [];
 			}
 
 			uint GetTable(nint table)

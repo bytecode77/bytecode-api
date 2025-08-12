@@ -38,7 +38,7 @@ public class ResourceFileInfo
 	public byte[] GetResource(ResourceType type, int name)
 	{
 		Check.FileNotFound(Path);
-		Check.ArgumentOutOfRangeEx.Greater0(name);
+		Check.ArgumentOutOfRangeEx.GreaterEqual0(name);
 
 		nint module = 0;
 
@@ -97,7 +97,7 @@ public class ResourceFileInfo
 	public Icon GetGroupIconResource(int name)
 	{
 		Check.FileNotFound(Path);
-		Check.ArgumentOutOfRangeEx.Greater0(name);
+		Check.ArgumentOutOfRangeEx.GreaterEqual0(name);
 
 		nint module = 0;
 
