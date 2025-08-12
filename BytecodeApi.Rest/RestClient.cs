@@ -40,7 +40,7 @@ public abstract class RestClient : IDisposable
 		RequestOptions = new();
 
 		HttpClientHandler = new();
-		HttpClient = new HttpClient(HttpClientHandler);
+		HttpClient = new(HttpClientHandler);
 	}
 	/// <summary>
 	/// Releases all resources used by the current instance of the <see cref="RestClient" /> class.

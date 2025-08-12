@@ -134,7 +134,7 @@ public static class ReflectionExtensions
 
 		if (namingConvention == TypeNaming.CSharp)
 		{
-			name = TypeNames.GetValueOrDefault(name, name)!;
+			name = TypeNames.GetValueOrDefault(name, name);
 		}
 
 		if (t.IsGenericType)

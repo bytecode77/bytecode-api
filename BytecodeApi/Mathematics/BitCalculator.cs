@@ -128,7 +128,7 @@ public static class BitCalculator
 	/// </returns>
 	public static byte SetBit(byte value, int index, bool bit)
 	{
-		if (index >= 0 && index < 8)
+		if (index is >= 0 and < 8)
 		{
 			return (byte)(bit ? value | 1 << index : value & ~(1 << index));
 		}
@@ -168,7 +168,7 @@ public static class BitCalculator
 	/// </returns>
 	public static int SetBit(int value, int index, bool bit)
 	{
-		if (index >= 0 && index < 32)
+		if (index is >= 0 and < 32)
 		{
 			return bit ? value | 1 << index : value & ~(1 << index);
 		}
@@ -188,7 +188,7 @@ public static class BitCalculator
 	/// </returns>
 	public static uint SetBit(uint value, int index, bool bit)
 	{
-		if (index >= 0 && index < 32)
+		if (index is >= 0 and < 32)
 		{
 			return bit ? value | 1U << index : value & ~(1U << index);
 		}
@@ -208,7 +208,7 @@ public static class BitCalculator
 	/// </returns>
 	public static long SetBit(long value, int index, bool bit)
 	{
-		if (index >= 0 && index < 64)
+		if (index is >= 0 and < 64)
 		{
 			return bit ? value | 1L << index : value & ~(1L << index);
 		}
@@ -228,7 +228,7 @@ public static class BitCalculator
 	/// </returns>
 	public static ulong SetBit(ulong value, int index, bool bit)
 	{
-		if (index >= 0 && index < 64)
+		if (index is >= 0 and < 64)
 		{
 			return bit ? value | 1UL << index : value & ~(1UL << index);
 		}
@@ -248,7 +248,7 @@ public static class BitCalculator
 	/// </returns>
 	public static short SetBit(short value, int index, bool bit)
 	{
-		if (index >= 0 && index < 16)
+		if (index is >= 0 and < 16)
 		{
 			return (short)(bit ? value | (short)(1 << index) : value & ~(1 << index));
 		}
@@ -268,7 +268,7 @@ public static class BitCalculator
 	/// </returns>
 	public static ushort SetBit(ushort value, int index, bool bit)
 	{
-		if (index >= 0 && index < 16)
+		if (index is >= 0 and < 16)
 		{
 			return (ushort)(bit ? value | 1U << index : value & ~(1U << index));
 		}
@@ -309,7 +309,7 @@ public static class BitCalculator
 	/// </returns>
 	public static byte ToggleBit(byte value, int index)
 	{
-		if (index >= 0 && index < 8)
+		if (index is >= 0 and < 8)
 		{
 			return (byte)(value ^ 1 << index);
 		}
@@ -328,7 +328,7 @@ public static class BitCalculator
 	/// </returns>
 	public static sbyte ToggleBit(sbyte value, int index)
 	{
-		if (index >= 0 && index < 8)
+		if (index is >= 0 and < 8)
 		{
 			return (sbyte)(value ^ 1 << index);
 		}
@@ -347,7 +347,7 @@ public static class BitCalculator
 	/// </returns>
 	public static int ToggleBit(int value, int index)
 	{
-		if (index >= 0 && index < 32)
+		if (index is >= 0 and < 32)
 		{
 			return value ^ 1 << index;
 		}
@@ -366,7 +366,7 @@ public static class BitCalculator
 	/// </returns>
 	public static uint ToggleBit(uint value, int index)
 	{
-		if (index >= 0 && index < 32)
+		if (index is >= 0 and < 32)
 		{
 			return value ^ 1U << index;
 		}
@@ -385,7 +385,7 @@ public static class BitCalculator
 	/// </returns>
 	public static long ToggleBit(long value, int index)
 	{
-		if (index >= 0 && index < 64)
+		if (index is >= 0 and < 64)
 		{
 			return value ^ 1 << index;
 		}
@@ -404,7 +404,7 @@ public static class BitCalculator
 	/// </returns>
 	public static ulong ToggleBit(ulong value, int index)
 	{
-		if (index >= 0 && index < 64)
+		if (index is >= 0 and < 64)
 		{
 			return value ^ 1UL << index;
 		}
@@ -423,7 +423,7 @@ public static class BitCalculator
 	/// </returns>
 	public static short ToggleBit(short value, int index)
 	{
-		if (index >= 0 && index < 16)
+		if (index is >= 0 and < 16)
 		{
 			return (short)(value ^ 1 << index);
 		}
@@ -442,7 +442,7 @@ public static class BitCalculator
 	/// </returns>
 	public static ushort ToggleBit(ushort value, int index)
 	{
-		if (index >= 0 && index < 16)
+		if (index is >= 0 and < 16)
 		{
 			return (ushort)(value ^ 1U << index);
 		}
