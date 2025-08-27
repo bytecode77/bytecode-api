@@ -80,6 +80,15 @@ public static class ExceptionExtensions
 	/// <param name="stackTrace">The <see cref="StackTrace" /> to append to <paramref name="exception" />.</param>
 	public static void AppendStackTrace(this Exception exception, StackTrace stackTrace)
 	{
+		exception.AppendStackTrace(stackTrace.ToString());
+	}
+	/// <summary>
+	/// Appends the specified stack trace to this <see cref="Exception" />.
+	/// </summary>
+	/// <param name="exception">The <see cref="Exception" /> to append <paramref name="stackTrace" /> to.</param>
+	/// <param name="stackTrace">The stack trace to append to <paramref name="exception" />.</param>
+	public static void AppendStackTrace(this Exception exception, string stackTrace)
+	{
 		Check.ArgumentNull(exception);
 		Check.ArgumentNull(stackTrace);
 
