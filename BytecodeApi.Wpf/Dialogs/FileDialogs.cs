@@ -85,18 +85,31 @@ public static class FileDialogs
 		return OpenMultiple(extensions, null);
 	}
 	/// <summary>
-	/// Displays an open file dialog with a filter that allows any file with one of the specified extensions to be opened. The extension description is retrieved using the <see cref="FileExtensionInfo" /> class. Returns a <see cref="string" />[] representing the full path to all selected files and <see langword="null" />, if selection has been canceled by the user.
+	/// Displays an open file dialog with a filter that allows any file with one of the specified extensions to be opened. Returns a <see cref="string" />[] representing the full path to all selected files and <see langword="null" />, if selection has been canceled by the user.
 	/// </summary>
-	/// <param name="extensions">The collection of extensions that are allowed to be opened. The extension description is retrieved using the <see cref="FileExtensionInfo" /> class.</param>
+	/// <param name="extensions">The collection of extensions that are allowed to be opened.</param>
+	/// <param name="extensionsDescription">The description to be used. If <see langword="null" />, the <see cref="FileExtensionInfo" /> class is used to retrieve the description.</param>
+	/// <returns>
+	/// A <see cref="string" />[] representing the full path to all selected files and <see langword="null" />, if selection has been canceled by the user.
+	/// </returns>
+	public static string[]? OpenMultiple(string[]? extensions, string? extensionsDescription)
+	{
+		return OpenMultiple(extensions, extensionsDescription, null);
+	}
+	/// <summary>
+	/// Displays an open file dialog with a filter that allows any file with one of the specified extensions to be opened. Returns a <see cref="string" />[] representing the full path to all selected files and <see langword="null" />, if selection has been canceled by the user.
+	/// </summary>
+	/// <param name="extensions">The collection of extensions that are allowed to be opened.</param>
+	/// <param name="extensionsDescription">The description to be used. If <see langword="null" />, the <see cref="FileExtensionInfo" /> class is used to retrieve the description.</param>
 	/// <param name="initialDirectory">A <see cref="string" /> specifying the initial directory.</param>
 	/// <returns>
 	/// A <see cref="string" />[] representing the full path to all selected files and <see langword="null" />, if selection has been canceled by the user.
 	/// </returns>
-	public static string[]? OpenMultiple(string[]? extensions, string? initialDirectory)
+	public static string[]? OpenMultiple(string[]? extensions, string? extensionsDescription, string? initialDirectory)
 	{
 		OpenFileDialog dialog = new()
 		{
-			Filter = GetFilter(extensions),
+			Filter = GetFilter(extensions, extensionsDescription),
 			Multiselect = true,
 			InitialDirectory = initialDirectory ?? ""
 		};
@@ -159,7 +172,7 @@ public static class FileDialogs
 		return Save(fileName, null);
 	}
 	/// <summary>
-	/// Displays a save file dialog and automatically adds an extension to the filename, if the user omits an extension.
+	/// Displays a save file dialog and automatically adds an extension to the filename, if the user omits an extension. The extension description is retrieved using the <see cref="FileExtensionInfo" /> class.
 	/// </summary>
 	/// <param name="fileName">A <see cref="string" /> specifying the initial filename that can be changed by the user.</param>
 	/// <param name="extension">A <see cref="string" /> specifying the extension to be added.</param>
@@ -175,11 +188,25 @@ public static class FileDialogs
 	/// </summary>
 	/// <param name="fileName">A <see cref="string" /> specifying the initial filename that can be changed by the user.</param>
 	/// <param name="extension">A <see cref="string" /> specifying the extension to be added.</param>
+	/// <param name="extensionsDescription">The description to be used. If <see langword="null" />, the <see cref="FileExtensionInfo" /> class is used to retrieve the description.</param>
+	/// <returns>
+	/// A <see cref="string" /> representing the full path to the saved file and <see langword="null" />, if selection has been canceled by the user.
+	/// </returns>
+	public static string? Save(string? fileName, string? extension, string? extensionsDescription)
+	{
+		return Save(fileName, extension, extensionsDescription, null);
+	}
+	/// <summary>
+	/// Displays a save file dialog and automatically adds an extension to the filename, if the user omits an extension.
+	/// </summary>
+	/// <param name="fileName">A <see cref="string" /> specifying the initial filename that can be changed by the user.</param>
+	/// <param name="extension">A <see cref="string" /> specifying the extension to be added.</param>
+	/// <param name="extensionsDescription">The description to be used. If <see langword="null" />, the <see cref="FileExtensionInfo" /> class is used to retrieve the description.</param>
 	/// <param name="initialDirectory">A <see cref="string" /> specifying the initial directory.</param>
 	/// <returns>
 	/// A <see cref="string" /> representing the full path to the saved file and <see langword="null" />, if selection has been canceled by the user.
 	/// </returns>
-	public static string? Save(string? fileName, string? extension, string? initialDirectory)
+	public static string? Save(string? fileName, string? extension, string? extensionsDescription, string? initialDirectory)
 	{
 		extension ??= Path.GetExtension(fileName).ToNullIfEmpty();
 		extension = extension?.TrimStart('.');
@@ -187,7 +214,7 @@ public static class FileDialogs
 		SaveFileDialog dialog = new()
 		{
 			FileName = fileName ?? "",
-			Filter = GetFilter(extension),
+			Filter = GetFilter([extension], extensionsDescription),
 			DefaultExt = extension,
 			AddExtension = extension != null,
 			InitialDirectory = initialDirectory ?? ""
@@ -210,10 +237,6 @@ public static class FileDialogs
 		}
 	}
 
-	private static string GetFilter(params string?[]? extensions)
-	{
-		return GetFilter(extensions, null);
-	}
 	private static string GetFilter(string?[]? extensions, string? extensionsDescription)
 	{
 		if (extensions.IsNullOrEmpty())
