@@ -188,25 +188,25 @@ public static class FileDialogs
 	/// </summary>
 	/// <param name="fileName">A <see cref="string" /> specifying the initial filename that can be changed by the user.</param>
 	/// <param name="extension">A <see cref="string" /> specifying the extension to be added.</param>
-	/// <param name="extensionsDescription">The description to be used. If <see langword="null" />, the <see cref="FileExtensionInfo" /> class is used to retrieve the description.</param>
+	/// <param name="extensionDescription">The description to be used. If <see langword="null" />, the <see cref="FileExtensionInfo" /> class is used to retrieve the description.</param>
 	/// <returns>
 	/// A <see cref="string" /> representing the full path to the saved file and <see langword="null" />, if selection has been canceled by the user.
 	/// </returns>
-	public static string? Save(string? fileName, string? extension, string? extensionsDescription)
+	public static string? Save(string? fileName, string? extension, string? extensionDescription)
 	{
-		return Save(fileName, extension, extensionsDescription, null);
+		return Save(fileName, extension, extensionDescription, null);
 	}
 	/// <summary>
 	/// Displays a save file dialog and automatically adds an extension to the filename, if the user omits an extension.
 	/// </summary>
 	/// <param name="fileName">A <see cref="string" /> specifying the initial filename that can be changed by the user.</param>
 	/// <param name="extension">A <see cref="string" /> specifying the extension to be added.</param>
-	/// <param name="extensionsDescription">The description to be used. If <see langword="null" />, the <see cref="FileExtensionInfo" /> class is used to retrieve the description.</param>
+	/// <param name="extensionDescription">The description to be used. If <see langword="null" />, the <see cref="FileExtensionInfo" /> class is used to retrieve the description.</param>
 	/// <param name="initialDirectory">A <see cref="string" /> specifying the initial directory.</param>
 	/// <returns>
 	/// A <see cref="string" /> representing the full path to the saved file and <see langword="null" />, if selection has been canceled by the user.
 	/// </returns>
-	public static string? Save(string? fileName, string? extension, string? extensionsDescription, string? initialDirectory)
+	public static string? Save(string? fileName, string? extension, string? extensionDescription, string? initialDirectory)
 	{
 		extension ??= Path.GetExtension(fileName).ToNullIfEmpty();
 		extension = extension?.TrimStart('.');
@@ -214,7 +214,7 @@ public static class FileDialogs
 		SaveFileDialog dialog = new()
 		{
 			FileName = fileName ?? "",
-			Filter = GetFilter([extension], extensionsDescription),
+			Filter = GetFilter([extension], extensionDescription),
 			DefaultExt = extension,
 			AddExtension = extension != null,
 			InitialDirectory = initialDirectory ?? ""
