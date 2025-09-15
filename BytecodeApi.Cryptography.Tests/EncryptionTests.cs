@@ -10,7 +10,7 @@ public class EncryptionTests
 	{
 		for (int i = 1; i <= 1000; i++)
 		{
-			byte[] data = MathEx.Random.NextBytes(i);
+			byte[] data = Random.Shared.GetBytes(i);
 			byte[] iv = Encryption.GenerateIV();
 			byte[] key = Encryption.GenerateKey(true);
 

@@ -189,7 +189,7 @@ public class BinaryStream : IDisposable
 		AssertCanRead();
 
 		char value = Reader!.ReadChar();
-		BytesRead += Encoding.GetByteCount(new[] { value });
+		BytesRead += Encoding.GetByteCount([value]);
 		return value;
 	}
 	/// <summary>
@@ -474,7 +474,7 @@ public class BinaryStream : IDisposable
 		AssertCanWrite();
 
 		Writer!.Write(value);
-		BytesWritten += Encoding.GetByteCount(new[] { value });
+		BytesWritten += Encoding.GetByteCount([value]);
 	}
 	/// <summary>
 	/// Writes a <see cref="decimal" /> value to the underlying <see cref="Stream" />.

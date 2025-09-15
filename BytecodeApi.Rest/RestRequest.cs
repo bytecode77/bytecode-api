@@ -14,9 +14,18 @@ namespace BytecodeApi.Rest;
 /// </summary>
 public sealed class RestRequest
 {
-	private readonly RestClient RestClient;
-	private readonly HttpMethod HttpMethod;
-	private string Url;
+	/// <summary>
+	/// Gets the <see cref="BytecodeApi.Rest.RestClient" /> from which this <see cref="RestRequest" /> has been initiated.
+	/// </summary>
+	public RestClient RestClient { get; private init; }
+	/// <summary>
+	/// Gets the <see cref="System.Net.Http.HttpMethod" /> of this <see cref="RestRequest" />.
+	/// </summary>
+	public HttpMethod HttpMethod { get; private init; }
+	/// <summary>
+	/// Gets the URL of this <see cref="RestRequest" />.
+	/// </summary>
+	public string Url { get; private set; }
 	private HttpContent? HttpContent;
 	private readonly Dictionary<string, string> Headers;
 
@@ -25,7 +34,7 @@ public sealed class RestRequest
 		RestClient = restClient;
 		HttpMethod = method;
 		Url = url;
-		Headers = new();
+		Headers = [];
 	}
 
 	/// <summary>
@@ -211,6 +220,16 @@ public sealed class RestRequest
 	}
 
 	/// <summary>
+	/// Sends the request without reading the response body.
+	/// </summary>
+	public async Task Execute()
+	{
+		Check.ObjectDisposed<RestClient>(RestClient.Disposed);
+
+		using HttpResponseMessage response = await Send(HttpCompletionOption.ResponseHeadersRead).ConfigureAwait(false);
+		await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+	}
+	/// <summary>
 	/// Sends the request and reads the response <see cref="string" />.
 	/// </summary>
 	/// <returns>
@@ -270,6 +289,7 @@ public sealed class RestRequest
 		if (progressCallback == null)
 		{
 			using HttpResponseMessage response = await Send().ConfigureAwait(false);
+
 			return new(
 				response.Content.Headers.ContentDisposition?.FileNameStar ?? "",
 				await response.Content.ReadAsByteArrayAsync().ConfigureAwait(false));
@@ -283,7 +303,7 @@ public sealed class RestRequest
 			byte[] buffer = new byte[4096];
 			int bytesRead;
 			long totalBytesRead = 0;
-			DateTime lastCallback = DateTime.MinValue;
+			DateTime lastCallback = default;
 
 			do
 			{
@@ -332,6 +352,77 @@ public sealed class RestRequest
 		using HttpResponseMessage response = await Send().ConfigureAwait(false);
 		using Stream stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
 		return (await JsonSerializer.DeserializeAsync<T>(stream, serializerOptions).ConfigureAwait(false)) ?? throw new JsonException("Deserialization returned null value.");
+	}
+	/// <summary>
+	/// Sends the request and reads server-sent events.
+	/// </summary>
+	/// <param name="eventCallback">A delegate that is invoked with the the server-sent event data.</param>
+	public async Task ReadEvents(ServerSentEventCallback eventCallback)
+	{
+		Check.ObjectDisposed<RestClient>(RestClient.Disposed);
+		Check.ArgumentNull(eventCallback);
+
+		using HttpResponseMessage response = await Send(HttpCompletionOption.ResponseHeadersRead).ConfigureAwait(false);
+		using Stream stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+		using StreamReader reader = new(stream);
+
+		// https://html.spec.whatwg.org/multipage/server-sent-events.html
+
+		string eventType = "message";
+		string? eventId = null;
+		StringBuilder data = new();
+
+		while (!reader.EndOfStream)
+		{
+			if (reader.ReadLine() is string line)
+			{
+				if (line == "")
+				{
+					eventCallback(eventType, data.ToString().Trim(), eventId);
+
+					eventType = "message";
+					data.Clear();
+				}
+				else if (line.StartsWith(':'))
+				{
+					// Ignore
+				}
+				else if (line.Contains(':'))
+				{
+					string field;
+					string value;
+
+					if (line.Contains(':'))
+					{
+						field = line.SubstringUntil(':');
+						value = line.SubstringFrom(':');
+
+						if (value.StartsWith(' '))
+						{
+							value = value[1..];
+						}
+					}
+					else
+					{
+						field = line;
+						value = "";
+					}
+
+					switch (field)
+					{
+						case "event":
+							eventType = value;
+							break;
+						case "data":
+							data.AppendLine(value);
+							break;
+						case "id" when !value.Contains('\0'):
+							eventId = value.ToNullIfEmpty();
+							break;
+					}
+				}
+			}
+		}
 	}
 
 	private async Task<HttpResponseMessage> Send(HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)

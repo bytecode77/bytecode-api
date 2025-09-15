@@ -43,7 +43,7 @@ public sealed class CsvDelimiterDetector
 	/// </returns>
 	public static CsvDelimiterDetector CreateDefault()
 	{
-		return new(new[] { ",", ";", "\t", "|" }, 2, 10);
+		return new([",", ";", "\t", "|"], 2, 10);
 	}
 
 	/// <summary>
@@ -144,7 +144,7 @@ public sealed class CsvDelimiterDetector
 
 		try
 		{
-			List<string> detectedDelimiters = new();
+			List<string> detectedDelimiters = [];
 
 			foreach (string delimiter in DelimitersToTest)
 			{

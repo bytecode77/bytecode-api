@@ -71,17 +71,17 @@ public class TextGenerator : ILanguageStringGenerator
 		Check.ArgumentOutOfRangeEx.Between0And1(ParagraphChance);
 
 		StringBuilder stringBuilder = new();
-		int sentences = MathEx.Random.Next(MinSentenceCount, MaxSentenceCount + 1);
+		int sentences = Random.Shared.Next(MinSentenceCount, MaxSentenceCount + 1);
 
 		for (int i = 0; i < sentences; i++)
 		{
 			stringBuilder.Append(SentenceGenerator.Generate());
 
-			if (MathEx.Random.NextDouble() < ParagraphChance)
+			if (Random.Shared.NextDouble() < ParagraphChance)
 			{
 				stringBuilder.AppendLine().AppendLine();
 			}
-			else if (MathEx.Random.NextDouble() < LineBreakChance)
+			else if (Random.Shared.NextDouble() < LineBreakChance)
 			{
 				stringBuilder.AppendLine();
 			}

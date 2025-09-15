@@ -63,7 +63,7 @@ public sealed class CachedProperty<T>
 	{
 		HasValue = false;
 		Value = default;
-		LastAssignment = DateTime.MinValue;
+		LastAssignment = default;
 	}
 	/// <summary>
 	/// Invokes the getter and sets the value accordingly, regardless of its existence or the timeout period.

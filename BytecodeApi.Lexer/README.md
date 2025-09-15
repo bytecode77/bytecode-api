@@ -45,6 +45,11 @@ TokenCollection<FormulaTokenType> tokens = lexer.Parse(formula);
 
 ## Changelog
 
+### 4.0.0 (15.09.2025)
+
+* **change:** Targeting .NET 9.0
+* **new:** `Token.Is` method overloads
+
 ### 3.0.1 (27.09.2023)
 
 * **new:** `Lexer` method overloads with `RegexOptions` parameter

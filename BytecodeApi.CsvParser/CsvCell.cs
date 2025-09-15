@@ -79,7 +79,7 @@ public struct CsvCell : IEquatable<CsvCell>
 	/// </returns>
 	public override readonly int GetHashCode()
 	{
-		return CSharp.GetHashCode(Value);
+		return HashCode.Combine(Value);
 	}
 
 	/// <summary>

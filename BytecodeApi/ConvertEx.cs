@@ -284,7 +284,7 @@ public static class ConvertEx
 		int sum = 0;
 		foreach (char columnChar in str.ToUpper())
 		{
-			if (columnChar < 'A' || columnChar > 'Z') throw Throw.Argument(nameof(str), "String must contain only letters from A-Z.");
+			if (columnChar is < 'A' or > 'Z') throw Throw.Argument(nameof(str), "String must contain only letters from A-Z.");
 
 			sum *= 26;
 			sum += columnChar - 'A' + 1;

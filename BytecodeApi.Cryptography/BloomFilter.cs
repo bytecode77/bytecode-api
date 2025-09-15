@@ -40,7 +40,7 @@ public sealed class BloomFilter<T>
 
 		Bits = new((int)BitOperations.RoundUpToPowerOf2((uint)capacity));
 		HashMask = Bits.Length - 1;
-		HashFunctions = new();
+		HashFunctions = [];
 	}
 
 	/// <summary>

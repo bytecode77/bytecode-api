@@ -20,7 +20,7 @@ public static class StreamExtensions
 		Check.ArgumentNull(stream);
 
 		byte[] buffer = new byte[Marshal.SizeOf<T>()];
-		stream.Read(buffer);
+		stream.ReadExactly(buffer);
 		return ConvertEx.ToStructure<T>(buffer);
 	}
 	/// <summary>

@@ -11,6 +11,14 @@ public abstract class RestClient : IDisposable
 	/// </summary>
 	public string BaseUrl { get; private init; }
 	/// <summary>
+	/// Gets or sets a <see cref="bool" /> value indicating whether to disable SSL validation.
+	/// </summary>
+	public bool DisableCertificateValidation
+	{
+		get => HttpClientHandler.ServerCertificateCustomValidationCallback == HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
+		set => HttpClientHandler.ServerCertificateCustomValidationCallback = value ? HttpClientHandler.DangerousAcceptAnyServerCertificateValidator : null;
+	}
+	/// <summary>
 	/// A <see cref="RestRequestOptions" /> object with options for REST requests.
 	/// </summary>
 	protected internal RestRequestOptions RequestOptions { get; set; }
@@ -18,6 +26,7 @@ public abstract class RestClient : IDisposable
 	/// Gets the <see cref="System.Net.Http.HttpClient" /> that is used to process requests.
 	/// </summary>
 	protected internal HttpClient HttpClient { get; private init; }
+	private readonly HttpClientHandler HttpClientHandler;
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="RestClient" /> class.
@@ -29,7 +38,9 @@ public abstract class RestClient : IDisposable
 
 		BaseUrl = baseUrl.TrimEnd('/');
 		RequestOptions = new();
-		HttpClient = new();
+
+		HttpClientHandler = new();
+		HttpClient = new(HttpClientHandler);
 	}
 	/// <summary>
 	/// Releases all resources used by the current instance of the <see cref="RestClient" /> class.

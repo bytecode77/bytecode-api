@@ -236,18 +236,7 @@ public static class ApplicationBase
 		/// <summary>
 		/// Gets the domain in which the local computer is registered, or <see langword="null" />, if the user is not member of a domain.
 		/// </summary>
-		public static string? DomainName
-		{
-			get
-			{
-				if (_DomainName == null)
-				{
-					_DomainName = IPGlobalProperties.GetIPGlobalProperties().DomainName;
-				}
-
-				return _DomainName.ToNullIfEmpty();
-			}
-		}
+		public static string? DomainName => (_DomainName ??= IPGlobalProperties.GetIPGlobalProperties().DomainName).ToNullIfEmpty();
 		/// <summary>
 		/// Gets a <see cref="bool" /> value indicating whether the current session is an RDP session.
 		/// </summary>

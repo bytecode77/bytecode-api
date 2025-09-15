@@ -104,7 +104,7 @@ public abstract class ImageOptionalHeader
 
 	internal ImageOptionalHeader()
 	{
-		DataDirectories = Array.Empty<ImageDataDirectory>();
+		DataDirectories = [];
 	}
 
 	/// <summary>

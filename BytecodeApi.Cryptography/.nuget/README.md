@@ -8,6 +8,11 @@ See: [Examples](https://github.com/bytecode77/bytecode-api/blob/master/BytecodeA
 
 ## Changelog
 
+### 4.0.0 (15.09.2025)
+
+* **change:** Targeting .NET 9.0
+* **new:** `RIPEMD128` hash algorithm
+
 ### 3.0.1 (10.12.2023)
 
 * **new:** `MD2`, `MD4` and `SHA224` hash algorithms

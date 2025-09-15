@@ -9,8 +9,8 @@ namespace BytecodeApi;
 /// </summary>
 public static class Validate
 {
-	private static readonly Regex[] MacAddressRegex = new Regex[]
-	{
+	private static readonly Regex[] MacAddressRegex =
+	[
 		// 000000000000
 		new("^[0-9a-f]{12}$", RegexOptions.IgnoreCase),
 		// 00:00:00:00:00:00
@@ -30,7 +30,7 @@ public static class Validate
 		new("^([0-9a-f]{2}-){7}[0-9a-f]{2}$", RegexOptions.IgnoreCase),
 		// 0000.0000.0000.0000
 		new("^([0-9a-f]{4}\\.){3}[0-9a-f]{4}$", RegexOptions.IgnoreCase)
-	};
+	];
 
 	/// <summary>
 	/// Validates a <see cref="string" /> that only contains upper and lowercase letters.

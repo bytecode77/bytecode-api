@@ -121,6 +121,7 @@ public static class ProcessEx
 		nint token = 0;
 		nint newToken = 0;
 		nint integritySid = 0;
+
 		Native.StartupInfo startupInfo = new()
 		{
 			StructSize = Marshal.SizeOf<Native.StartupInfo>()
@@ -136,7 +137,7 @@ public static class ProcessEx
 
 			if (token != 0 && Native.DuplicateTokenEx(token, 0, 0, 2, 1, out newToken))
 			{
-				Native.SidIdentifierAuthority securityMandatoryLabelAuthority = new() { Value = new byte[] { 0, 0, 0, 0, 0, 16 } };
+				Native.SidIdentifierAuthority securityMandatoryLabelAuthority = new() { Value = [0, 0, 0, 0, 0, 16] };
 				if (Native.AllocateAndInitializeSid(ref securityMandatoryLabelAuthority, 1, (int)integrityLevel, 0, 0, 0, 0, 0, 0, 0, out integritySid))
 				{
 					Native.TokenMandatoryLabel mandatoryTokenLabel;

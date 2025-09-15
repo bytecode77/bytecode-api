@@ -6,7 +6,7 @@ namespace BytecodeApi.Wpf.Converters;
 /// <summary>
 /// Represents the converter that converts <see cref="DateOnly" />? values. The <see cref="Convert(DateOnly?, string)" /> method returns a <see cref="string" /> based on the specified <see cref="DateOnlyConverterMethod" /> parameter.
 /// </summary>
-public sealed class DateOnlyConverter : TwoWayConverterBase<DateOnly?, string?>
+public sealed class DateOnlyConverter : TwoWayConverterBase<DateOnly?, string>
 {
 	/// <summary>
 	/// Specifies the method that is used to convert the <see cref="DateOnly" />? value.

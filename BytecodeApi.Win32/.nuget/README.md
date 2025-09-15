@@ -8,6 +8,15 @@ See: [Examples](https://github.com/bytecode77/bytecode-api/blob/master/BytecodeA
 
 ## Changelog
 
+### 4.0.0 (15.09.2025)
+
+* **change:** Targeting .NET 9.0
+* **new:** `OperatingSystemInfo.JavaVersion` property
+
+### 3.0.2 (28.11.2024)
+
+* **new:** Several methods in `Desktop` class
+
 ### 3.0.1 (27.09.2023)
 
 * **new:** `HardwareInfo.TotalMemory` and `AvailableMemory`

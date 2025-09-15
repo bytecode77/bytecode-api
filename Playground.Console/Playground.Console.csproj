@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
-		<TargetFramework>net7.0-windows</TargetFramework>
+		<TargetFramework>net9.0-windows</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
@@ -25,20 +25,20 @@
 		<ProjectReference Include="..\BytecodeApi.Wpf\BytecodeApi.Wpf.csproj" />
 	</ItemGroup>
 	<ItemGroup Condition="'$(Configuration)' == 'Release'">
-		<PackageReference Include="BytecodeApi" Version="3.*" />
-		<PackageReference Include="BytecodeApi.CommandLineParser" Version="3.*" />
-		<PackageReference Include="BytecodeApi.ConsoleUI" Version="3.*" />
-		<PackageReference Include="BytecodeApi.Cryptography" Version="3.*" />
-		<PackageReference Include="BytecodeApi.CsvParser" Version="3.*" />
-		<PackageReference Include="BytecodeApi.IniParser" Version="3.*" />
-		<PackageReference Include="BytecodeApi.LanguageGenerator" Version="3.*" />
-		<PackageReference Include="BytecodeApi.Lexer" Version="3.*" />
-		<PackageReference Include="BytecodeApi.Penetration" Version="3.*" />
-		<PackageReference Include="BytecodeApi.PEParser" Version="3.*" />
-		<PackageReference Include="BytecodeApi.PEResources" Version="3.*" />
-		<PackageReference Include="BytecodeApi.Rest" Version="3.*" />
-		<PackageReference Include="BytecodeApi.Win32" Version="3.*" />
-		<PackageReference Include="BytecodeApi.Wmi" Version="3.*" />
-		<PackageReference Include="BytecodeApi.Wpf" Version="3.*" />
+		<PackageReference Include="BytecodeApi" Version="4.*" />
+		<PackageReference Include="BytecodeApi.CommandLineParser" Version="4.*" />
+		<PackageReference Include="BytecodeApi.ConsoleUI" Version="4.*" />
+		<PackageReference Include="BytecodeApi.Cryptography" Version="4.*" />
+		<PackageReference Include="BytecodeApi.CsvParser" Version="4.*" />
+		<PackageReference Include="BytecodeApi.IniParser" Version="4.*" />
+		<PackageReference Include="BytecodeApi.LanguageGenerator" Version="4.*" />
+		<PackageReference Include="BytecodeApi.Lexer" Version="4.*" />
+		<PackageReference Include="BytecodeApi.Penetration" Version="4.*" />
+		<PackageReference Include="BytecodeApi.PEParser" Version="4.*" />
+		<PackageReference Include="BytecodeApi.PEResources" Version="4.*" />
+		<PackageReference Include="BytecodeApi.Rest" Version="4.*" />
+		<PackageReference Include="BytecodeApi.Win32" Version="4.*" />
+		<PackageReference Include="BytecodeApi.Wmi" Version="4.*" />
+		<PackageReference Include="BytecodeApi.Wpf" Version="4.*" />
 	</ItemGroup>
 </Project>

@@ -47,7 +47,7 @@ public sealed class IniSectionCollection : ICollection<IniSection>
 	/// </summary>
 	public IniSectionCollection()
 	{
-		Sections = new();
+		Sections = [];
 	}
 
 	/// <summary>
@@ -65,7 +65,7 @@ public sealed class IniSectionCollection : ICollection<IniSection>
 	/// <param name="ignoreCase"><see langword="true" /> to ignore character casing during name comparison.</param>
 	public void ProcessDuplicates(IniDuplicateSectionNameBehavior behavior, bool ignoreCase)
 	{
-		List<IniSection> removedSections = new();
+		List<IniSection> removedSections = [];
 
 		switch (behavior)
 		{
@@ -78,7 +78,7 @@ public sealed class IniSectionCollection : ICollection<IniSection>
 			case IniDuplicateSectionNameBehavior.Ignore:
 				for (int i = 1; i < Count; i++)
 				{
-					if (Sections.Take(i).Any(section => section.Name?.Equals(Sections[i].Name, ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal) == true))
+					if (Sections.Take(i).Any(section => string.Equals(section.Name, Sections[i].Name, ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal)))
 					{
 						removedSections.Add(Sections[i]);
 					}
@@ -87,7 +87,7 @@ public sealed class IniSectionCollection : ICollection<IniSection>
 			case IniDuplicateSectionNameBehavior.Merge:
 				for (int i = 1; i < Count; i++)
 				{
-					if (Sections.Take(i).FirstOrDefault(section => section.Name?.Equals(Sections[i].Name, ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal) == true) is IniSection firstSection)
+					if (Sections.Take(i).FirstOrDefault(section => string.Equals(section.Name, Sections[i].Name, ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal)) is IniSection firstSection)
 					{
 						firstSection.Properties.AddRange(Sections[i].Properties);
 						removedSections.Add(Sections[i]);

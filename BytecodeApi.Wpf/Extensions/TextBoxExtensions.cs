@@ -100,7 +100,7 @@ public static class TextBoxExtensions
 			.GetMethod("Select", BindingFlags.Instance | BindingFlags.NonPublic)
 			?? throw Throw.InvalidOperation("Method PasswordBox.Select not found.");
 
-		select.Invoke(passwordBox, new object[] { start, length });
+		select.Invoke(passwordBox, [start, length]);
 	}
 	/// <summary>
 	/// Sets the insertion position index of the caret to the end of this <see cref="PasswordBox" />.

@@ -63,7 +63,7 @@ public sealed class OptionSet : ICollection<Option>
 		OptionPrefix = optionPrefix;
 		OptionAlternativePrefix = optionAlternativePrefix;
 		OptionPrefixIgnoreCase = optionPrefixIgnoreCase;
-		Options = new();
+		Options = [];
 	}
 
 	/// <summary>
@@ -117,10 +117,10 @@ public sealed class OptionSet : ICollection<Option>
 		Check.ArgumentNull(args);
 		Check.ArgumentEx.ArrayValuesNotNull(args);
 
-		List<string> parsedArguments = new();
-		List<ParsedOption> parsedOptions = new();
+		List<string> parsedArguments = [];
+		List<ParsedOption> parsedOptions = [];
 		Option? currentOption = null;
-		List<string> currentOptionValues = new();
+		List<string> currentOptionValues = [];
 
 		for (int i = 0; i < args.Length; i++)
 		{

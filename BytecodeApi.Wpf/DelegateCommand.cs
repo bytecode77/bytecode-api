@@ -85,7 +85,7 @@ public sealed class DelegateCommand : ICommand
 public sealed class DelegateCommand<TParameter> : ICommand
 {
 	private readonly Action<TParameter?> ExecuteDelegate;
-	private readonly Predicate<TParameter?>? CanExecuteDelegate;
+	private readonly Func<TParameter?, bool>? CanExecuteDelegate;
 	event EventHandler? ICommand.CanExecuteChanged
 	{
 		add
@@ -118,8 +118,8 @@ public sealed class DelegateCommand<TParameter> : ICommand
 	/// Initializes a new instance of the <see cref="DelegateCommand{TParameter}" /> class with the specified execute and canExecute delegates.
 	/// </summary>
 	/// <param name="execute">The <see cref="Action{T}" /> to be called when the command is invoked. The first argument of <paramref name="execute" /> is the command parameter.</param>
-	/// <param name="canExecute">The <see cref="Predicate{T}" /> that determines whether the command can execute in its current state. The first argument of <paramref name="canExecute" /> is the command parameter.</param>
-	public DelegateCommand(Action<TParameter?> execute, Predicate<TParameter?>? canExecute) : this(execute)
+	/// <param name="canExecute">The <see cref="Func{T, TResult}" /> that determines whether the command can execute in its current state. The first argument of <paramref name="canExecute" /> is the command parameter.</param>
+	public DelegateCommand(Action<TParameter?> execute, Func<TParameter?, bool>? canExecute) : this(execute)
 	{
 		CanExecuteDelegate = canExecute;
 	}

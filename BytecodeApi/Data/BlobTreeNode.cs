@@ -32,8 +32,8 @@ public sealed class BlobTreeNode
 	public BlobTreeNode()
 	{
 		Name = "";
-		Nodes = new();
-		Blobs = new();
+		Nodes = [];
+		Blobs = [];
 	}
 	/// <summary>
 	/// Initializes a new instance of the <see cref="BlobTreeNode" /> class with the specified name.
@@ -188,7 +188,7 @@ public sealed class BlobTreeNode
 	/// </returns>
 	public BlobCollection Flatten()
 	{
-		BlobCollection blobs = new();
+		BlobCollection blobs = [];
 		AddNode(this);
 		return blobs;
 

@@ -1,15 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFramework>net7.0</TargetFramework>
+		<TargetFramework>net9.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<GeneratePackageOnBuild Condition="'$(Configuration)' == 'Release'">True</GeneratePackageOnBuild>
 	</PropertyGroup>
 	<PropertyGroup>
-		<Version>3.0.1</Version>
-		<AssemblyVersion>3.0.1</AssemblyVersion>
-		<FileVersion>3.0.1</FileVersion>
+		<Version>4.0.0</Version>
+		<AssemblyVersion>4.0.0</AssemblyVersion>
+		<FileVersion>4.0.0</FileVersion>
 	</PropertyGroup>
 	<PropertyGroup>
 		<Product>BytecodeApi.Cryptography</Product>
@@ -17,15 +17,15 @@
 		<Description>Library for encryption &amp; hashing and other cryptographic operations.</Description>
 		<Company>bytecode77</Company>
 		<Authors>Martin Fischer</Authors>
-		<Copyright>© bytecode77, 2024.</Copyright>
+		<Copyright>© bytecode77, 2025.</Copyright>
 	</PropertyGroup>
 	<PropertyGroup>
 		<PackageId>BytecodeApi.Cryptography</PackageId>
-		<PackageTags>encryption encrypt decryption hash aes rsa symmetric asymmetric pem der sha sha224 md5 crc32 crc64 adler32 ripemd160 tiger tiger2 whirlpool bloomfilter bloom filter</PackageTags>
+		<PackageTags>encryption encrypt decryption hash aes rsa symmetric asymmetric pem der sha sha224 md5 crc32 crc64 adler32 ripemd128 ripemd160 tiger tiger2 whirlpool bloomfilter bloom filter</PackageTags>
 		<PackageProjectUrl>https://bytecode77.com/bytecode-api</PackageProjectUrl>
 		<RepositoryType>git</RepositoryType>
 		<RepositoryUrl>https://github.com/bytecode77/bytecode-api</RepositoryUrl>
-		<PackageLicenseExpression>BSD-2-Clause</PackageLicenseExpression>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageReadmeFile>.nuget\README.md</PackageReadmeFile>
 		<PackageIcon>.nuget\PackageIcon.png</PackageIcon>
 		<PackageOutputPath>../$Build</PackageOutputPath>
@@ -34,7 +34,7 @@
 		<ProjectReference Include="..\BytecodeApi\BytecodeApi.csproj" />
 	</ItemGroup>
 	<ItemGroup Condition="'$(Configuration)' == 'Release'">
-		<PackageReference Include="BytecodeApi" Version="3.*" />
+		<PackageReference Include="BytecodeApi" Version="4.*" />
 	</ItemGroup>
 	<ItemGroup>
 		<None Include=".nuget\README.md" Pack="true" PackagePath=".nuget\" />

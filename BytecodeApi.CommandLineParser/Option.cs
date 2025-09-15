@@ -49,7 +49,7 @@ public sealed class Option : IEquatable<Option>
 		}
 
 		Arguments = arguments.ToReadOnlyCollection();
-		Alternatives = (alternatives ?? Array.Empty<string>()).ToReadOnlyCollection();
+		Alternatives = (alternatives ?? []).ToReadOnlyCollection();
 	}
 
 	/// <summary>
@@ -88,7 +88,7 @@ public sealed class Option : IEquatable<Option>
 	/// </returns>
 	public override int GetHashCode()
 	{
-		return CSharp.GetHashCode(Arguments.Concat(Alternatives).ToArray());
+		return HashCode.Combine(Arguments.Concat(Alternatives).ToArray());
 	}
 
 	/// <summary>

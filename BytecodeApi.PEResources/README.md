@@ -35,6 +35,11 @@ resourceFile.DeleteResources();
 
 ## Changelog
 
+### 4.0.0 (15.09.2025)
+
+* **change:** Targeting .NET 9.0
+* **change:** Bugfix: `ResourceFileInfo` methods did not accept name "0".
+
 ### 3.0.0 (08.09.2023)
 
 * Initial release

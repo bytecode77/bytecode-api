@@ -38,7 +38,7 @@ SentenceGenerator sentenceGenerator = new()
 	MinWords = 3,
 	MaxWords = 10,
 	CommaChance = .2,
-	FinishPunctuation = new[] { '.', '.', '.', '?', '!' }
+	FinishPunctuation = ['.', '.', '.', '?', '!']
 };
 
 string randomSentence = sentenceGenerator.Generate();
@@ -72,6 +72,10 @@ string randomText = textGenerator.Generate();
 * `LoremIpsumGenerator` to generate text placeholders with lorem ipsum paragraphs.
 
 ## Changelog
+
+### 4.0.0 (15.09.2025)
+
+* **change:** Targeting .NET 9.0
 
 ### 3.0.0 (08.09.2023)
 

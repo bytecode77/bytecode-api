@@ -1,5 +1,4 @@
 ﻿using BytecodeApi.Extensions;
-using System.Globalization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -34,7 +33,7 @@ public sealed class DateTimeJsonConverter : JsonConverter<DateTime>
 	/// </returns>
 	public override DateTime Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
 	{
-		return DateTime.Parse(reader.GetString()!, CultureInfo.InvariantCulture);
+		return reader.GetString()!.ToDateTime(Format) ?? throw Throw.Format("String is not a valid DateTime value.");
 	}
 	/// <summary>
 	/// Writes the <see cref="DateTime" /> value as JSON.

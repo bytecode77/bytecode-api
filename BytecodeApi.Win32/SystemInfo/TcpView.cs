@@ -30,53 +30,40 @@ public sealed class TcpView
 	public static TcpView Load()
 	{
 		ProtocolMapping protocolMap = ProtocolMapping.Load();
-		List<TcpViewEntry> entries = new();
 
-		entries.AddRange
-		(
-			GetConnections<Native.TcpTable, Native.TcpRow>(false, 2)
+		List<TcpViewEntry> entries =
+		[
+			.. GetConnections<Native.TcpTable, Native.TcpRow>(false, 2)
 				.Select(row => new TcpViewEntry
 				{
 					Protocol = TransportProtocolAndVersion.Tcp4,
 					LocalAddress = new(BitConverter.GetBytes(row.LocalAddress)),
-					LocalPort = BitConverter.ToUInt16(new[] { row.LocalPort[1], row.LocalPort[0] }, 0),
+					LocalPort = BitConverter.ToUInt16([row.LocalPort[1], row.LocalPort[0]], 0),
 					RemoteAddress = new(BitConverter.GetBytes(row.RemoteAddress)),
-					RemotePort = BitConverter.ToUInt16(new[] { row.RemotePort[1], row.RemotePort[0] }, 0),
+					RemotePort = BitConverter.ToUInt16([row.RemotePort[1], row.RemotePort[0]], 0),
 					TcpState = (TcpState)row.State,
 					ProcessId = (int)row.OwningProcessId
-				})
-		);
-
-		entries.AddRange
-		(
-			GetConnections<Native.Tcp6Table, Native.Tcp6Row>(false, 23)
+				}),
+			.. GetConnections<Native.Tcp6Table, Native.Tcp6Row>(false, 23)
 				.Select(row => new TcpViewEntry
 				{
 					Protocol = TransportProtocolAndVersion.Tcp6,
 					LocalAddress = new(row.LocalAddress),
-					LocalPort = BitConverter.ToUInt16(new[] { row.LocalPort[1], row.LocalPort[0] }, 0),
+					LocalPort = BitConverter.ToUInt16([row.LocalPort[1], row.LocalPort[0]], 0),
 					RemoteAddress = new(row.RemoteAddress),
-					RemotePort = BitConverter.ToUInt16(new[] { row.RemotePort[1], row.RemotePort[0] }, 0),
+					RemotePort = BitConverter.ToUInt16([row.RemotePort[1], row.RemotePort[0]], 0),
 					TcpState = (TcpState)row.State,
 					ProcessId = (int)row.OwningProcessId
-				})
-		);
-
-		entries.AddRange
-		(
-			GetConnections<Native.UdpTable, Native.UdpRow>(true, 2)
+				}),
+			.. GetConnections<Native.UdpTable, Native.UdpRow>(true, 2)
 				.Select(row => new TcpViewEntry
 				{
 					Protocol = TransportProtocolAndVersion.Udp4,
 					LocalAddress = new(row.LocalAddress),
-					LocalPort = BitConverter.ToUInt16(new[] { row.LocalPort[1], row.LocalPort[0] }, 0),
+					LocalPort = BitConverter.ToUInt16([row.LocalPort[1], row.LocalPort[0]], 0),
 					ProcessId = (int)row.OwningProcessId
-				})
-		);
-
-		entries.AddRange
-		(
-			GetConnections<Native.Udp6Table, Native.Udp6Row>(true, 23)
+				}),
+			.. GetConnections<Native.Udp6Table, Native.Udp6Row>(true, 23)
 				.Select(row => new TcpViewEntry
 				{
 					Protocol = TransportProtocolAndVersion.Udp6,
@@ -84,7 +71,7 @@ public sealed class TcpView
 					LocalPort = (int)row.LocalPort,
 					ProcessId = (int)row.OwningProcessId
 				})
-		);
+		];
 
 		foreach (TcpViewEntry entry in entries)
 		{
@@ -119,7 +106,7 @@ public sealed class TcpView
 			}
 			else
 			{
-				return Array.Empty<TRow>();
+				return [];
 			}
 
 			uint GetTable(nint table)

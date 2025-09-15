@@ -52,7 +52,7 @@ public sealed class BlobCollection : ICollection<Blob>
 	/// </summary>
 	public BlobCollection()
 	{
-		Blobs = new();
+		Blobs = [];
 	}
 	/// <summary>
 	/// Initializes a new instance of the <see cref="BlobCollection" /> class with the specified collection of blobs.

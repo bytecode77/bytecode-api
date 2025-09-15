@@ -89,7 +89,7 @@ public class TreeNode<T> : IEnumerable<TreeNode<T>>, IEquatable<TreeNode<T>>
 	public TreeNode(T value)
 	{
 		Value = value;
-		Children = new();
+		Children = [];
 	}
 
 	/// <summary>
@@ -114,12 +114,7 @@ public class TreeNode<T> : IEnumerable<TreeNode<T>>, IEquatable<TreeNode<T>>
 	{
 		Check.ArgumentNull(node);
 
-		if (node.Parent != null)
-		{
-			node.Parent.Remove(node);
-		}
-
-		node.Parent = this;
+		node.Parent?.Remove(node);
 		Children.Add(node);
 		return node;
 	}
@@ -150,11 +145,11 @@ public class TreeNode<T> : IEnumerable<TreeNode<T>>, IEquatable<TreeNode<T>>
 	/// <returns>
 	/// The number of removed child nodes.
 	/// </returns>
-	public int RemoveAll(Predicate<TreeNode<T>> predicate)
+	public int RemoveAll(Func<TreeNode<T>, bool> predicate)
 	{
 		Check.ArgumentNull(predicate);
 
-		List<TreeNode<T>> removed = new();
+		List<TreeNode<T>> removed = [];
 
 		foreach (TreeNode<T> node in Children)
 		{
@@ -175,11 +170,11 @@ public class TreeNode<T> : IEnumerable<TreeNode<T>>, IEquatable<TreeNode<T>>
 	/// <returns>
 	/// The number of removed child nodes.
 	/// </returns>
-	public int RemoveAll(Predicate<T> predicate)
+	public int RemoveAll(Func<T, bool> predicate)
 	{
 		Check.ArgumentNull(predicate);
 
-		List<TreeNode<T>> removed = new();
+		List<TreeNode<T>> removed = [];
 
 		foreach (TreeNode<T> node in Children)
 		{
@@ -361,7 +356,7 @@ public class TreeNode<T> : IEnumerable<TreeNode<T>>, IEquatable<TreeNode<T>>
 	/// </returns>
 	public override int GetHashCode()
 	{
-		return CSharp.GetHashCode(Value);
+		return HashCode.Combine(Value);
 	}
 
 	/// <summary>

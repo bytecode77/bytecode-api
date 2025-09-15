@@ -93,7 +93,7 @@ public sealed class AlternateDataStream
 		}
 		finally
 		{
-			if (file != 0 && file != -1) Native.CloseHandle(file);
+			if (file is not 0 and not -1) Native.CloseHandle(file);
 		}
 	}
 	/// <summary>

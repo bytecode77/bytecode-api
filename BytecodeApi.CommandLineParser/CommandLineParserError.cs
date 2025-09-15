@@ -30,7 +30,7 @@ public enum CommandLineParserError
 	/// </summary>
 	MaximumValueCount,
 	/// <summary>
-	/// The exception occurred in the <see cref="ParsedOptionSet.AssertHelper.Custom(string, Predicate{string[]})" /> method.
+	/// The exception occurred in the <see cref="ParsedOptionSet.AssertHelper.Custom(string, Func{string[], bool})" /> method.
 	/// </summary>
 	Custom,
 	/// <summary>

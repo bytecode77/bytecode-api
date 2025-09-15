@@ -43,7 +43,7 @@ public sealed class WmiPropertyCollection : IReadOnlyCollection<WmiProperty>
 	/// </summary>
 	public WmiPropertyCollection()
 	{
-		Properties = new();
+		Properties = [];
 	}
 	/// <summary>
 	/// Initializes a new instance of the <see cref="WmiPropertyCollection" /> class with the specified collection of properties.

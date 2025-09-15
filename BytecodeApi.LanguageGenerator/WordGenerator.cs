@@ -70,8 +70,8 @@ public class WordGenerator : ILanguageStringGenerator
 		string word = "";
 		int length;
 
-		length = MathEx.Random.Next(MinLength, MaxLength + 1);
-		bool consonant = MathEx.Random.NextBoolean();
+		length = Random.Shared.Next(MinLength, MaxLength + 1);
+		bool consonant = Random.Shared.GetBoolean();
 
 		while (word.Length < length)
 		{
@@ -79,8 +79,8 @@ public class WordGenerator : ILanguageStringGenerator
 			double chance = consonant ? DoubleConsonantChance : DoubleVovelChance;
 			consonant = !consonant;
 
-			char c = MathEx.Random.NextObject(charset.ToCharArray());
-			word += c.Repeat(MathEx.Random.NextDouble() < chance ? 2 : 1);
+			char c = Random.Shared.GetObject(charset.ToCharArray());
+			word += c.Repeat(Random.Shared.NextDouble() < chance ? 2 : 1);
 		}
 
 		return word[..length].ChangeCasing(casing);

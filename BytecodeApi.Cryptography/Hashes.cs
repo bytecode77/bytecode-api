@@ -1,4 +1,4 @@
-﻿using BytecodeApi.Cryptography.HashAlgorithms;
+using BytecodeApi.Cryptography.HashAlgorithms;
 using BytecodeApi.Extensions;
 using System.Security.Cryptography;
 using System.Text;
@@ -33,7 +33,9 @@ public static class Hashes
 	/// </returns>
 	public static byte[] ComputeBytes(string data, HashType type, int passes)
 	{
-		return ComputeBytes(data?.ToUTF8Bytes()!, type, passes);
+		Check.ArgumentNull(data);
+
+		return ComputeBytes(data.ToUTF8Bytes(), type, passes);
 	}
 	/// <summary>
 	/// Computes the hash value for the specified <see cref="byte" />[] using the specified <see cref="HashType" />.
@@ -69,6 +71,7 @@ public static class Hashes
 			HashType.MD2 => MD2.Create(),
 			HashType.MD4 => MD4.Create(),
 			HashType.MD5 => MD5.Create(),
+			HashType.RIPEMD128 => RIPEMD128.Create(),
 			HashType.RIPEMD160 => RIPEMD160.Create(),
 			HashType.SHA1 => SHA1.Create(),
 			HashType.SHA224 => SHA224.Create(),
@@ -114,7 +117,7 @@ public static class Hashes
 		Check.ArgumentNull(data);
 		Check.ArgumentOutOfRangeEx.Greater0(passes);
 
-		return ComputeBytes(data?.ToUTF8Bytes()!, type, passes).ToHexadecimalString();
+		return ComputeBytes(data.ToUTF8Bytes(), type, passes).ToHexadecimalString();
 	}
 	/// <summary>
 	/// Computes the hash value for the specified <see cref="byte" />[] using the specified <see cref="HashType" />. The result is the lowercase hexadecimal hash representation of the <paramref name="data" /> parameter.

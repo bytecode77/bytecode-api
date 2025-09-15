@@ -94,7 +94,7 @@ public static class DateOnlyExtensions
 
 		for (DateOnly i = dateOnly; i <= value; i = i.AddDays(1))
 		{
-			if (i.DayOfWeek != DayOfWeek.Saturday && i.DayOfWeek != DayOfWeek.Sunday)
+			if (i.DayOfWeek is not DayOfWeek.Saturday and not DayOfWeek.Sunday)
 			{
 				count++;
 			}
@@ -215,6 +215,6 @@ public static class DateOnlyExtensions
 	/// </returns>
 	public static DateTime ToDateTime(this DateOnly dateOnly)
 	{
-		return dateOnly.ToDateTime(TimeOnly.MinValue);
+		return dateOnly.ToDateTime(default);
 	}
 }

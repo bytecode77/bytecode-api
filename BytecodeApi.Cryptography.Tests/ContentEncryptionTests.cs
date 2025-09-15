@@ -13,7 +13,7 @@ public class ContentEncryptionTests
 	{
 		for (int i = 1; i <= 1000; i++)
 		{
-			byte[] data = MathEx.Random.NextBytes(i);
+			byte[] data = Random.Shared.GetBytes(i);
 			string password = Create.AlphaNumericString(1 + i % 10);
 
 			byte[] encrypted = ContentEncryption.Encrypt(data, password, passwordHashPasses);

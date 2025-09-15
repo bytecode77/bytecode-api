@@ -50,7 +50,7 @@ public class CsvFile
 	/// </summary>
 	public CsvFile()
 	{
-		Rows = new();
+		Rows = [];
 		IsColumnCountConsistent = true;
 	}
 
@@ -488,9 +488,45 @@ public class CsvFile
 
 		if (Headers?.Any() == true)
 		{
-			CsvIterator.ToStream(stream, new[] { new CsvRow(Headers) }, Delimiter, alwaysQuote, encoding, true);
+			CsvIterator.ToStream(stream, [new CsvRow(Headers)], Delimiter, alwaysQuote, encoding, true);
 		}
 
 		CsvIterator.ToStream(stream, Rows, Delimiter, alwaysQuote, encoding, leaveOpen);
+	}
+	/// <summary>
+	/// Converts this <see cref="CsvFile" /> to its <see cref="byte" />[] representation.
+	/// </summary>
+	/// <returns>
+	/// A new <see cref="byte" />[] representing this <see cref="CsvFile" />.
+	/// </returns>
+	public byte[] Save()
+	{
+		return Save(false);
+	}
+	/// <summary>
+	/// Converts this <see cref="CsvFile" /> to its <see cref="byte" />[] representation.
+	/// </summary>
+	/// <param name="alwaysQuote"><see langword="true" /> to wrap all cells with quotes; <see langword="false" /> to only use quotes when needed.</param>
+	/// <returns>
+	/// A new <see cref="byte" />[] representing this <see cref="CsvFile" />.
+	/// </returns>
+	public byte[] Save(bool alwaysQuote)
+	{
+		return Save(alwaysQuote, null);
+	}
+	/// <summary>
+	/// Converts this <see cref="CsvFile" /> to its <see cref="byte" />[] representation.
+	/// </summary>
+	/// <param name="alwaysQuote"><see langword="true" /> to wrap all cells with quotes; <see langword="false" /> to only use quotes when needed.</param>
+	/// <param name="encoding">The encoding to use to write to the file.</param>
+	/// <returns>
+	/// A new <see cref="byte" />[] representing this <see cref="CsvFile" />.
+	/// </returns>
+	public byte[] Save(bool alwaysQuote, Encoding? encoding)
+	{
+		using MemoryStream memoryStream = new();
+		Save(memoryStream, alwaysQuote, encoding, false);
+
+		return memoryStream.ToArray();
 	}
 }

@@ -1,5 +1,4 @@
 ﻿using BytecodeApi.Extensions;
-using BytecodeApi.Mathematics;
 using System.Text;
 
 namespace BytecodeApi.LanguageGenerator;
@@ -73,7 +72,7 @@ public class SentenceGenerator : ILanguageStringGenerator
 		Check.ArgumentEx.ArrayElementsRequired(FinishPunctuation);
 
 		StringBuilder stringBuilder = new();
-		int words = MathEx.Random.Next(MinWords, MaxWords + 1);
+		int words = Random.Shared.Next(MinWords, MaxWords + 1);
 
 		for (int i = 0; i < words; i++)
 		{
@@ -81,7 +80,7 @@ public class SentenceGenerator : ILanguageStringGenerator
 
 			if (i < words - 1)
 			{
-				if (MathEx.Random.NextDouble() < CommaChance)
+				if (Random.Shared.NextDouble() < CommaChance)
 				{
 					stringBuilder.Append(',');
 				}
@@ -89,6 +88,6 @@ public class SentenceGenerator : ILanguageStringGenerator
 			}
 		}
 
-		return stringBuilder.Append(MathEx.Random.NextObject(FinishPunctuation)).ToString();
+		return stringBuilder.Append(Random.Shared.GetObject(FinishPunctuation)).ToString();
 	}
 }

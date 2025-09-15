@@ -5,7 +5,7 @@ namespace BytecodeApi.Wpf.Converters;
 /// <summary>
 /// Represents the converter that converts <see cref="Enum" /> values. The <see cref="Convert(Enum)" /> method returns an <see cref="object" /> based on the specified <see cref="EnumConverterMethod" /> parameter.
 /// </summary>
-public sealed class EnumConverter : ConverterBase<Enum?>
+public sealed class EnumConverter : ConverterBase<Enum>
 {
 	/// <summary>
 	/// Specifies the method that is used to convert the <see cref="Enum" /> value.

@@ -3,7 +3,7 @@
 /// <summary>
 /// Represents the converter that converts the <see cref="Type" /> of <see cref="object" /> values. The <see cref="Convert(object, Type)" /> method returns an <see cref="object" /> based on the specified <see cref="TypeConverterMethod" /> and <see cref="BooleanConverterMethod" /> parameters.
 /// </summary>
-public sealed class TypeConverter : ConverterBase<object?, Type?>
+public sealed class TypeConverter : ConverterBase<object, Type>
 {
 	/// <summary>
 	/// Specifies the method that is used to convert the <see cref="Type" /> of the <see cref="object" /> value.
@@ -49,6 +49,6 @@ public sealed class TypeConverter : ConverterBase<object?, Type?>
 			_ => throw Throw.InvalidEnumArgument(nameof(Method), Method)
 		};
 
-		return new BooleanConverter(Result).Convert(result);
+		return new BooleanConverter(Result).Convert(result, null);
 	}
 }

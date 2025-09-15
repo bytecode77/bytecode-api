@@ -96,7 +96,7 @@ public readonly struct GlobalAtom : IAtom, IEquatable<GlobalAtom>
 	/// </returns>
 	public override int GetHashCode()
 	{
-		return CSharp.GetHashCode(Value, Name);
+		return HashCode.Combine(Value, Name);
 	}
 
 	/// <summary>

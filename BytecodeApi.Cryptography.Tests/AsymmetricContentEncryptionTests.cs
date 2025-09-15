@@ -11,7 +11,7 @@ public class AsymmetricContentEncryptionTests
 	{
 		for (int i = 1; i <= 200; i++)
 		{
-			byte[] data = MathEx.Random.NextBytes(i);
+			byte[] data = Random.Shared.GetBytes(i);
 			AsymmetricEncryption.GenerateKeyPair(out RSAParameters publicKey, out RSAParameters privateKey);
 
 			byte[] encrypted = AsymmetricContentEncryption.Encrypt(data, publicKey);

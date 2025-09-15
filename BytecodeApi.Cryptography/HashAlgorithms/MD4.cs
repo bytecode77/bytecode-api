@@ -12,7 +12,7 @@ public sealed class MD4 : HashAlgorithm
 	private readonly byte[] Buffer;
 	private readonly uint[] Count;
 	private readonly uint[] X;
-	private byte[] Digest;
+	private readonly byte[] Digest;
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="MD4" /> class.
@@ -227,7 +227,7 @@ public sealed class MD4 : HashAlgorithm
 		}
 		else
 		{
-			return new byte[0];
+			return Array.Empty<byte>();
 		}
 	}
 }

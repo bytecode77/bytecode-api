@@ -89,9 +89,10 @@ public static class DateTimeEx
 
 		double difference = 0;
 
-		if (a.Day - 1 == b.Day)
+		if (Math.Min(a.Day, b.GetDaysInMonth()) - 1 == b.Day)
 		{
-			// Full month with day offset (e.g. as 16.03. - 15.06.)
+			// Full month with 1 day offset (e.g. 16.03. - 15.06.)
+			// This includes "end of month days" (e.g. 30.01. - 27.02. is two full months)
 			difference = GetMonthsDifference(a, b);
 		}
 		else
@@ -163,7 +164,7 @@ public static class DateTimeEx
 	public static int? ToUnixTimeStamp(DateTime dateTime, DateTimeKind kind)
 	{
 		double seconds = (dateTime - new DateTime(1970, 1, 1, 0, 0, 0, kind)).TotalSeconds;
-		return seconds > 0 && seconds <= int.MaxValue ? (int)seconds : null;
+		return seconds is > 0 and <= int.MaxValue ? (int)seconds : null;
 	}
 	/// <summary>
 	/// Calculates the age from a birthday.

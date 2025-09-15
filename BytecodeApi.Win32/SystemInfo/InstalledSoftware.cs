@@ -26,7 +26,7 @@ public sealed class InstalledSoftware
 	/// </returns>
 	public static InstalledSoftware Load()
 	{
-		List<InstalledSoftwareInfo> entries = new();
+		List<InstalledSoftwareInfo> entries = [];
 
 		ReadEntries(Registry.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\Uninstall");
 		ReadEntries(Registry.LocalMachine, @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall");

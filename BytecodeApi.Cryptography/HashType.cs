@@ -44,6 +44,12 @@ public enum HashType
 	[Description("MD5")]
 	MD5,
 	/// <summary>
+	/// The RIPEMD-128 algorithm is used.
+	/// <para>A <see cref="string.Empty" /> hashed by this algorithm will return "cdf26213a150dc3ecb610f18f6b38b46".</para>
+	/// </summary>
+	[Description("RIPEMD-128")]
+	RIPEMD128,
+	/// <summary>
 	/// The RIPEMD-160 algorithm is used.
 	/// <para>A <see cref="string.Empty" /> hashed by this algorithm will return "9c1185a5c5e9fc54612808977ee8f548b2258d31".</para>
 	/// </summary>

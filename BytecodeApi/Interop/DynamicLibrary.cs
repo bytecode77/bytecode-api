@@ -76,7 +76,7 @@ public sealed class DynamicLibrary
 
 		typeBuilder
 			.DefinePInvokeMethod(name, DllName, name, MethodAttributes.Static | MethodAttributes.Public, CallingConventions.Standard, returnType, parameterTypes, callingConvention, charSet)
-			.SetCustomAttribute(new(typeof(DllImportAttribute).GetConstructor(new[] { typeof(string) })!, new[] { DllName }));
+			.SetCustomAttribute(new(typeof(DllImportAttribute).GetConstructor([typeof(string)])!, [DllName]));
 
 		return typeBuilder
 			.CreateType()
