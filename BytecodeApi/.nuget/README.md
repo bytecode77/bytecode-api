@@ -8,6 +8,16 @@ See: [Examples](https://github.com/bytecode77/bytecode-api/blob/master/BytecodeA
 
 ## Changelog
 
+### 4.0.0 (15.09.2025)
+
+* **change:** Targeting .NET 9.0
+* **new:** `StringLengthJsonConverter` class
+* **new:** `BytecodeApi.Data.ObservableTuple` class
+* **new:** `BytecodeApi.Threading.CriticalSection` class
+* **removed:** `CSharp.GetHashCode` method
+* **removed:** `MathEx.Random` property
+* **removed:** `Network.DisableCertificateValidation` and `EnableAllSecurityProtocols` methods.
+
 ### 3.0.6 (28.11.2024)
 
 * **new:** `CSharp.RunTask` method

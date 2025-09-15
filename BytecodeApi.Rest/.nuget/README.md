@@ -8,6 +8,15 @@ See: [Examples](https://github.com/bytecode77/bytecode-api/blob/master/BytecodeA
 
 ## Changelog
 
+### 4.0.0 (15.09.2025)
+
+* **change:** Targeting .NET 9.0
+* **new:** Server-sent events using `RestRequest.ReadEvents`, method
+* **new:** `RestClient.DisableCertificateValidation` property
+* **new:** `RestRequest.RestClient`, `HttpMethod`, and `Url` properties
+* **new:** `RestRequest.Execute`, method
+* **new:** `BytecodeApi.Rest.GenericRestClient` class
+
 ### 3.0.3 (28.11.2024)
 
 * **new:** `RestRequest.Header` method

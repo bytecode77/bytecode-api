@@ -201,6 +201,11 @@ foreach(TcpViewEntry entry in tcp.Entries)
 
 ## Changelog
 
+### 4.0.0 (15.09.2025)
+
+* **change:** Targeting .NET 9.0
+* **new:** `OperatingSystemInfo.JavaVersion` property
+
 ### 3.0.2 (28.11.2024)
 
 * **new:** Several methods in `Desktop` class

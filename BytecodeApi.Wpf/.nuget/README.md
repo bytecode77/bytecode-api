@@ -8,6 +8,14 @@ See: [Examples](https://github.com/bytecode77/bytecode-api/blob/master/BytecodeA
 
 ## Changelog
 
+### 4.0.0 (15.09.2025)
+
+* **change:** Targeting .NET 9.0
+* **new:** `FileDialogs` method overloads
+* **new:** `BooleanConverterMethod.GridLength*` methods
+* **new:** `StringConverterMethod.Split*` methods
+* **new:** `ThicknessConverterMethod.Add*` methods
+
 ### 3.0.5 (28.11.2024)
 
 * **new:** `Dialog.Icon` method

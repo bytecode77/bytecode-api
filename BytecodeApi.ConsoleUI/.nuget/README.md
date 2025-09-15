@@ -8,6 +8,10 @@ See: [Examples](https://github.com/bytecode77/bytecode-api/blob/master/BytecodeA
 
 ## Changelog
 
+### 4.0.0 (15.09.2025)
+
+* **change:** Targeting .NET 9.0
+
 ### 3.0.1 (10.12.2023)
 
 * **new:** `ConsoleWriter.WriteLine` method overload with no parameters
