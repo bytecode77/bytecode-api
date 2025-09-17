@@ -7,7 +7,7 @@
 		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
 		<Platforms>AnyCPU;x86;x64</Platforms>
 	</PropertyGroup>
-	<ItemGroup Condition="'$(Configuration)' != 'Release'">
+	<ItemGroup>
 		<ProjectReference Include="..\BytecodeApi\BytecodeApi.csproj" />
 		<ProjectReference Include="..\BytecodeApi.CommandLineParser\BytecodeApi.CommandLineParser.csproj" />
 		<ProjectReference Include="..\BytecodeApi.ConsoleUI\BytecodeApi.ConsoleUI.csproj" />
@@ -23,22 +23,5 @@
 		<ProjectReference Include="..\BytecodeApi.Win32\BytecodeApi.Win32.csproj" />
 		<ProjectReference Include="..\BytecodeApi.Wmi\BytecodeApi.Wmi.csproj" />
 		<ProjectReference Include="..\BytecodeApi.Wpf\BytecodeApi.Wpf.csproj" />
-	</ItemGroup>
-	<ItemGroup Condition="'$(Configuration)' == 'Release'">
-		<PackageReference Include="BytecodeApi" Version="4.*" />
-		<PackageReference Include="BytecodeApi.CommandLineParser" Version="4.*" />
-		<PackageReference Include="BytecodeApi.ConsoleUI" Version="4.*" />
-		<PackageReference Include="BytecodeApi.Cryptography" Version="4.*" />
-		<PackageReference Include="BytecodeApi.CsvParser" Version="4.*" />
-		<PackageReference Include="BytecodeApi.IniParser" Version="4.*" />
-		<PackageReference Include="BytecodeApi.LanguageGenerator" Version="4.*" />
-		<PackageReference Include="BytecodeApi.Lexer" Version="4.*" />
-		<PackageReference Include="BytecodeApi.Penetration" Version="4.*" />
-		<PackageReference Include="BytecodeApi.PEParser" Version="4.*" />
-		<PackageReference Include="BytecodeApi.PEResources" Version="4.*" />
-		<PackageReference Include="BytecodeApi.Rest" Version="4.*" />
-		<PackageReference Include="BytecodeApi.Win32" Version="4.*" />
-		<PackageReference Include="BytecodeApi.Wmi" Version="4.*" />
-		<PackageReference Include="BytecodeApi.Wpf" Version="4.*" />
 	</ItemGroup>
 </Project>
