@@ -1,0 +1,74 @@
+﻿<ResourceDictionary
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:ui="http://schemas.bytecode77.com/2023/xaml/presentation"
+	xmlns:ctrl="clr-namespace:BytecodeApi.Wpf.Cui.Controls">
+	<Style TargetType="{x:Type ctrl:UiDockingTabControl}" BasedOn="{StaticResource {x:Type TabControl}}">
+		<Setter Property="Padding" Value="0" />
+		<Setter Property="BorderThickness" Value="0" />
+		<Setter Property="Background" Value="White" />
+		<Setter Property="Focusable" Value="True" />
+		<Setter Property="IsTabStop" Value="False" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type ctrl:UiDockingTabControl}">
+					<Border BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" SnapsToDevicePixels="True">
+						<DockPanel>
+							<Border Name="HeaderBorder" DockPanel.Dock="Top" MinHeight="21" Padding="4,2,0,0" Background="#40568d">
+								<ContentPresenter Name="Header" Content="{Binding SelectedItem.Header, RelativeSource={RelativeSource TemplatedParent}}" TextElement.Foreground="White" ui:TextBlockService.TextTrimming="CharacterEllipsis" />
+							</Border>
+							<Border Background="Transparent" SnapsToDevicePixels="True">
+								<DockPanel>
+									<Grid DockPanel.Dock="Bottom">
+										<TabPanel Name="TabPanel" IsItemsHost="True" HorizontalAlignment="Left" />
+									</Grid>
+									<Border Background="{TemplateBinding Background}">
+										<Border Padding="{TemplateBinding Padding}" Background="{Binding SelectedItem.Background, RelativeSource={RelativeSource TemplatedParent}}">
+											<ContentPresenter ContentSource="SelectedContent" Margin="{Binding SelectedItem.Padding, RelativeSource={RelativeSource TemplatedParent}}" />
+										</Border>
+									</Border>
+								</DockPanel>
+							</Border>
+						</DockPanel>
+					</Border>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsKeyboardFocusWithin" Value="True">
+							<Setter TargetName="HeaderBorder" Property="Background" Value="#f5cc84" />
+							<Setter TargetName="Header" Property="TextElement.Foreground" Value="Black" />
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+		<Style.Resources>
+			<Style TargetType="{x:Type TabItem}">
+				<Setter Property="Margin" Value="0,0,2,0" />
+				<Setter Property="Padding" Value="0" />
+				<Setter Property="Background" Value="Transparent" />
+				<Setter Property="Template">
+					<Setter.Value>
+						<ControlTemplate TargetType="{x:Type TabItem}">
+							<Border Name="Border" Height="20" Padding="5,0" BorderThickness="0,1" BorderBrush="Transparent" Background="#40568d">
+								<ContentPresenter Name="Header" ContentSource="Header" VerticalAlignment="Center" RecognizesAccessKey="True" TextElement.Foreground="#d9e1fa" />
+							</Border>
+							<ControlTemplate.Triggers>
+								<Trigger Property="IsMouseOver" Value="True">
+									<Setter TargetName="Header" Property="TextElement.Foreground" Value="Black" />
+									<Setter TargetName="Border" Property="Background" Value="#bbc6f1" />
+								</Trigger>
+								<Trigger Property="IsSelected" Value="True">
+									<Setter TargetName="Header" Property="TextElement.Foreground" Value="Black" />
+									<Setter TargetName="Border" Property="BorderBrush" Value="#f7f9fe" />
+									<Setter TargetName="Border" Property="Background" Value="#f7f9fe" />
+								</Trigger>
+								<Trigger Property="IsEnabled" Value="False">
+									<Setter TargetName="Header" Property="TextElement.Foreground" Value="#757575" />
+								</Trigger>
+							</ControlTemplate.Triggers>
+						</ControlTemplate>
+					</Setter.Value>
+				</Setter>
+			</Style>
+		</Style.Resources>
+	</Style>
+</ResourceDictionary>

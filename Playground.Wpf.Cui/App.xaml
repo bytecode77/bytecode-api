@@ -1,0 +1,17 @@
+﻿<Application
+	x:Class="Playground.Wpf.Cui.App"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:local="clr-namespace:Playground.Wpf.Cui"
+	xmlns:ui="http://schemas.bytecode77.com/2023/xaml/presentation"
+	xmlns:cui="http://schemas.bytecode77.com/2025/xaml/cui"
+	StartupUri="MainWindow.xaml" Startup="Application_Startup"
+	xmlns:sys="clr-namespace:System;assembly=mscorlib">
+	<Application.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="pack://application:,,,/BytecodeApi.Wpf.Cui;component/Themes/Controls.xaml" />
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
+	</Application.Resources>
+</Application>

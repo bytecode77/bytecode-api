@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+  <defs>
+    <style>.canvas{fill: none; opacity: 0;}.light-defaultgrey{fill: #212121; opacity: 1;}</style>
+  </defs>
+  <title>IconLightUndo</title>
+  <g id="canvas">
+    <path class="canvas" d="M16,16H0V0H16Z" />
+    <path class="canvas" d="M16,16H0V0H16Z" />
+  </g>
+  <g id="level-1">
+    <path class="light-defaultgrey" d="M13.973,5.689A4.571,4.571,0,0,1,12.85,8.854l-6,6-.707-.707,6-6a3.61,3.61,0,0,0,.83-2.454,3.674,3.674,0,0,0-1.028-2.639,3.892,3.892,0,0,0-5.1-.2L3.705,6H8V7H2.5L2,6.5V1H3V5.291L6.143,2.148a4.926,4.926,0,0,1,6.478.17A4.677,4.677,0,0,1,13.973,5.689Z" />
+  </g>
+</svg>

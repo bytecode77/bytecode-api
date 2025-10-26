@@ -1,0 +1,69 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net9.0-windows</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<UseWPF>true</UseWPF>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<GeneratePackageOnBuild Condition="'$(Configuration)' == 'Release'">True</GeneratePackageOnBuild>
+	</PropertyGroup>
+	<PropertyGroup>
+		<Version>4.0.0</Version>
+		<AssemblyVersion>4.0.0</AssemblyVersion>
+		<FileVersion>4.0.0</FileVersion>
+	</PropertyGroup>
+	<PropertyGroup>
+		<Product>BytecodeApi.Wpf.Cui</Product>
+		<Title>BytecodeApi.Wpf.Cui</Title>
+		<Description>Bytecode77 WPF common UI.</Description>
+		<Company>bytecode77</Company>
+		<Authors>Martin Fischer</Authors>
+		<Copyright>© bytecode77, 2025.</Copyright>
+	</PropertyGroup>
+	<PropertyGroup>
+		<PackageId>BytecodeApi.Wpf.Cui</PackageId>
+		<PackageTags>wpf cui</PackageTags>
+		<PackageProjectUrl>https://bytecode77.com/bytecode-api</PackageProjectUrl>
+		<RepositoryType>git</RepositoryType>
+		<RepositoryUrl>https://github.com/bytecode77/bytecode-api</RepositoryUrl>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageReadmeFile>.nuget\README.md</PackageReadmeFile>
+		<PackageIcon>.nuget\PackageIcon.png</PackageIcon>
+		<PackageOutputPath>../$Build</PackageOutputPath>
+	</PropertyGroup>
+	<ItemGroup Condition="'$(Configuration)' != 'Release'">
+		<ProjectReference Include="..\BytecodeApi\BytecodeApi.csproj" />
+		<ProjectReference Include="..\BytecodeApi.Wpf\BytecodeApi.Wpf.csproj" />
+	</ItemGroup>
+	<ItemGroup Condition="'$(Configuration)' == 'Release'">
+		<PackageReference Include="BytecodeApi" Version="4.*" />
+		<PackageReference Include="BytecodeApi.Wpf" Version="4.*" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="SharpVectors" Version="1.8.5" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Include=".nuget\README.md" Pack="true" PackagePath=".nuget\" />
+		<None Include="..\.nuget\PackageIcon.png" Link=".nuget\PackageIcon.png" Pack="true" PackagePath=".nuget\" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Remove="Resources\Icons\Calendar.svg" />
+		<None Remove="Resources\Icons\Cancel.svg" />
+		<None Remove="Resources\Icons\Copy.svg" />
+		<None Remove="Resources\Icons\Cut.svg" />
+		<None Remove="Resources\Icons\PasswordPreview.svg" />
+		<None Remove="Resources\Icons\Paste.svg" />
+		<None Remove="Resources\Icons\Redo.svg" />
+		<None Remove="Resources\Icons\Undo.svg" />
+	</ItemGroup>
+	<ItemGroup>
+		<Resource Include="Resources\Icons\Calendar.svg" />
+		<Resource Include="Resources\Icons\Cancel.svg" />
+		<Resource Include="Resources\Icons\Copy.svg" />
+		<Resource Include="Resources\Icons\Cut.svg" />
+		<Resource Include="Resources\Icons\PasswordPreview.svg" />
+		<Resource Include="Resources\Icons\Paste.svg" />
+		<Resource Include="Resources\Icons\Redo.svg" />
+		<Resource Include="Resources\Icons\Undo.svg" />
+	</ItemGroup>
+</Project>

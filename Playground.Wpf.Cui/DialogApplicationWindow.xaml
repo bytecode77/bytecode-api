@@ -1,0 +1,137 @@
+<cui:UiApplicationWindow
+	x:Class="Playground.Wpf.Cui.DialogApplicationWindow"
+	x:Name="dialogApplicationWindow"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:local="clr-namespace:Playground.Wpf.Cui"
+	xmlns:ui="http://schemas.bytecode77.com/2023/xaml/presentation"
+	xmlns:cui="http://schemas.bytecode77.com/2025/xaml/cui"
+	DataContext="{Binding ViewModel, ElementName=dialogApplicationWindow}"
+	Width="600" Height="300" Padding="10" WindowStartupLocation="CenterOwner" Background="#f0f0f0">
+	<cui:UiApplicationWindow.Style>
+		<Style TargetType="{x:Type cui:UiApplicationWindow}">
+			<Style.Triggers>
+				<DataTrigger Binding="{Binding ShowTitle}" Value="True">
+					<Setter Property="Title" Value="Dialog ApplicationWindow"/>
+				</DataTrigger>
+				<DataTrigger Binding="{Binding ShowIcon}" Value="True">
+					<Setter Property="IconControl">
+						<Setter.Value>
+							<Image Source="/Playground.Wpf.Cui;component/Resources/Images/WindowLogo.png" Width="20" Height="20" />
+						</Setter.Value>
+					</Setter>
+				</DataTrigger>
+				<DataTrigger Binding="{Binding ShowMenu}" Value="True">
+					<Setter Property="Menu">
+						<Setter.Value>
+							<Menu>
+								<MenuItem Header="_File">
+									<MenuItem Header="_New" InputGestureText="Ctrl+N">
+										<MenuItem.Icon>
+											<cui:UiSvgImage Source="/Playground.Wpf.Cui;component/Resources/Icons/NewItem.svg" Stretch="None" />
+										</MenuItem.Icon>
+									</MenuItem>
+									<MenuItem Header="_Open" InputGestureText="Ctrl+O">
+										<MenuItem.Icon>
+											<cui:UiSvgImage Source="/Playground.Wpf.Cui;component/Resources/Icons/OpenFolder.svg" Stretch="None" />
+										</MenuItem.Icon>
+									</MenuItem>
+									<Separator />
+									<MenuItem Header="_Save">
+										<MenuItem.Icon>
+											<cui:UiSvgImage Source="/Playground.Wpf.Cui;component/Resources/Icons/Save.svg" Stretch="None" />
+										</MenuItem.Icon>
+									</MenuItem>
+									<MenuItem Header="Save _All">
+										<MenuItem.Icon>
+											<cui:UiSvgImage Source="/Playground.Wpf.Cui;component/Resources/Icons/SaveAll.svg" Stretch="None" />
+										</MenuItem.Icon>
+									</MenuItem>
+									<Separator />
+									<MenuItem Header="Recent _Files">
+										<MenuItem Header="1 C:\...\private\Password List.txt" />
+										<MenuItem Header="2 C:\...\drivers\etc\hosts" />
+										<MenuItem Header="3 C:\...\code\ntdll.asm" />
+									</MenuItem>
+									<Separator />
+									<MenuItem Header="E_xit" InputGestureText="Alt+F4" />
+								</MenuItem>
+								<MenuItem Header="_Edit">
+									<MenuItem Header="_Undo">
+										<MenuItem.Icon>
+											<cui:UiSvgImage Source="/Playground.Wpf.Cui;component/Resources/Icons/Undo.svg" Stretch="None" />
+										</MenuItem.Icon>
+									</MenuItem>
+									<MenuItem Header="_Redo" IsEnabled="False">
+										<MenuItem.Icon>
+											<cui:UiSvgImage Source="/Playground.Wpf.Cui;component/Resources/Icons/Redo.svg" Stretch="None" />
+										</MenuItem.Icon>
+									</MenuItem>
+									<Separator />
+									<MenuItem Header="Cu_t" IsEnabled="False">
+										<MenuItem.Icon>
+											<cui:UiSvgImage Source="/Playground.Wpf.Cui;component/Resources/Icons/Cut.svg" Stretch="None" />
+										</MenuItem.Icon>
+									</MenuItem>
+									<MenuItem Header="_Copy" IsEnabled="False">
+										<MenuItem.Icon>
+											<cui:UiSvgImage Source="/Playground.Wpf.Cui;component/Resources/Icons/Copy.svg" Stretch="None" />
+										</MenuItem.Icon>
+									</MenuItem>
+									<MenuItem Header="_Paste">
+										<MenuItem.Icon>
+											<cui:UiSvgImage Source="/Playground.Wpf.Cui;component/Resources/Icons/Paste.svg" Stretch="None" />
+										</MenuItem.Icon>
+									</MenuItem>
+									<Separator />
+									<MenuItem Header="Select _All" />
+								</MenuItem>
+							</Menu>
+						</Setter.Value>
+					</Setter>
+				</DataTrigger>
+				<DataTrigger Binding="{Binding ShowToolBar}" Value="True">
+					<Setter Property="ToolBarTray">
+						<Setter.Value>
+							<cui:UiToolBarTray>
+								<cui:UiToolBar>
+									<Button ToolTip="New (Ctrl+N)">
+										<cui:UiSvgImage Source="/Playground.Wpf.Cui;component/Resources/Icons/NewItem.svg" Stretch="None" />
+									</Button>
+									<Button ToolTip="Open (Ctrl+O)">
+										<cui:UiSvgImage Source="/Playground.Wpf.Cui;component/Resources/Icons/OpenFolder.svg" Stretch="None" />
+									</Button>
+									<Button ToolTip="Save (Ctrl+S)">
+										<cui:UiSvgImage Source="/Playground.Wpf.Cui;component/Resources/Icons/Save.svg" Stretch="None" />
+									</Button>
+									<Button ToolTip="Save All (Ctrl+Shift+S)">
+										<cui:UiSvgImage Source="/Playground.Wpf.Cui;component/Resources/Icons/SaveAll.svg" Stretch="None" />
+									</Button>
+								</cui:UiToolBar>
+							</cui:UiToolBarTray>
+						</Setter.Value>
+					</Setter>
+				</DataTrigger>
+				<DataTrigger Binding="{Binding ShowStatusBar}" Value="True">
+					<Setter Property="StatusBar">
+						<Setter.Value>
+							<StatusBar>
+								<StatusBarItem>
+									<TextBlock Text="StatusBar Item 1" />
+								</StatusBarItem>
+							</StatusBar>
+						</Setter.Value>
+					</Setter>
+				</DataTrigger>
+			</Style.Triggers>
+		</Style>
+	</cui:UiApplicationWindow.Style>
+	<StackPanel>
+		<cui:UiCheckBox IsChecked="{Binding ShowIcon}" Content="Icon" Margin="0,0,0,5" />
+		<cui:UiCheckBox IsChecked="{Binding ShowMenu}" Content="Menu" Margin="0,0,0,5" />
+		<cui:UiCheckBox IsChecked="{Binding ShowTitle}" Content="Title" Margin="0,0,0,5" />
+		<cui:UiCheckBox IsChecked="{Binding ShowToolBar}" Content="ToolBar" Margin="0,0,0,5" />
+		<cui:UiCheckBox IsChecked="{Binding ShowStatusBar}" Content="StatusBar" Margin="0,0,0,10" />
+		<cui:UiComboBox ItemsSource="{ui:Type {x:Type ResizeMode}, EnumValues}" SelectedValue="{Binding ResizeMode}" Width="150" HorizontalAlignment="Left" />
+	</StackPanel>
+</cui:UiApplicationWindow>

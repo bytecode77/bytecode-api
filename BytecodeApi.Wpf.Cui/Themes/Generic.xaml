@@ -1,0 +1,42 @@
+﻿<ResourceDictionary
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:ui="http://schemas.bytecode77.com/2023/xaml/presentation"
+	xmlns:ctrl="clr-namespace:BytecodeApi.Wpf.Cui.Controls">
+	<ResourceDictionary.MergedDictionaries>
+		<ResourceDictionary Source="/BytecodeApi.Wpf.Cui;component/Controls/UiApplicationTabControl.xaml" />
+		<ResourceDictionary Source="/BytecodeApi.Wpf.Cui;component/Controls/UiApplicationWindow.xaml" />
+		<ResourceDictionary Source="/BytecodeApi.Wpf.Cui;component/Controls/UiBusyIndicator.xaml" />
+		<ResourceDictionary Source="/BytecodeApi.Wpf.Cui;component/Controls/UiButton.xaml" />
+		<ResourceDictionary Source="/BytecodeApi.Wpf.Cui;component/Controls/UiCheckBox.xaml" />
+		<ResourceDictionary Source="/BytecodeApi.Wpf.Cui;component/Controls/UiComboBox.xaml" />
+		<ResourceDictionary Source="/BytecodeApi.Wpf.Cui;component/Controls/UiDataGrid.xaml" />
+		<ResourceDictionary Source="/BytecodeApi.Wpf.Cui;component/Controls/UiDatePicker.xaml" />
+		<ResourceDictionary Source="/BytecodeApi.Wpf.Cui;component/Controls/UiDockingPanel.xaml" />
+		<ResourceDictionary Source="/BytecodeApi.Wpf.Cui;component/Controls/UiDockingTabControl.xaml" />
+		<ResourceDictionary Source="/BytecodeApi.Wpf.Cui;component/Controls/UiDropDownButton.xaml" />
+		<ResourceDictionary Source="/BytecodeApi.Wpf.Cui;component/Controls/UiExpander.xaml" />
+		<ResourceDictionary Source="/BytecodeApi.Wpf.Cui;component/Controls/UiFieldSet.xaml" />
+		<ResourceDictionary Source="/BytecodeApi.Wpf.Cui;component/Controls/UiFieldSetItem.xaml" />
+		<ResourceDictionary Source="/BytecodeApi.Wpf.Cui;component/Controls/UiFlatButton.xaml" />
+		<ResourceDictionary Source="/BytecodeApi.Wpf.Cui;component/Controls/UiGridSplitter.xaml" />
+		<ResourceDictionary Source="/BytecodeApi.Wpf.Cui;component/Controls/UiGroupBox.xaml" />
+		<ResourceDictionary Source="/BytecodeApi.Wpf.Cui;component/Controls/UiListBox.xaml" />
+		<ResourceDictionary Source="/BytecodeApi.Wpf.Cui;component/Controls/UiPasswordBox.xaml" />
+		<ResourceDictionary Source="/BytecodeApi.Wpf.Cui;component/Controls/UiProgressBar.xaml" />
+		<ResourceDictionary Source="/BytecodeApi.Wpf.Cui;component/Controls/UiPropertyGrid.xaml" />
+		<ResourceDictionary Source="/BytecodeApi.Wpf.Cui;component/Controls/UiPropertyGridGroup.xaml" />
+		<ResourceDictionary Source="/BytecodeApi.Wpf.Cui;component/Controls/UiPropertyGridItem.xaml" />
+		<ResourceDictionary Source="/BytecodeApi.Wpf.Cui;component/Controls/UiRadioButton.xaml" />
+		<ResourceDictionary Source="/BytecodeApi.Wpf.Cui;component/Controls/UiSplitButton.xaml" />
+		<ResourceDictionary Source="/BytecodeApi.Wpf.Cui;component/Controls/UiSvgImage.xaml" />
+		<ResourceDictionary Source="/BytecodeApi.Wpf.Cui;component/Controls/UiTabControl.xaml" />
+		<ResourceDictionary Source="/BytecodeApi.Wpf.Cui;component/Controls/UiTextBox.xaml" />
+		<ResourceDictionary Source="/BytecodeApi.Wpf.Cui;component/Controls/UiToggleButton.xaml" />
+		<ResourceDictionary Source="/BytecodeApi.Wpf.Cui;component/Controls/UiToggleSwitch.xaml" />
+		<ResourceDictionary Source="/BytecodeApi.Wpf.Cui;component/Controls/UiToolBar.xaml" />
+		<ResourceDictionary Source="/BytecodeApi.Wpf.Cui;component/Controls/UiToolBarTray.xaml" />
+		<ResourceDictionary Source="/BytecodeApi.Wpf.Cui;component/Controls/UiTreeView.xaml" />
+		<ResourceDictionary Source="/BytecodeApi.Wpf.Cui;component/Controls/UiWindow.xaml" />
+	</ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>

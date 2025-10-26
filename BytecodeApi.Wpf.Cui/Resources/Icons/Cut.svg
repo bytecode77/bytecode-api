@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+  <defs>
+    <style>.canvas{fill: none; opacity: 0;}.light-defaultgrey{fill: #212121; opacity: 1;}.light-defaultgrey-10{fill: #212121; opacity: 0.1;}.cls-1{opacity:0.75;}</style>
+  </defs>
+  <title>IconLightCut</title>
+  <g id="canvas" class="canvas">
+    <path class="canvas" d="M16,16H0V0H16Z" />
+  </g>
+  <g id="level-1">
+    <g class="cls-1">
+      <path class="light-defaultgrey" d="M10.673,11.748l-.9.438L4.839,2.065,5.249.627Z" />
+      <path class="light-defaultgrey" d="M11.161,2.065,6.225,12.186l-.9-.438L10.751.627Z" />
+    </g>
+    <path class="light-defaultgrey-10" d="M6.5,13A1.5,1.5,0,1,1,5,11.5,1.5,1.5,0,0,1,6.5,13Zm6,0A1.5,1.5,0,1,1,11,11.5,1.5,1.5,0,0,1,12.5,13Z" />
+    <path class="light-defaultgrey" d="M5,11a2,2,0,1,0,2,2A2,2,0,0,0,5,11Zm0,3a1,1,0,1,1,1-1A1,1,0,0,1,5,14Zm6-3a2,2,0,1,0,2,2A2,2,0,0,0,11,11Zm0,3a1,1,0,1,1,1-1A1,1,0,0,1,11,14Z" />
+    <path class="light-defaultgrey" d="M9,7.5a1,1,0,1,1-1-1A1,1,0,0,1,9,7.5Z" />
+  </g>
+</svg>

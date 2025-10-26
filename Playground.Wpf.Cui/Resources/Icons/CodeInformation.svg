@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+  <defs>
+    <style>.canvas{fill: none; opacity: 0;}.light-blue{fill: #005dba; opacity: 1;}.white{fill: #ffffff; opacity: 1;}.light-defaultgrey{fill: #212121; opacity: 1;}</style>
+  </defs>
+  <title>CodeInformation</title>
+  <g id="canvas">
+    <path class="canvas" d="M16,16H0V0H16Z" />
+  </g>
+  <g id="level-1">
+    <path class="light-blue" d="M4.5,16a4,4,0,1,1,4-4A4,4,0,0,1,4.5,16Z" />
+    <path class="white" d="M4,12H5v2H4Zm0-1H5V10H4Z" />
+    <path class="light-defaultgrey" d="M4.5,7A4.919,4.919,0,0,1,7,7.67V7Zm-.1.01A.34.34,0,0,1,4.5,7H4.34A.127.127,0,0,1,4.4,7.01ZM8,7V8h6V7ZM3,4V5H8V4ZM9,4V5h6V4ZM2,1V2H8V1ZM9,1V2h4V1Z" />
+  </g>
+</svg>

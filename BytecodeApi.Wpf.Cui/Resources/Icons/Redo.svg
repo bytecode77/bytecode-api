@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+  <defs>
+    <style>.canvas{fill: none; opacity: 0;}.light-defaultgrey{fill: #212121; opacity: 1;}</style>
+  </defs>
+  <title>IconLightRedo</title>
+  <g id="canvas">
+    <path class="canvas" d="M0,0H16V16H0Z" />
+  </g>
+  <g id="level-1">
+    <path class="light-defaultgrey" d="M3.379,2.318a4.926,4.926,0,0,1,6.478-.17L13,5.291V1h1V6.5l-.5.5H8V6h4.3L9.15,2.855a3.892,3.892,0,0,0-5.1.2A3.674,3.674,0,0,0,3.027,5.694a3.61,3.61,0,0,0,.83,2.454l6,6-.707.707-6-6A4.571,4.571,0,0,1,2.027,5.689,4.677,4.677,0,0,1,3.379,2.318Z" />
+  </g>
+</svg>

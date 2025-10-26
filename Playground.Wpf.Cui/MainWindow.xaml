@@ -1,0 +1,734 @@
+<cui:UiApplicationWindow
+	x:Class="Playground.Wpf.Cui.MainWindow"
+	x:Name="mainWindow"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:local="clr-namespace:Playground.Wpf.Cui"
+	xmlns:ui="http://schemas.bytecode77.com/2023/xaml/presentation"
+	xmlns:cui="http://schemas.bytecode77.com/2025/xaml/cui"
+	xmlns:model="clr-namespace:Playground.Wpf.Cui.Model"
+	xmlns:sys="clr-namespace:System;assembly=mscorlib"
+	DataContext="{Binding ViewModel, ElementName=mainWindow}"
+	Title="BytecodeiApi Wpf Common UI" Width="1700" Height="900" WindowStartupLocation="CenterScreen" ResizeMode="CanResizeWithGrip">
+	<cui:UiApplicationWindow.Resources>
+		<CollectionViewSource x:Key="CustomersCollection" Source="{Binding Customers}">
+			<CollectionViewSource.GroupDescriptions>
+				<PropertyGroupDescription PropertyName="Country" />
+			</CollectionViewSource.GroupDescriptions>
+		</CollectionViewSource>
+	</cui:UiApplicationWindow.Resources>
+	<cui:UiApplicationWindow.IconControl>
+		<Image Source="/Playground.Wpf.Cui;component/Resources/Images/WindowLogo.png" Width="20" Height="20" />
+	</cui:UiApplicationWindow.IconControl>
+	<cui:UiApplicationWindow.Menu>
+		<Menu>
+			<MenuItem Header="_File">
+				<MenuItem Header="_New" InputGestureText="Ctrl+N">
+					<MenuItem.Icon>
+						<cui:UiSvgImage Source="/Playground.Wpf.Cui;component/Resources/Icons/NewItem.svg" Stretch="None" />
+					</MenuItem.Icon>
+				</MenuItem>
+				<MenuItem Header="_Open" InputGestureText="Ctrl+O">
+					<MenuItem.Icon>
+						<cui:UiSvgImage Source="/Playground.Wpf.Cui;component/Resources/Icons/OpenFolder.svg" Stretch="None" />
+					</MenuItem.Icon>
+				</MenuItem>
+				<Separator />
+				<MenuItem Header="_Save">
+					<MenuItem.Icon>
+						<cui:UiSvgImage Source="/Playground.Wpf.Cui;component/Resources/Icons/Save.svg" Stretch="None" />
+					</MenuItem.Icon>
+				</MenuItem>
+				<MenuItem Header="Save _All">
+					<MenuItem.Icon>
+						<cui:UiSvgImage Source="/Playground.Wpf.Cui;component/Resources/Icons/SaveAll.svg" Stretch="None" />
+					</MenuItem.Icon>
+				</MenuItem>
+				<Separator />
+				<MenuItem Header="Recent _Files">
+					<MenuItem Header="1 C:\...\private\Password List.txt" />
+					<MenuItem Header="2 C:\...\drivers\etc\hosts" />
+					<MenuItem Header="3 C:\...\code\ntdll.asm" />
+				</MenuItem>
+				<Separator />
+				<MenuItem Header="E_xit" InputGestureText="Alt+F4" />
+			</MenuItem>
+			<MenuItem Header="_Edit">
+				<MenuItem Header="_Undo">
+					<MenuItem.Icon>
+						<cui:UiSvgImage Source="/Playground.Wpf.Cui;component/Resources/Icons/Undo.svg" Stretch="None" />
+					</MenuItem.Icon>
+				</MenuItem>
+				<MenuItem Header="_Redo" IsEnabled="False">
+					<MenuItem.Icon>
+						<cui:UiSvgImage Source="/Playground.Wpf.Cui;component/Resources/Icons/Redo.svg" Stretch="None" />
+					</MenuItem.Icon>
+				</MenuItem>
+				<Separator />
+				<MenuItem Header="Cu_t" IsEnabled="False">
+					<MenuItem.Icon>
+						<cui:UiSvgImage Source="/Playground.Wpf.Cui;component/Resources/Icons/Cut.svg" Stretch="None" />
+					</MenuItem.Icon>
+				</MenuItem>
+				<MenuItem Header="_Copy" IsEnabled="False">
+					<MenuItem.Icon>
+						<cui:UiSvgImage Source="/Playground.Wpf.Cui;component/Resources/Icons/Copy.svg" Stretch="None" />
+					</MenuItem.Icon>
+				</MenuItem>
+				<MenuItem Header="_Paste">
+					<MenuItem.Icon>
+						<cui:UiSvgImage Source="/Playground.Wpf.Cui;component/Resources/Icons/Paste.svg" Stretch="None" />
+					</MenuItem.Icon>
+				</MenuItem>
+				<Separator />
+				<MenuItem Header="Select _All" />
+			</MenuItem>
+			<MenuItem Header="_Build">
+				<MenuItem Header="_Build Solution">
+					<MenuItem.Icon>
+						<cui:UiSvgImage Source="/Playground.Wpf.Cui;component/Resources/Icons/BuildSolution.svg" Stretch="None" />
+					</MenuItem.Icon>
+				</MenuItem>
+				<MenuItem Header="_Rebuild Solution" />
+				<MenuItem Header="_Clean Solution" />
+				<Separator />
+				<MenuItem Header="Run Tests" IsCheckable="True" IsChecked="True" />
+				<Separator />
+				<MenuItem Header="Ba_tch Build..." />
+				<MenuItem Header="C_onfiguration Manager..." />
+			</MenuItem>
+		</Menu>
+	</cui:UiApplicationWindow.Menu>
+	<cui:UiApplicationWindow.ToolBarTray>
+		<cui:UiToolBarTray>
+			<cui:UiToolBar>
+				<cui:UiSplitButton ToolTip="Navigate Backward (Ctrl+-)">
+					<cui:UiSvgImage Source="/Playground.Wpf.Cui;component/Resources/Icons/Backwards.svg" Stretch="None" />
+					<cui:UiSplitButton.DropDownContent>
+						<ContextMenu>
+							<MenuItem Header="ntdll.asm: proc near" IsChecked="True" IsCheckable="True" />
+							<MenuItem Header="ntdll.asm: syscal    ; low latency syscall" IsCheckable="True" />
+							<MenuItem Header="ntdll.asm: ; __int64" IsCheckable="True" />
+						</ContextMenu>
+					</cui:UiSplitButton.DropDownContent>
+				</cui:UiSplitButton>
+				<Button ToolTip="Navigate Forward (Ctrl+Shift+-)" IsEnabled="False">
+					<cui:UiSvgImage Source="/Playground.Wpf.Cui;component/Resources/Icons/Forwards.svg" Stretch="None" />
+				</Button>
+				<Separator />
+				<Button ToolTip="New (Ctrl+N)">
+					<cui:UiSvgImage Source="/Playground.Wpf.Cui;component/Resources/Icons/NewItem.svg" Stretch="None" />
+				</Button>
+				<Button ToolTip="Open (Ctrl+O)">
+					<cui:UiSvgImage Source="/Playground.Wpf.Cui;component/Resources/Icons/OpenFolder.svg" Stretch="None" />
+				</Button>
+				<Button ToolTip="Save (Ctrl+S)">
+					<cui:UiSvgImage Source="/Playground.Wpf.Cui;component/Resources/Icons/Save.svg" Stretch="None" />
+				</Button>
+				<Button ToolTip="Save All (Ctrl+Shift+S)">
+					<cui:UiSvgImage Source="/Playground.Wpf.Cui;component/Resources/Icons/SaveAll.svg" Stretch="None" />
+				</Button>
+				<Separator />
+				<Button ToolTip="Undo (Ctrl+Z)">
+					<cui:UiSvgImage Source="/Playground.Wpf.Cui;component/Resources/Icons/Undo.svg" Stretch="None" />
+				</Button>
+				<Button ToolTip="Redo (Ctrl+Y)" IsEnabled="False">
+					<cui:UiSvgImage Source="/Playground.Wpf.Cui;component/Resources/Icons/Redo.svg" Stretch="None" />
+				</Button>
+				<Separator />
+				<ComboBox SelectedIndex="0" Width="65">
+					<ComboBoxItem>Debug</ComboBoxItem>
+					<ComboBoxItem>Release</ComboBoxItem>
+					<ComboBoxItem>Configuration Manager...</ComboBoxItem>
+				</ComboBox>
+				<ComboBox SelectedIndex="0" Width="110">
+					<ComboBoxItem>Any CPU</ComboBoxItem>
+					<ComboBoxItem>x64</ComboBoxItem>
+					<ComboBoxItem>x86</ComboBoxItem>
+					<ComboBoxItem>Configuration Manager...</ComboBoxItem>
+				</ComboBox>
+			</cui:UiToolBar>
+		</cui:UiToolBarTray>
+	</cui:UiApplicationWindow.ToolBarTray>
+	<cui:UiApplicationWindow.StatusBar>
+		<StatusBar>
+			<StatusBarItem>
+				<TextBlock Text="Build succeeded" />
+			</StatusBarItem>
+			<StatusBarItem DockPanel.Dock="Right">
+				<TextBlock Text="Status Bar Item 3" />
+			</StatusBarItem>
+			<Separator DockPanel.Dock="Right" />
+			<StatusBarItem DockPanel.Dock="Right">
+				<TextBlock Text="Status Bar Item 2" />
+			</StatusBarItem>
+		</StatusBar>
+	</cui:UiApplicationWindow.StatusBar>
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*" />
+			<ColumnDefinition Width="7" />
+			<ColumnDefinition Width="300" />
+		</Grid.ColumnDefinitions>
+		<Grid>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="*" />
+				<RowDefinition Height="7" />
+				<RowDefinition Height="200" />
+			</Grid.RowDefinitions>
+			<cui:UiApplicationTabControl>
+				<TabItem Header="Basic Controls">
+					<ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+						<WrapPanel Margin="10">
+							<cui:UiGroupBox Header="Button" Margin="10" Padding="10">
+								<StackPanel>
+									<cui:UiButton Content="Button 1" HorizontalAlignment="Left" Margin="0,0,0,10" />
+									<cui:UiButton HorizontalAlignment="Left" Margin="0,0,0,10">
+										<DockPanel>
+											<cui:UiSvgImage Source="/Playground.Wpf.Cui;component/Resources/Icons/OpenFolder.svg" Stretch="None" Margin="0,0,5,0" />
+											<TextBlock Text="Button 2" />
+										</DockPanel>
+									</cui:UiButton>
+									<cui:UiButton HorizontalAlignment="Left" IsEnabled="False">
+										<DockPanel>
+											<cui:UiSvgImage Source="/Playground.Wpf.Cui;component/Resources/Icons/Save.svg" Stretch="None" Margin="0,0,5,0" />
+											<TextBlock Text="Disabled" />
+										</DockPanel>
+									</cui:UiButton>
+								</StackPanel>
+							</cui:UiGroupBox>
+							<cui:UiGroupBox Header="ToggleButton" Margin="10" Padding="10">
+								<StackPanel>
+									<cui:UiToggleButton Content="Toggle Button 1" HorizontalAlignment="Left" Margin="0,0,0,10" />
+									<cui:UiToggleButton HorizontalAlignment="Left" Margin="0,0,0,10">
+										<DockPanel>
+											<cui:UiSvgImage Source="/Playground.Wpf.Cui;component/Resources/Icons/OpenFolder.svg" Stretch="None" Margin="0,0,5,0" />
+											<TextBlock Text="Toggle Button 2" />
+										</DockPanel>
+									</cui:UiToggleButton>
+									<cui:UiToggleButton HorizontalAlignment="Left" IsEnabled="False">
+										<DockPanel>
+											<cui:UiSvgImage Source="/Playground.Wpf.Cui;component/Resources/Icons/Save.svg" Stretch="None" Margin="0,0,5,0" />
+											<TextBlock Text="Disabled" />
+										</DockPanel>
+									</cui:UiToggleButton>
+								</StackPanel>
+							</cui:UiGroupBox>
+							<cui:UiGroupBox Header="DropDownButton" Margin="10" Padding="10">
+								<StackPanel>
+									<cui:UiDropDownButton Content="DropDown Button" HorizontalAlignment="Left" Margin="0,0,0,10">
+										<cui:UiDropDownButton.DropDownContent>
+											<StackPanel Margin="10">
+												<TextBlock Text="DropDown Button with content inside a Popup" Margin="0,0,0,10" />
+												<cui:UiButton Content="OK" HorizontalAlignment="Right" cui:UiDropDownButton.CloseOnClick="True" />
+											</StackPanel>
+										</cui:UiDropDownButton.DropDownContent>
+									</cui:UiDropDownButton>
+									<cui:UiDropDownButton Content="DropDown Button with ContextMenu" Margin="0,0,0,10">
+										<cui:UiDropDownButton.DropDownContent>
+											<ContextMenu>
+												<MenuItem Header="Menu Item 1" />
+												<MenuItem Header="Menu Item 2" />
+												<MenuItem Header="Menu Item 3" />
+											</ContextMenu>
+										</cui:UiDropDownButton.DropDownContent>
+									</cui:UiDropDownButton>
+									<cui:UiDropDownButton Content="Disabled" Margin="0,0,0,10" IsEnabled="False">
+										<cui:UiDropDownButton.DropDownContent>
+											<FrameworkElement />
+										</cui:UiDropDownButton.DropDownContent>
+									</cui:UiDropDownButton>
+									<cui:UiSplitButton Content="Split Button" HorizontalAlignment="Left" Margin="0,0,0,10">
+										<cui:UiSplitButton.DropDownContent>
+											<StackPanel Margin="10">
+												<TextBlock Text="Split Button with content inside a Popup" Margin="0,0,0,10" />
+												<cui:UiButton Content="OK" HorizontalAlignment="Right" cui:UiSplitButton.CloseOnClick="True" />
+											</StackPanel>
+										</cui:UiSplitButton.DropDownContent>
+									</cui:UiSplitButton>
+									<cui:UiSplitButton Content="DropDown Button with ContextMenu" Margin="0,0,0,10">
+										<cui:UiSplitButton.DropDownContent>
+											<ContextMenu>
+												<MenuItem Header="Menu Item 1" />
+												<MenuItem Header="Menu Item 2" />
+												<MenuItem Header="Menu Item 3" />
+											</ContextMenu>
+										</cui:UiSplitButton.DropDownContent>
+									</cui:UiSplitButton>
+									<cui:UiSplitButton Content="DropDown Button with ContextMenu" IsEnabled="False">
+										<cui:UiSplitButton.DropDownContent>
+											<FrameworkElement />
+										</cui:UiSplitButton.DropDownContent>
+									</cui:UiSplitButton>
+								</StackPanel>
+							</cui:UiGroupBox>
+							<cui:UiGroupBox Header="ComboBox" Margin="10" Padding="10">
+								<StackPanel>
+									<cui:UiComboBox SelectedIndex="0" Width="150" Margin="0,0,0,5">
+										<ComboBoxItem>Item 1</ComboBoxItem>
+										<ComboBoxItem>Item 2</ComboBoxItem>
+										<ComboBoxItem>Item 3</ComboBoxItem>
+										<ComboBoxItem>Item 4</ComboBoxItem>
+									</cui:UiComboBox>
+									<cui:UiComboBox SelectedIndex="0" Width="150" IsEditable="True" Margin="0,0,0,5">
+										<ComboBoxItem>Editable Item 1</ComboBoxItem>
+										<ComboBoxItem>Editable Item 2</ComboBoxItem>
+										<ComboBoxItem>Editable Item 3</ComboBoxItem>
+										<ComboBoxItem>Editable Item 4</ComboBoxItem>
+									</cui:UiComboBox>
+									<cui:UiComboBox SelectedIndex="0" Width="150" IsEnabled="False" Margin="0,0,0,5">
+										<ComboBoxItem>Disabled</ComboBoxItem>
+									</cui:UiComboBox>
+									<cui:UiComboBox SelectedIndex="0" Width="150" IsEditable="True" IsEnabled="False">
+										<ComboBoxItem>Editable Disabled</ComboBoxItem>
+									</cui:UiComboBox>
+								</StackPanel>
+							</cui:UiGroupBox>
+							<cui:UiGroupBox Header="CheckBox" Margin="10" Padding="10">
+								<StackPanel>
+									<cui:UiCheckBox Content="Check Box 1" Margin="0,0,0,5" />
+									<cui:UiCheckBox Content="Check Box 2" Margin="0,0,0,5" IsChecked="True" />
+									<cui:UiCheckBox Content="Check Box 3" Margin="0,0,0,5" IsThreeState="True" IsChecked="{x:Null}" />
+									<cui:UiCheckBox Content="Disabled 1" Margin="0,0,0,5" IsEnabled="False" />
+									<cui:UiCheckBox Content="Disabled 2" Margin="0,0,0,5" IsThreeState="True" IsChecked="{x:Null}" IsEnabled="False" />
+									<cui:UiCheckBox Content="Disabled 3" IsChecked="True" IsEnabled="False" />
+								</StackPanel>
+							</cui:UiGroupBox>
+							<cui:UiGroupBox Header="RadioButton" Margin="10" Padding="10">
+								<StackPanel>
+									<cui:UiRadioButton Content="Radio Button 1" Margin="0,0,0,5" GroupName="1" IsChecked="True" />
+									<cui:UiRadioButton Content="Radio Button 2" Margin="0,0,0,5" GroupName="1" />
+									<cui:UiRadioButton Content="Radio Button 3" Margin="0,0,0,5" GroupName="1" />
+									<cui:UiRadioButton Content="Disabled 1" Margin="0,0,0,5" GroupName="2" IsChecked="True" IsEnabled="False" />
+									<cui:UiRadioButton Content="Disabled 2" Margin="0,0,0,5" GroupName="2" IsEnabled="False" />
+									<cui:UiRadioButton Content="Disabled 3" GroupName="2" IsEnabled="False" />
+								</StackPanel>
+							</cui:UiGroupBox>
+							<cui:UiGroupBox Header="ToggleSwitch" Margin="10" Padding="10">
+								<StackPanel>
+									<cui:UiToggleSwitch Content="Yes" ContentOff="No" Margin="0,0,0,5" />
+									<cui:UiToggleSwitch Content="Yes" ContentOff="No" IsChecked="True" Margin="0,0,0,5" />
+									<cui:UiToggleSwitch Content="Yes" ContentOff="No" IsEnabled="False" Margin="0,0,0,5" />
+									<cui:UiToggleSwitch Content="Yes" ContentOff="No" IsChecked="True" IsEnabled="False" />
+								</StackPanel>
+							</cui:UiGroupBox>
+							<cui:UiGroupBox Header="TextBox" Margin="10" Padding="10">
+								<StackPanel Orientation="Horizontal">
+									<StackPanel>
+										<cui:UiTextBox Text="TextBox 1" Watermark="Type something..." Width="150" Margin="0,0,0,5" Submit="UiTextBox_Submit" />
+										<cui:UiTextBox Text="TextBox 1" Watermark="Type something..." Width="150" Margin="0,0,0,5" Submit="UiTextBox_Submit" />
+										<cui:UiTextBox Watermark="Type something..." Width="150" Margin="0,0,0,5" Submit="UiTextBox_Submit" />
+										<cui:UiTextBox Text="Readonly" Watermark="Type something..." Width="150" Margin="0,0,0,5" IsReadOnly="True" IsReadOnlyCaretVisible="True" Submit="UiTextBox_Submit" />
+										<cui:UiTextBox Text="Disabled" Watermark="Type something..." Width="150" IsEnabled="False" Submit="UiTextBox_Submit" />
+									</StackPanel>
+									<StackPanel Margin="5,0,0,0">
+										<cui:UiTextBox Grid.Column="2" Watermark="Type here..." VerticalAlignment="Top" Width="150" Height="100" Margin="0,0,0,5" AcceptsReturn="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Submit="UiTextBox_Submit" />
+										<cui:UiTextBox Watermark="Auto completion" AutoCompleteItems="{Binding TextBoxAutoCompleteItems}" AutoCompleteMaxItems="20" Width="150" Margin="0,0,0,5" Submit="UiTextBox_Submit" />
+									</StackPanel>
+								</StackPanel>
+							</cui:UiGroupBox>
+							<cui:UiGroupBox Header="PasswordBox" Margin="10" Padding="10">
+								<StackPanel>
+									<cui:UiPasswordBox Password="123" CanCopy="True" Width="150" Margin="0,0,0,5" />
+									<cui:UiPasswordBox CanCopy="True" Width="150" Margin="0,0,0,5" />
+									<cui:UiPasswordBox Password="readonly" CanCopy="True" IsReadOnly="True" Width="150" Margin="0,0,0,5" />
+									<cui:UiPasswordBox Password="disabled" CanCopy="True" IsEnabled="False" Width="150" />
+								</StackPanel>
+							</cui:UiGroupBox>
+							<cui:UiGroupBox Header="DatePicker" Margin="10" Padding="10">
+								<StackPanel>
+									<cui:UiDatePicker SelectedDate="{x:Static sys:DateTime.Today}" Width="150" Margin="0,0,0,5" />
+									<cui:UiDatePicker Watermark="Select date" ShowResetButton="True" Width="150" Margin="0,0,0,5" />
+									<cui:UiDatePicker SelectedDate="{x:Static sys:DateTime.Today}" ShowResetButton="True" Width="150" IsEnabled="False" />
+								</StackPanel>
+							</cui:UiGroupBox>
+							<cui:UiGroupBox Header="ListBox" Margin="10" Padding="10">
+								<StackPanel>
+									<cui:UiListBox ItemsSource="{Binding ListBoxItems}" SelectedIndex="0" Width="150" Height="80" Margin="0,0,0,5" />
+									<cui:UiListBox ItemsSource="{Binding ListBoxItems}" SelectedIndex="0" Width="150" Height="80" IsEnabled="False" />
+								</StackPanel>
+							</cui:UiGroupBox>
+							<cui:UiGroupBox Header="Dialog" Margin="10" Padding="10">
+								<StackPanel>
+									<cui:UiButton Content="Window" HorizontalAlignment="Left" Margin="0,0,0,10" Command="{Binding ShowDialogWindowCommand}" />
+									<cui:UiButton Content="ApplicationWindow" HorizontalAlignment="Left" Command="{Binding ShowDialogWindowCommand}" CommandParameter="{ui:Boolean True}" />
+								</StackPanel>
+							</cui:UiGroupBox>
+							<cui:UiExpander Header="Expander" IsExpanded="True" Width="150" Margin="10,17,10,10" VerticalAlignment="Top">
+								<StackPanel>
+									<TextBlock Text="This is an expander." TextWrapping="Wrap" Margin="0,0,0,10" />
+									<cui:UiButton Content="OK" HorizontalAlignment="Right" />
+								</StackPanel>
+							</cui:UiExpander>
+						</WrapPanel>
+					</ScrollViewer>
+				</TabItem>
+				<TabItem Header="ListView">
+					<cui:UiTabControl Margin="10" Padding="0">
+						<TabItem Header="Simple">
+							<cui:UiListView ItemsSource="{Binding Customers}" SortColumn="CustomerId" SortColumn2="CustomerId" BorderThickness="0">
+								<cui:UiListView.ContextMenu>
+									<ContextMenu>
+										<MenuItem Header="New" />
+										<Separator />
+										<MenuItem Header="Refresh" InputGestureText="F5" />
+									</ContextMenu>
+								</cui:UiListView.ContextMenu>
+								<cui:UiListView.Resources>
+									<ContextMenu x:Key="ContextMenu">
+										<MenuItem Header="Edit" FontWeight="Bold" />
+										<MenuItem Header="New" />
+										<Separator />
+										<MenuItem Header="Refresh" InputGestureText="F5" />
+									</ContextMenu>
+									<Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource {x:Type ListViewItem}}">
+										<Setter Property="ContextMenu" Value="{StaticResource ContextMenu}" />
+									</Style>
+								</cui:UiListView.Resources>
+								<cui:UiListView.View>
+									<GridView>
+										<cui:UiGridViewColumn Header="CustomerId" DisplayMemberBinding="{Binding CustomerId}" Width="80" SortProperty="CustomerId" />
+										<cui:UiGridViewColumn Header="CompanyName" DisplayMemberBinding="{Binding CompanyName}" Width="150" SortProperty="CompanyName" />
+										<cui:UiGridViewColumn Header="ContactName" DisplayMemberBinding="{Binding ContactName}" Width="150" SortProperty="ContactName" />
+										<cui:UiGridViewColumn Header="ContactTitle" DisplayMemberBinding="{Binding ContactTitle}" Width="100" SortProperty="ContactTitle" />
+										<cui:UiGridViewColumn Header="Address" DisplayMemberBinding="{Binding Address}" Width="150" SortProperty="Address" />
+										<cui:UiGridViewColumn Header="City" DisplayMemberBinding="{Binding City}" Width="100" SortProperty="City" />
+										<cui:UiGridViewColumn Header="Region" DisplayMemberBinding="{Binding Region}" Width="80" SortProperty="Region" />
+										<cui:UiGridViewColumn Header="PostalCode" DisplayMemberBinding="{Binding PostalCode}" Width="80" SortProperty="PostalCode" />
+										<cui:UiGridViewColumn Header="Country" DisplayMemberBinding="{Binding Country}" Width="80" SortProperty="Country" />
+										<cui:UiGridViewColumn Header="Phone" DisplayMemberBinding="{Binding Phone}" Width="100" SortProperty="Phone" />
+										<cui:UiGridViewColumn Header="Fax" DisplayMemberBinding="{Binding Fax}" Width="100" SortProperty="Fax" />
+									</GridView>
+								</cui:UiListView.View>
+							</cui:UiListView>
+						</TabItem>
+						<TabItem Header="Grouped">
+							<cui:UiListView ItemsSource="{Binding Source={StaticResource CustomersCollection}}" SortColumn="CustomerId" SortColumn2="CustomerId" BorderThickness="0" ScrollViewer.CanContentScroll="False">
+								<cui:UiListView.GroupStyle>
+									<GroupStyle>
+										<GroupStyle.HeaderTemplate>
+											<DataTemplate>
+												<TextBlock Text="{Binding Name}" />
+											</DataTemplate>
+										</GroupStyle.HeaderTemplate>
+									</GroupStyle>
+								</cui:UiListView.GroupStyle>
+								<cui:UiListView.View>
+									<GridView>
+										<cui:UiGridViewColumn Header="CustomerId" DisplayMemberBinding="{Binding CustomerId}" Width="80" SortProperty="CustomerId" />
+										<cui:UiGridViewColumn Header="CompanyName" DisplayMemberBinding="{Binding CompanyName}" Width="150" SortProperty="CompanyName" />
+										<cui:UiGridViewColumn Header="ContactName" DisplayMemberBinding="{Binding ContactName}" Width="150" SortProperty="ContactName" />
+										<cui:UiGridViewColumn Header="ContactTitle" DisplayMemberBinding="{Binding ContactTitle}" Width="100" SortProperty="ContactTitle" />
+										<cui:UiGridViewColumn Header="Address" DisplayMemberBinding="{Binding Address}" Width="150" SortProperty="Address" />
+										<cui:UiGridViewColumn Header="City" DisplayMemberBinding="{Binding City}" Width="100" SortProperty="City" />
+										<cui:UiGridViewColumn Header="Region" DisplayMemberBinding="{Binding Region}" Width="80" SortProperty="Region" />
+										<cui:UiGridViewColumn Header="PostalCode" DisplayMemberBinding="{Binding PostalCode}" Width="80" SortProperty="PostalCode" />
+										<cui:UiGridViewColumn Header="Country" DisplayMemberBinding="{Binding Country}" Width="80" SortProperty="Country" />
+										<cui:UiGridViewColumn Header="Phone" DisplayMemberBinding="{Binding Phone}" Width="100" SortProperty="Phone" />
+										<cui:UiGridViewColumn Header="Fax" DisplayMemberBinding="{Binding Fax}" Width="100" SortProperty="Fax" />
+									</GridView>
+								</cui:UiListView.View>
+							</cui:UiListView>
+						</TabItem>
+					</cui:UiTabControl>
+				</TabItem>
+				<TabItem Header="DataGrid">
+					<cui:UiDataGrid ItemsSource="{Binding CustomersDataTable}" ShowRowNumbers="True" BorderThickness="0" />
+				</TabItem>
+				<TabItem Header="Progress Bars">
+					<ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+						<WrapPanel Margin="10">
+							<cui:UiGroupBox Header="ProgressBar" Margin="10" Padding="10">
+								<StackPanel>
+									<cui:UiProgressBar Value="40" Text="Downloading..." Width="200" Height="18" Margin="0,0,0,5" />
+									<cui:UiProgressBar Value="65" Text="Connection error" Width="200" Height="18" State="Error" Margin="0,0,0,5" />
+									<cui:UiProgressBar Value="50" Text="Paused"  Width="200" Height="18" State="Paused" Margin="0,0,0,5" />
+									<cui:UiProgressBar IsIndeterminate="True" Width="200" Height="18" Margin="0,0,0,5" />
+									<cui:UiProgressBar Value="55" Text="disabled" Width="200" Height="18" IsEnabled="False" />
+								</StackPanel>
+							</cui:UiGroupBox>
+							<cui:UiGroupBox Header="BusyIndicator" Margin="10" Padding="10">
+								<Grid>
+									<Grid.RowDefinitions>
+										<RowDefinition Height="Auto" />
+										<RowDefinition Height="Auto" />
+										<RowDefinition Height="Auto" />
+										<RowDefinition Height="Auto" />
+									</Grid.RowDefinitions>
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="Auto" />
+										<ColumnDefinition Width="20" />
+										<ColumnDefinition Width="Auto" />
+									</Grid.ColumnDefinitions>
+									<TextBlock Text="16x16" />
+									<TextBlock Grid.Row="1" Text="32x32" />
+									<TextBlock Grid.Row="2" Text="64x64" />
+									<TextBlock Grid.Row="3" Text="100x100" />
+									<cui:UiBusyIndicator Grid.Column="2" Width="16" Height="16" Margin="0,0,0,5" />
+									<cui:UiBusyIndicator Grid.Row="1" Grid.Column="2" Width="32" Height="32" Margin="0,0,0,5" />
+									<cui:UiBusyIndicator Grid.Row="2" Grid.Column="2" Width="64" Height="64" Margin="0,0,0,5" />
+									<cui:UiBusyIndicator Grid.Row="3" Grid.Column="2" Width="100" Height="100" />
+								</Grid>
+							</cui:UiGroupBox>
+						</WrapPanel>
+					</ScrollViewer>
+				</TabItem>
+				<TabItem Header="TabControl">
+					<Grid Margin="10">
+						<Grid.RowDefinitions>
+							<RowDefinition Height="*" />
+							<RowDefinition Height="20" />
+							<RowDefinition Height="*" />
+						</Grid.RowDefinitions>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="*" />
+							<ColumnDefinition Width="20" />
+							<ColumnDefinition Width="*" />
+						</Grid.ColumnDefinitions>
+						<cui:UiTabControl>
+							<TabItem Header="Tab 1">
+								<TextBlock Text="Tab 1 content" />
+							</TabItem>
+							<TabItem Header="Tab 2">
+								<TextBlock Text="Tab 2 content" />
+							</TabItem>
+							<TabItem Header="Tab 3">
+								<TextBlock Text="Tab 3 content" />
+							</TabItem>
+						</cui:UiTabControl>
+						<cui:UiTabControl Grid.Column="2" TabStripPlacement="Bottom">
+							<TabItem Header="Tab 1">
+								<TextBlock Text="Tab 1 content" />
+							</TabItem>
+							<TabItem Header="Tab 2">
+								<TextBlock Text="Tab 2 content" />
+							</TabItem>
+							<TabItem Header="Tab 3">
+								<TextBlock Text="Tab 3 content" />
+							</TabItem>
+						</cui:UiTabControl>
+						<cui:UiTabControl Grid.Row="2" IsEnabled="False">
+							<TabItem Header="Disabled Tab 1">
+								<TextBlock Text="Tab 1 content" />
+							</TabItem>
+							<TabItem Header="Disabled Tab 2">
+								<TextBlock Text="Tab 2 content" />
+							</TabItem>
+							<TabItem Header="Disabled Tab 3">
+								<TextBlock Text="Tab 3 content" />
+							</TabItem>
+						</cui:UiTabControl>
+						<cui:UiTabControl Grid.Row="2" Grid.Column="2" TabStripPlacement="Bottom" IsEnabled="False">
+							<TabItem Header="Disabled Tab 1">
+								<TextBlock Text="Tab 1 content" />
+							</TabItem>
+							<TabItem Header="Disabled Tab 2">
+								<TextBlock Text="Tab 2 content" />
+							</TabItem>
+							<TabItem Header="Disabled Tab 3">
+								<TextBlock Text="Tab 3 content" />
+							</TabItem>
+						</cui:UiTabControl>
+					</Grid>
+				</TabItem>
+				<TabItem Header="FieldSet">
+					<ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+						<WrapPanel Margin="10">
+							<cui:UiGroupBox Header="Horizontal" Margin="10" Padding="10">
+								<cui:UiFieldSet LabelWidth="100" Width="300">
+									<cui:UiFieldSetItem Header="Item 1">
+										<cui:UiTextBox Text="Text" />
+									</cui:UiFieldSetItem>
+									<cui:UiFieldSetItem Header="Item 2">
+										<cui:UiCheckBox Content="Check Box" />
+									</cui:UiFieldSetItem>
+									<cui:UiFieldSetItem Header="Item 3">
+										<cui:UiListBox ItemsSource="{Binding ListBoxItems}" SelectedIndex="0" Height="80" />
+									</cui:UiFieldSetItem>
+								</cui:UiFieldSet>
+							</cui:UiGroupBox>
+							<cui:UiGroupBox Header="Vertical" Margin="10" Padding="10">
+								<cui:UiFieldSet Orientation="Vertical" LabelWidth="100" Spacing="10" Width="300">
+									<cui:UiFieldSetItem Header="Item 1">
+										<cui:UiTextBox Text="Text" />
+									</cui:UiFieldSetItem>
+									<cui:UiFieldSetItem Header="Item 2">
+										<cui:UiCheckBox Content="Check Box" />
+									</cui:UiFieldSetItem>
+									<cui:UiFieldSetItem Header="Item 3">
+										<cui:UiListBox ItemsSource="{Binding ListBoxItems}" SelectedIndex="0" Height="80" />
+									</cui:UiFieldSetItem>
+								</cui:UiFieldSet>
+							</cui:UiGroupBox>
+						</WrapPanel>
+					</ScrollViewer>
+				</TabItem>
+			</cui:UiApplicationTabControl>
+			<cui:UiGridSplitter Grid.Row="1" />
+			<Grid Grid.Row="2">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="*" />
+					<ColumnDefinition Width="7" />
+					<ColumnDefinition Width="*" />
+				</Grid.ColumnDefinitions>
+				<cui:UiGridSplitter Grid.Column="1" />
+				<cui:UiDockingTabControl>
+					<TabItem Header="Error List">
+						<DockPanel>
+							<cui:UiToolBarTray DockPanel.Dock="Top">
+								<cui:UiToolBar ShowThumb="False">
+									<ComboBox SelectedIndex="0" Width="150">
+										<ComboBoxItem>Entire Solution</ComboBoxItem>
+										<ComboBoxItem>Current Project</ComboBoxItem>
+										<ComboBoxItem>Current Document</ComboBoxItem>
+										<ComboBoxItem>Changed Documents</ComboBoxItem>
+										<ComboBoxItem>Open Documents</ComboBoxItem>
+									</ComboBox>
+									<Separator />
+									<ToggleButton IsChecked="True">
+										<DockPanel>
+											<cui:UiSvgImage Source="/Playground.Wpf.Cui;component/Resources/Icons/StatusError.svg" Stretch="None" Width="16" Height="16" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="0,0,5,0" />
+											<TextBlock Text="0 Errors" />
+										</DockPanel>
+									</ToggleButton>
+									<Separator />
+									<ToggleButton IsChecked="True">
+										<DockPanel>
+											<cui:UiSvgImage Source="/Playground.Wpf.Cui;component/Resources/Icons/StatusWarning.svg" Stretch="None" Width="16" Height="16" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="0,0,5,0" />
+											<TextBlock Text="0 Warnings" />
+										</DockPanel>
+									</ToggleButton>
+									<Separator />
+									<ToggleButton IsChecked="True">
+										<DockPanel>
+											<cui:UiSvgImage Source="/Playground.Wpf.Cui;component/Resources/Icons/StatusInformation.svg" Stretch="None" Width="16" Height="16" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="0,0,5,0" />
+											<TextBlock Text="0 Messages" />
+										</DockPanel>
+									</ToggleButton>
+									<Separator />
+									<ComboBox SelectedIndex="0" Width="150" IsEditable="True">
+										<ComboBoxItem>Build + IntelliSense</ComboBoxItem>
+										<ComboBoxItem>Build Only</ComboBoxItem>
+										<ComboBoxItem>IntelliSense Only</ComboBoxItem>
+									</ComboBox>
+								</cui:UiToolBar>
+							</cui:UiToolBarTray>
+							<cui:UiListView ItemsSource="{Binding CompileErrorListItems}" SortColumn="Description">
+								<cui:UiListView.View>
+									<GridView>
+										<cui:UiGridViewColumn Header="" Width="30" SortProperty="Icon">
+											<cui:UiGridViewColumn.CellTemplate>
+												<DataTemplate>
+													<cui:UiSvgImage Source="{Binding Icon}" Stretch="None" Width="16" Height="16" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+												</DataTemplate>
+											</cui:UiGridViewColumn.CellTemplate>
+										</cui:UiGridViewColumn>
+										<cui:UiGridViewColumn Header="Code" DisplayMemberBinding="{Binding Code}" Width="80" SortProperty="Code" />
+										<cui:UiGridViewColumn Header="Description" DisplayMemberBinding="{Binding Description}" Width="300" SortProperty="Description" />
+										<cui:UiGridViewColumn Header="Project" DisplayMemberBinding="{Binding Project}" Width="120" SortProperty="Project" />
+										<cui:UiGridViewColumn Header="File" DisplayMemberBinding="{Binding File}" Width="150" SortProperty="File" />
+										<cui:UiGridViewColumn Header="Line" DisplayMemberBinding="{Binding Line}" Width="80" SortProperty="Line" />
+									</GridView>
+								</cui:UiListView.View>
+							</cui:UiListView>
+						</DockPanel>
+					</TabItem>
+					<TabItem Header="Output" />
+					<TabItem Header="Package Manager Console" />
+					<TabItem Header="Find Symbol Results" />
+				</cui:UiDockingTabControl>
+				<cui:UiDockingTabControl Grid.Column="2" SelectedIndex="1">
+					<TabItem Header="Bookmarks" />
+					<TabItem Header="Exception Settings">
+						<DockPanel>
+							<cui:UiToolBarTray DockPanel.Dock="Top">
+								<cui:UiToolBar ShowThumb="False">
+									<Button>
+										<cui:UiSvgImage Source="/Playground.Wpf.Cui;component/Resources/Icons/NewItem.svg" Stretch="None" />
+									</Button>
+									<Separator />
+									<TextBox Width="300" />
+								</cui:UiToolBar>
+							</cui:UiToolBarTray>
+							<FrameworkElement />
+						</DockPanel>
+					</TabItem>
+				</cui:UiDockingTabControl>
+			</Grid>
+		</Grid>
+		<cui:UiGridSplitter Grid.Column="1" />
+		<Grid Grid.Column="2">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="*" />
+				<RowDefinition Height="7" />
+				<RowDefinition Height="*" />
+			</Grid.RowDefinitions>
+			<cui:UiDockingTabControl Name="SolutionTabControl">
+				<TabItem Header="Solution Explorer">
+					<cui:UiTreeView ItemsSource="{Binding TreeNodes}" BorderThickness="0">
+						<cui:UiTreeView.Resources>
+							<HierarchicalDataTemplate DataType="{x:Type model:TreeViewNode}" ItemsSource="{Binding Children}">
+								<DockPanel>
+									<cui:UiSvgImage Source="{Binding Icon}" Stretch="None" Width="16" Height="16" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="0,0,5,0" />
+									<TextBlock Text="{Binding Header}" />
+								</DockPanel>
+							</HierarchicalDataTemplate>
+						</cui:UiTreeView.Resources>
+						<TreeView.ItemContainerStyle>
+							<Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource {x:Type TreeViewItem}}">
+								<Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+							</Style>
+						</TreeView.ItemContainerStyle>
+					</cui:UiTreeView>
+				</TabItem>
+				<TabItem Header="Class View" />
+			</cui:UiDockingTabControl>
+			<cui:UiGridSplitter Grid.Row="1" />
+			<cui:UiDockingPanel Grid.Row="2" Header="Properties">
+				<cui:UiPropertyGrid LabelWidth="150" BorderThickness="0">
+					<cui:UiPropertyGridGroup Header="Advanced">
+						<cui:UiPropertyGridItem Header="Build Action">
+							<cui:UiComboBox SelectedIndex="13">
+								<ComboBoxItem Content="SplashScreen" />
+								<ComboBoxItem Content="CodeAnalysisDictionary" />
+								<ComboBoxItem Content="Resource" />
+								<ComboBoxItem Content="DesignDataWithDesignTimeCreatableTypes" />
+								<ComboBoxItem Content="Application definition" />
+								<ComboBoxItem Content=".editorconfig file" />
+								<ComboBoxItem Content="Embedded resource" />
+								<ComboBoxItem Content="C# compiler" />
+								<ComboBoxItem Content="Content" />
+								<ComboBoxItem Content="DesignData" />
+								<ComboBoxItem Content="C# analyzer additional file" />
+								<ComboBoxItem Content="Workflow definition" />
+								<ComboBoxItem Content="None" />
+								<ComboBoxItem Content="Page" />
+							</cui:UiComboBox>
+						</cui:UiPropertyGridItem>
+						<cui:UiPropertyGridItem Header="Copy to Output Directory">
+							<cui:UiComboBox>
+								<ComboBoxItem Content="Do not copy" />
+								<ComboBoxItem Content="Copy always" />
+								<ComboBoxItem Content="Copy if newer" />
+							</cui:UiComboBox>
+						</cui:UiPropertyGridItem>
+						<cui:UiPropertyGridItem Header="Custom Tool">
+							<cui:UiTextBox Text="MSBuild:Compile" />
+						</cui:UiPropertyGridItem>
+						<cui:UiPropertyGridItem Header="Custom Tool Namespace">
+							<cui:UiTextBox />
+						</cui:UiPropertyGridItem>
+					</cui:UiPropertyGridGroup>
+					<cui:UiPropertyGridGroup Header="Misc">
+						<cui:UiPropertyGridItem Header="File Name">
+							<cui:UiTextBox Text="ntdll.asm" IsReadOnly="True" />
+						</cui:UiPropertyGridItem>
+						<cui:UiPropertyGridItem Header="Full Path">
+							<cui:UiTextBox Text="C:\Users\bytecode77\0days\WinRCEZeroClick\ntdll.asm" IsReadOnly="True" />
+						</cui:UiPropertyGridItem>
+					</cui:UiPropertyGridGroup>
+				</cui:UiPropertyGrid>
+			</cui:UiDockingPanel>
+		</Grid>
+	</Grid>
+</cui:UiApplicationWindow>

@@ -1,0 +1,55 @@
+﻿<ResourceDictionary
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:ui="http://schemas.bytecode77.com/2023/xaml/presentation"
+	xmlns:ctrl="clr-namespace:BytecodeApi.Wpf.Cui.Controls">
+	<Style TargetType="{x:Type ctrl:UiCheckBox}" BasedOn="{StaticResource {x:Type CheckBox}}">
+		<Setter Property="BorderThickness" Value="0" />
+		<Setter Property="BorderBrush" Value="Transparent" />
+		<Setter Property="Background" Value="Transparent" />
+		<Setter Property="FocusVisualStyle" Value="{x:Null}" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type ctrl:UiCheckBox}">
+					<Border Padding="{TemplateBinding Padding}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+						<DockPanel>
+							<Border Name="Border" Width="14" Height="14" BorderThickness="1" BorderBrush="#bababa" Background="White">
+								<Grid>
+									<Path Name="CheckedIcon" Width="10" Height="10" Visibility="Hidden" SnapsToDevicePixels="False" StrokeThickness="1.5" Stroke="Black" Data="M 9 2 L 4 9 L 1 6" />
+									<Border Name="ThreeStateIcon" Width="8" Height="8" HorizontalAlignment="Center" VerticalAlignment="Center" Background="Black" Visibility="Collapsed" />
+								</Grid>
+							</Border>
+							<ContentPresenter Name="Content" Margin="4,-1,0,1" VerticalAlignment="Center" HorizontalAlignment="Left" TextElement.Foreground="{TemplateBinding Foreground}" RecognizesAccessKey="True" />
+						</DockPanel>
+					</Border>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsMouseOver" Value="True">
+							<Setter TargetName="Border" Property="BorderBrush" Value="#006bbe" />
+						</Trigger>
+						<Trigger Property="IsPressed" Value="True">
+							<Setter TargetName="Border" Property="BorderBrush" Value="#005499" />
+							<Setter TargetName="Border" Property="Background" Value="#cce4f7" />
+						</Trigger>
+						<Trigger Property="IsKeyboardFocusWithin" Value="True">
+							<Setter TargetName="Border" Property="BorderBrush" Value="#006bbe" />
+						</Trigger>
+						<Trigger Property="IsChecked" Value="True">
+							<Setter TargetName="CheckedIcon" Property="Visibility" Value="Visible" />
+						</Trigger>
+						<Trigger Property="IsChecked" Value="{x:Null}">
+							<Setter TargetName="ThreeStateIcon" Property="Visibility" Value="Visible" />
+						</Trigger>
+						<Trigger Property="IsEnabled" Value="False">
+							<Setter Property="Foreground" Value="#757575" />
+							<Setter TargetName="Content" Property="TextElement.Foreground" Value="#757575" />
+							<Setter TargetName="Border" Property="BorderBrush" Value="#e9e9e9" />
+							<Setter TargetName="Border" Property="Background" Value="#f9f9f9" />
+							<Setter TargetName="CheckedIcon" Property="Stroke" Value="#757575" />
+							<Setter TargetName="ThreeStateIcon" Property="Background" Value="#757575" />
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+</ResourceDictionary>

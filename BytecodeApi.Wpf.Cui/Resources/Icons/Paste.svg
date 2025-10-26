@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+  <defs>
+    <style>.canvas{fill: none; opacity: 0;}.light-defaultgrey-10{fill: #212121; opacity: 0.1;}.light-defaultgrey{fill: #212121; opacity: 1;}</style>
+  </defs>
+  <title>IconLightPaste</title>
+  <g id="canvas" class="canvas">
+    <path class="canvas" d="M16,16H0V0H16Z" />
+  </g>
+  <g id="level-1">
+    <path class="light-defaultgrey-10" d="M7,14.5H2.5V3.5h10V7H8.086L7,8.086Z" />
+    <path class="light-defaultgrey-10" d="M14.5,8.5v7h-6v-7Z" />
+    <path class="light-defaultgrey" d="M14.5,8h-6L8,8.5v7l.5.5h6l.5-.5v-7ZM14,15H9V9h5Z" />
+    <path class="light-defaultgrey" d="M7,15H2.5L2,14.5V3.5L2.5,3h10l.5.5V7H12V4H3V14H7Z" />
+    <path class="light-defaultgrey" d="M9.5,2a2,2,0,0,0-4,0H4V4h7V2Zm-2,1a1,1,0,1,1,1-1A1,1,0,0,1,7.5,3Z" />
+  </g>
+</svg>

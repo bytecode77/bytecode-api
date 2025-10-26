@@ -1,0 +1,21 @@
+﻿<ResourceDictionary
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:ui="http://schemas.bytecode77.com/2023/xaml/presentation"
+	xmlns:ctrl="clr-namespace:BytecodeApi.Wpf.Cui.Controls">
+	<ResourceDictionary.MergedDictionaries>
+		<ResourceDictionary Source="/BytecodeApi.Wpf.Cui;component/Styles/ComboBoxItem.xaml" />
+		<ResourceDictionary Source="/BytecodeApi.Wpf.Cui;component/Styles/ContextMenu.xaml" />
+		<ResourceDictionary Source="/BytecodeApi.Wpf.Cui;component/Styles/DataGrid.xaml" />
+		<ResourceDictionary Source="/BytecodeApi.Wpf.Cui;component/Styles/GroupItem.xaml" />
+		<ResourceDictionary Source="/BytecodeApi.Wpf.Cui;component/Styles/Image.xaml" />
+		<ResourceDictionary Source="/BytecodeApi.Wpf.Cui;component/Styles/ListView.xaml" />
+		<ResourceDictionary Source="/BytecodeApi.Wpf.Cui;component/Styles/Menu.xaml" />
+		<ResourceDictionary Source="/BytecodeApi.Wpf.Cui;component/Styles/MenuItem.xaml" />
+		<ResourceDictionary Source="/BytecodeApi.Wpf.Cui;component/Styles/ResizeGrip.xaml" />
+		<ResourceDictionary Source="/BytecodeApi.Wpf.Cui;component/Styles/StatusBar.xaml" />
+		<ResourceDictionary Source="/BytecodeApi.Wpf.Cui;component/Styles/ToolBar.xaml" />
+		<ResourceDictionary Source="/BytecodeApi.Wpf.Cui;component/Styles/ToolTip.xaml" />
+		<ResourceDictionary Source="/BytecodeApi.Wpf.Cui;component/Styles/TreeViewItem.xaml" />
+	</ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>

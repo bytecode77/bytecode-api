@@ -1,0 +1,50 @@
+﻿<ResourceDictionary
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:ui="http://schemas.bytecode77.com/2023/xaml/presentation"
+	xmlns:ctrl="clr-namespace:BytecodeApi.Wpf.Cui.Controls">
+	<Style TargetType="{x:Type ctrl:UiProgressBar}" BasedOn="{StaticResource {x:Type ProgressBar}}">
+		<Setter Property="BorderThickness" Value="1" />
+		<Setter Property="BorderBrush" Value="#bababa" />
+		<Setter Property="Background" Value="#f0f0f0" />
+		<Setter Property="Foreground" Value="#06b025" />
+		<Setter Property="HorizontalContentAlignment" Value="Center" />
+		<Setter Property="VerticalContentAlignment" Value="Center" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type ctrl:UiProgressBar}">
+					<Grid Name="PART_Track" ClipToBounds="True">
+						<Border Name="Border" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True" />
+						<Rectangle Name="PART_Indicator" HorizontalAlignment="Left" Fill="{TemplateBinding Foreground}" />
+						<Grid Name="PART_GlowRect" HorizontalAlignment="Left" Background="{TemplateBinding Foreground}" Opacity="0" Width="100" Margin="-100,0,0,0" />
+						<TextBlock Name="TextBackground" Text="{TemplateBinding Text}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="{TemplateBinding Padding}" Foreground="Black" />
+						<Border HorizontalAlignment="Left" Width="{Binding ActualWidth, ElementName=PART_Indicator}" Background="Transparent" ClipToBounds="True">
+							<Grid Width="{Binding ActualWidth, ElementName=PART_Track}">
+								<TextBlock Name="TextFilled" Text="{TemplateBinding Text}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="{TemplateBinding Padding}" Foreground="White" />
+							</Grid>
+						</Border>
+					</Grid>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsIndeterminate" Value="True">
+							<Setter TargetName="PART_Indicator" Property="Visibility" Value="Collapsed" />
+							<Setter TargetName="PART_GlowRect" Property="Opacity" Value="1" />
+						</Trigger>
+						<Trigger Property="State" Value="Error">
+							<Setter Property="Foreground" Value="#b00625" />
+						</Trigger>
+						<Trigger Property="State" Value="Paused">
+							<Setter TargetName="TextFilled" Property="TextElement.Foreground" Value="Black" />
+							<Setter Property="Foreground" Value="#ffc800" />
+						</Trigger>
+						<Trigger Property="IsEnabled" Value="False">
+							<Setter TargetName="TextBackground" Property="TextElement.Foreground" Value="#757575" />
+							<Setter Property="Foreground" Value="#909090" />
+							<Setter TargetName="PART_Indicator" Property="Fill" Value="#909090" />
+							<Setter TargetName="PART_GlowRect" Property="Background" Value="#909090" />
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+</ResourceDictionary>

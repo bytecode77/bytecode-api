@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+  <defs>
+    <style>.canvas{fill: none; opacity: 0;}.light-defaultgrey-10{fill: #212121; opacity: 0.1;}.light-defaultgrey{fill: #212121; opacity: 1;}.light-blue{fill: #005dba; opacity: 1;}.cls-1{opacity:0.75;}</style>
+  </defs>
+  <title>BuildSolution</title>
+  <g id="canvas">
+    <path class="canvas" d="M16,16H0V0H16Z" />
+  </g>
+  <g id="level-1">
+    <g class="cls-1">
+      <path class="light-defaultgrey-10" d="M14,5v9H2V5H3.878L6.732,7.854H8.268L11.122,5Z" />
+      <path class="light-defaultgrey" d="M15,5v9.5l-.5.5H1.5L1,14.5V5H2v9H14V5Z" />
+    </g>
+    <path class="light-defaultgrey" d="M11,11v2H9V11ZM7,11v2H5V11ZM5,8v2H3V8ZM9,8v2H7V8Zm4,0v2H11V8Z" />
+    <path class="light-blue" d="M10.354,4.354l-2.5,2.5H7.146l-2.5-2.5.708-.707L7,5.293V0H8V5.293L9.646,3.647Z" />
+  </g>
+</svg>
