@@ -1,4 +1,5 @@
 ﻿using BytecodeApi.Extensions;
+using System.Globalization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -10,16 +11,19 @@ namespace BytecodeApi.Text.Json.Converters;
 public sealed class DateTimeJsonConverter : JsonConverter<DateTime>
 {
 	private readonly string Format;
+	private readonly bool ParseExact;
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="DateTimeJsonConverter" /> class.
 	/// </summary>
 	/// <param name="format">The format that is used to convert <see cref="DateTime" /> values.</param>
-	public DateTimeJsonConverter(string format)
+	/// <param name="parseExact"><see langword="true" /> to require the exact format; <see langword="false" /> to allow any format during read operations.</param>
+	public DateTimeJsonConverter(string format, bool parseExact)
 	{
 		Check.ArgumentNull(format);
 
 		Format = format;
+		ParseExact = parseExact;
 	}
 
 	/// <summary>
@@ -33,7 +37,14 @@ public sealed class DateTimeJsonConverter : JsonConverter<DateTime>
 	/// </returns>
 	public override DateTime Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
 	{
-		return reader.GetString()!.ToDateTime(Format) ?? throw Throw.Format("String is not a valid DateTime value.");
+		if (ParseExact)
+		{
+			return reader.GetString()!.ToDateTime(Format) ?? throw Throw.Format("String is not a valid DateTime value.");
+		}
+		else
+		{
+			return DateTime.TryParse(reader.GetString(), CultureInfo.InvariantCulture, out DateTime result) ? result : throw Throw.Format("String is not a valid DateTime value.");
+		}
 	}
 	/// <summary>
 	/// Writes the <see cref="DateTime" /> value as JSON.

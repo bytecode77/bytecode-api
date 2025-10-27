@@ -1,4 +1,5 @@
 ﻿using BytecodeApi.Extensions;
+using System.Globalization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -10,16 +11,19 @@ namespace BytecodeApi.Text.Json.Converters;
 public sealed class DateOnlyJsonConverter : JsonConverter<DateOnly>
 {
 	private readonly string Format;
+	private readonly bool ParseExact;
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="DateOnlyJsonConverter" /> class.
 	/// </summary>
 	/// <param name="format">The format that is used to convert <see cref="DateOnly" /> values.</param>
-	public DateOnlyJsonConverter(string format)
+	/// <param name="parseExact"><see langword="true" /> to require the exact format; <see langword="false" /> to allow any format during read operations.</param>
+	public DateOnlyJsonConverter(string format, bool parseExact)
 	{
 		Check.ArgumentNull(format);
 
 		Format = format;
+		ParseExact = parseExact;
 	}
 
 	/// <summary>
@@ -33,7 +37,14 @@ public sealed class DateOnlyJsonConverter : JsonConverter<DateOnly>
 	/// </returns>
 	public override DateOnly Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
 	{
-		return reader.GetString()!.ToDateOnly(Format) ?? throw Throw.Format("String is not a valid DateOnly value.");
+		if (ParseExact)
+		{
+			return reader.GetString()!.ToDateOnly(Format) ?? throw Throw.Format("String is not a valid DateOnly value.");
+		}
+		else
+		{
+			return DateOnly.TryParse(reader.GetString(), CultureInfo.InvariantCulture, out DateOnly result) ? result : throw Throw.Format("String is not a valid DateOnly value.");
+		}
 	}
 	/// <summary>
 	/// Writes the <see cref="DateOnly" /> value as JSON.

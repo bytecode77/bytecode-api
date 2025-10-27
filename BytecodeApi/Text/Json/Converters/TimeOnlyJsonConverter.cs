@@ -1,4 +1,5 @@
 ﻿using BytecodeApi.Extensions;
+using System.Globalization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -10,16 +11,19 @@ namespace BytecodeApi.Text.Json.Converters;
 public sealed class TimeOnlyJsonConverter : JsonConverter<TimeOnly>
 {
 	private readonly string Format;
+	private readonly bool ParseExact;
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="TimeOnlyJsonConverter" /> class.
 	/// </summary>
 	/// <param name="format">The format that is used to convert <see cref="TimeOnly" /> values.</param>
-	public TimeOnlyJsonConverter(string format)
+	/// <param name="parseExact"><see langword="true" /> to require the exact format; <see langword="false" /> to allow any format during read operations.</param>
+	public TimeOnlyJsonConverter(string format, bool parseExact)
 	{
 		Check.ArgumentNull(format);
 
 		Format = format;
+		ParseExact = parseExact;
 	}
 
 	/// <summary>
@@ -33,7 +37,14 @@ public sealed class TimeOnlyJsonConverter : JsonConverter<TimeOnly>
 	/// </returns>
 	public override TimeOnly Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
 	{
-		return reader.GetString()!.ToTimeOnly(Format) ?? throw Throw.Format("String is not a valid TimeOnly value.");
+		if (ParseExact)
+		{
+			return reader.GetString()!.ToTimeOnly(Format) ?? throw Throw.Format("String is not a valid TimeOnly value.");
+		}
+		else
+		{
+			return TimeOnly.TryParse(reader.GetString(), CultureInfo.InvariantCulture, out TimeOnly result) ? result : throw Throw.Format("String is not a valid TimeOnly value.");
+		}
 	}
 	/// <summary>
 	/// Writes the <see cref="TimeOnly" /> value as JSON.

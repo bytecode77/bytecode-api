@@ -1,0 +1,70 @@
+﻿<ResourceDictionary
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:ui="http://schemas.bytecode77.com/2023/xaml/presentation"
+	xmlns:ctrl="clr-namespace:BytecodeApi.Wpf.Cui.Controls">
+	<Style TargetType="{x:Type ctrl:UiFlatButton}">
+		<Setter Property="HorizontalContentAlignment" Value="Center" />
+		<Setter Property="VerticalContentAlignment" Value="Center" />
+		<Setter Property="BorderThickness" Value="0" />
+		<Setter Property="BorderBrush" Value="Transparent" />
+		<Setter Property="Background" Value="Transparent" />
+		<Setter Property="Opacity" Value="1" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type ctrl:UiFlatButton}">
+					<Border Name="Border" Padding="{TemplateBinding Padding}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" Opacity="{TemplateBinding Opacity}" CornerRadius="{TemplateBinding CornerRadius}" SnapsToDevicePixels="True">
+						<ContentPresenter Name="Content" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" SnapsToDevicePixels="True" />
+					</Border>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsMouseOver" Value="True">
+							<Setter TargetName="Border" Property="BorderBrush" Value="{Binding BorderBrushMouseOver, RelativeSource={RelativeSource TemplatedParent}}" />
+							<Setter TargetName="Border" Property="Background" Value="{Binding BackgroundMouseOver, RelativeSource={RelativeSource TemplatedParent}}" />
+							<Setter TargetName="Border" Property="Opacity" Value="{Binding OpacityMouseOver, RelativeSource={RelativeSource TemplatedParent}}" />
+						</Trigger>
+						<Trigger Property="IsPressed" Value="True">
+							<Setter TargetName="Border" Property="BorderBrush" Value="{Binding BorderBrushMouseDown, RelativeSource={RelativeSource TemplatedParent}}" />
+							<Setter TargetName="Border" Property="Background" Value="{Binding BackgroundMouseDown, RelativeSource={RelativeSource TemplatedParent}}" />
+							<Setter TargetName="Border" Property="Opacity" Value="{Binding OpacityMouseDown, RelativeSource={RelativeSource TemplatedParent}}" />
+						</Trigger>
+						<MultiTrigger>
+							<MultiTrigger.Conditions>
+								<Condition Property="InvertImage" Value="True" />
+								<Condition Property="IsMouseOver" Value="False" />
+								<Condition Property="IsPressed" Value="False" />
+							</MultiTrigger.Conditions>
+							<Setter TargetName="Content" Property="Image.Effect">
+								<Setter.Value>
+									<ui:InvertEffect />
+								</Setter.Value>
+							</Setter>
+						</MultiTrigger>
+						<MultiTrigger>
+							<MultiTrigger.Conditions>
+								<Condition Property="InvertImageMouseOver" Value="True" />
+								<Condition Property="IsMouseOver" Value="True" />
+								<Condition Property="IsPressed" Value="False" />
+							</MultiTrigger.Conditions>
+							<Setter TargetName="Content" Property="Image.Effect">
+								<Setter.Value>
+									<ui:InvertEffect />
+								</Setter.Value>
+							</Setter>
+						</MultiTrigger>
+						<MultiTrigger>
+							<MultiTrigger.Conditions>
+								<Condition Property="InvertImageMouseDown" Value="True" />
+								<Condition Property="IsPressed" Value="True" />
+							</MultiTrigger.Conditions>
+							<Setter TargetName="Content" Property="Image.Effect">
+								<Setter.Value>
+									<ui:InvertEffect />
+								</Setter.Value>
+							</Setter>
+						</MultiTrigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+</ResourceDictionary>

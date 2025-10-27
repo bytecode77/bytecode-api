@@ -1,0 +1,87 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net9.0-windows</TargetFramework>
+		<Nullable>enable</Nullable>
+		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+		<UseWPF>true</UseWPF>
+		<Platforms>AnyCPU;x86;x64</Platforms>
+	</PropertyGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\BytecodeApi.CsvParser\BytecodeApi.CsvParser.csproj" />
+		<ProjectReference Include="..\BytecodeApi\BytecodeApi.csproj" />
+		<ProjectReference Include="..\BytecodeApi.Wpf\BytecodeApi.Wpf.csproj" />
+		<ProjectReference Include="..\BytecodeApi.Wpf.Cui\BytecodeApi.Wpf.Cui.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Remove="Resources\Icons\Application.svg" />
+		<None Remove="Resources\Icons\Backwards.svg" />
+		<None Remove="Resources\Icons\BuildSolution.svg" />
+		<None Remove="Resources\Icons\CodeInformation.svg" />
+		<None Remove="Resources\Icons\Copy.svg" />
+		<None Remove="Resources\Icons\CSFileNode.svg" />
+		<None Remove="Resources\Icons\CSProjectNode.svg" />
+		<None Remove="Resources\Icons\Cut.svg" />
+		<None Remove="Resources\Icons\Forwards.svg" />
+		<None Remove="Resources\Icons\Framework.svg" />
+		<None Remove="Resources\Icons\FrameworkPrivate.svg" />
+		<None Remove="Resources\Icons\NewItem.svg" />
+		<None Remove="Resources\Icons\OpenFolder.svg" />
+		<None Remove="Resources\Icons\Paste.svg" />
+		<None Remove="Resources\Icons\Play.svg" />
+		<None Remove="Resources\Icons\PropertiesFolderClosed.svg" />
+		<None Remove="Resources\Icons\Redo.svg" />
+		<None Remove="Resources\Icons\ReferenceGroup.svg" />
+		<None Remove="Resources\Icons\Save.svg" />
+		<None Remove="Resources\Icons\SaveAll.svg" />
+		<None Remove="Resources\Icons\Settings.svg" />
+		<None Remove="Resources\Icons\StatusError.svg" />
+		<None Remove="Resources\Icons\StatusInformation.svg" />
+		<None Remove="Resources\Icons\StatusWarning.svg" />
+		<None Remove="Resources\Icons\Undo.svg" />
+		<None Remove="Resources\Icons\WPFFile.svg" />
+		<None Remove="Resources\Images\WindowLogo.png" />
+	</ItemGroup>
+	<ItemGroup>
+		<Resource Include="Resources\Icons\Application.svg" />
+		<Resource Include="Resources\Icons\Backwards.svg" />
+		<Resource Include="Resources\Icons\BuildSolution.svg" />
+		<Resource Include="Resources\Icons\CodeInformation.svg" />
+		<Resource Include="Resources\Icons\Copy.svg" />
+		<Resource Include="Resources\Icons\CSFileNode.svg" />
+		<Resource Include="Resources\Icons\CSProjectNode.svg" />
+		<Resource Include="Resources\Icons\Cut.svg" />
+		<Resource Include="Resources\Icons\Forwards.svg" />
+		<Resource Include="Resources\Icons\Framework.svg" />
+		<Resource Include="Resources\Icons\FrameworkPrivate.svg" />
+		<Resource Include="Resources\Icons\NewItem.svg" />
+		<Resource Include="Resources\Icons\OpenFolder.svg" />
+		<Resource Include="Resources\Icons\Paste.svg" />
+		<Resource Include="Resources\Icons\Play.svg" />
+		<Resource Include="Resources\Icons\PropertiesFolderClosed.svg" />
+		<Resource Include="Resources\Icons\Redo.svg" />
+		<Resource Include="Resources\Icons\ReferenceGroup.svg" />
+		<Resource Include="Resources\Icons\Save.svg" />
+		<Resource Include="Resources\Icons\SaveAll.svg" />
+		<Resource Include="Resources\Icons\Settings.svg" />
+		<Resource Include="Resources\Icons\StatusError.svg" />
+		<Resource Include="Resources\Icons\StatusInformation.svg" />
+		<Resource Include="Resources\Icons\StatusWarning.svg" />
+		<Resource Include="Resources\Icons\Undo.svg" />
+		<Resource Include="Resources\Icons\WPFFile.svg" />
+		<Resource Include="Resources\Images\WindowLogo.png" />
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Update="Properties\Resources.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Resources.resx</DependentUpon>
+		</Compile>
+	</ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Update="Properties\Resources.resx">
+			<Generator>ResXFileCodeGenerator</Generator>
+			<LastGenOutput>Resources.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+	</ItemGroup>
+</Project>

@@ -1,0 +1,70 @@
+<cui:UiWindow
+	x:Class="Playground.Wpf.Cui.DialogWindow"
+	x:Name="dialogWindow"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:local="clr-namespace:Playground.Wpf.Cui"
+	xmlns:ui="http://schemas.bytecode77.com/2023/xaml/presentation"
+	xmlns:cui="http://schemas.bytecode77.com/2025/xaml/cui"
+	DataContext="{Binding ViewModel, ElementName=dialogWindow}"
+	Title="Dialog Window" Width="600" Height="300" WindowStartupLocation="CenterOwner">
+	<DockPanel>
+		<Menu DockPanel.Dock="Top">
+			<MenuItem Header="_File">
+				<MenuItem Header="_New" InputGestureText="Ctrl+N">
+					<MenuItem.Icon>
+						<cui:UiSvgImage Source="/Playground.Wpf.Cui;component/Resources/Icons/NewItem.svg" Stretch="None" />
+					</MenuItem.Icon>
+				</MenuItem>
+				<MenuItem Header="_Open" InputGestureText="Ctrl+O">
+					<MenuItem.Icon>
+						<cui:UiSvgImage Source="/Playground.Wpf.Cui;component/Resources/Icons/OpenFolder.svg" Stretch="None" />
+					</MenuItem.Icon>
+				</MenuItem>
+				<Separator />
+				<MenuItem Header="_Save">
+					<MenuItem.Icon>
+						<cui:UiSvgImage Source="/Playground.Wpf.Cui;component/Resources/Icons/Save.svg" Stretch="None" />
+					</MenuItem.Icon>
+				</MenuItem>
+				<MenuItem Header="Save _All">
+					<MenuItem.Icon>
+						<cui:UiSvgImage Source="/Playground.Wpf.Cui;component/Resources/Icons/SaveAll.svg" Stretch="None" />
+					</MenuItem.Icon>
+				</MenuItem>
+				<Separator />
+				<MenuItem Header="E_xit" InputGestureText="Alt+F4" />
+			</MenuItem>
+		</Menu>
+		<cui:UiToolBarTray DockPanel.Dock="Top">
+			<cui:UiToolBar ShowThumb="False">
+				<Button ToolTip="New (Ctrl+N)">
+					<cui:UiSvgImage Source="/Playground.Wpf.Cui;component/Resources/Icons/NewItem.svg" Stretch="None" />
+				</Button>
+				<Button ToolTip="Open (Ctrl+O)">
+					<cui:UiSvgImage Source="/Playground.Wpf.Cui;component/Resources/Icons/OpenFolder.svg" Stretch="None" />
+				</Button>
+				<Button ToolTip="Save (Ctrl+S)">
+					<cui:UiSvgImage Source="/Playground.Wpf.Cui;component/Resources/Icons/Save.svg" Stretch="None" />
+				</Button>
+				<Button ToolTip="Save All (Ctrl+Shift+S)">
+					<cui:UiSvgImage Source="/Playground.Wpf.Cui;component/Resources/Icons/SaveAll.svg" Stretch="None" />
+				</Button>
+			</cui:UiToolBar>
+		</cui:UiToolBarTray>
+		<StatusBar DockPanel.Dock="Bottom">
+			<StatusBarItem>
+				<TextBlock Text="StatusBar Item 1" />
+			</StatusBarItem>
+		</StatusBar>
+		<StackPanel Margin="10">
+			<TextBlock TextWrapping="Wrap">
+				<Run Text="This is a" />
+				<Run Text="cui:UiWindow" FontWeight="Bold" /><Run Text="." />
+				<Run Text="The main window is a" />
+				<Run Text="cui:UiApplicationWindow" FontWeight="Bold" /><Run Text=", which provides a custom window chrome." />
+				<Run Text="Dialog windows have a default-looking window chrome." />
+			</TextBlock>
+		</StackPanel>
+	</DockPanel>
+</cui:UiWindow>

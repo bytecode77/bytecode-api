@@ -1,0 +1,10 @@
+﻿<ResourceDictionary
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:ui="http://schemas.bytecode77.com/2023/xaml/presentation"
+	xmlns:ctrl="clr-namespace:BytecodeApi.Wpf.Cui.Controls">
+	<Style TargetType="{x:Type ctrl:UiWindow}" BasedOn="{StaticResource {x:Type Window}}">
+		<Setter Property="Background" Value="#f0f0f0" />
+		<Setter Property="UseLayoutRounding" Value="True" />
+	</Style>
+</ResourceDictionary>

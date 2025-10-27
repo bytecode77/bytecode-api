@@ -1,0 +1,97 @@
+<ResourceDictionary
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:ui="http://schemas.bytecode77.com/2023/xaml/presentation"
+	xmlns:ctrl="clr-namespace:BytecodeApi.Wpf.Cui.Controls">
+	<Style TargetType="{x:Type ctrl:UiToggleSwitch}" BasedOn="{StaticResource {x:Type CheckBox}}">
+		<Setter Property="BorderThickness" Value="0" />
+		<Setter Property="BorderBrush" Value="Transparent" />
+		<Setter Property="Background" Value="Transparent" />
+		<Setter Property="FocusVisualStyle" Value="{x:Null}" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type ctrl:UiToggleSwitch}">
+					<Border Padding="{TemplateBinding Padding}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+						<StackPanel Orientation="Horizontal">
+							<ContentPresenter Name="ContentOff" Content="{TemplateBinding ContentOff}" VerticalAlignment="Center" Margin="0,-1,6,1" Focusable="False" />
+							<Grid Width="28" Height="16">
+								<Border Name="Track" BorderThickness="1" BorderBrush="#bababa" Background="#f0f0f0" CornerRadius="8" SnapsToDevicePixels="True" />
+								<Border Name="TrackFill" Background="#006bbe" CornerRadius="8" Opacity="0" />
+								<Ellipse Name="Thumb" HorizontalAlignment="Left" Width="12" Height="12" Margin="1" Fill="White" StrokeThickness="0">
+									<Ellipse.RenderTransform>
+										<TranslateTransform x:Name="ThumbTranslate" X="1" />
+									</Ellipse.RenderTransform>
+								</Ellipse>
+								<Border Name="FocusRing" CornerRadius="10" BorderBrush="#006bbe" BorderThickness="1" Margin="-2" Visibility="Hidden" />
+							</Grid>
+							<ContentPresenter Name="Content" VerticalAlignment="Center" Margin="6,-1,0,1" RecognizesAccessKey="True" />
+						</StackPanel>
+					</Border>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsChecked" Value="True">
+							<Trigger.EnterActions>
+								<BeginStoryboard>
+									<Storyboard>
+										<DoubleAnimation Storyboard.TargetName="TrackFill" Storyboard.TargetProperty="Opacity" To="1.0" Duration="0:0:0.10" />
+										<DoubleAnimation Storyboard.TargetName="ThumbTranslate" Storyboard.TargetProperty="X" To="13" Duration="0:0:0.10" />
+									</Storyboard>
+								</BeginStoryboard>
+							</Trigger.EnterActions>
+							<Trigger.ExitActions>
+								<BeginStoryboard>
+									<Storyboard>
+										<DoubleAnimation Storyboard.TargetName="TrackFill" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.10" />
+										<DoubleAnimation Storyboard.TargetName="ThumbTranslate" Storyboard.TargetProperty="X" To="1" Duration="0:0:0.10" />
+									</Storyboard>
+								</BeginStoryboard>
+							</Trigger.ExitActions>
+						</Trigger>
+						<Trigger Property="IsMouseOver" Value="True">
+							<Trigger.EnterActions>
+								<BeginStoryboard>
+									<Storyboard>
+										<ColorAnimation Storyboard.TargetName="Track" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" To="#e7e7e7" Duration="0:0:0.08" />
+									</Storyboard>
+								</BeginStoryboard>
+							</Trigger.EnterActions>
+							<Trigger.ExitActions>
+								<BeginStoryboard>
+									<Storyboard>
+										<ColorAnimation Storyboard.TargetName="Track" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" To="#f0f0f0" Duration="0:0:0.08" />
+									</Storyboard>
+								</BeginStoryboard>
+							</Trigger.ExitActions>
+						</Trigger>
+						<Trigger Property="IsPressed" Value="True">
+							<Trigger.EnterActions>
+								<BeginStoryboard>
+									<Storyboard>
+										<DoubleAnimation Storyboard.TargetName="Thumb" Storyboard.TargetProperty="Opacity" To=".8" Duration="0:0:0.05" />
+									</Storyboard>
+								</BeginStoryboard>
+							</Trigger.EnterActions>
+							<Trigger.ExitActions>
+								<BeginStoryboard>
+									<Storyboard>
+										<DoubleAnimation Storyboard.TargetName="Thumb" Storyboard.TargetProperty="Opacity" To="1.0" Duration="0:0:0.05" />
+									</Storyboard>
+								</BeginStoryboard>
+							</Trigger.ExitActions>
+						</Trigger>
+						<Trigger Property="IsKeyboardFocusWithin" Value="True">
+							<Setter TargetName="FocusRing" Property="Visibility" Value="Visible" />
+						</Trigger>
+						<Trigger Property="IsEnabled" Value="False">
+							<Setter Property="Foreground" Value="#757575" />
+							<Setter TargetName="Content" Property="TextElement.Foreground" Value="#757575" />
+							<Setter TargetName="ContentOff" Property="TextElement.Foreground" Value="#757575" />
+							<Setter TargetName="Track" Property="Background" Value="#f9f9f9" />
+							<Setter TargetName="Thumb" Property="Fill" Value="#e9e9e9" />
+							<Setter TargetName="TrackFill" Property="Background" Value="#757575" />
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+</ResourceDictionary>

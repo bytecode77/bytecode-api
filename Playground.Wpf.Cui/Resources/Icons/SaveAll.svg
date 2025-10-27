@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+  <defs>
+    <style>.canvas{fill: none; opacity: 0;}.light-blue{fill: #005dba; opacity: 1;}.light-blue-10{fill: #005dba; opacity: 0.1;}.cls-1{opacity:0.75;}</style>
+  </defs>
+  <title>SaveAll</title>
+  <g id="canvas" class="canvas">
+    <path class="canvas" d="M16,16H0V0H16Z" />
+  </g>
+  <g id="level-1">
+    <g class="cls-1">
+      <path class="light-blue" d="M14.85,2.65l-1.5-1.5L13,1H3.5L3,1.5V2h9.79L14,3.21V13h.49l.51-.5V3Z" />
+    </g>
+    <path class="light-blue-10" d="M12.515,5v9.5h-11V3.5h9.5Z" />
+    <g class="cls-1">
+      <path class="light-blue" d="M11,9.5V14H10V10H4v4H3V9.5L3.5,9h7Z" />
+    </g>
+    <path class="light-blue" d="M12.854,4.647l-1.5-1.5L11,3H1.5L1,3.5V14.517L1.485,15h11L13,14.5V5ZM5,4H9V7H5Zm7,10H2V4H4V7.5l.5.5h5l.5-.5V4h.793L12,5.208Z" />
+  </g>
+</svg>

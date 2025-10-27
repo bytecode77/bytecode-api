@@ -1,0 +1,106 @@
+<ResourceDictionary
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:ui="http://schemas.bytecode77.com/2023/xaml/presentation"
+	xmlns:ctrl="clr-namespace:BytecodeApi.Wpf.Cui.Controls">
+	<Style TargetType="{x:Type ctrl:UiApplicationWindow}" BasedOn="{StaticResource {x:Type Window}}">
+		<Setter Property="Padding" Value="6" />
+		<Setter Property="BorderBrush" Value="#203d77" />
+		<Setter Property="Background" Value="#5d6b99" />
+		<Setter Property="UseLayoutRounding" Value="True" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type ctrl:UiApplicationWindow}">
+					<Border Name="ContentRoot">
+						<Grid Background="{TemplateBinding Background}">
+							<DockPanel>
+								<StackPanel DockPanel.Dock="Top" VerticalAlignment="Top" MinHeight="33" Background="#ccd5f0">
+									<StackPanel Orientation="Horizontal" MinHeight="24" Margin="0,8,0,0">
+										<ContentPresenter Name="IconContent" ContentSource="IconControl" HorizontalAlignment="Left" VerticalAlignment="Top" Width="20" Height="20" Margin="13,0,0,0" />
+										<ContentPresenter ContentSource="Menu" VerticalAlignment="Top" Margin="2,0,0,0" WindowChrome.IsHitTestVisibleInChrome="True" />
+										<Border Name="TitleBorder" VerticalAlignment="Top" Margin="18,-3,0,0" Padding="8,4" Background="#e9eeff">
+											<TextBlock Name="TitleTextBlock" Text="{TemplateBinding Title}" Foreground="#40568d" />
+										</Border>
+									</StackPanel>
+									<ContentPresenter ContentSource="ToolBarTray" HorizontalAlignment="Left" Margin="10,0,0,4" WindowChrome.IsHitTestVisibleInChrome="True" />
+								</StackPanel>
+								<ContentPresenter DockPanel.Dock="Bottom" ContentSource="StatusBar" />
+								<ContentPresenter Margin="{TemplateBinding Padding}" />
+							</DockPanel>
+							<StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" WindowChrome.IsHitTestVisibleInChrome="True">
+								<StackPanel.Resources>
+									<Style TargetType="{x:Type ctrl:UiFlatButton}">
+										<Setter Property="BackgroundMouseOver" Value="#f8f9ff" />
+										<Setter Property="BackgroundMouseDown" Value="White" />
+										<Setter Property="Focusable" Value="False" />
+										<Style.Resources>
+											<Style TargetType="{x:Type Path}">
+												<Setter Property="Width" Value="46" />
+												<Setter Property="Height" Value="33" />
+												<Setter Property="StrokeThickness" Value="1" />
+												<Setter Property="Stroke" Value="#4c5787" />
+												<Setter Property="SnapsToDevicePixels" Value="True" />
+												<Style.Triggers>
+													<Trigger Property="IsEnabled" Value="False">
+														<Setter Property="Opacity" Value=".5" />
+													</Trigger>
+												</Style.Triggers>
+											</Style>
+										</Style.Resources>
+									</Style>
+								</StackPanel.Resources>
+								<ctrl:UiFlatButton x:Name="MinimizeButton" Command="{x:Static SystemCommands.MinimizeWindowCommand}">
+									<Path Data="M18,17.5 L28,17.5" />
+								</ctrl:UiFlatButton>
+								<ctrl:UiFlatButton x:Name="MaximizeButton" Command="{x:Static SystemCommands.MaximizeWindowCommand}">
+									<Path Data="M18.5,13.5 L27.5,13.5 L27.5,22.5 L18.5,22.5 Z" />
+								</ctrl:UiFlatButton>
+								<ctrl:UiFlatButton x:Name="RestoreButton" Command="{x:Static SystemCommands.RestoreWindowCommand}">
+									<Path Data="M18.5,14.5 L25.5,14.5 L25.5,21.5 L18.5,21.5 Z M20.5,14.5 L20.5,12.5 L27.5,12.5 L27.5,19.5 L25.5,19.5" />
+								</ctrl:UiFlatButton>
+								<ctrl:UiFlatButton x:Name="CloseButton" Command="{x:Static SystemCommands.CloseWindowCommand}">
+									<Path Data="M18.5,13.5 L27.5,22.5 M18.5,22.5 L27.5,13.5" />
+								</ctrl:UiFlatButton>
+							</StackPanel>
+							<ResizeGrip Name="PART_ResizeGrip" HorizontalAlignment="Right" VerticalAlignment="Bottom" Visibility="Collapsed" />
+						</Grid>
+					</Border>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsActive" Value="False">
+							<Setter TargetName="IconContent" Property="IsEnabled" Value="False" />
+							<Setter TargetName="TitleBorder" Property="Background" Value="Transparent" />
+							<Setter TargetName="TitleTextBlock" Property="Foreground" Value="#4c5787" />
+						</Trigger>
+						<Trigger Property="ShowResizeGrip" Value="True">
+							<Setter TargetName="PART_ResizeGrip" Property="Visibility" Value="Visible" />
+						</Trigger>
+						<Trigger Property="WindowState" Value="Maximized">
+							<Setter TargetName="ContentRoot" Property="Margin" Value="{x:Static SystemParameters.WindowResizeBorderThickness}" />
+							<Setter TargetName="ContentRoot" Property="Padding" Value="8" />
+							<Setter TargetName="MaximizeButton" Property="Visibility" Value="Collapsed" />
+							<Setter TargetName="PART_ResizeGrip" Property="Opacity" Value="0" />
+						</Trigger>
+						<Trigger Property="WindowState" Value="Normal">
+							<Setter TargetName="RestoreButton" Property="Visibility" Value="Collapsed" />
+						</Trigger>
+						<Trigger Property="ResizeMode" Value="NoResize">
+							<Setter TargetName="MinimizeButton" Property="Visibility" Value="Collapsed" />
+							<Setter TargetName="MaximizeButton" Property="Visibility" Value="Collapsed" />
+							<Setter TargetName="RestoreButton" Property="Visibility" Value="Collapsed" />
+						</Trigger>
+						<Trigger Property="ResizeMode" Value="CanMinimize">
+							<Setter TargetName="MaximizeButton" Property="IsEnabled" Value="False" />
+							<Setter TargetName="RestoreButton" Property="IsEnabled" Value="False" />
+						</Trigger>
+						<DataTrigger Binding="{Binding Title, RelativeSource={RelativeSource Self}, Converter={ui:StringEmptyConverter NotNullOrEmpty}}" Value="False">
+							<Setter TargetName="TitleBorder" Property="Visibility" Value="Collapsed" />
+						</DataTrigger>
+						<Trigger Property="IconControl" Value="{x:Null}">
+							<Setter TargetName="IconContent" Property="Visibility" Value="Collapsed" />
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+</ResourceDictionary>

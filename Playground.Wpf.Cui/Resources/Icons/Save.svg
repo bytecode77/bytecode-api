@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+  <defs>
+    <style>.canvas{fill: none; opacity: 0;}.light-blue-10{fill: #005dba; opacity: 0.1;}.light-blue{fill: #005dba; opacity: 1;}.cls-1{opacity:0.75;}</style>
+  </defs>
+  <title>Save</title>
+  <g id="canvas" class="canvas">
+    <path class="canvas" d="M16,16H0V0H16Z" />
+  </g>
+  <g id="level-1">
+    <path class="light-blue-10" d="M14.515,3.5v11h-13V1.5h11Z" />
+    <path class="light-blue" d="M14.854,3.146l-2-2L12.5,1H1.5L1,1.5v13l.5.5h13l.5-.5V3.5ZM5,2h6V6H5Zm9,12H2V2H4V6.5l.5.5h7l.5-.5V2h.293L14,3.707Z" />
+    <g class="cls-1">
+      <path class="light-blue" d="M13,8.5v6H12V9H4v5.5H3v-6L3.5,8h9Z" />
+    </g>
+  </g>
+</svg>

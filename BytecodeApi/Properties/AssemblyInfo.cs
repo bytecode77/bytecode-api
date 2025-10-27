@@ -18,6 +18,7 @@ using System.Runtime.InteropServices;
 [assembly: InternalsVisibleTo("BytecodeApi.Win32")]
 [assembly: InternalsVisibleTo("BytecodeApi.Wmi")]
 [assembly: InternalsVisibleTo("BytecodeApi.Wpf")]
+[assembly: InternalsVisibleTo("BytecodeApi.Wpf.Cui")]
 
 #if DEBUG
 [assembly: InternalsVisibleTo("Playground.Console")]

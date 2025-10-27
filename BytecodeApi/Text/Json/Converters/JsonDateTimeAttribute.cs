@@ -12,16 +12,29 @@ public class JsonDateTimeAttribute : JsonConverterAttribute
 	/// The format that is used to convert <see cref="DateTime" /> values.
 	/// </summary>
 	public string Format { get; private init; }
+	/// <summary>
+	/// A <see cref="bool" /> value indicating whether to require the exact format during read operations. The default value is <see langword="false" />, which allows any format during read operations.
+	/// </summary>
+	public bool ParseExact { get; private init; }
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="JsonDateTimeAttribute" /> class.
 	/// </summary>
 	/// <param name="format">The format that is used to convert <see cref="DateTime" /> values.</param>
-	public JsonDateTimeAttribute(string format)
+	public JsonDateTimeAttribute(string format) : this(format, false)
+	{
+	}
+	/// <summary>
+	/// Initializes a new instance of the <see cref="JsonDateTimeAttribute" /> class.
+	/// </summary>
+	/// <param name="format">The format that is used to convert <see cref="DateTime" /> values.</param>
+	/// <param name="parseExact"><see langword="true" /> to require the exact format; <see langword="false" /> to allow any format during read operations.</param>
+	public JsonDateTimeAttribute(string format, bool parseExact)
 	{
 		Check.ArgumentNull(format);
 
 		Format = format;
+		ParseExact = parseExact;
 	}
 
 	/// <summary>
@@ -33,6 +46,6 @@ public class JsonDateTimeAttribute : JsonConverterAttribute
 	/// </returns>
 	public override JsonConverter CreateConverter(Type typeToConvert)
 	{
-		return new DateTimeJsonConverter(Format);
+		return new DateTimeJsonConverter(Format, ParseExact);
 	}
 }

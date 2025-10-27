@@ -1,0 +1,77 @@
+<ResourceDictionary
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:ui="http://schemas.bytecode77.com/2023/xaml/presentation"
+	xmlns:ctrl="clr-namespace:BytecodeApi.Wpf.Cui.Controls">
+	<Style TargetType="{x:Type ctrl:UiGroupBox}" BasedOn="{StaticResource {x:Type GroupBox}}">
+		<Setter Property="Padding" Value="8,5,8,8" />
+		<Setter Property="BorderBrush" Value="#dcdcdc" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type ctrl:UiGroupBox}">
+					<Grid>
+						<Grid.RowDefinitions>
+							<RowDefinition Height="Auto" />
+							<RowDefinition Height="Auto" />
+							<RowDefinition Height="*" />
+						</Grid.RowDefinitions>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="5" />
+							<ColumnDefinition Width="Auto" />
+							<ColumnDefinition Width="*" />
+						</Grid.ColumnDefinitions>
+						<Border Grid.Row="1" Grid.RowSpan="2" Grid.ColumnSpan="3" Background="{TemplateBinding Background}" SnapsToDevicePixels="True" />
+						<ContentPresenter Name="Header" Grid.RowSpan="2" Grid.Column="1" ContentSource="Header" HorizontalAlignment="Left" VerticalAlignment="Center" TextElement.Foreground="{TemplateBinding Foreground}" RecognizesAccessKey="True" />
+						<ContentPresenter Grid.Row="2" Grid.ColumnSpan="3" Margin="{TemplateBinding Padding}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" SnapsToDevicePixels="True" />
+						<Rectangle Name="BorderTopLeft" VerticalAlignment="Bottom" Margin="0,0,2,0" Fill="{TemplateBinding BorderBrush}" SnapsToDevicePixels="True">
+							<Rectangle.Height>
+								<Binding Path="BorderThickness.Top" RelativeSource="{RelativeSource TemplatedParent}" />
+							</Rectangle.Height>
+						</Rectangle>
+						<Rectangle Name="BorderTopRight" Grid.Column="2" VerticalAlignment="Bottom" Margin="3,0,0,0" Fill="{TemplateBinding BorderBrush}" SnapsToDevicePixels="True">
+							<Rectangle.Height>
+								<Binding Path="BorderThickness.Top" RelativeSource="{RelativeSource TemplatedParent}" />
+							</Rectangle.Height>
+						</Rectangle>
+						<Rectangle Name="BorderTopLeftNoHeader" Grid.ColumnSpan="3" VerticalAlignment="Bottom" Margin="0,0,2,0" Fill="{TemplateBinding BorderBrush}" Visibility="Collapsed" SnapsToDevicePixels="True">
+							<Rectangle.Height>
+								<Binding Path="BorderThickness.Top" RelativeSource="{RelativeSource TemplatedParent}" />
+							</Rectangle.Height>
+						</Rectangle>
+						<Rectangle Name="BorderLeft" Grid.Row="1" Grid.RowSpan="2" HorizontalAlignment="Left" Fill="{TemplateBinding BorderBrush}" SnapsToDevicePixels="True">
+							<Rectangle.Width>
+								<Binding Path="BorderThickness.Left" RelativeSource="{RelativeSource TemplatedParent}" />
+							</Rectangle.Width>
+						</Rectangle>
+						<Rectangle Name="BorderRight" Grid.Row="1" Grid.RowSpan="2" Grid.Column="2" HorizontalAlignment="Right" Fill="{TemplateBinding BorderBrush}" SnapsToDevicePixels="True">
+							<Rectangle.Width>
+								<Binding Path="BorderThickness.Right" RelativeSource="{RelativeSource TemplatedParent}" />
+							</Rectangle.Width>
+						</Rectangle>
+						<Rectangle Name="BorderBottom" Grid.Row="2" Grid.ColumnSpan="3" VerticalAlignment="Bottom" Fill="{TemplateBinding BorderBrush}" SnapsToDevicePixels="True">
+							<Rectangle.Height>
+								<Binding Path="BorderThickness.Bottom" RelativeSource="{RelativeSource TemplatedParent}" />
+							</Rectangle.Height>
+						</Rectangle>
+					</Grid>
+					<ControlTemplate.Triggers>
+						<Trigger Property="Header" Value="{x:Null}">
+							<Setter TargetName="BorderTopLeft" Property="Visibility" Value="Collapsed" />
+							<Setter TargetName="BorderTopRight" Property="Visibility" Value="Collapsed" />
+							<Setter TargetName="BorderTopLeftNoHeader" Property="Visibility" Value="Visible" />
+						</Trigger>
+						<Trigger Property="IsEnabled" Value="False">
+							<Setter TargetName="Header" Property="TextElement.Foreground" Value="#757575" />
+							<Setter TargetName="BorderTopLeft" Property="Fill" Value="#e9e9e9" />
+							<Setter TargetName="BorderTopRight" Property="Fill" Value="#e9e9e9" />
+							<Setter TargetName="BorderTopLeftNoHeader" Property="Fill" Value="#e9e9e9" />
+							<Setter TargetName="BorderLeft" Property="Fill" Value="#e9e9e9" />
+							<Setter TargetName="BorderRight" Property="Fill" Value="#e9e9e9" />
+							<Setter TargetName="BorderBottom" Property="Fill" Value="#e9e9e9" />
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+</ResourceDictionary>
