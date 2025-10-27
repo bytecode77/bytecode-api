@@ -497,6 +497,10 @@ string wrappedTo80chars = Wording.WrapText("A whole paragraph with 1000 words [.
 
 ## Changelog
 
+### 4.0.1 (27.10.2025)
+
+* **change:** Added `ParseExact` parameter to JSON converters
+
 ### 4.0.0 (15.09.2025)
 
 * **change:** Targeting .NET 9.0
