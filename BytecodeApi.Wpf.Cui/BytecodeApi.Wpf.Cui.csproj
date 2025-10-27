@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<TargetFramework>net9.0-windows</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
@@ -22,8 +22,8 @@
 	</PropertyGroup>
 	<PropertyGroup>
 		<PackageId>BytecodeApi.Wpf.Cui</PackageId>
-		<PackageTags>wpf cui</PackageTags>
-		<PackageProjectUrl>https://bytecode77.com/bytecode-api</PackageProjectUrl>
+		<PackageTags>wpf controls cui vs2022 visual studio</PackageTags>
+		<PackageProjectUrl>https://bytecode77.com/bytecode-api-cui</PackageProjectUrl>
 		<RepositoryType>git</RepositoryType>
 		<RepositoryUrl>https://github.com/bytecode77/bytecode-api</RepositoryUrl>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
