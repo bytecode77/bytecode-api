@@ -1,11 +1,10 @@
 ﻿using BytecodeApi.Threading;
 using BytecodeApi.Wpf.Controls;
 using BytecodeApi.Wpf.Extensions;
-using System.Runtime.InteropServices;
+using BytecodeApi.Wpf.Services;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Shell;
 
@@ -146,17 +145,9 @@ public class UiApplicationWindow : ObservableWindow
 	}
 	private void UpdateBorder()
 	{
-		nint hwnd = new WindowInteropHelper(this).Handle;
-		if (hwnd != 0 && BorderBrush is SolidColorBrush borderBrush)
+		if (BorderBrush is SolidColorBrush borderBrush)
 		{
-			uint color = borderBrush.Color.R | (uint)borderBrush.Color.G << 8 | (uint)borderBrush.Color.B << 16;
-			Native.DwmSetWindowAttribute(hwnd, 34, ref color, sizeof(int));
+			WindowService.SetBorderBrush(this, borderBrush);
 		}
 	}
-}
-
-file static class Native
-{
-	[DllImport("dwmapi.dll")]
-	public static extern int DwmSetWindowAttribute(nint hwnd, int attribute, ref uint attributeValue, int attributeSize);
 }

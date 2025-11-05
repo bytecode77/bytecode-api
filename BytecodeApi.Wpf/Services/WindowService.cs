@@ -30,6 +30,10 @@ public static class WindowService
 	/// </summary>
 	public static readonly DependencyProperty TitleBarBrushProperty = DependencyPropertyEx.RegisterAttached<Window, SolidColorBrush>("TitleBarBrush", new FrameworkPropertyMetadata(TitleBarBrush_Changed));
 	/// <summary>
+	/// Identifies the <see cref="WindowService" />.BorderBrush dependency property. This field is read-only.
+	/// </summary>
+	public static readonly DependencyProperty BorderBrushProperty = DependencyPropertyEx.RegisterAttached<Window, SolidColorBrush>("BorderBrush", new FrameworkPropertyMetadata(BorderBrush_Changed));
+	/// <summary>
 	/// Identifies the <see cref="WindowService" />.IsAcrylicEnabled dependency property. This field is read-only.
 	/// </summary>
 	public static readonly DependencyProperty IsAcrylicEnabledProperty = DependencyPropertyEx.RegisterAttached<Window, bool>("IsAcrylicEnabled", new FrameworkPropertyMetadata(IsAcrylicEnabled_Changed));
@@ -134,6 +138,30 @@ public static class WindowService
 		dependencyObject.SetValue(TitleBarBrushProperty, value);
 	}
 	/// <summary>
+	/// Gets the border color of this <see cref="Window" />.
+	/// </summary>
+	/// <param name="dependencyObject">The <see cref="Window" /> to check.</param>
+	/// <returns>
+	/// A <see cref="SolidColorBrush" /> with the border color of this <see cref="Window" />.
+	/// </returns>
+	public static SolidColorBrush GetBorderBrush(DependencyObject dependencyObject)
+	{
+		Check.ArgumentNull(dependencyObject);
+
+		return dependencyObject.GetValue<SolidColorBrush>(BorderBrushProperty);
+	}
+	/// <summary>
+	/// Sets the border color of this <see cref="Window" />.
+	/// </summary>
+	/// <param name="dependencyObject">The <see cref="Window" /> to change the border color of.</param>
+	/// <param name="value">A <see cref="SolidColorBrush" /> with the border color for this <see cref="Window" />.</param>
+	public static void SetBorderBrush(DependencyObject dependencyObject, SolidColorBrush value)
+	{
+		Check.ArgumentNull(dependencyObject);
+
+		dependencyObject.SetValue(BorderBrushProperty, value);
+	}
+	/// <summary>
 	/// Gets a <see cref="bool" /> value indicating whether this <see cref="Window" /> uses acrylic blur.
 	/// </summary>
 	/// <param name="dependencyObject">The <see cref="Window" /> to check.</param>
@@ -205,6 +233,17 @@ public static class WindowService
 
 			uint color = (uint)titleBarBrush.Color.B << 16 | (uint)titleBarBrush.Color.G << 8 | titleBarBrush.Color.R;
 			Native.DwmSetWindowAttribute(handle, 35, ref color, 4);
+		}
+	}
+	private static void BorderBrush_Changed(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
+	{
+		if (dependencyObject is Window window)
+		{
+			SolidColorBrush borderBrush = GetBorderBrush(dependencyObject);
+			nint handle = new WindowInteropHelper(window).EnsureHandle();
+
+			uint color = (uint)borderBrush.Color.B << 16 | (uint)borderBrush.Color.G << 8 | borderBrush.Color.R;
+			Native.DwmSetWindowAttribute(handle, 34, ref color, 4);
 		}
 	}
 	private static void IsAcrylicEnabled_Changed(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)

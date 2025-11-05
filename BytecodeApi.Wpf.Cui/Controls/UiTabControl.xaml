@@ -66,10 +66,10 @@
 		</Setter>
 	</Style>
 	<Style TargetType="{x:Type ctrl:UiTabControl}" BasedOn="{StaticResource {x:Type TabControl}}">
+		<Setter Property="Padding" Value="10" />
 		<Setter Property="BorderThickness" Value="1" />
 		<Setter Property="BorderBrush" Value="#bababa" />
 		<Setter Property="Background" Value="White" />
-		<Setter Property="Padding" Value="10" />
 		<Setter Property="ItemContainerStyle" Value="{StaticResource UiTabControlItemTopStyle}" />
 		<Setter Property="Template">
 			<Setter.Value>
