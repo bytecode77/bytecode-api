@@ -613,7 +613,7 @@
 									</ComboBox>
 								</cui:UiToolBar>
 							</cui:UiToolBarTray>
-							<cui:UiListView ItemsSource="{Binding CompileErrorListItems}" SortColumn="Description">
+							<cui:UiListView ItemsSource="{Binding CompileErrorListItems}" SortColumn="Description" BorderThickness="0">
 								<cui:UiListView.View>
 									<GridView>
 										<cui:UiGridViewColumn Header="" Width="30" SortProperty="Icon">

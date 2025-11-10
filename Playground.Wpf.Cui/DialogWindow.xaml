@@ -7,7 +7,7 @@
 	xmlns:ui="http://schemas.bytecode77.com/2023/xaml/presentation"
 	xmlns:cui="http://schemas.bytecode77.com/2025/xaml/cui"
 	DataContext="{Binding ViewModel, ElementName=dialogWindow}"
-	Title="Dialog Window" Width="600" Height="300" WindowStartupLocation="CenterOwner">
+	Title="Dialog Window" Width="600" Height="300" WindowStartupLocation="CenterOwner" ui:WindowService.DisableMaximizeButton="True">
 	<DockPanel>
 		<Menu DockPanel.Dock="Top">
 			<MenuItem Header="_File">

@@ -193,12 +193,13 @@ public static class WindowService
 		{
 			if (!GetShowIcon(dependencyObject))
 			{
-				nint handle = new WindowInteropHelper(window).EnsureHandle();
-
-				Native.SetWindowLong(handle, -20, Native.GetWindowLong(handle, -20) | 1);
-				Native.SetWindowPos(handle, 0, 0, 0, 0, 0, 0x27);
-				Native.SendMessage(handle, 0x80, 1, 0);
-				Native.SendMessage(handle, 0x80, 0, 0);
+				ApplyWindowChange(window, handle =>
+				{
+					Native.SetWindowLong(handle, -20, Native.GetWindowLong(handle, -20) | 1);
+					Native.SetWindowPos(handle, 0, 0, 0, 0, 0, 0x27);
+					Native.SendMessage(handle, 0x80, 1, 0);
+					Native.SendMessage(handle, 0x80, 0, 0);
+				});
 			}
 		}
 	}
@@ -208,8 +209,7 @@ public static class WindowService
 		{
 			if (GetDisableMinimizeButton(dependencyObject))
 			{
-				nint handle = new WindowInteropHelper(window).EnsureHandle();
-				Native.SetWindowLong(handle, -16, Native.GetWindowLong(handle, -16) & ~0x20000);
+				ApplyWindowChange(window, handle => Native.SetWindowLong(handle, -16, Native.GetWindowLong(handle, -16) & ~0x20000));
 			}
 		}
 	}
@@ -219,8 +219,10 @@ public static class WindowService
 		{
 			if (GetDisableMaximizeButton(dependencyObject))
 			{
-				nint handle = new WindowInteropHelper(window).EnsureHandle();
-				Native.SetWindowLong(handle, -16, Native.GetWindowLong(handle, -16) & ~0x10000);
+				ApplyWindowChange(window, handle =>
+				{
+					Native.SetWindowLong(handle, -16, Native.GetWindowLong(handle, -16) & ~0x10000);
+				});
 			}
 		}
 	}
@@ -229,10 +231,12 @@ public static class WindowService
 		if (dependencyObject is Window window)
 		{
 			SolidColorBrush titleBarBrush = GetTitleBarBrush(dependencyObject);
-			nint handle = new WindowInteropHelper(window).EnsureHandle();
 
-			uint color = (uint)titleBarBrush.Color.B << 16 | (uint)titleBarBrush.Color.G << 8 | titleBarBrush.Color.R;
-			Native.DwmSetWindowAttribute(handle, 35, ref color, 4);
+			ApplyWindowChange(window, handle =>
+			{
+				uint color = (uint)titleBarBrush.Color.B << 16 | (uint)titleBarBrush.Color.G << 8 | titleBarBrush.Color.R;
+				Native.DwmSetWindowAttribute(handle, 35, ref color, 4);
+			});
 		}
 	}
 	private static void BorderBrush_Changed(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
@@ -240,10 +244,12 @@ public static class WindowService
 		if (dependencyObject is Window window)
 		{
 			SolidColorBrush borderBrush = GetBorderBrush(dependencyObject);
-			nint handle = new WindowInteropHelper(window).EnsureHandle();
 
-			uint color = (uint)borderBrush.Color.B << 16 | (uint)borderBrush.Color.G << 8 | borderBrush.Color.R;
-			Native.DwmSetWindowAttribute(handle, 34, ref color, 4);
+			ApplyWindowChange(window, handle =>
+			{
+				uint color = (uint)borderBrush.Color.B << 16 | (uint)borderBrush.Color.G << 8 | borderBrush.Color.R;
+				Native.DwmSetWindowAttribute(handle, 34, ref color, 4);
+			});
 		}
 	}
 	private static void IsAcrylicEnabled_Changed(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
@@ -253,23 +259,51 @@ public static class WindowService
 			Check.InvalidOperation(window.WindowStyle == WindowStyle.None, "Window.WindowStyle must be set to WindowStyle.None.");
 			Check.InvalidOperation(window.AllowsTransparency, "Window.AllowsTransparency must be set to true.");
 
-			Native.AccentPolicy accent = new()
+			ApplyWindowChange(window, handle =>
 			{
-				AccentState = GetIsAcrylicEnabled(dependencyObject) ? 3 : 0
-			};
+				Native.AccentPolicy accent = new()
+				{
+					AccentState = GetIsAcrylicEnabled(dependencyObject) ? 3 : 0
+				};
 
-			using HGlobal accentPtr = HGlobal.FromStructure(accent);
+				using HGlobal accentPtr = HGlobal.FromStructure(accent);
 
-			Native.WindowCompositionAttributeData data = new()
+				Native.WindowCompositionAttributeData data = new()
+				{
+					Attribute = 19,
+					SizeOfData = Marshal.SizeOf<Native.AccentPolicy>(),
+					Data = accentPtr.Handle
+				};
+
+				if (Native.SetWindowCompositionAttribute(handle, ref data) == 0)
+				{
+					throw Throw.Win32("SetWindowCompositionAttribute failed.");
+				}
+			});
+		}
+	}
+
+	private static void ApplyWindowChange(Window window, Action<nint> apply)
+	{
+		nint handle = new WindowInteropHelper(window).Handle;
+
+		if (handle != 0)
+		{
+			apply(handle);
+		}
+		else
+		{
+			window.SourceInitialized += Window_SourceInitialized;
+
+			void Window_SourceInitialized(object? sender, EventArgs e)
 			{
-				Attribute = 19,
-				SizeOfData = Marshal.SizeOf<Native.AccentPolicy>(),
-				Data = accentPtr.Handle
-			};
+				window.SourceInitialized -= Window_SourceInitialized;
+				nint handle = new WindowInteropHelper(window).Handle;
 
-			if (Native.SetWindowCompositionAttribute(new WindowInteropHelper(window).EnsureHandle(), ref data) == 0)
-			{
-				throw Throw.Win32("SetWindowCompositionAttribute failed.");
+				if (handle != 0)
+				{
+					apply(handle);
+				}
 			}
 		}
 	}

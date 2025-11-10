@@ -5,7 +5,7 @@
 	xmlns:ctrl="clr-namespace:BytecodeApi.Wpf.Cui.Controls">
 	<Style TargetType="{x:Type ctrl:UiToolBar}" BasedOn="{StaticResource {x:Type ToolBar}}">
 		<Setter Property="ToolBarTray.IsLocked" Value="True" />
-		<Setter Property="Padding" Value="3" />
+		<Setter Property="Padding" Value="4,2" />
 		<Setter Property="BorderThickness" Value="0" />
 		<Setter Property="Foreground" Value="Black" />
 		<Setter Property="Background" Value="Transparent" />
@@ -14,7 +14,7 @@
 				<ControlTemplate TargetType="{x:Type ctrl:UiToolBar}">
 					<Border BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
 						<DockPanel>
-							<Path Name="Thumb" Data="M3,0 H4 V1 H3 Z M7,0 H8 V1 H7 Z M5,2 H6 V3 H5 Z M3,4 H4 V5 H3 Z M7,4 H8 V5 H7 Z M5,6 H6 V7 H5 Z M3,8 H4 V9 H3 Z M7,8 H8 V9 H7 Z M5,10 H6 V11 H5 Z M3,12 H4 V13 H3 Z M7,12 H8 V13 H7 Z M5,14 H6 V15 H5 Z M3,16 H4 V17 H3 Z M7,16 H8 V17 H7 Z" Fill="#4c5787" Width="11" Height="17" Margin="0,0,-3,0" SnapsToDevicePixels="True" />
+							<Path Name="Thumb" Data="M3,0 H4 V1 H3 Z M7,0 H8 V1 H7 Z M5,2 H6 V3 H5 Z M3,4 H4 V5 H3 Z M7,4 H8 V5 H7 Z M5,6 H6 V7 H5 Z M3,8 H4 V9 H3 Z M7,8 H8 V9 H7 Z M5,10 H6 V11 H5 Z M3,12 H4 V13 H3 Z M7,12 H8 V13 H7 Z M5,14 H6 V15 H5 Z M3,16 H4 V17 H3 Z M7,16 H8 V17 H7 Z" Fill="#4c5787" Width="11" Height="17" Margin="1,-1,-4,0" SnapsToDevicePixels="True" />
 							<ToolBarPanel Name="PART_ToolBarPanel" IsItemsHost="True" Margin="{TemplateBinding Padding}" KeyboardNavigation.TabNavigation="Cycle" />
 						</DockPanel>
 					</Border>
@@ -45,7 +45,7 @@
 							<Border Name="Border" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
 								<Grid>
 									<DockPanel>
-										<Path Name="Arrow" DockPanel.Dock="Right" Data="M 0 0 L 6 0 L 3 3 Z" Margin="0,0,3,0" VerticalAlignment="Center" Fill="Black" />
+										<Path Name="Arrow" DockPanel.Dock="Right" Data="M 0 0 L 6 0 L 3 3 Z" Margin="0,0,2,0" VerticalAlignment="Center" Fill="Black" />
 										<ContentPresenter Name="Content" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="{TemplateBinding Padding}" TextElement.Foreground="{TemplateBinding Foreground}" />
 									</DockPanel>
 									<Popup Name="PART_Popup" Placement="Bottom" HorizontalOffset="-1" VerticalOffset="1" MinWidth="{TemplateBinding ActualWidth, Converter={ui:MathConverter Add}, ConverterParameter={ui:Double 10}}" AllowsTransparency="True" StaysOpen="True" Focusable="False">
@@ -103,7 +103,7 @@
 														<Setter.Value>
 															<ControlTemplate TargetType="{x:Type Button}">
 																<Border Name="Border" BorderThickness="1" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
-																	<Path Name="Arrow" Data="M 0 0 L 6 0 L 3 3 Z" Margin="3,0" VerticalAlignment="Center" Fill="Black" />
+																	<Path Name="Arrow" Data="M 0 0 L 6 0 L 3 3 Z" Margin="2,0" VerticalAlignment="Center" Fill="Black" />
 																</Border>
 																<ControlTemplate.Triggers>
 																	<Trigger Property="IsPressed" Value="True">
