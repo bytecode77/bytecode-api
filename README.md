@@ -25,6 +25,7 @@ BytecodeApi is highly consistent, particularly in terms of structure, naming con
 | [![](http://bytecode77.com/public/fileicons/dll.png) BytecodeApi.Win32](BytecodeApi.Win32/README.md)							| Library for querying Windows specific operating system data.
 | [![](http://bytecode77.com/public/fileicons/dll.png) BytecodeApi.Wmi](BytecodeApi.Wmi/README.md)								| Library for efficient WMI querying.
 | [![](http://bytecode77.com/public/fileicons/dll.png) BytecodeApi.Wpf](BytecodeApi.Wpf/README.md)								| WPF & MVVM library and converter engine.
+| [![](http://bytecode77.com/public/fileicons/dll.png) BytecodeApi.Wpf.Cui](BytecodeApi.Wpf.Cui/README.md)						| Bytecode77 WPF common UI.
 
 ## Documentation
 

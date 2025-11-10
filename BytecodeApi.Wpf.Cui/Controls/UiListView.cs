@@ -103,19 +103,11 @@ public class UiListView : ListView
 
 	private void UiListView_Loaded(object sender, RoutedEventArgs e)
 	{
-		if (Sort(SortColumn, SortDirection))
-		{
-			Loaded -= UiListView_Loaded;
-			IsVisibleChanged -= UiListView_IsVisibleChanged;
-		}
+		InitializeSort();
 	}
 	private void UiListView_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
 	{
-		if (Sort(SortColumn, SortDirection))
-		{
-			Loaded -= UiListView_Loaded;
-			IsVisibleChanged -= UiListView_IsVisibleChanged;
-		}
+		InitializeSort();
 	}
 	private static void SelectedItemList_Changed(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
 	{
@@ -193,7 +185,25 @@ public class UiListView : ListView
 		}
 	}
 
-	private bool Sort(string? propertyName, ListSortDirection? direction)
+	private void InitializeSort()
+	{
+		if (ColumnHeaders.Any())
+		{
+			if (SortColumn != null)
+			{
+				Sort(SortColumn, SortDirection);
+			}
+
+			Loaded -= UiListView_Loaded;
+			IsVisibleChanged -= UiListView_IsVisibleChanged;
+		}
+		else
+		{
+			// This happens when a UiListView is not part of the visual tree, yet (TabPage, or Visibility is set to Collapsed, etc...)
+			// -> Sort() must be called again, once the headers are loaded.
+		}
+	}
+	private void Sort(string propertyName, ListSortDirection? direction)
 	{
 		if (ColumnHeaders.FirstOrDefault(column => (column.Column as UiGridViewColumn)?.SortProperty == propertyName) is GridViewColumnHeader columnHeader)
 		{
@@ -253,16 +263,10 @@ public class UiListView : ListView
 			}
 
 			TextSearch.SetTextPath(this, propertyName);
-
-			return true;
 		}
 		else
 		{
 			TextSearch.SetTextPath(this, null);
-
-			// This happens when a UiListView is not part of the visual tree, yet (TabPage, or Visibility is set to Collapsed, etc...)
-			// -> Sort() must be called again, once the headers are loaded.
-			return false;
 		}
 	}
 }

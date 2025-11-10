@@ -47,6 +47,7 @@
 		</Setter>
 	</Style>
 	<Style TargetType="{x:Type ctrl:UiApplicationTabControl}" BasedOn="{StaticResource {x:Type TabControl}}">
+		<Setter Property="Padding" Value="0" />
 		<Setter Property="BorderThickness" Value="0,2,0,0" />
 		<Setter Property="BorderBrush" Value="#ccd5f0" />
 		<Setter Property="Background" Value="White" />

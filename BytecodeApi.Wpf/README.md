@@ -249,6 +249,11 @@ if (FileDialogs.OpenFolder(@"C:\path\to\directory") is string directory)
 
 ## Changelog
 
+### 4.0.1 (10.11.2025)
+
+* **new:** `WindowService.BorderBrushProperty`
+* **bugfix:** `WindowService` must not use `EnsureHandle()`, but wait for the `SourceInitialized` event
+
 ### 4.0.0 (15.09.2025)
 
 * **change:** Targeting .NET 9.0

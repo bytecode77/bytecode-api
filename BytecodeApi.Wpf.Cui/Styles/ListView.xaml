@@ -47,7 +47,7 @@
 								<Border Name="Border" Padding="{TemplateBinding Padding}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
 									<ContentPresenter Name="Content" TextElement.Foreground="{TemplateBinding Foreground}" ui:TextBlockService.TextTrimming="CharacterEllipsis" />
 								</Border>
-								<Thumb Name="PART_HeaderGripper" HorizontalAlignment="Right" Width="18" Margin="0,0,-9,0" IsEnabled="{Binding Column.IsColumnVisible, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}">
+								<Thumb Name="PART_HeaderGripper" HorizontalAlignment="Right" Width="18" Margin="0,0,-9,0" IsEnabled="{Binding Column.IsVisible, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}">
 									<Thumb.Template>
 										<ControlTemplate TargetType="{x:Type Thumb}">
 											<Border Background="Transparent" />

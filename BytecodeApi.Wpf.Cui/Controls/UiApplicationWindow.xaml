@@ -22,7 +22,7 @@
 											<TextBlock Name="TitleTextBlock" Text="{TemplateBinding Title}" Foreground="#40568d" />
 										</Border>
 									</StackPanel>
-									<ContentPresenter ContentSource="ToolBarTray" HorizontalAlignment="Left" Margin="10,0,0,4" WindowChrome.IsHitTestVisibleInChrome="True" />
+									<ContentPresenter ContentSource="ToolBarTray" HorizontalAlignment="Left" Margin="9,1,0,5" WindowChrome.IsHitTestVisibleInChrome="True" />
 								</StackPanel>
 								<ContentPresenter DockPanel.Dock="Bottom" ContentSource="StatusBar" />
 								<ContentPresenter Margin="{TemplateBinding Padding}" />
