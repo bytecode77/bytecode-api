@@ -348,6 +348,44 @@
 									<cui:UiListBox ItemsSource="{Binding ListBoxItems}" SelectedIndex="0" Width="150" Height="80" IsEnabled="False" />
 								</StackPanel>
 							</cui:UiGroupBox>
+							<cui:UiGroupBox Header="Slider" Margin="10" Padding="10">
+								<StackPanel Orientation="Horizontal">
+									<StackPanel>
+										<DockPanel Margin="0,0,0,5">
+											<TextBlock DockPanel.Dock="Right" Text="{Binding SliderValue1, StringFormat={}{0:0.00}}" Width="45" Margin="5,0,0,0" />
+											<cui:UiSlider Width="150" Height="20" Minimum="0" Maximum="100" SmallChange="1" LargeChange="10" Value="{Binding SliderValue1}" />
+										</DockPanel>
+										<DockPanel Margin="0,0,0,5">
+											<TextBlock DockPanel.Dock="Right" Text="{Binding SliderValue2, StringFormat={}{0:0.00}}" Width="45" Margin="5,0,0,0" />
+											<cui:UiSlider Width="150" Height="20" Minimum="0" Maximum="10" Value="{Binding SliderValue2}" TickPlacement="Both" />
+										</DockPanel>
+										<DockPanel Margin="0,0,0,5">
+											<TextBlock DockPanel.Dock="Right" Text="{Binding SliderValue3, StringFormat={}{0:0.00}}" Width="45" Margin="5,0,0,0" />
+											<cui:UiSlider Width="150" Height="30" Minimum="-10" Maximum="10" Value="{Binding SliderValue3}" />
+										</DockPanel>
+										<DockPanel Margin="0,0,0,5">
+											<TextBlock DockPanel.Dock="Right" Text="{Binding SliderValue4, StringFormat={}{0:0.00}}" Width="45" Margin="5,0,0,0" />
+											<cui:UiSlider Width="150" Height="30" Minimum="-10" Maximum="10" Value="{Binding SliderValue4}" TrackHeight="10" />
+										</DockPanel>
+										<DockPanel>
+											<TextBlock DockPanel.Dock="Right" Text="disabled" Width="45" Margin="5,0,0,0" />
+											<cui:UiSlider Width="150" Height="20" Minimum="0" Maximum="10" Value="3" IsEnabled="False" />
+										</DockPanel>
+									</StackPanel>
+									<DockPanel Margin="10,0,0,0">
+										<TextBlock DockPanel.Dock="Top" Text="{Binding SliderValue5, StringFormat={}{0:0.00}}" Width="30" Margin="0,0,0,5" />
+										<cui:UiSlider Width="20" Minimum="0" Maximum="10" Value="{Binding SliderValue5}" Orientation="Vertical" TickPlacement="Both" />
+									</DockPanel>
+									<DockPanel Margin="10,0,0,0">
+										<TextBlock DockPanel.Dock="Top" Text="{Binding SliderValue6, StringFormat={}{0:0.00}}" Width="30" Margin="0,0,0,5" />
+										<cui:UiSlider Width="30" Minimum="0" Maximum="10" Value="{Binding SliderValue6}" Orientation="Vertical" />
+									</DockPanel>
+									<DockPanel Margin="10,0,0,0">
+										<TextBlock DockPanel.Dock="Top" Text="" Margin="0,0,0,5" />
+										<cui:UiSlider Width="20" Minimum="0" Maximum="10" Value="3" Orientation="Vertical" IsEnabled="False" />
+									</DockPanel>
+								</StackPanel>
+							</cui:UiGroupBox>
 							<cui:UiGroupBox Header="Dialog" Margin="10" Padding="10">
 								<StackPanel>
 									<cui:UiButton Content="Window" HorizontalAlignment="Left" Margin="0,0,0,10" Command="{Binding ShowDialogWindowCommand}" />

@@ -1,0 +1,211 @@
+<ResourceDictionary
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:ui="http://schemas.bytecode77.com/2023/xaml/presentation"
+	xmlns:ctrl="clr-namespace:BytecodeApi.Wpf.Cui.Controls">
+	<Style TargetType="{x:Type ctrl:UiSlider}" BasedOn="{StaticResource {x:Type Slider}}">
+		<Setter Property="Background" Value="#e9e9e9" />
+		<Setter Property="Foreground" Value="#006bbe" />
+		<Setter Property="SnapsToDevicePixels" Value="True" />
+		<Style.Triggers>
+			<Trigger Property="Orientation" Value="Horizontal">
+				<Setter Property="Template">
+					<Setter.Value>
+						<ControlTemplate TargetType="{x:Type ctrl:UiSlider}">
+							<Grid>
+								<Grid>
+									<Grid.RowDefinitions>
+										<RowDefinition Height="*" />
+										<RowDefinition Height="*" />
+										<RowDefinition Height="{TemplateBinding TrackHeight}" />
+										<RowDefinition Height="*" />
+										<RowDefinition Height="*" />
+									</Grid.RowDefinitions>
+									<TickBar Name="TopTick" Grid.Row="1" Placement="Top" Fill="#bababa" Visibility="Collapsed" IsHitTestVisible="False" />
+									<TickBar Name="BottomTick" Grid.Row="3" Placement="Bottom" Fill="#bababa" Visibility="Collapsed" IsHitTestVisible="False" />
+								</Grid>
+								<Track Name="PART_Track">
+									<Track.DecreaseRepeatButton>
+										<RepeatButton Focusable="False" Command="Slider.DecreaseLarge">
+											<RepeatButton.Template>
+												<ControlTemplate TargetType="{x:Type RepeatButton}">
+													<Border Background="Transparent">
+														<Border Name="TrackBorder" Height="{Binding TrackHeight, RelativeSource={RelativeSource AncestorType={x:Type ctrl:UiSlider}}}" Background="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ctrl:UiSlider}}}" />
+													</Border>
+													<ControlTemplate.Triggers>
+														<Trigger Property="IsEnabled" Value="False">
+															<Setter TargetName="TrackBorder" Property="Background" Value="#909090" />
+														</Trigger>
+													</ControlTemplate.Triggers>
+												</ControlTemplate>
+											</RepeatButton.Template>
+										</RepeatButton>
+									</Track.DecreaseRepeatButton>
+									<Track.Thumb>
+										<Thumb Width="{Binding ActualHeight, RelativeSource={RelativeSource TemplatedParent}}">
+											<Thumb.Template>
+												<ControlTemplate TargetType="{x:Type Thumb}">
+													<Grid Background="Transparent">
+														<Grid.ColumnDefinitions>
+															<ColumnDefinition Width="*" />
+															<ColumnDefinition Width="*" />
+														</Grid.ColumnDefinitions>
+														<Rectangle Name="BehindCircleDecrease" Height="{Binding TrackHeight, RelativeSource={RelativeSource AncestorType={x:Type ctrl:UiSlider}}}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ctrl:UiSlider}}}" />
+														<Rectangle Name="BehindCircleIncrease" Grid.Column="1" Height="{Binding TrackHeight, RelativeSource={RelativeSource AncestorType={x:Type ctrl:UiSlider}}}" Fill="{Binding Background, RelativeSource={RelativeSource AncestorType={x:Type ctrl:UiSlider}}}" />
+														<Ellipse Name="Circle" Grid.ColumnSpan="2" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ctrl:UiSlider}}}" />
+														<Ellipse Name="CircleOverlay" Grid.ColumnSpan="2" Fill="#30ffffff" Visibility="Collapsed" />
+													</Grid>
+													<ControlTemplate.Triggers>
+														<Trigger Property="IsMouseOver" Value="True">
+															<Setter TargetName="CircleOverlay" Property="Visibility" Value="Visible" />
+														</Trigger>
+														<Trigger Property="IsDragging" Value="True">
+															<Setter TargetName="CircleOverlay" Property="Visibility" Value="Visible" />
+															<Setter TargetName="CircleOverlay" Property="Fill" Value="#30000000" />
+														</Trigger>
+														<Trigger Property="IsEnabled" Value="False">
+															<Setter TargetName="Circle" Property="Fill" Value="#909090" />
+															<Setter TargetName="BehindCircleDecrease" Property="Fill" Value="#909090" />
+															<Setter TargetName="BehindCircleIncrease" Property="Fill" Value="#e9e9e9" />
+														</Trigger>
+													</ControlTemplate.Triggers>
+												</ControlTemplate>
+											</Thumb.Template>
+										</Thumb>
+									</Track.Thumb>
+									<Track.IncreaseRepeatButton>
+										<RepeatButton Focusable="False" Command="Slider.IncreaseLarge">
+											<RepeatButton.Template>
+												<ControlTemplate TargetType="{x:Type RepeatButton}">
+													<Border Background="Transparent">
+														<Border Name="Border" Height="{Binding TrackHeight, RelativeSource={RelativeSource AncestorType={x:Type ctrl:UiSlider}}}" Background="{Binding Background, RelativeSource={RelativeSource AncestorType={x:Type ctrl:UiSlider}}}" />
+													</Border>
+													<ControlTemplate.Triggers>
+														<Trigger Property="IsEnabled" Value="False">
+															<Setter TargetName="Border" Property="Background" Value="#e9e9e9" />
+														</Trigger>
+													</ControlTemplate.Triggers>
+												</ControlTemplate>
+											</RepeatButton.Template>
+										</RepeatButton>
+									</Track.IncreaseRepeatButton>
+								</Track>
+							</Grid>
+							<ControlTemplate.Triggers>
+								<Trigger Property="TickPlacement" Value="TopLeft">
+									<Setter TargetName="TopTick" Property="Visibility" Value="Visible" />
+								</Trigger>
+								<Trigger Property="TickPlacement" Value="BottomRight">
+									<Setter TargetName="BottomTick" Property="Visibility" Value="Visible" />
+								</Trigger>
+								<Trigger Property="TickPlacement" Value="Both">
+									<Setter TargetName="TopTick" Property="Visibility" Value="Visible" />
+									<Setter TargetName="BottomTick" Property="Visibility" Value="Visible" />
+								</Trigger>
+							</ControlTemplate.Triggers>
+						</ControlTemplate>
+					</Setter.Value>
+				</Setter>
+			</Trigger>
+			<Trigger Property="Orientation" Value="Vertical">
+				<Setter Property="Template">
+					<Setter.Value>
+						<ControlTemplate TargetType="{x:Type ctrl:UiSlider}">
+							<Grid>
+								<Grid>
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="*" />
+										<ColumnDefinition Width="*" />
+										<ColumnDefinition Width="{TemplateBinding TrackHeight}" />
+										<ColumnDefinition Width="*" />
+										<ColumnDefinition Width="*" />
+									</Grid.ColumnDefinitions>
+									<TickBar Name="LeftTick" Grid.Column="1" Placement="Left" Fill="#bababa" Visibility="Collapsed" IsHitTestVisible="False" />
+									<TickBar Name="RightTick" Grid.Column="3" Placement="Right" Fill="#bababa" Visibility="Collapsed" IsHitTestVisible="False" />
+								</Grid>
+								<Track Name="PART_Track">
+									<Track.DecreaseRepeatButton>
+										<RepeatButton Focusable="False" Command="Slider.DecreaseLarge">
+											<RepeatButton.Template>
+												<ControlTemplate TargetType="{x:Type RepeatButton}">
+													<Border Background="Transparent">
+														<Border Name="TrackBorder" Width="{Binding TrackHeight, RelativeSource={RelativeSource AncestorType={x:Type ctrl:UiSlider}}}" Background="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ctrl:UiSlider}}}" />
+													</Border>
+													<ControlTemplate.Triggers>
+														<Trigger Property="IsEnabled" Value="False">
+															<Setter TargetName="TrackBorder" Property="Background" Value="#909090" />
+														</Trigger>
+													</ControlTemplate.Triggers>
+												</ControlTemplate>
+											</RepeatButton.Template>
+										</RepeatButton>
+									</Track.DecreaseRepeatButton>
+									<Track.Thumb>
+										<Thumb Height="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}">
+											<Thumb.Template>
+												<ControlTemplate TargetType="{x:Type Thumb}">
+													<Grid Background="Transparent">
+														<Grid.RowDefinitions>
+															<RowDefinition Height="*" />
+															<RowDefinition Height="*" />
+														</Grid.RowDefinitions>
+														<Rectangle Name="BehindCircleIncrease" Width="{Binding TrackHeight, RelativeSource={RelativeSource AncestorType={x:Type ctrl:UiSlider}}}" Fill="{Binding Background, RelativeSource={RelativeSource AncestorType={x:Type ctrl:UiSlider}}}" />
+														<Rectangle Name="BehindCircleDecrease" Grid.Row="1" Width="{Binding TrackHeight, RelativeSource={RelativeSource AncestorType={x:Type ctrl:UiSlider}}}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ctrl:UiSlider}}}" />
+														<Ellipse Name="Circle" Grid.RowSpan="2" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ctrl:UiSlider}}}" />
+														<Ellipse Name="CircleOverlay" Grid.RowSpan="2" Fill="#30ffffff" Visibility="Collapsed" />
+													</Grid>
+													<ControlTemplate.Triggers>
+														<Trigger Property="IsMouseOver" Value="True">
+															<Setter TargetName="CircleOverlay" Property="Visibility" Value="Visible" />
+														</Trigger>
+														<Trigger Property="IsDragging" Value="True">
+															<Setter TargetName="CircleOverlay" Property="Visibility" Value="Visible" />
+															<Setter TargetName="CircleOverlay" Property="Fill" Value="#30000000" />
+														</Trigger>
+														<Trigger Property="IsEnabled" Value="False">
+															<Setter TargetName="Circle" Property="Fill" Value="#909090" />
+															<Setter TargetName="BehindCircleDecrease" Property="Fill" Value="#909090" />
+															<Setter TargetName="BehindCircleIncrease" Property="Fill" Value="#e9e9e9" />
+														</Trigger>
+													</ControlTemplate.Triggers>
+												</ControlTemplate>
+											</Thumb.Template>
+										</Thumb>
+									</Track.Thumb>
+									<Track.IncreaseRepeatButton>
+										<RepeatButton Focusable="False" Command="Slider.IncreaseLarge">
+											<RepeatButton.Template>
+												<ControlTemplate TargetType="{x:Type RepeatButton}">
+													<Border Background="Transparent">
+														<Border Name="Border" Width="{Binding TrackHeight, RelativeSource={RelativeSource AncestorType={x:Type ctrl:UiSlider}}}" Background="{Binding Background, RelativeSource={RelativeSource AncestorType={x:Type ctrl:UiSlider}}}" />
+													</Border>
+													<ControlTemplate.Triggers>
+														<Trigger Property="IsEnabled" Value="False">
+															<Setter TargetName="Border" Property="Background" Value="#e9e9e9" />
+														</Trigger>
+													</ControlTemplate.Triggers>
+												</ControlTemplate>
+											</RepeatButton.Template>
+										</RepeatButton>
+									</Track.IncreaseRepeatButton>
+								</Track>
+							</Grid>
+							<ControlTemplate.Triggers>
+								<Trigger Property="TickPlacement" Value="TopLeft">
+									<Setter TargetName="LeftTick" Property="Visibility" Value="Visible" />
+								</Trigger>
+								<Trigger Property="TickPlacement" Value="BottomRight">
+									<Setter TargetName="RightTick" Property="Visibility" Value="Visible" />
+								</Trigger>
+								<Trigger Property="TickPlacement" Value="Both">
+									<Setter TargetName="LeftTick" Property="Visibility" Value="Visible" />
+									<Setter TargetName="RightTick" Property="Visibility" Value="Visible" />
+								</Trigger>
+							</ControlTemplate.Triggers>
+						</ControlTemplate>
+					</Setter.Value>
+				</Setter>
+			</Trigger>
+		</Style.Triggers>
+	</Style>
+</ResourceDictionary>

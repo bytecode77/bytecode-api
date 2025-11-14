@@ -27,8 +27,8 @@ public class UiBusyIndicator : Control
 		};
 		Timer.Tick += Timer_Tick;
 
-		Loaded += Spinner_Loaded;
-		Unloaded += Spinner_Unloaded;
+		Loaded += UiBusyIndicator_Loaded;
+		Unloaded += UiBusyIndicator_Unloaded;
 	}
 
 	public override void OnApplyTemplate()
@@ -38,11 +38,11 @@ public class UiBusyIndicator : Control
 		Figure = GetTemplateChild("PART_Figure") as PathFigure;
 		Arc = GetTemplateChild("PART_Arc") as ArcSegment;
 	}
-	private void Spinner_Loaded(object sender, RoutedEventArgs e)
+	private void UiBusyIndicator_Loaded(object sender, RoutedEventArgs e)
 	{
 		Timer.Start();
 	}
-	private void Spinner_Unloaded(object sender, RoutedEventArgs e)
+	private void UiBusyIndicator_Unloaded(object sender, RoutedEventArgs e)
 	{
 		Timer.Stop();
 	}

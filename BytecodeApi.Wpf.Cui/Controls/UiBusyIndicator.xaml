@@ -9,7 +9,7 @@
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type ctrl:UiBusyIndicator}">
-					<Viewbox RenderTransformOrigin="0,0">
+					<Viewbox Margin="{TemplateBinding Padding}">
 						<Canvas Width="110" Height="110" RenderTransformOrigin=".5,.5">
 							<Path Canvas.Left="55" Canvas.Top="55" StrokeThickness="8" Stroke="{TemplateBinding Background}">
 								<Path.Data>
