@@ -114,6 +114,11 @@ Some specifics to consider:
 
 ## Changelog
 
+### 4.0.2 (14.11.2025)
+
+* **new:** `UiSlider` control
+* **bugfix:** Changed `UiGroupBox.*ContentAlignment` properties to `Center`
+
 ### 4.0.1 (10.11.2025)
 
 * **new:** `UiWindow.TitleBarBrush` property
