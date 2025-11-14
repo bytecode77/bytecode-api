@@ -17,8 +17,14 @@ public sealed class MainWindowViewModel : ObservableObject
 	private DelegateCommand<bool>? _ShowDialogWindowCommand;
 	public DelegateCommand<bool> ShowDialogWindowCommand => _ShowDialogWindowCommand ??= new(ShowDialogWindowCommand_Execute);
 
-	private string[] _ListBoxItems = ["Item 1", "Item 2", "Item 3", "Item 4", "Item 5"];
 	private string[] _TextBoxAutoCompleteItems = ["James", "Robert", "John", "Michael", "David", "William", "Richard", "Joseph", "Thomas", "Charles", "Christopher", "Daniel", "Matthew", "Anthony", "Mark", "Donald", "Steven", "Paul", "Andrew", "Joshua", "Kenneth", "Kevin", "Brian", "George", "Timothy", "Ronald", "Edward", "Jason", "Jeffrey", "Ryan", "Jacob", "Gary", "Nicholas", "Eric", "Jonathan", "Stephen", "Larry", "Justin", "Scott", "Brandon", "Benjamin", "Samuel", "Gregory", "Alexander", "Frank", "Patrick", "Raymond", "Jack", "Dennis", "Jerry", "Tyler", "Aaron", "Jose", "Adam", "Nathan", "Henry", "Douglas", "Zachary", "Peter", "Kyle", "Ethan", "Walter", "Noah", "Jeremy", "Christian", "Keith", "Roger", "Terry", "Gerald", "Harold", "Sean", "Austin", "Carl", "Arthur", "Lawrence", "Dylan", "Jesse", "Jordan", "Bryan", "Billy", "Joe", "Bruce", "Gabriel", "Logan", "Albert", "Willie", "Alan", "Juan", "Wayne", "Elijah", "Randy", "Roy", "Vincent", "Ralph", "Eugene", "Russell", "Bobby", "Mason", "Philip", "Louis"];
+	private string[] _ListBoxItems = ["Item 1", "Item 2", "Item 3", "Item 4", "Item 5"];
+	private double _SliderValue1 = 80;
+	private double _SliderValue2 = 2;
+	private double _SliderValue3;
+	private double _SliderValue4;
+	private double _SliderValue5 = 4;
+	private double _SliderValue6 = 7;
 	private TreeViewNode[] _TreeNodes =
 	[
 		new("Solution 'MyProject' (1 of 1 project)", "/Playground.Wpf.Cui;component/Resources/Icons/Application.svg", true,
@@ -57,15 +63,45 @@ public sealed class MainWindowViewModel : ObservableObject
 		new("/Playground.Wpf.Cui;component/Resources/Icons/StatusWarning.svg", "CS0162", "Unreachable code detected", "MyProject", "MainWindow.xaml.cs", 42)
 	];
 	private DataTable _CustomersDataTable = new();
+	public string[] TextBoxAutoCompleteItems
+	{
+		get => _TextBoxAutoCompleteItems;
+		set => Set(ref _TextBoxAutoCompleteItems, value);
+	}
 	public string[] ListBoxItems
 	{
 		get => _ListBoxItems;
 		set => Set(ref _ListBoxItems, value);
 	}
-	public string[] TextBoxAutoCompleteItems
+	public double SliderValue1
 	{
-		get => _TextBoxAutoCompleteItems;
-		set => Set(ref _TextBoxAutoCompleteItems, value);
+		get => _SliderValue1;
+		set => Set(ref _SliderValue1, value);
+	}
+	public double SliderValue2
+	{
+		get => _SliderValue2;
+		set => Set(ref _SliderValue2, value);
+	}
+	public double SliderValue3
+	{
+		get => _SliderValue3;
+		set => Set(ref _SliderValue3, value);
+	}
+	public double SliderValue4
+	{
+		get => _SliderValue4;
+		set => Set(ref _SliderValue4, value);
+	}
+	public double SliderValue5
+	{
+		get => _SliderValue5;
+		set => Set(ref _SliderValue5, value);
+	}
+	public double SliderValue6
+	{
+		get => _SliderValue6;
+		set => Set(ref _SliderValue6, value);
 	}
 	public TreeViewNode[] TreeNodes
 	{

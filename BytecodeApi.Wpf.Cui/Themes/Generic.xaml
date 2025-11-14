@@ -28,6 +28,7 @@
 		<ResourceDictionary Source="/BytecodeApi.Wpf.Cui;component/Controls/UiPropertyGridGroup.xaml" />
 		<ResourceDictionary Source="/BytecodeApi.Wpf.Cui;component/Controls/UiPropertyGridItem.xaml" />
 		<ResourceDictionary Source="/BytecodeApi.Wpf.Cui;component/Controls/UiRadioButton.xaml" />
+		<ResourceDictionary Source="/BytecodeApi.Wpf.Cui;component/Controls/UiSlider.xaml" />
 		<ResourceDictionary Source="/BytecodeApi.Wpf.Cui;component/Controls/UiSplitButton.xaml" />
 		<ResourceDictionary Source="/BytecodeApi.Wpf.Cui;component/Controls/UiSvgImage.xaml" />
 		<ResourceDictionary Source="/BytecodeApi.Wpf.Cui;component/Controls/UiTabControl.xaml" />
