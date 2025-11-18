@@ -26,7 +26,10 @@ public class UiPropertyGridGroup : ItemsControl
 		DefaultStyleKeyProperty.OverrideMetadata(typeof(UiPropertyGridGroup), new FrameworkPropertyMetadata(typeof(UiPropertyGridGroup)));
 	}
 
-	public override void OnApplyTemplate()
+    /// <summary>
+    /// Applies the control template to this <see cref="UiPropertyGridGroup" />.
+    /// </summary>
+    public override void OnApplyTemplate()
 	{
 		base.OnApplyTemplate();
 

@@ -51,7 +51,10 @@ public class UiSplitButton : Button
 		EventManager.RegisterClassHandler(typeof(UiSplitButton), ClickEvent, new RoutedEventHandler(UiSplitButton_Click), true);
 	}
 
-	public override void OnApplyTemplate()
+    /// <summary>
+    /// Applies the control template to this <see cref="UiSplitButton" />.
+    /// </summary>
+    public override void OnApplyTemplate()
 	{
 		base.OnApplyTemplate();
 

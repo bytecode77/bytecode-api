@@ -29,7 +29,10 @@ public class UiPropertyGridItem : ContentControl
 		DefaultStyleKeyProperty.OverrideMetadata(typeof(UiPropertyGridItem), new FrameworkPropertyMetadata(typeof(UiPropertyGridItem)));
 	}
 
-	public override void OnApplyTemplate()
+    /// <summary>
+    /// Applies the control template to this <see cref="UiPropertyGridItem" />.
+    /// </summary>
+    public override void OnApplyTemplate()
 	{
 		base.OnApplyTemplate();
 

@@ -52,7 +52,10 @@ public class UiPasswordBox : Control
 		DefaultStyleKeyProperty.OverrideMetadata(typeof(UiPasswordBox), new FrameworkPropertyMetadata(typeof(UiPasswordBox)));
 	}
 
-	public override void OnApplyTemplate()
+    /// <summary>
+    /// Applies the control template to this <see cref="UiPasswordBox" />.
+    /// </summary>
+    public override void OnApplyTemplate()
 	{
 		base.OnApplyTemplate();
 

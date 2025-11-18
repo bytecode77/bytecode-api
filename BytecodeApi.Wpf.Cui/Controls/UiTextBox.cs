@@ -41,7 +41,10 @@ public class UiTextBox : TextBox
 		DefaultStyleKeyProperty.OverrideMetadata(typeof(UiTextBox), new FrameworkPropertyMetadata(typeof(UiTextBox)));
 	}
 
-	public override void OnApplyTemplate()
+    /// <summary>
+    /// Applies the control template to this <see cref="UiTextBox" />.
+    /// </summary>
+    public override void OnApplyTemplate()
 	{
 		base.OnApplyTemplate();
 

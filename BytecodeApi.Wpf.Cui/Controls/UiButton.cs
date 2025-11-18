@@ -3,6 +3,9 @@ using System.Windows.Controls;
 
 namespace BytecodeApi.Wpf.Cui.Controls;
 
+/// <summary>
+/// Represents a button control.
+/// </summary>
 public class UiButton : Button
 {
 	static UiButton()

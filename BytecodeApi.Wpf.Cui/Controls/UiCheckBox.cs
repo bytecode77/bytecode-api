@@ -4,10 +4,19 @@ using System.Windows.Controls;
 
 namespace BytecodeApi.Wpf.Cui.Controls;
 
+/// <summary>
+/// Represents a checkbox control.
+/// </summary>
 public class UiCheckBox : CheckBox
 {
-	public static readonly DependencyProperty IndeterminateToCheckedProperty = DependencyPropertyEx.Register(nameof(IndeterminateToChecked));
-	public bool IndeterminateToChecked
+    /// <summary>
+    /// Identifies the <see cref="IndeterminateToChecked" /> dependency property. This field is read-only.
+    /// </summary>
+    public static readonly DependencyProperty IndeterminateToCheckedProperty = DependencyPropertyEx.Register(nameof(IndeterminateToChecked));
+    /// <summary>
+    /// Gets or sets a <see cref="bool" /> value that indicates whether a ThreeState <see cref="UiCheckBox" /> should go from null to true when clicked, instead of from null to false.
+    /// </summary>
+    public bool IndeterminateToChecked
 	{
 		get => this.GetValue<bool>(IndeterminateToCheckedProperty);
 		set => SetValue(IndeterminateToCheckedProperty, value);
