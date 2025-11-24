@@ -7,7 +7,7 @@ using System.Windows.Input;
 namespace BytecodeApi.Wpf.Cui.Controls;
 
 /// <summary>
-/// This control represents a button that displays either a drop-down menu or popup when clicked.
+/// Represents a button that displays either a drop-down menu or popup when clicked.
 /// </summary>
 public class UiDropDownButton : Button
 {
