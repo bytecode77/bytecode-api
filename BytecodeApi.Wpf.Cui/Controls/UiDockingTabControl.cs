@@ -15,6 +15,10 @@ public class UiDockingTabControl : TabControl
 		DefaultStyleKeyProperty.OverrideMetadata(typeof(UiDockingTabControl), new FrameworkPropertyMetadata(typeof(UiDockingTabControl)));
 	}
 
+	/// <summary>
+	/// Invoked when an unhandled <see cref="Mouse.PreviewMouseDownEvent" /> attached routed event reaches an element in its route that is derived from this class.
+	/// </summary>
+	/// <param name="e">A <see cref="MouseButtonEventArgs" /> that contains the event data.</param>
 	protected override void OnPreviewMouseDown(MouseButtonEventArgs e)
 	{
 		base.OnPreviewMouseDown(e);

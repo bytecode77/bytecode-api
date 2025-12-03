@@ -5,10 +5,10 @@ namespace Playground.Wpf.Cui.Model;
 public sealed class Product : ObservableObject
 {
 	private int _ProductId;
-	private string _ProductName;
+	private string _ProductName = "";
 	private int _SupplierId;
 	private int _CategoryId;
-	private string _QuantityPerUnit;
+	private string _QuantityPerUnit = "";
 	private decimal _UnitPrice;
 	private int _UnitsInStock;
 	private int _UnitsOnOrder;

@@ -8,8 +8,8 @@ namespace BytecodeApi.Wpf.Cui.Controls;
 /// </summary>
 public class UiExpander : Expander
 {
-    static UiExpander()
-    {
-        DefaultStyleKeyProperty.OverrideMetadata(typeof(UiExpander), new FrameworkPropertyMetadata(typeof(UiExpander)));
-    }
+	static UiExpander()
+	{
+		DefaultStyleKeyProperty.OverrideMetadata(typeof(UiExpander), new FrameworkPropertyMetadata(typeof(UiExpander)));
+	}
 }

@@ -10,18 +10,22 @@ namespace BytecodeApi.Wpf.Cui.Controls;
 /// </summary>
 public class UiDockingPanel : HeaderedContentControl
 {
-    static UiDockingPanel()
-    {
-        DefaultStyleKeyProperty.OverrideMetadata(typeof(UiDockingPanel), new FrameworkPropertyMetadata(typeof(UiDockingPanel)));
-    }
+	static UiDockingPanel()
+	{
+		DefaultStyleKeyProperty.OverrideMetadata(typeof(UiDockingPanel), new FrameworkPropertyMetadata(typeof(UiDockingPanel)));
+	}
 
-    protected override void OnPreviewMouseDown(MouseButtonEventArgs e)
-    {
-        base.OnPreviewMouseDown(e);
+	/// <summary>
+	/// Invoked when an unhandled <see cref="Mouse.PreviewMouseDownEvent" /> attached routed event reaches an element in its route that is derived from this class.
+	/// </summary>
+	/// <param name="e">A <see cref="MouseButtonEventArgs" /> that contains the event data.</param>
+	protected override void OnPreviewMouseDown(MouseButtonEventArgs e)
+	{
+		base.OnPreviewMouseDown(e);
 
-        if (!IsKeyboardFocusWithin)
-        {
-            Focus();
-        }
-    }
+		if (!IsKeyboardFocusWithin)
+		{
+			Focus();
+		}
+	}
 }

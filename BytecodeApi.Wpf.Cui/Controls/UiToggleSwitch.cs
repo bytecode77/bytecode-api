@@ -8,21 +8,21 @@ namespace BytecodeApi.Wpf.Cui.Controls;
 /// </summary>
 public class UiToggleSwitch : CheckBox
 {
-    /// <summary>
-    /// Identifies the <see cref="ContentOff" /> dependency property. This field is read-only.
-    /// </summary>
-    public static readonly DependencyProperty ContentOffProperty = DependencyPropertyEx.Register(nameof(ContentOff));
-    /// <summary>
-    /// Gets or sets additional content that is displayed on the right side of the toggle switch, describing the "off" state.
-    /// </summary>
-    public object? ContentOff
-    {
-        get => GetValue(ContentOffProperty);
-        set => SetValue(ContentOffProperty, value);
-    }
+	/// <summary>
+	/// Identifies the <see cref="ContentOff" /> dependency property. This field is read-only.
+	/// </summary>
+	public static readonly DependencyProperty ContentOffProperty = DependencyPropertyEx.Register(nameof(ContentOff));
+	/// <summary>
+	/// Gets or sets additional content that is displayed on the right side of the toggle switch, describing the "off" state.
+	/// </summary>
+	public object? ContentOff
+	{
+		get => GetValue(ContentOffProperty);
+		set => SetValue(ContentOffProperty, value);
+	}
 
-    static UiToggleSwitch()
-    {
-        DefaultStyleKeyProperty.OverrideMetadata(typeof(UiToggleSwitch), new FrameworkPropertyMetadata(typeof(UiToggleSwitch)));
-    }
+	static UiToggleSwitch()
+	{
+		DefaultStyleKeyProperty.OverrideMetadata(typeof(UiToggleSwitch), new FrameworkPropertyMetadata(typeof(UiToggleSwitch)));
+	}
 }

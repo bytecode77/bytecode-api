@@ -8,8 +8,8 @@ namespace BytecodeApi.Wpf.Cui.Controls;
 /// </summary>
 public class UiToggleButton : ToggleButton
 {
-    static UiToggleButton()
-    {
-        DefaultStyleKeyProperty.OverrideMetadata(typeof(UiToggleButton), new FrameworkPropertyMetadata(typeof(UiToggleButton)));
-    }
+	static UiToggleButton()
+	{
+		DefaultStyleKeyProperty.OverrideMetadata(typeof(UiToggleButton), new FrameworkPropertyMetadata(typeof(UiToggleButton)));
+	}
 }

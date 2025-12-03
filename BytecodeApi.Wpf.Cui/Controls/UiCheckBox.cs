@@ -9,14 +9,14 @@ namespace BytecodeApi.Wpf.Cui.Controls;
 /// </summary>
 public class UiCheckBox : CheckBox
 {
-    /// <summary>
-    /// Identifies the <see cref="IndeterminateToChecked" /> dependency property. This field is read-only.
-    /// </summary>
-    public static readonly DependencyProperty IndeterminateToCheckedProperty = DependencyPropertyEx.Register(nameof(IndeterminateToChecked));
-    /// <summary>
-    /// Gets or sets a <see cref="bool" /> value that indicates whether a ThreeState <see cref="UiCheckBox" /> should go from null to true when clicked, instead of from null to false.
-    /// </summary>
-    public bool IndeterminateToChecked
+	/// <summary>
+	/// Identifies the <see cref="IndeterminateToChecked" /> dependency property. This field is read-only.
+	/// </summary>
+	public static readonly DependencyProperty IndeterminateToCheckedProperty = DependencyPropertyEx.Register(nameof(IndeterminateToChecked));
+	/// <summary>
+	/// Gets or sets a <see cref="bool" /> value that indicates whether a ThreeState <see cref="UiCheckBox" /> should go from null to true when clicked, instead of from null to false.
+	/// </summary>
+	public bool IndeterminateToChecked
 	{
 		get => this.GetValue<bool>(IndeterminateToCheckedProperty);
 		set => SetValue(IndeterminateToCheckedProperty, value);
@@ -27,6 +27,9 @@ public class UiCheckBox : CheckBox
 		DefaultStyleKeyProperty.OverrideMetadata(typeof(UiCheckBox), new FrameworkPropertyMetadata(typeof(UiCheckBox)));
 	}
 
+	/// <summary>
+	/// Called when a control is clicked by the mouse or the keyboard.
+	/// </summary>
 	protected override void OnClick()
 	{
 		if (IsChecked == null && IndeterminateToChecked)

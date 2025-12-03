@@ -12,7 +12,7 @@
 		<Style TargetType="{x:Type cui:UiApplicationWindow}">
 			<Style.Triggers>
 				<DataTrigger Binding="{Binding ShowTitle}" Value="True">
-					<Setter Property="Title" Value="Dialog ApplicationWindow"/>
+					<Setter Property="Title" Value="Dialog ApplicationWindow" />
 				</DataTrigger>
 				<DataTrigger Binding="{Binding ShowIcon}" Value="True">
 					<Setter Property="IconControl">

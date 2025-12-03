@@ -19,10 +19,10 @@ public class UiBusyIndicator : Control
 	static UiBusyIndicator()
 	{
 		DefaultStyleKeyProperty.OverrideMetadata(typeof(UiBusyIndicator), new FrameworkPropertyMetadata(typeof(UiBusyIndicator)));
-    }
-    /// <summary>
-    /// Initializes a new instance of the <see cref="UiBusyIndicator" /> class.
-    /// </summary>
+	}
+	/// <summary>
+	/// Initializes a new instance of the <see cref="UiBusyIndicator" /> class.
+	/// </summary>
 	public UiBusyIndicator()
 	{
 		Stopwatch = Stopwatch.StartNew();
@@ -37,10 +37,10 @@ public class UiBusyIndicator : Control
 		Unloaded += UiBusyIndicator_Unloaded;
 	}
 
-    /// <summary>
-    /// Applies the control template to this <see cref="UiBusyIndicator" />.
-    /// </summary>
-    public override void OnApplyTemplate()
+	/// <summary>
+	/// Applies the control template to this <see cref="UiBusyIndicator" />.
+	/// </summary>
+	public override void OnApplyTemplate()
 	{
 		base.OnApplyTemplate();
 
