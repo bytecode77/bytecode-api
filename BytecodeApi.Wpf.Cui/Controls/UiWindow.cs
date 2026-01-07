@@ -14,7 +14,7 @@ public class UiWindow : ObservableWindow
 	/// <summary>
 	/// Identifies the <see cref="TitleBarBrush" /> dependency property. This field is read-only.
 	/// </summary>
-	public static readonly DependencyProperty TitleBarBrushProperty = DependencyPropertyEx.Register(nameof(TitleBarBrush), new(TitleBarBrush_Changed));
+	public static readonly DependencyProperty TitleBarBrushProperty = DependencyProperty.Register(nameof(TitleBarBrush), new(TitleBarBrush_Changed));
 	/// <summary>
 	/// Gets or sets the brush used to paint the title bar of the window.
 	/// </summary>

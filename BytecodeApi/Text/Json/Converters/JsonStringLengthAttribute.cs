@@ -11,7 +11,7 @@ public class JsonStringLengthAttribute : JsonConverterAttribute
 	/// <summary>
 	/// Gets the maximum length of <see cref="string" /> values.
 	/// </summary>
-	public int MaxLength { get; private init; }
+	public int MaxLength { get; }
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="JsonStringLengthAttribute" /> class.

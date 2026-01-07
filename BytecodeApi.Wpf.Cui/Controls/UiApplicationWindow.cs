@@ -22,20 +22,20 @@ public class UiApplicationWindow : ObservableWindow
 	/// <summary>
 	/// Identifies the <see cref="IconControl" /> dependency property. This field is read-only.
 	/// </summary>
-	public static readonly DependencyProperty IconControlProperty = DependencyPropertyEx.Register(nameof(IconControl));
+	public static readonly DependencyProperty IconControlProperty = DependencyProperty.Register(nameof(IconControl));
 	/// <summary>
 	/// Identifies the <see cref="Menu" /> dependency property. This field is read-only.
 	/// </summary>
-	public static readonly DependencyProperty MenuProperty = DependencyPropertyEx.Register(nameof(Menu), new(Menu_Changed));
+	public static readonly DependencyProperty MenuProperty = DependencyProperty.Register(nameof(Menu), new(Menu_Changed));
 	/// <summary>
 	/// Identifies the <see cref="ToolBarTray" /> dependency property. This field is read-only.
 	/// </summary>
-	public static readonly DependencyProperty ToolBarTrayProperty = DependencyPropertyEx.Register(nameof(ToolBarTray), new(ToolBar_Changed));
+	public static readonly DependencyProperty ToolBarTrayProperty = DependencyProperty.Register(nameof(ToolBarTray), new(ToolBar_Changed));
 	/// <summary>
 	/// Identifies the <see cref="StatusBar" /> dependency property. This field is read-only.
 	/// </summary>
-	public static readonly DependencyProperty StatusBarProperty = DependencyPropertyEx.Register(nameof(StatusBar));
-	private static readonly DependencyPropertyKey ShowResizeGripPropertyKey = DependencyPropertyEx.RegisterReadOnly(nameof(ShowResizeGrip), new FrameworkPropertyMetadata(false));
+	public static readonly DependencyProperty StatusBarProperty = DependencyProperty.Register(nameof(StatusBar));
+	private static readonly DependencyPropertyKey ShowResizeGripPropertyKey = DependencyProperty.RegisterReadOnly(nameof(ShowResizeGrip), new FrameworkPropertyMetadata(false));
 	/// <summary>
 	/// Identifies the <see cref="ShowResizeGrip" /> dependency property. This field is read-only.
 	/// </summary>
@@ -171,9 +171,7 @@ public class UiApplicationWindow : ObservableWindow
 	}
 	private void UpdateCaptionHeight()
 	{
-		WindowChrome? windowChrome = WindowChrome.GetWindowChrome(this);
-
-		if (windowChrome != null)
+		if (WindowChrome.GetWindowChrome(this) is WindowChrome windowChrome)
 		{
 			windowChrome.CaptionHeight = (Menu, ToolBarTray) switch
 			{

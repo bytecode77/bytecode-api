@@ -12,8 +12,8 @@ namespace BytecodeApi.Wpf.Cui.Controls;
 /// </summary>
 public class UiSplitButton : Button
 {
-	private static readonly DependencyPropertyKey IsDropDownOpenPropertyKey = DependencyPropertyEx.RegisterReadOnly(nameof(IsDropDownOpen), new FrameworkPropertyMetadata(false, IsDropDownOpen_Changed));
-	private static readonly DependencyPropertyKey IsDropDownContextMenuPropertyKey = DependencyPropertyEx.RegisterReadOnly(nameof(IsDropDownContextMenu), new FrameworkPropertyMetadata(false));
+	private static readonly DependencyPropertyKey IsDropDownOpenPropertyKey = DependencyProperty.RegisterReadOnly(nameof(IsDropDownOpen), new FrameworkPropertyMetadata(false, IsDropDownOpen_Changed));
+	private static readonly DependencyPropertyKey IsDropDownContextMenuPropertyKey = DependencyProperty.RegisterReadOnly(nameof(IsDropDownContextMenu), new FrameworkPropertyMetadata(false));
 	/// <summary>
 	/// Identifies the <see cref="IsDropDownOpen" /> dependency property. This field is read-only.
 	/// </summary>
@@ -21,7 +21,7 @@ public class UiSplitButton : Button
 	/// <summary>
 	/// Identifies the <see cref="DropDownContent" /> dependency property. This field is read-only.
 	/// </summary>
-	public static readonly DependencyProperty DropDownContentProperty = DependencyPropertyEx.Register(nameof(DropDownContent), new(DropDownContent_Changed));
+	public static readonly DependencyProperty DropDownContentProperty = DependencyProperty.Register(nameof(DropDownContent), new(DropDownContent_Changed));
 	/// <summary>
 	/// Identifies the <see cref="IsDropDownContextMenu" /> dependency property. This field is read-only.
 	/// </summary>
@@ -29,7 +29,7 @@ public class UiSplitButton : Button
 	/// <summary>
 	/// Identifies the <see cref="UiSplitButton" />.CloseOnClick dependency property. This field is read-only.
 	/// </summary>
-	public static readonly DependencyProperty CloseOnClickProperty = DependencyPropertyEx.RegisterAttached<UiSplitButton, bool>("CloseOnClick", new FrameworkPropertyMetadata(CloseOnClick_Changed));
+	public static readonly DependencyProperty CloseOnClickProperty = DependencyProperty.RegisterAttached<UiSplitButton, bool>("CloseOnClick", new FrameworkPropertyMetadata(CloseOnClick_Changed));
 	/// <summary>
 	/// Gets a <see cref="bool" /> value indicating whether the drop-down is currently open.
 	/// </summary>
@@ -95,41 +95,19 @@ public class UiSplitButton : Button
 	{
 		base.OnApplyTemplate();
 
-		if (DropDownButton != null)
-		{
-			DropDownButton.Click -= DropDownButton_Click;
-		}
-
-		if (Popup != null)
-		{
-			Popup.Closed -= Popup_Closed;
-			Popup.PreviewMouseLeftButtonDown -= Popup_PreviewMouseLeftButtonDown;
-		}
-
-		if (PopupBorder != null)
-		{
-			PopupBorder.MouseLeftButtonDown -= PopupBorder_MouseLeftButtonDown;
-		}
+		DropDownButton?.Click -= DropDownButton_Click;
+		Popup?.Closed -= Popup_Closed;
+		Popup?.PreviewMouseLeftButtonDown -= Popup_PreviewMouseLeftButtonDown;
+		PopupBorder?.MouseLeftButtonDown -= PopupBorder_MouseLeftButtonDown;
 
 		DropDownButton = GetTemplateChild("PART_DropDownButton") as Button;
 		Popup = GetTemplateChild("PART_Popup") as Popup;
 		PopupBorder = GetTemplateChild("PART_PopupBorder") as Border;
 
-		if (DropDownButton != null)
-		{
-			DropDownButton.Click += DropDownButton_Click;
-		}
-
-		if (Popup != null)
-		{
-			Popup.Closed += Popup_Closed;
-			Popup.PreviewMouseLeftButtonDown += Popup_PreviewMouseLeftButtonDown;
-		}
-
-		if (PopupBorder != null)
-		{
-			PopupBorder.MouseLeftButtonDown += PopupBorder_MouseLeftButtonDown;
-		}
+		DropDownButton?.Click += DropDownButton_Click;
+		Popup?.Closed += Popup_Closed;
+		Popup?.PreviewMouseLeftButtonDown += Popup_PreviewMouseLeftButtonDown;
+		PopupBorder?.MouseLeftButtonDown += PopupBorder_MouseLeftButtonDown;
 	}
 	/// <summary>
 	/// Called when a control is clicked by the mouse or the keyboard.
@@ -310,11 +288,8 @@ public class UiSplitButton : Button
 	{
 		UiSplitButton splitButton = (UiSplitButton)dependencyObject;
 
-		if (splitButton.ContextMenu != null)
-		{
-			splitButton.ContextMenu.Closed -= splitButton.ContextMenu_Closed;
-			splitButton.ContextMenu = null;
-		}
+		splitButton.ContextMenu?.Closed -= splitButton.ContextMenu_Closed;
+		splitButton.ContextMenu = null;
 
 		splitButton.IsDropDownContextMenu = e.NewValue is ContextMenu;
 
@@ -356,38 +331,26 @@ public class UiSplitButton : Button
 	}
 	private static void CloseOnClick_Click(object? sender, RoutedEventArgs e)
 	{
-		if (OpenInstance != null)
-		{
-			OpenInstance.SuppressNextClick = true;
-			OpenInstance.IsDropDownOpen = false;
-		}
+		OpenInstance?.SuppressNextClick = true;
+		OpenInstance?.IsDropDownOpen = false;
 	}
 	private static void CloseOnClick_MouseLeftButtonUp(object? sender, MouseButtonEventArgs e)
 	{
-		if (OpenInstance != null)
-		{
-			OpenInstance.SuppressNextClick = true;
-			OpenInstance.IsDropDownOpen = false;
-		}
+		OpenInstance?.SuppressNextClick = true;
+		OpenInstance?.IsDropDownOpen = false;
 	}
 
 	private void HookOutsideClick()
 	{
 		Window = Window.GetWindow(this);
-		if (Window != null)
-		{
-			Window.PreviewMouseDown += Window_PreviewMouseDown;
-			Window.Deactivated += Window_Deactivated;
-		}
+		Window?.PreviewMouseDown += Window_PreviewMouseDown;
+		Window?.Deactivated += Window_Deactivated;
 	}
 	private void UnhookOutsideClick()
 	{
-		if (Window != null)
-		{
-			Window.PreviewMouseDown -= Window_PreviewMouseDown;
-			Window.Deactivated -= Window_Deactivated;
-			Window = null;
-		}
+		Window?.PreviewMouseDown -= Window_PreviewMouseDown;
+		Window?.Deactivated -= Window_Deactivated;
+		Window = null;
 	}
 	private void Window_PreviewMouseDown(object? sender, MouseButtonEventArgs e)
 	{

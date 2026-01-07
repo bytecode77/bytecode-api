@@ -11,11 +11,11 @@ public sealed class WmiObject
 	/// <summary>
 	/// Gets the <see cref="WmiClass" /> that this <see cref="WmiObject" /> was created from.
 	/// </summary>
-	public WmiClass Class { get; private init; }
+	public WmiClass Class { get; }
 	/// <summary>
 	/// Gets the collection of properties of this <see cref="WmiObject" /> instance.
 	/// </summary>
-	public WmiPropertyCollection Properties { get; private init; }
+	public WmiPropertyCollection Properties { get; }
 
 	internal WmiObject(WmiClass @class, IEnumerable<WmiProperty> properties)
 	{

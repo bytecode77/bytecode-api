@@ -1,9 +1,7 @@
-using BytecodeApi.Mathematics;
 using SharpHash.Base;
 using SharpHash.Interfaces;
 using System.ComponentModel;
 using System.Security.Cryptography;
-using System.Text;
 
 namespace BytecodeApi.Cryptography.Tests;
 

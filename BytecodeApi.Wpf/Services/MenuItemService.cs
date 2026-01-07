@@ -14,7 +14,7 @@ public static class MenuItemService
 	/// <summary>
 	/// Identifies the <see cref="MenuItemService" />.ImageSource dependency property. This field is read-only.
 	/// </summary>
-	public static readonly DependencyProperty ImageSourceProperty = DependencyPropertyEx.RegisterAttached<MenuItem, string>("ImageSource", new FrameworkPropertyMetadata(ImageSource_Changed));
+	public static readonly DependencyProperty ImageSourceProperty = DependencyProperty.RegisterAttached<MenuItem, string>("ImageSource", new FrameworkPropertyMetadata(ImageSource_Changed));
 	/// <summary>
 	/// Gets the image source of this <see cref="MenuItem.Icon" />.
 	/// </summary>

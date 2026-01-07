@@ -32,8 +32,7 @@
 		<PackageOutputPath>../$Build</PackageOutputPath>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="System.Drawing.Common" Version="9.0.9" />
-		<PackageReference Include="System.Reflection.Emit" Version="4.7.0" />
+		<PackageReference Include="System.Drawing.Common" Version="10.0.1" />
 	</ItemGroup>
 	<ItemGroup>
 		<None Include=".nuget\README.md" Pack="true" PackagePath=".nuget\" />

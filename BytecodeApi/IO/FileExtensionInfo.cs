@@ -15,103 +15,103 @@ public class FileExtensionInfo
 	/// <summary>
 	/// Gets the file extension as supplied in the constructor of <see cref="FileExtensionInfo" /> without the leading dot.
 	/// </summary>
-	public string? Extension { get; private init; }
+	public string? Extension { get; }
 	/// <summary>
 	/// Gets the ASSOCSTR_COMMAND property of the specified extension.
 	/// </summary>
-	public string? Command { get; private init; }
+	public string? Command { get; }
 	/// <summary>
 	/// Gets the ASSOCSTR_EXECUTABLE property of the specified extension.
 	/// </summary>
-	public string? Executable { get; private init; }
+	public string? Executable { get; }
 	/// <summary>
 	/// Gets the ASSOCSTR_FRIENDLYDOCNAME property of the specified extension.
 	/// </summary>
-	public string? FriendlyDocName { get; private init; }
+	public string? FriendlyDocName { get; }
 	/// <summary>
 	/// Gets the ASSOCSTR_FRIENDLYAPPNAME property of the specified extension.
 	/// </summary>
-	public string? FriendlyAppName { get; private init; }
+	public string? FriendlyAppName { get; }
 	/// <summary>
 	/// Gets the ASSOCSTR_NOOPEN property of the specified extension.
 	/// </summary>
-	public string? NoOpen { get; private init; }
+	public string? NoOpen { get; }
 	/// <summary>
 	/// Gets the ASSOCSTR_SHELLNEWVALUE property of the specified extension.
 	/// </summary>
-	public string? ShellNewValue { get; private init; }
+	public string? ShellNewValue { get; }
 	/// <summary>
 	/// Gets the ASSOCSTR_DDECOMMAND property of the specified extension.
 	/// </summary>
-	public string? DDECommand { get; private init; }
+	public string? DDECommand { get; }
 	/// <summary>
 	/// Gets the ASSOCSTR_DDEIFEXEC property of the specified extension.
 	/// </summary>
-	public string? DDEIfExec { get; private init; }
+	public string? DDEIfExec { get; }
 	/// <summary>
 	/// Gets the ASSOCSTR_DDEAPPLICATION property of the specified extension.
 	/// </summary>
-	public string? DDEApplication { get; private init; }
+	public string? DDEApplication { get; }
 	/// <summary>
 	/// Gets the ASSOCSTR_DDETOPIC property of the specified extension.
 	/// </summary>
-	public string? DDETopic { get; private init; }
+	public string? DDETopic { get; }
 	/// <summary>
 	/// Gets the ASSOCSTR_INFOTIP property of the specified extension.
 	/// </summary>
-	public string? InfoTip { get; private init; }
+	public string? InfoTip { get; }
 	/// <summary>
 	/// Gets the ASSOCSTR_QUICKTIP property of the specified extension.
 	/// </summary>
-	public string? QuickTip { get; private init; }
+	public string? QuickTip { get; }
 	/// <summary>
 	/// Gets the ASSOCSTR_TILEINFO property of the specified extension.
 	/// </summary>
-	public string? TileInfo { get; private init; }
+	public string? TileInfo { get; }
 	/// <summary>
 	/// Gets the ASSOCSTR_CONTENTTYPE property of the specified extension.
 	/// </summary>
-	public string? ContentType { get; private init; }
+	public string? ContentType { get; }
 	/// <summary>
 	/// Gets the ASSOCSTR_DEFAULTICON property of the specified extension.
 	/// </summary>
-	public string? DefaultIcon { get; private init; }
+	public string? DefaultIcon { get; }
 	/// <summary>
 	/// Gets the ASSOCSTR_SHELLEXTENSION property of the specified extension.
 	/// </summary>
-	public string? ShellExtension { get; private init; }
+	public string? ShellExtension { get; }
 	/// <summary>
 	/// Gets the ASSOCSTR_DROPTARGET property of the specified extension.
 	/// </summary>
-	public string? DropTarget { get; private init; }
+	public string? DropTarget { get; }
 	/// <summary>
 	/// Gets the ASSOCSTR_DELEGATEEXECUTE property of the specified extension.
 	/// </summary>
-	public string? DelegateExecute { get; private init; }
+	public string? DelegateExecute { get; }
 	/// <summary>
 	/// Gets the ASSOCSTR_SUPPORTED_URI_PROTOCOLS property of the specified extension.
 	/// </summary>
-	public string? SupportedUriProtocols { get; private init; }
+	public string? SupportedUriProtocols { get; }
 	/// <summary>
 	/// Gets the ASSOCSTR_PROGID property of the specified extension.
 	/// </summary>
-	public string? ProgId { get; private init; }
+	public string? ProgId { get; }
 	/// <summary>
 	/// Gets the ASSOCSTR_APPID property of the specified extension.
 	/// </summary>
-	public string? AppId { get; private init; }
+	public string? AppId { get; }
 	/// <summary>
 	/// Gets the ASSOCSTR_APPPUBLISHER property of the specified extension.
 	/// </summary>
-	public string? AppPublisher { get; private init; }
+	public string? AppPublisher { get; }
 	/// <summary>
 	/// Gets the ASSOCSTR_APPICONREFERENCE property of the specified extension.
 	/// </summary>
-	public string? AppIconReference { get; private init; }
+	public string? AppIconReference { get; }
 	/// <summary>
 	/// Gets the ASSOCSTR_MAX property of the specified extension.
 	/// </summary>
-	public string? Max { get; private init; }
+	public string? Max { get; }
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="FileExtensionInfo" /> class and retrieves information about the specified file extension.

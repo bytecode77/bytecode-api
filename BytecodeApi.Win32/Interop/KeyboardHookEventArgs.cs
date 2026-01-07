@@ -10,15 +10,15 @@ public sealed class KeyboardHookEventArgs : EventArgs
 	/// <summary>
 	/// Gets the keycode of the pressed key.
 	/// </summary>
-	public Keys KeyCode { get; private init; }
+	public Keys KeyCode { get; }
 	/// <summary>
 	/// Gets the scancode of the pressed key.
 	/// </summary>
-	public int ScanCode { get; private init; }
+	public int ScanCode { get; }
 	/// <summary>
 	/// Gets the key character, or '\0', if the key does not represent a printable character.
 	/// </summary>
-	public char KeyChar { get; private init; }
+	public char KeyChar { get; }
 	/// <summary>
 	/// Gets or sets a <see cref="bool" /> value indicating whether to cancel the keyboard event.
 	/// </summary>

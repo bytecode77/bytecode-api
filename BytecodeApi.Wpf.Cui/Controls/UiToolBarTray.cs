@@ -13,11 +13,11 @@ public class UiToolBarTray : ToolBarTray
 	/// <summary>
 	/// Identifies the <see cref="BorderThickness" /> dependency property. This field is read-only.
 	/// </summary>
-	public static readonly DependencyProperty BorderThicknessProperty = DependencyPropertyEx.Register(nameof(BorderThickness), new(new Thickness()));
+	public static readonly DependencyProperty BorderThicknessProperty = DependencyProperty.Register(nameof(BorderThickness), new(new Thickness()));
 	/// <summary>
 	/// Identifies the <see cref="BorderBrush" /> dependency property. This field is read-only.
 	/// </summary>
-	public static readonly DependencyProperty BorderBrushProperty = DependencyPropertyEx.Register(nameof(BorderBrush), new(Brushes.Transparent));
+	public static readonly DependencyProperty BorderBrushProperty = DependencyProperty.Register(nameof(BorderBrush), new(Brushes.Transparent));
 	/// <summary>
 	/// Gets or sets the thickness of the border around this <see cref="UiToolBarTray" />.
 	/// </summary>

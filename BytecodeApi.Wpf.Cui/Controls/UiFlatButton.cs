@@ -13,47 +13,47 @@ public class UiFlatButton : Button
 	/// <summary>
 	/// Identifies the <see cref="BorderBrushMouseOver" /> dependency property. This field is read-only.
 	/// </summary>
-	public static readonly DependencyProperty BorderBrushMouseOverProperty = DependencyPropertyEx.Register(nameof(BorderBrushMouseOver), new(Brushes.Transparent));
+	public static readonly DependencyProperty BorderBrushMouseOverProperty = DependencyProperty.Register(nameof(BorderBrushMouseOver), new(Brushes.Transparent));
 	/// <summary>
 	/// Identifies the <see cref="BorderBrushMouseDown" /> dependency property. This field is read-only.
 	/// </summary>
-	public static readonly DependencyProperty BorderBrushMouseDownProperty = DependencyPropertyEx.Register(nameof(BorderBrushMouseDown), new(Brushes.Transparent));
+	public static readonly DependencyProperty BorderBrushMouseDownProperty = DependencyProperty.Register(nameof(BorderBrushMouseDown), new(Brushes.Transparent));
 	/// <summary>
 	/// Identifies the <see cref="BackgroundMouseOver" /> dependency property. This field is read-only.
 	/// </summary>
-	public static readonly DependencyProperty BackgroundMouseOverProperty = DependencyPropertyEx.Register(nameof(BackgroundMouseOver), new(new SolidColorBrush((Color)ColorConverter.ConvertFromString("#20000000"))));
+	public static readonly DependencyProperty BackgroundMouseOverProperty = DependencyProperty.Register(nameof(BackgroundMouseOver), new(new SolidColorBrush((Color)ColorConverter.ConvertFromString("#20000000"))));
 	/// <summary>
 	/// Identifies the <see cref="BackgroundMouseDown" /> dependency property. This field is read-only.
 	/// </summary>
-	public static readonly DependencyProperty BackgroundMouseDownProperty = DependencyPropertyEx.Register(nameof(BackgroundMouseDown), new(new SolidColorBrush((Color)ColorConverter.ConvertFromString("#30000000"))));
+	public static readonly DependencyProperty BackgroundMouseDownProperty = DependencyProperty.Register(nameof(BackgroundMouseDown), new(new SolidColorBrush((Color)ColorConverter.ConvertFromString("#30000000"))));
 	/// <summary>
 	/// Identifies the <see cref="Opacity" /> dependency property. This field is read-only.
 	/// </summary>
-	new public static readonly DependencyProperty OpacityProperty = DependencyPropertyEx.Register(nameof(Opacity), new(1.0));
+	new public static readonly DependencyProperty OpacityProperty = DependencyProperty.Register(nameof(Opacity), new(1.0));
 	/// <summary>
 	/// Identifies the <see cref="OpacityMouseOver" /> dependency property. This field is read-only.
 	/// </summary>
-	public static readonly DependencyProperty OpacityMouseOverProperty = DependencyPropertyEx.Register(nameof(OpacityMouseOver), new(1.0));
+	public static readonly DependencyProperty OpacityMouseOverProperty = DependencyProperty.Register(nameof(OpacityMouseOver), new(1.0));
 	/// <summary>
 	/// Identifies the <see cref="OpacityMouseDown" /> dependency property. This field is read-only.
 	/// </summary>
-	public static readonly DependencyProperty OpacityMouseDownProperty = DependencyPropertyEx.Register(nameof(OpacityMouseDown), new(1.0));
+	public static readonly DependencyProperty OpacityMouseDownProperty = DependencyProperty.Register(nameof(OpacityMouseDown), new(1.0));
 	/// <summary>
 	/// Identifies the <see cref="InvertImage" /> dependency property. This field is read-only.
 	/// </summary>
-	public static readonly DependencyProperty InvertImageProperty = DependencyPropertyEx.Register(nameof(InvertImage));
+	public static readonly DependencyProperty InvertImageProperty = DependencyProperty.Register(nameof(InvertImage));
 	/// <summary>
 	/// Identifies the <see cref="InvertImageMouseOver" /> dependency property. This field is read-only.
 	/// </summary>
-	public static readonly DependencyProperty InvertImageMouseOverProperty = DependencyPropertyEx.Register(nameof(InvertImageMouseOver));
+	public static readonly DependencyProperty InvertImageMouseOverProperty = DependencyProperty.Register(nameof(InvertImageMouseOver));
 	/// <summary>
 	/// Identifies the <see cref="InvertImageMouseDown" /> dependency property. This field is read-only.
 	/// </summary>
-	public static readonly DependencyProperty InvertImageMouseDownProperty = DependencyPropertyEx.Register(nameof(InvertImageMouseDown));
+	public static readonly DependencyProperty InvertImageMouseDownProperty = DependencyProperty.Register(nameof(InvertImageMouseDown));
 	/// <summary>
 	/// Identifies the <see cref="CornerRadius" /> dependency property. This field is read-only.
 	/// </summary>
-	public static readonly DependencyProperty CornerRadiusProperty = DependencyPropertyEx.Register(nameof(CornerRadius));
+	public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(nameof(CornerRadius));
 	/// <summary>
 	/// Gets or sets a brush that describes the border color when the mouse is over the button.
 	/// </summary>
@@ -153,10 +153,7 @@ public class UiFlatButton : Button
 	/// </summary>
 	protected override void OnClick()
 	{
-		if (this.FindParent<ContextMenu>(UITreeType.Logical) is ContextMenu contextMenu)
-		{
-			contextMenu.IsOpen = false;
-		}
+		this.FindParent<ContextMenu>(UITreeType.Logical)?.IsOpen = false;
 
 		base.OnClick();
 	}

@@ -8,19 +8,19 @@ public sealed class CliResult
 	/// <summary>
 	/// Gets the exit code of the process.
 	/// </summary>
-	public int ExitCode { get; private init; }
+	public int ExitCode { get; }
 	/// <summary>
 	/// Gets the console output of the process.
 	/// </summary>
-	public string Output { get; private init; }
+	public string Output { get; }
 	/// <summary>
 	/// Gets the timestamp when the process started.
 	/// </summary>
-	public DateTime StartTime { get; private init; }
+	public DateTime StartTime { get; }
 	/// <summary>
 	/// Gets the timestamp when the process exited.
 	/// </summary>
-	public DateTime EndTime { get; private init; }
+	public DateTime EndTime { get; }
 	/// <summary>
 	/// Gets the amount of time that the process needed to complete.
 	/// </summary>

@@ -17,11 +17,11 @@ public sealed class RestRequest
 	/// <summary>
 	/// Gets the <see cref="BytecodeApi.Rest.RestClient" /> from which this <see cref="RestRequest" /> has been initiated.
 	/// </summary>
-	public RestClient RestClient { get; private init; }
+	public RestClient RestClient { get; }
 	/// <summary>
 	/// Gets the <see cref="System.Net.Http.HttpMethod" /> of this <see cref="RestRequest" />.
 	/// </summary>
-	public HttpMethod HttpMethod { get; private init; }
+	public HttpMethod HttpMethod { get; }
 	/// <summary>
 	/// Gets the URL of this <see cref="RestRequest" />.
 	/// </summary>
@@ -372,54 +372,51 @@ public sealed class RestRequest
 		string? eventId = null;
 		StringBuilder data = new();
 
-		while (!reader.EndOfStream)
+		while (await reader.ReadLineAsync().ConfigureAwait(false) is string line)
 		{
-			if (reader.ReadLine() is string line)
+			if (line == "")
 			{
-				if (line == "")
-				{
-					eventCallback(eventType, data.ToString().Trim(), eventId);
+				eventCallback(eventType, data.ToString().Trim(), eventId);
 
-					eventType = "message";
-					data.Clear();
+				eventType = "message";
+				data.Clear();
+			}
+			else if (line.StartsWith(':'))
+			{
+				// Ignore
+			}
+			else if (line.Contains(':'))
+			{
+				string field;
+				string value;
+
+				if (line.Contains(':'))
+				{
+					field = line.SubstringUntil(':');
+					value = line.SubstringFrom(':');
+
+					if (value.StartsWith(' '))
+					{
+						value = value[1..];
+					}
 				}
-				else if (line.StartsWith(':'))
+				else
 				{
-					// Ignore
+					field = line;
+					value = "";
 				}
-				else if (line.Contains(':'))
+
+				switch (field)
 				{
-					string field;
-					string value;
-
-					if (line.Contains(':'))
-					{
-						field = line.SubstringUntil(':');
-						value = line.SubstringFrom(':');
-
-						if (value.StartsWith(' '))
-						{
-							value = value[1..];
-						}
-					}
-					else
-					{
-						field = line;
-						value = "";
-					}
-
-					switch (field)
-					{
-						case "event":
-							eventType = value;
-							break;
-						case "data":
-							data.AppendLine(value);
-							break;
-						case "id" when !value.Contains('\0'):
-							eventId = value.ToNullIfEmpty();
-							break;
-					}
+					case "event":
+						eventType = value;
+						break;
+					case "data":
+						data.AppendLine(value);
+						break;
+					case "id" when !value.Contains('\0'):
+						eventId = value.ToNullIfEmpty();
+						break;
 				}
 			}
 		}

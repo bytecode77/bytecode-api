@@ -12,11 +12,11 @@ public class UiGridViewColumn : GridViewColumn
 	/// <summary>
 	/// Identifies the <see cref="SortProperty" /> dependency property. This field is read-only.
 	/// </summary>
-	public static readonly DependencyProperty SortPropertyProperty = DependencyPropertyEx.Register(nameof(SortProperty));
+	public static readonly DependencyProperty SortPropertyProperty = DependencyProperty.Register(nameof(SortProperty));
 	/// <summary>
 	/// Identifies the <see cref="IsVisible" /> dependency property. This field is read-only.
 	/// </summary>
-	public static readonly DependencyProperty IsVisibleProperty = DependencyPropertyEx.Register(nameof(IsVisible), new(true, IsVisible_Changed));
+	public static readonly DependencyProperty IsVisibleProperty = DependencyProperty.Register(nameof(IsVisible), new(true, IsVisible_Changed));
 	/// <summary>
 	/// Gets or sets a <see cref="string" /> value that corresponds to the <see cref="UiListView.SortColumn" /> property when sorting by this column.
 	/// </summary>

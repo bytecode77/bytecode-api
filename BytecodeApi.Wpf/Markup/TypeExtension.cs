@@ -41,9 +41,9 @@ public sealed class TypeExtension : MarkupExtension
 
 		return Method switch
 		{
-			TypeExtensionMethod.EnumValues => EnumEx.GetValues(Type),
-			TypeExtensionMethod.EnumDescriptions => EnumEx.GetValues(Type).Select(value => value.GetDescription()).ToArray(),
-			TypeExtensionMethod.EnumDescriptionLookup => EnumEx.GetDescriptionLookup(Type),
+			TypeExtensionMethod.EnumValues => Enum.GetValues(Type),
+			TypeExtensionMethod.EnumDescriptions => Enum.GetValues(Type).Cast<Enum>().Select(value => value.GetDescription()).ToArray(),
+			TypeExtensionMethod.EnumDescriptionLookup => Enum.GetDescriptionLookup(Type),
 			_ => throw Throw.InvalidEnumArgument(nameof(Method), Method)
 		};
 	}

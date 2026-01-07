@@ -7,15 +7,8 @@ public sealed class MainWindowViewModel : ObservableObject
 {
 	public MainWindow View { get; set; }
 
-	private DelegateCommand<string>? _TestCommand;
-	public DelegateCommand<string> TestCommand => _TestCommand ??= new(TestCommand_Execute);
-
-	private bool _TestProperty;
-	public bool TestProperty
-	{
-		get => _TestProperty;
-		set => Set(ref _TestProperty, value);
-	}
+	public DelegateCommand<string> TestCommand => field ??= new(TestCommand_Execute);
+	public bool TestProperty { get; set => Set(ref field, value); }
 
 	public MainWindowViewModel(MainWindow view)
 	{

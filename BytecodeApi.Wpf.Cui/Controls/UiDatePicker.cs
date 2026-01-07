@@ -17,11 +17,11 @@ public class UiDatePicker : DatePicker
 	/// <summary>
 	/// Identifies the <see cref="Watermark" /> dependency property. This field is read-only.
 	/// </summary>
-	public static readonly DependencyProperty WatermarkProperty = DependencyPropertyEx.Register(nameof(Watermark));
+	public static readonly DependencyProperty WatermarkProperty = DependencyProperty.Register(nameof(Watermark));
 	/// <summary>
 	/// Identifies the <see cref="ShowResetButton" /> dependency property. This field is read-only.
 	/// </summary>
-	public static readonly DependencyProperty ShowResetButtonProperty = DependencyPropertyEx.Register(nameof(ShowResetButton));
+	public static readonly DependencyProperty ShowResetButtonProperty = DependencyProperty.Register(nameof(ShowResetButton));
 	/// <summary>
 	/// Gets or sets an object that represents the watermark displayed when no date is selected.
 	/// </summary>
@@ -55,16 +55,9 @@ public class UiDatePicker : DatePicker
 	{
 		base.OnApplyTemplate();
 
-		if (TextBox != null)
-		{
-			TextBox.PreviewMouseLeftButtonUp -= TextBox_PreviewMouseLeftButtonUp;
-			TextBox.PreviewKeyDown -= TextBox_PreviewKeyDown;
-		}
-
-		if (ResetButton != null)
-		{
-			ResetButton.Click -= ResetButton_Click;
-		}
+		TextBox?.PreviewMouseLeftButtonUp -= TextBox_PreviewMouseLeftButtonUp;
+		TextBox?.PreviewKeyDown -= TextBox_PreviewKeyDown;
+		ResetButton?.Click -= ResetButton_Click;
 
 		TextBox? datePickerTextBox = GetTemplateChild("PART_TextBox") as TextBox;
 		datePickerTextBox?.ApplyTemplate();
@@ -73,16 +66,9 @@ public class UiDatePicker : DatePicker
 		Popup = GetTemplateChild("PART_Popup") as Popup;
 		ResetButton = GetTemplateChild("PART_ResetButton") as Button;
 
-		if (TextBox != null)
-		{
-			TextBox.PreviewMouseLeftButtonUp += TextBox_PreviewMouseLeftButtonUp;
-			TextBox.PreviewKeyDown += TextBox_PreviewKeyDown;
-		}
-
-		if (ResetButton != null)
-		{
-			ResetButton.Click += ResetButton_Click;
-		}
+		TextBox?.PreviewMouseLeftButtonUp += TextBox_PreviewMouseLeftButtonUp;
+		TextBox?.PreviewKeyDown += TextBox_PreviewKeyDown;
+		ResetButton?.Click += ResetButton_Click;
 	}
 	/// <summary>
 	/// Invoked when an unhandled <see cref="Keyboard.GotKeyboardFocusEvent" /> attached event reaches an element in its route that is derived from this class.

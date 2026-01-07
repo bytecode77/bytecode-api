@@ -12,7 +12,7 @@ public sealed class HostsFile
 	/// <summary>
 	/// Gets all hosts file entries.
 	/// </summary>
-	public ReadOnlyCollection<HostsFileEntry> Entries { get; private init; }
+	public ReadOnlyCollection<HostsFileEntry> Entries { get; }
 
 	private HostsFile(IEnumerable<HostsFileEntry> entries)
 	{

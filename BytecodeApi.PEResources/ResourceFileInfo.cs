@@ -13,7 +13,7 @@ public class ResourceFileInfo
 	/// <summary>
 	/// Gets the path of the file.
 	/// </summary>
-	public string Path { get; private init; }
+	public string Path { get; }
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="ResourceFileInfo" /> class using the specified filename.
@@ -228,7 +228,7 @@ public class ResourceFileInfo
 			}
 		}
 
-		return ConvertEx.ToIcon(memoryStream.ToArray());
+		return Convert.ToIcon(memoryStream.ToArray());
 	}
 	private static byte[] GetData(nint module, ResourceType type, int name)
 	{

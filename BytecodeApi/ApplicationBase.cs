@@ -16,8 +16,6 @@ namespace BytecodeApi;
 /// </summary>
 public static class ApplicationBase
 {
-	private static string? _FileName;
-	private static Version? _Version;
 	private static bool? _DebugMode;
 	/// <summary>
 	/// Gets the path for the executable file that started the application, not including the executable name.
@@ -31,19 +29,19 @@ public static class ApplicationBase
 	{
 		get
 		{
-			if (_FileName == null)
+			if (field == null)
 			{
 				StringBuilder fileName = new(260);
-				_FileName = Native.GetModuleFileName(0, fileName, fileName.Capacity) != 0 ? fileName.ToString() : throw Throw.Win32();
+				field = Native.GetModuleFileName(0, fileName, fileName.Capacity) != 0 ? fileName.ToString() : throw Throw.Win32();
 			}
 
-			return _FileName;
+			return field;
 		}
 	}
 	/// <summary>
 	/// Gets the <see cref="System.Version" /> of the entry assembly.
 	/// </summary>
-	public static Version Version => _Version ??= Assembly.GetEntryAssembly()?.GetName().Version ?? throw Throw.Win32();
+	public static Version Version => field ??= Assembly.GetEntryAssembly()?.GetName().Version ?? throw Throw.Win32();
 	/// <summary>
 	/// Gets a <see cref="bool" /> value indicating whether <see cref="Debugger.IsAttached" /> was <see langword="true" /> the first time this property is retrieved, or if this executable is located in a directory named like "\bin\Debug", "\bin\x86\Debug", or "\bin\x64\Debug".
 	/// </summary>
@@ -91,12 +89,10 @@ public static class ApplicationBase
 	/// </summary>
 	public static class Process
 	{
-		private static int? _Id;
 		private static int? _SessionId;
 		private static ProcessIntegrityLevel? _IntegrityLevel;
 		private static bool? _IsElevated;
 		private static ElevationType? _ElevationType;
-		private static Version? _FrameworkVersion;
 		/// <summary>
 		/// Gets the ProcessID of the current <see cref="System.Diagnostics.Process" />.
 		/// </summary>
@@ -104,13 +100,13 @@ public static class ApplicationBase
 		{
 			get
 			{
-				if (_Id == null)
+				if (field == 0)
 				{
 					using System.Diagnostics.Process process = System.Diagnostics.Process.GetCurrentProcess();
-					_Id = process.Id;
+					field = process.Id;
 				}
 
-				return _Id.Value;
+				return field;
 			}
 		}
 		/// <summary>
@@ -140,7 +136,7 @@ public static class ApplicationBase
 				if (_IntegrityLevel == null)
 				{
 					using System.Diagnostics.Process process = System.Diagnostics.Process.GetCurrentProcess();
-					_IntegrityLevel = process.GetIntegrityLevel();
+					_IntegrityLevel = process.IntegrityLevel;
 				}
 
 				return _IntegrityLevel.Value;
@@ -215,7 +211,7 @@ public static class ApplicationBase
 		/// <summary>
 		/// Gets the <see cref="System.Version" /> of the .NET Framework that the current <see cref="System.Diagnostics.Process" /> is running with.
 		/// </summary>
-		public static Version FrameworkVersion => _FrameworkVersion ??= new(typeof(object).Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion.SubstringUntil('+') ?? throw Throw.Win32());
+		public static Version FrameworkVersion => field ??= new(typeof(object).Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion.SubstringUntil('+') ?? throw Throw.Win32());
 	}
 	/// <summary>
 	/// Provides information about the current logon session and related information.
@@ -223,20 +219,18 @@ public static class ApplicationBase
 	[SupportedOSPlatform("windows")]
 	public static class Session
 	{
-		private static string? _CurrentUser;
-		private static string? _DomainName;
 		/// <summary>
 		/// Gets the name of the current <see cref="WindowsIdentity" />, including the domain or workstation name.
 		/// </summary>
-		public static string CurrentUser => _CurrentUser ??= WindowsIdentity.GetCurrent().Name;
+		public static string CurrentUser => field ??= WindowsIdentity.GetCurrent().Name;
 		/// <summary>
 		/// Gets the name of the current <see cref="WindowsIdentity" />, not including the domain or workstation name.
 		/// </summary>
-		public static string CurrentUserShort => CurrentUser.SubstringFromLast('\\');
+		public static string CurrentUserShort => field ??= CurrentUser.SubstringFromLast('\\');
 		/// <summary>
 		/// Gets the domain in which the local computer is registered, or <see langword="null" />, if the user is not member of a domain.
 		/// </summary>
-		public static string? DomainName => (_DomainName ??= IPGlobalProperties.GetIPGlobalProperties().DomainName).ToNullIfEmpty();
+		public static string? DomainName => (field ??= IPGlobalProperties.GetIPGlobalProperties().DomainName).ToNullIfEmpty();
 		/// <summary>
 		/// Gets a <see cref="bool" /> value indicating whether the current session is an RDP session.
 		/// </summary>

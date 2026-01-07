@@ -14,5 +14,4 @@ using System.Windows.Markup;
 [assembly: XmlnsDefinition("http://schemas.bytecode77.com/2023/xaml/presentation", "BytecodeApi.Wpf.Interop")]
 [assembly: XmlnsDefinition("http://schemas.bytecode77.com/2023/xaml/presentation", "BytecodeApi.Wpf.Markup")]
 [assembly: XmlnsDefinition("http://schemas.bytecode77.com/2023/xaml/presentation", "BytecodeApi.Wpf.Services")]
-[assembly: XmlnsDefinition("http://schemas.bytecode77.com/2023/xaml/presentation", "BytecodeApi.Wpf.Threading")]
 [assembly: XmlnsPrefix("http://schemas.bytecode77.com/2023/xaml/presentation", "ui")]

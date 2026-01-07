@@ -15,7 +15,7 @@ public sealed class IniSection
 	/// <summary>
 	/// Gets the collection of INI properties associated with this section.
 	/// </summary>
-	public IniPropertyCollection Properties { get; private init; }
+	public IniPropertyCollection Properties { get; }
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="IniSection" /> class.

@@ -5,100 +5,103 @@
 /// </summary>
 public static class DelegateDebounceExtensions
 {
-	/// <summary>
-	/// Debounces the specified <see cref="Action" /> by a given delay and returns a new <see cref="Action" /> that wraps <paramref name="action" />.
-	/// </summary>
-	/// <param name="action">The <see cref="Action" /> to be debounced.</param>
-	/// <param name="delay">The delay, in milliseconds, to wait to call <paramref name="action" />.</param>
-	/// <returns>
-	/// A new <see cref="Action" /> that wraps <paramref name="action" />.
-	/// </returns>
-	public static Action Debounce(this Action action, int delay)
+	extension(Action action)
 	{
-		return action.Debounce(TimeSpan.FromMilliseconds(delay));
-	}
-	/// <summary>
-	/// Debounces the specified <see cref="Action" /> by a given delay and returns a new <see cref="Action" /> that wraps <paramref name="action" />.
-	/// </summary>
-	/// <param name="action">The <see cref="Action" /> to be debounced.</param>
-	/// <param name="delay">The delay to wait to call <paramref name="action" />.</param>
-	/// <returns>
-	/// A new <see cref="Action" /> that wraps <paramref name="action" />.
-	/// </returns>
-	public static Action Debounce(this Action action, TimeSpan delay)
-	{
-		Check.ArgumentNull(action);
-
-		CancellationTokenSource? cancel = null;
-
-		return () =>
+		/// <summary>
+		/// Debounces the specified <see cref="Action" /> by a given delay and returns a new <see cref="Action" /> that wraps this <see cref="Action" />.
+		/// </summary>
+		/// <param name="delay">The delay, in milliseconds, to wait to call this <see cref="Action" />.</param>
+		/// <returns>
+		/// A new <see cref="Action" /> that wraps this <see cref="Action" />.
+		/// </returns>
+		public Action Debounce(int delay)
 		{
-			cancel?.Cancel();
-			cancel = new();
-
-			Task
-				.Delay(delay, cancel.Token)
-				.ContinueWith(task =>
-				{
-					try
-					{
-						if (task.IsCompletedSuccessfully)
-						{
-							action();
-						}
-					}
-					catch (TaskCanceledException)
-					{
-					}
-				}, TaskScheduler.Default);
-		};
-	}
-	/// <summary>
-	/// Debounces the specified <see cref="Action{T}" /> by a given delay and returns a new <see cref="Action{T}" /> that wraps <paramref name="action" />.
-	/// </summary>
-	/// <param name="action">The <see cref="Action{T}" /> to be debounced.</param>
-	/// <param name="delay">The delay, in milliseconds, to wait to call <paramref name="action" />.</param>
-	/// <returns>
-	/// A new <see cref="Action{T}" /> that wraps <paramref name="action" />.
-	/// </returns>
-	public static Action<T> Debounce<T>(this Action<T> action, int delay)
-	{
-		return action.Debounce(TimeSpan.FromMilliseconds(delay));
-	}
-	/// <summary>
-	/// Debounces the specified <see cref="Action{T}" /> by a given delay and returns a new <see cref="Action{T}" /> that wraps <paramref name="action" />.
-	/// </summary>
-	/// <param name="action">The <see cref="Action{T}" /> to be debounced.</param>
-	/// <param name="delay">The delay to wait to call <paramref name="action" />.</param>
-	/// <returns>
-	/// A new <see cref="Action{T}" /> that wraps <paramref name="action" />.
-	/// </returns>
-	public static Action<T> Debounce<T>(this Action<T> action, TimeSpan delay)
-	{
-		Check.ArgumentNull(action);
-
-		CancellationTokenSource? cancel = null;
-
-		return arg =>
+			return action.Debounce(TimeSpan.FromMilliseconds(delay));
+		}
+		/// <summary>
+		/// Debounces the specified <see cref="Action" /> by a given delay and returns a new <see cref="Action" /> that wraps this <see cref="Action" />.
+		/// </summary>
+		/// <param name="delay">The delay to wait to call this <see cref="Action" />.</param>
+		/// <returns>
+		/// A new <see cref="Action" /> that wraps this <see cref="Action" />.
+		/// </returns>
+		public Action Debounce(TimeSpan delay)
 		{
-			cancel?.Cancel();
-			cancel = new();
+			Check.ArgumentNull(action);
 
-			Task
-				.Delay(delay, cancel.Token)
-				.ContinueWith(task =>
-				{
-					try
+			CancellationTokenSource? cancel = null;
+
+			return () =>
+			{
+				cancel?.Cancel();
+				cancel = new();
+
+				Task
+					.Delay(delay, cancel.Token)
+					.ContinueWith(task =>
 					{
-						if (task.IsCompletedSuccessfully)
+						try
 						{
-							action(arg);
+							if (task.IsCompletedSuccessfully)
+							{
+								action();
+							}
 						}
-					}
-					catch (TaskCanceledException)
+						catch (TaskCanceledException)
+						{
+						}
+					}, TaskScheduler.Default);
+			};
+		}
+	}
+
+	extension<T>(Action<T> action)
+	{
+		/// <summary>
+		/// Debounces the specified <see cref="Action{T}" /> by a given delay and returns a new <see cref="Action{T}" /> that wraps this <see cref="Action{T}" />.
+		/// </summary>
+		/// <param name="delay">The delay, in milliseconds, to wait to call this <see cref="Action{T}" />.</param>
+		/// <returns>
+		/// A new <see cref="Action{T}" /> that wraps this <see cref="Action{T}" />.
+		/// </returns>
+		public Action<T> Debounce(int delay)
+		{
+			return action.Debounce(TimeSpan.FromMilliseconds(delay));
+		}
+		/// <summary>
+		/// Debounces the specified <see cref="Action{T}" /> by a given delay and returns a new <see cref="Action{T}" /> that wraps this <see cref="Action{T}" />.
+		/// </summary>
+		/// <param name="delay">The delay to wait to call this <see cref="Action{T}" />.</param>
+		/// <returns>
+		/// A new <see cref="Action{T}" /> that wraps this <see cref="Action{T}" />.
+		/// </returns>
+		public Action<T> Debounce(TimeSpan delay)
+		{
+			Check.ArgumentNull(action);
+
+			CancellationTokenSource? cancel = null;
+
+			return arg =>
+			{
+				cancel?.Cancel();
+				cancel = new();
+
+				Task
+					.Delay(delay, cancel.Token)
+					.ContinueWith(task =>
 					{
-					}
-				}, TaskScheduler.Default);
-		};
+						try
+						{
+							if (task.IsCompletedSuccessfully)
+							{
+								action(arg);
+							}
+						}
+						catch (TaskCanceledException)
+						{
+						}
+					}, TaskScheduler.Default);
+			};
+		}
 	}
 }

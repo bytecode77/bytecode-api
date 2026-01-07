@@ -8,11 +8,11 @@ public sealed class IniErrorLine
 	/// <summary>
 	/// Gets the one-based line number of the line at which parsing failed.
 	/// </summary>
-	public int LineNumber { get; private init; }
+	public int LineNumber { get; }
 	/// <summary>
 	/// Gets the line at which parsing failed as its original <see cref="string" /> representation.
 	/// </summary>
-	public string Line { get; private init; }
+	public string Line { get; }
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="IniErrorLine" /> class with the specified line number and line.

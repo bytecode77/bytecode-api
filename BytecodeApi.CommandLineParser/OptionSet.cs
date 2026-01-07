@@ -16,15 +16,15 @@ public sealed class OptionSet : ICollection<Option>
 	/// <summary>
 	/// Gets the prefix <see cref="string" /> for commandline options. This is typically a dash or a slash character.
 	/// </summary>
-	public string OptionPrefix { get; private init; }
+	public string OptionPrefix { get; }
 	/// <summary>
 	/// Gets the prefix <see cref="string" /> for the alternative commandline options. This is typically a double dash.
 	/// </summary>
-	public string OptionAlternativePrefix { get; private init; }
+	public string OptionAlternativePrefix { get; }
 	/// <summary>
 	/// Gets a value indicating whether the commandline parsing ignores character casing.
 	/// </summary>
-	public bool OptionPrefixIgnoreCase { get; private init; }
+	public bool OptionPrefixIgnoreCase { get; }
 	/// <summary>
 	/// Gets the number of elements contained in the <see cref="OptionSet" />.
 	/// </summary>

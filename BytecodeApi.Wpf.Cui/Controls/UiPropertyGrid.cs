@@ -12,7 +12,7 @@ public class UiPropertyGrid : ItemsControl
 	/// <summary>
 	/// Identifies the <see cref="LabelWidth" /> dependency property. This field is read-only.
 	/// </summary>
-	public static readonly DependencyProperty LabelWidthProperty = DependencyPropertyEx.Register(nameof(LabelWidth));
+	public static readonly DependencyProperty LabelWidthProperty = DependencyProperty.Register(nameof(LabelWidth));
 	/// <summary>
 	/// Gets or sets the width of the labels in the property grid.
 	/// </summary>

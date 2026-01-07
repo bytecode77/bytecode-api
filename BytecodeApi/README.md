@@ -285,8 +285,6 @@ int? maybeInt32Value = "123".ToInt32OrNull();
 bool arraysEqual = byteArrayA.Compare(byteArrayB);
 
 int index = byteArrayA.FindSequence(byteArrayB);
-
-string hexString = byteArray.ToHexadecimalString();
 ```
 </details>
 

@@ -13,7 +13,7 @@ public sealed class DeviceManager
 	/// <summary>
 	/// Gets all <see cref="DeviceInfo" /> objects, categorized by device types.
 	/// </summary>
-	public ReadOnlyCollection<DeviceTypeInfo> DeviceTypes { get; private init; }
+	public ReadOnlyCollection<DeviceTypeInfo> DeviceTypes { get; }
 
 	private DeviceManager(IEnumerable<DeviceTypeInfo> deviceTypes)
 	{

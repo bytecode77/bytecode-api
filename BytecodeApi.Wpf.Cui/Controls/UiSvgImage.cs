@@ -15,16 +15,16 @@ public class UiSvgImage : Control
 	/// <summary>
 	/// Identifies the <see cref="Source" /> dependency property. This field is read-only.
 	/// </summary>
-	public static readonly DependencyProperty SourceProperty = DependencyPropertyEx.Register(nameof(Source), new(Source_Changed));
+	public static readonly DependencyProperty SourceProperty = DependencyProperty.Register(nameof(Source), new(Source_Changed));
 	/// <summary>
 	/// Identifies the <see cref="Stretch" /> dependency property. This field is read-only.
 	/// </summary>
-	public static readonly DependencyProperty StretchProperty = DependencyPropertyEx.Register(nameof(Stretch), new(Stretch.Uniform));
+	public static readonly DependencyProperty StretchProperty = DependencyProperty.Register(nameof(Stretch), new(Stretch.Uniform));
 	/// <summary>
 	/// Identifies the <see cref="InheritForeground" /> dependency property. This field is read-only.
 	/// </summary>
-	public static readonly DependencyProperty InheritForegroundProperty = DependencyPropertyEx.Register(nameof(InheritForeground), new(Source_Changed));
-	private static readonly DependencyPropertyKey ImageSourcePropertyKey = DependencyPropertyEx.RegisterReadOnly(nameof(ImageSource), new FrameworkPropertyMetadata(null));
+	public static readonly DependencyProperty InheritForegroundProperty = DependencyProperty.Register(nameof(InheritForeground), new(Source_Changed));
+	private static readonly DependencyPropertyKey ImageSourcePropertyKey = DependencyProperty.RegisterReadOnly(nameof(ImageSource), new FrameworkPropertyMetadata(null));
 	/// <summary>
 	/// Identifies the <see cref="ImageSource" /> dependency property. This field is read-only.
 	/// </summary>

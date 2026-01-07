@@ -15,7 +15,7 @@ public sealed class DynamicLibrary
 	/// <summary>
 	/// Gets the name of the DLL that is supplied in the constructor of <see cref="DynamicLibrary" />.
 	/// </summary>
-	public string DllName { get; private init; }
+	public string DllName { get; }
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="DynamicLibrary" /> class.

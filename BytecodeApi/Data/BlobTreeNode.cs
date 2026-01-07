@@ -16,11 +16,11 @@ public sealed class BlobTreeNode
 	/// <summary>
 	/// Gets the collection of nodes associated with this <see cref="BlobTreeNode" />.
 	/// </summary>
-	public BlobTreeNodeCollection Nodes { get; private init; }
+	public BlobTreeNodeCollection Nodes { get; }
 	/// <summary>
 	/// Gets the collection of <see cref="Data.Blob" /> objects associated with this <see cref="BlobTreeNode" />.
 	/// </summary>
-	public BlobCollection Blobs { get; private init; }
+	public BlobCollection Blobs { get; }
 	/// <summary>
 	/// Gets or sets the object that contains data about the <see cref="BlobTreeNode" />.
 	/// </summary>

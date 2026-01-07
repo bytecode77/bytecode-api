@@ -11,11 +11,11 @@ public readonly struct Atom : IAtom, IEquatable<Atom>
 	/// <summary>
 	/// Represents the atom as a 16-bit integer value.
 	/// </summary>
-	public ushort Value { get; private init; }
+	public ushort Value { get; }
 	/// <summary>
 	/// Gets a <see cref="string" /> with the name of the atom.
 	/// </summary>
-	public string Name { get; private init; }
+	public string Name { get; }
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="Atom" /> structure with the specified atom value.

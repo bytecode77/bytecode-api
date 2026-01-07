@@ -12,15 +12,15 @@ public class UiFieldSet : ItemsControl
 	/// <summary>
 	/// Identifies the <see cref="Orientation" /> dependency property. This field is read-only.
 	/// </summary>
-	public static readonly DependencyProperty OrientationProperty = DependencyPropertyEx.Register(nameof(Orientation), new(Orientation.Horizontal));
+	public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(nameof(Orientation), new(Orientation.Horizontal));
 	/// <summary>
 	/// Identifies the <see cref="LabelWidth" /> dependency property. This field is read-only.
 	/// </summary>
-	public static readonly DependencyProperty LabelWidthProperty = DependencyPropertyEx.Register(nameof(LabelWidth));
+	public static readonly DependencyProperty LabelWidthProperty = DependencyProperty.Register(nameof(LabelWidth));
 	/// <summary>
 	/// Identifies the <see cref="Spacing" /> dependency property. This field is read-only.
 	/// </summary>
-	public static readonly DependencyProperty SpacingProperty = DependencyPropertyEx.Register(nameof(Spacing), new(5.0));
+	public static readonly DependencyProperty SpacingProperty = DependencyProperty.Register(nameof(Spacing), new(5.0));
 	/// <summary>
 	/// Gets or sets the orientation of the field set.
 	/// </summary>

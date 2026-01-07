@@ -1,5 +1,4 @@
 ﻿using BytecodeApi.Extensions;
-using BytecodeApi.Mathematics;
 using BytecodeApi.Text;
 using System.Security.Cryptography;
 
@@ -102,9 +101,9 @@ public static class Create
 	/// <returns>
 	/// A new <see cref="string" /> with random hexadecimal charaters, where the value of <paramref name="size" /> specifies the amount of bytes to be generated. The returned <see cref="string" /> has a length of <paramref name="size" /> * 2.
 	/// </returns>
-	public static string HexadecimalString(int size)
+	public static string HexString(int size)
 	{
-		return HexadecimalString(size, false);
+		return HexString(size, false);
 	}
 	/// <summary>
 	/// Generates a new <see cref="string" /> with random hexadecimal charaters. The value of <paramref name="size" /> specifies the amount of bytes to be generated. A <see cref="string" /> with a length of <paramref name="size" /> * 2 is returned.
@@ -114,17 +113,17 @@ public static class Create
 	/// <returns>
 	/// A new <see cref="string" /> with random hexadecimal charaters, where the value of <paramref name="size" /> specifies the amount of bytes to be generated. The returned <see cref="string" /> has a length of <paramref name="size" /> * 2.
 	/// </returns>
-	public static string HexadecimalString(int size, bool cryptographic)
+	public static string HexString(int size, bool cryptographic)
 	{
 		Check.ArgumentOutOfRangeEx.GreaterEqual0(size);
 
 		if (cryptographic)
 		{
-			return RandomNumberGenerator.GetBytes(size).ToHexadecimalString();
+			return RandomNumberGenerator.GetBytes(size).ToHexString();
 		}
 		else
 		{
-			return Random.Shared.GetBytes(size).ToHexadecimalString();
+			return Random.Shared.GetBytes(size).ToHexString();
 		}
 	}
 	/// <summary>
@@ -180,7 +179,7 @@ public static class Create
 		{
 			for (int i = 0; i < length; i++)
 			{
-				newString[i] = MathEx.RandomNumberGenerator.GetObject(charset);
+				newString[i] = RandomNumberGenerator.Shared.GetObject(charset);
 			}
 		}
 		else

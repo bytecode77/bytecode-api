@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Security.Cryptography;
 
 namespace BytecodeApi.Extensions;
@@ -8,352 +8,340 @@ namespace BytecodeApi.Extensions;
 /// </summary>
 public static class BitArrayExtensions
 {
-	/// <summary>
-	/// Converts the bits of this <see cref="BitArray" /> to an equivalent <see cref="bool" />[].
-	/// </summary>
-	/// <param name="array">The <see cref="BitArray" /> to convert.</param>
-	/// <returns>
-	/// An equivalent <see cref="bool" />[] representing this <see cref="BitArray" />.
-	/// </returns>
-	public static bool[] ToBooleanArray(this BitArray array)
+	extension(BitArray array)
 	{
-		Check.ArgumentNull(array);
-
-		bool[] values = new bool[array.Length];
-		for (int i = 0; i < values.Length; i++)
+		/// <summary>
+		/// Returns the number of values in this <see cref="BitArray" /> whose value is <see langword="true" />.
+		/// </summary>
+		public int CountTrue
 		{
-			values[i] = array[i];
+			get
+			{
+				Check.ArgumentNull(array);
+
+				int count = 0;
+				foreach (bool value in array)
+				{
+					if (value)
+					{
+						count++;
+					}
+				}
+
+				return count;
+			}
+		}
+		/// <summary>
+		/// Returns the number of values in this <see cref="BitArray" /> whose value is <see langword="false" />.
+		/// </summary>
+		public int CountFalse
+		{
+			get
+			{
+				Check.ArgumentNull(array);
+
+				return array.Length - array.CountTrue;
+			}
+		}
+		/// <summary>
+		/// Returns a value indicating whether all elements of this <see cref="BitArray" /> are <see langword="true" />.
+		/// </summary>
+		public bool AllTrue
+		{
+			get
+			{
+				Check.ArgumentNull(array);
+
+				foreach (bool value in array)
+				{
+					if (!value)
+					{
+						return false;
+					}
+				}
+
+				return true;
+			}
+		}
+		/// <summary>
+		/// Returns a value indicating whether all elements of this <see cref="BitArray" /> are <see langword="false" />.
+		/// </summary>
+		public bool AllFalse
+		{
+			get
+			{
+				Check.ArgumentNull(array);
+
+				foreach (bool value in array)
+				{
+					if (value)
+					{
+						return false;
+					}
+				}
+
+				return true;
+			}
 		}
 
-		return values;
-	}
-	/// <summary>
-	/// Converts the bits of this <see cref="BitArray" /> to an equivalent <see cref="byte" />[]. If there is a padding of less than 8 bits, the last byte contains the remaining bits.
-	/// </summary>
-	/// <param name="array">The <see cref="BitArray" /> to convert.</param>
-	/// <returns>
-	/// An equivalent <see cref="byte" />[] representing this <see cref="BitArray" />.
-	/// </returns>
-	public static byte[] ToByteArray(this BitArray array)
-	{
-		Check.ArgumentNull(array);
-
-		byte[] bytes = new byte[(array.Length + 7) / 8];
-
-		for (int i = 0, position = 0; i < bytes.Length; i++)
+		/// <summary>
+		/// Converts the bits of this <see cref="BitArray" /> to an equivalent <see cref="bool" />[].
+		/// </summary>
+		/// <returns>
+		/// An equivalent <see cref="bool" />[] representing this <see cref="BitArray" />.
+		/// </returns>
+		public bool[] ToBooleanArray()
 		{
-			for (int j = 0; j < 8 && position < array.Length; j++, position++)
+			Check.ArgumentNull(array);
+
+			bool[] values = new bool[array.Length];
+			for (int i = 0; i < values.Length; i++)
 			{
-				if (array[position])
+				values[i] = array[i];
+			}
+
+			return values;
+		}
+		/// <summary>
+		/// Converts the bits of this <see cref="BitArray" /> to an equivalent <see cref="byte" />[]. If there is a padding of less than 8 bits, the last byte contains the remaining bits.
+		/// </summary>
+		/// <returns>
+		/// An equivalent <see cref="byte" />[] representing this <see cref="BitArray" />.
+		/// </returns>
+		public byte[] ToByteArray()
+		{
+			Check.ArgumentNull(array);
+
+			byte[] bytes = new byte[(array.Length + 7) / 8];
+
+			for (int i = 0, position = 0; i < bytes.Length; i++)
+			{
+				for (int j = 0; j < 8 && position < array.Length; j++, position++)
 				{
-					bytes[i] = (byte)(bytes[i] | 1 << j);
+					if (array[position])
+					{
+						bytes[i] = (byte)(bytes[i] | 1 << j);
+					}
 				}
 			}
+
+			return bytes;
 		}
-
-		return bytes;
-	}
-	/// <summary>
-	/// Converts the bits of this <see cref="BitArray" /> to a <see cref="string" /> containing a sequence of '0' or '1' characters.
-	/// </summary>
-	/// <param name="array">The <see cref="BitArray" /> to convert.</param>
-	/// <returns>
-	/// An equivalent sequence of '0' or '1' characters representing this <see cref="BitArray" />.
-	/// </returns>
-	public static string ToBitString(this BitArray array)
-	{
-		Check.ArgumentNull(array);
-
-		char[] str = new char[array.Length];
-		for (int i = 0; i < str.Length; i++)
+		/// <summary>
+		/// Converts the bits of this <see cref="BitArray" /> to a <see cref="string" /> containing a sequence of '0' or '1' characters.
+		/// </summary>
+		/// <returns>
+		/// An equivalent sequence of '0' or '1' characters representing this <see cref="BitArray" />.
+		/// </returns>
+		public string ToBitString()
 		{
-			str[i] = array[i] ? '1' : '0';
-		}
+			Check.ArgumentNull(array);
 
-		return str.AsString();
-	}
-
-	/// <summary>
-	/// Returns the number of values in this <see cref="BitArray" /> whose value is <see langword="true" />.
-	/// </summary>
-	/// <param name="array">The <see cref="BitArray" /> to check.</param>
-	/// <returns>
-	/// The number of values whose value is <see langword="true" />.
-	/// </returns>
-	public static int CountTrue(this BitArray array)
-	{
-		Check.ArgumentNull(array);
-
-		int count = 0;
-		foreach (bool value in array)
-		{
-			if (value)
+			char[] str = new char[array.Length];
+			for (int i = 0; i < str.Length; i++)
 			{
-				count++;
+				str[i] = array[i] ? '1' : '0';
 			}
+
+			return str.AsString();
 		}
 
-		return count;
-	}
-	/// <summary>
-	/// Returns the number of values in this <see cref="BitArray" /> whose value is <see langword="false" />.
-	/// </summary>
-	/// <param name="array">The <see cref="BitArray" /> to check.</param>
-	/// <returns>
-	/// The number of values whose value is <see langword="false" />.
-	/// </returns>
-	public static int CountFalse(this BitArray array)
-	{
-		Check.ArgumentNull(array);
-
-		return array.Length - array.CountTrue();
-	}
-	/// <summary>
-	/// Returns a value indicating whether all elements of this <see cref="BitArray" /> are <see langword="true" />.
-	/// </summary>
-	/// <param name="array">The <see cref="BitArray" /> to check.</param>
-	/// <returns>
-	/// A value indicating whether all elements of this <see cref="BitArray" /> are <see langword="true" />.
-	/// </returns>
-	public static bool AllTrue(this BitArray array)
-	{
-		Check.ArgumentNull(array);
-
-		foreach (bool value in array)
+		/// <summary>
+		/// Compares the content of this <see cref="BitArray" /> agains another <see cref="BitArray" />. Returns <see langword="true" />, if both arrays contain the exact same set of data.
+		/// </summary>
+		/// <param name="otherArray">A <see cref="BitArray" /> to compare to this <see cref="BitArray" />.</param>
+		/// <returns>
+		/// <see langword="true" />, if both arrays contain the exact same set of data;
+		/// otherwise, <see langword="false" />.
+		/// </returns>
+		public bool Compare([NotNullWhen(true)] BitArray? otherArray)
 		{
-			if (!value)
+			Check.ArgumentNull(array);
+
+			if (otherArray == null)
+			{
+				return false;
+			}
+			else if (array == otherArray)
+			{
+				return true;
+			}
+			else if (array.Length == otherArray.Length)
+			{
+				for (int i = 0; i < array.Length; i++)
+				{
+					if (array[i] != otherArray[i])
+					{
+						return false;
+					}
+				}
+
+				return true;
+			}
+			else
 			{
 				return false;
 			}
 		}
 
-		return true;
-	}
-	/// <summary>
-	/// Returns a value indicating whether all elements of this <see cref="BitArray" /> are <see langword="false" />.
-	/// </summary>
-	/// <param name="array">The <see cref="BitArray" /> to check.</param>
-	/// <returns>
-	/// A value indicating whether all elements of this <see cref="BitArray" /> are <see langword="false" />.
-	/// </returns>
-	public static bool AllFalse(this BitArray array)
-	{
-		Check.ArgumentNull(array);
-
-		foreach (bool value in array)
+		/// <summary>
+		/// Copies a specified number of bits from this <see cref="BitArray" /> and returns a new <see cref="BitArray" /> representing a fraction of the original <see cref="BitArray" />.
+		/// </summary>
+		/// <param name="index">A <see cref="int" /> value specifying the offset from which to start copying bits.</param>
+		/// <param name="count">A <see cref="int" /> value specifying the number of bits to copy.</param>
+		/// <returns>
+		/// A new <see cref="BitArray" /> representing a fraction of the original <see cref="BitArray" />.
+		/// </returns>
+		public BitArray GetBits(int index, int count)
 		{
-			if (value)
+			Check.ArgumentNull(array);
+			Check.ArgumentOutOfRangeEx.GreaterEqual0(index);
+			Check.ArgumentOutOfRangeEx.GreaterEqual0(count);
+			Check.ArgumentEx.OffsetAndLengthOutOfBounds(index, count, array.Length);
+
+			BitArray copy = new(count);
+			for (int i = 0; i < count; i++)
 			{
-				return false;
-			}
-		}
-
-		return true;
-	}
-	/// <summary>
-	/// Compares the content of this <see cref="BitArray" /> agains another <see cref="BitArray" />. Returns <see langword="true" />, if both arrays contain the exact same set of data.
-	/// </summary>
-	/// <param name="array">A <see cref="BitArray" /> to compare to <paramref name="otherArray" />.</param>
-	/// <param name="otherArray">A <see cref="BitArray" /> to compare to <paramref name="array" />.</param>
-	/// <returns>
-	/// <see langword="true" />, if both arrays contain the exact same set of data;
-	/// otherwise, <see langword="false" />.
-	/// </returns>
-	public static bool Compare(this BitArray array, [NotNullWhen(true)] BitArray? otherArray)
-	{
-		Check.ArgumentNull(array);
-
-		if (otherArray == null)
-		{
-			return false;
-		}
-		else if (array == otherArray)
-		{
-			return true;
-		}
-		else if (array.Length == otherArray.Length)
-		{
-			for (int i = 0; i < array.Length; i++)
-			{
-				if (array[i] != otherArray[i])
-				{
-					return false;
-				}
+				copy[i] = array[index + i];
 			}
 
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
-
-	/// <summary>
-	/// Copies a specified number of bits from this <see cref="BitArray" /> and returns a new <see cref="BitArray" /> representing a fraction of the original <see cref="BitArray" />.
-	/// </summary>
-	/// <param name="array">The <see cref="BitArray" /> to take the subset of bits from.</param>
-	/// <param name="index">A <see cref="int" /> value specifying the offset from which to start copying bits.</param>
-	/// <param name="count">A <see cref="int" /> value specifying the number of bits to copy.</param>
-	/// <returns>
-	/// A new <see cref="BitArray" /> representing a fraction of the original <see cref="BitArray" />.
-	/// </returns>
-	public static BitArray GetBits(this BitArray array, int index, int count)
-	{
-		Check.ArgumentNull(array);
-		Check.ArgumentOutOfRangeEx.GreaterEqual0(index);
-		Check.ArgumentOutOfRangeEx.GreaterEqual0(count);
-		Check.ArgumentEx.OffsetAndLengthOutOfBounds(index, count, array.Length);
-
-		BitArray copy = new(count);
-		for (int i = 0; i < count; i++)
-		{
-			copy[i] = array[index + i];
+			return copy;
 		}
 
-		return copy;
-	}
-
-	/// <summary>
-	/// Sets all bits in the specified range in this <see cref="BitArray" /> to the specified value.
-	/// </summary>
-	/// <param name="array">The <see cref="BitArray" /> to write the new value to.</param>
-	/// <param name="offset">The zero-based index in this <see cref="BitArray" /> at which to begin writing values.</param>
-	/// <param name="count">The number of values to write.</param>
-	/// <param name="value">The <see cref="bool" /> value to assign to all bits in the specified range.</param>
-	public static void SetAll(this BitArray array, int offset, int count, bool value)
-	{
-		Check.ArgumentNull(array);
-		Check.ArgumentOutOfRangeEx.GreaterEqual0(offset);
-		Check.ArgumentOutOfRangeEx.GreaterEqual0(count);
-		Check.ArgumentEx.OffsetAndLengthOutOfBounds(offset, count, array.Length);
-
-		for (int i = offset; i < offset + count; i++)
+		/// <summary>
+		/// Sets all bits in the specified range in this <see cref="BitArray" /> to the specified value.
+		/// </summary>
+		/// <param name="offset">The zero-based index in this <see cref="BitArray" /> at which to begin writing values.</param>
+		/// <param name="count">The number of values to write.</param>
+		/// <param name="value">The <see cref="bool" /> value to assign to all bits in the specified range.</param>
+		public void SetAll(int offset, int count, bool value)
 		{
-			array[i] = value;
-		}
-	}
-	/// <summary>
-	/// Sets the values of this <see cref="BitArray" /> to random values.
-	/// </summary>
-	/// <param name="array">The <see cref="BitArray" /> to randomize.</param>
-	public static void SetRandomValues(this BitArray array)
-	{
-		array.SetRandomValues(0, array.Length);
-	}
-	/// <summary>
-	/// Sets the values of this <see cref="BitArray" /> to random values.
-	/// </summary>
-	/// <param name="array">The <see cref="BitArray" /> to randomize.</param>
-	/// <param name="cryptographic"><see langword="true" /> to generate cryptographic random values.</param>
-	public static void SetRandomValues(this BitArray array, bool cryptographic)
-	{
-		array.SetRandomValues(0, array.Length, cryptographic);
-	}
-	/// <summary>
-	/// Sets the values of this <see cref="BitArray" /> to random values.
-	/// </summary>
-	/// <param name="array">The <see cref="BitArray" /> to randomize.</param>
-	/// <param name="offset">The zero-based index in this <see cref="BitArray" /> at which to begin writing values.</param>
-	/// <param name="count">The number of values to write.</param>
-	public static void SetRandomValues(this BitArray array, int offset, int count)
-	{
-		array.SetRandomValues(offset, count, false);
-	}
-	/// <summary>
-	/// Sets the values of this <see cref="BitArray" /> to random values.
-	/// </summary>
-	/// <param name="array">The <see cref="BitArray" /> to randomize.</param>
-	/// <param name="offset">The zero-based index in this <see cref="BitArray" /> at which to begin writing values.</param>
-	/// <param name="count">The number of values to write.</param>
-	/// <param name="cryptographic"><see langword="true" /> to generate cryptographic random values.</param>
-	public static void SetRandomValues(this BitArray array, int offset, int count, bool cryptographic)
-	{
-		Check.ArgumentNull(array);
-		Check.ArgumentOutOfRangeEx.GreaterEqual0(offset);
-		Check.ArgumentOutOfRangeEx.GreaterEqual0(count);
-		Check.ArgumentEx.OffsetAndLengthOutOfBounds(offset, count, array.Length);
+			Check.ArgumentNull(array);
+			Check.ArgumentOutOfRangeEx.GreaterEqual0(offset);
+			Check.ArgumentOutOfRangeEx.GreaterEqual0(count);
+			Check.ArgumentEx.OffsetAndLengthOutOfBounds(offset, count, array.Length);
 
-		byte[] buffer = new byte[16];
-		int bufferPosition = int.MaxValue;
-
-		if (cryptographic)
-		{
 			for (int i = offset; i < offset + count; i++)
 			{
-				if (bufferPosition >= buffer.Length << 3)
-				{
-					RandomNumberGenerator.Fill(buffer);
-					bufferPosition = 0;
-				}
-
-				array[i] = (buffer[bufferPosition >> 3] & 1 << (bufferPosition & 7)) > 0;
-				bufferPosition++;
+				array[i] = value;
 			}
 		}
-		else
+		/// <summary>
+		/// Sets the values of this <see cref="BitArray" /> to random values.
+		/// </summary>
+		public void SetRandomValues()
 		{
-			for (int i = offset; i < offset + count; i++)
+			array.SetRandomValues(0, array.Length);
+		}
+		/// <summary>
+		/// Sets the values of this <see cref="BitArray" /> to random values.
+		/// </summary>
+		/// <param name="cryptographic"><see langword="true" /> to generate cryptographic random values.</param>
+		public void SetRandomValues(bool cryptographic)
+		{
+			array.SetRandomValues(0, array.Length, cryptographic);
+		}
+		/// <summary>
+		/// Sets the values of this <see cref="BitArray" /> to random values.
+		/// </summary>
+		/// <param name="offset">The zero-based index in this <see cref="BitArray" /> at which to begin writing values.</param>
+		/// <param name="count">The number of values to write.</param>
+		public void SetRandomValues(int offset, int count)
+		{
+			array.SetRandomValues(offset, count, false);
+		}
+		/// <summary>
+		/// Sets the values of this <see cref="BitArray" /> to random values.
+		/// </summary>
+		/// <param name="offset">The zero-based index in this <see cref="BitArray" /> at which to begin writing values.</param>
+		/// <param name="count">The number of values to write.</param>
+		/// <param name="cryptographic"><see langword="true" /> to generate cryptographic random values.</param>
+		public void SetRandomValues(int offset, int count, bool cryptographic)
+		{
+			Check.ArgumentNull(array);
+			Check.ArgumentOutOfRangeEx.GreaterEqual0(offset);
+			Check.ArgumentOutOfRangeEx.GreaterEqual0(count);
+			Check.ArgumentEx.OffsetAndLengthOutOfBounds(offset, count, array.Length);
+
+			byte[] buffer = new byte[16];
+			int bufferPosition = int.MaxValue;
+
+			if (cryptographic)
 			{
-				if (bufferPosition >= buffer.Length << 3)
+				for (int i = offset; i < offset + count; i++)
 				{
-					Random.Shared.NextBytes(buffer);
-					bufferPosition = 0;
-				}
+					if (bufferPosition >= buffer.Length << 3)
+					{
+						RandomNumberGenerator.Fill(buffer);
+						bufferPosition = 0;
+					}
 
-				array[i] = (buffer[bufferPosition >> 3] & 1 << (bufferPosition & 7)) > 0;
-				bufferPosition++;
+					array[i] = (buffer[bufferPosition >> 3] & 1 << (bufferPosition & 7)) > 0;
+					bufferPosition++;
+				}
+			}
+			else
+			{
+				for (int i = offset; i < offset + count; i++)
+				{
+					if (bufferPosition >= buffer.Length << 3)
+					{
+						Random.Shared.NextBytes(buffer);
+						bufferPosition = 0;
+					}
+
+					array[i] = (buffer[bufferPosition >> 3] & 1 << (bufferPosition & 7)) > 0;
+					bufferPosition++;
+				}
 			}
 		}
-	}
 
-	/// <summary>
-	/// Copies a specified number of elements from this <see cref="BitArray" /> to <paramref name="dest" />, beginning at the specified source offset, written to the specified destination offset.
-	/// </summary>
-	/// <param name="array">The <see cref="BitArray" /> to be written to <paramref name="dest" />.</param>
-	/// <param name="sourceOffset">The offset, at which to start reading from this <see cref="BitArray" />.</param>
-	/// <param name="dest">The <see cref="BitArray" /> that is written to.</param>
-	/// <param name="destOffset">The offset, at which to start writing to <paramref name="dest" />.</param>
-	/// <param name="count">The number of <see cref="bool" /> values to copy.</param>
-	public static void CopyTo(this BitArray array, int sourceOffset, BitArray dest, int destOffset, int count)
-	{
-		Check.ArgumentNull(array);
-		Check.ArgumentOutOfRangeEx.GreaterEqual0(sourceOffset);
-		Check.ArgumentNull(dest);
-		Check.ArgumentOutOfRangeEx.GreaterEqual0(destOffset);
-		Check.ArgumentOutOfRangeEx.GreaterEqual0(count);
-		Check.ArgumentEx.OffsetAndLengthOutOfBounds(sourceOffset, count, array.Length);
-		Check.ArgumentEx.OffsetAndLengthOutOfBounds(destOffset, count, dest.Length);
-
-		for (int i = 0; i < count; i++)
+		/// <summary>
+		/// Copies a specified number of elements from this <see cref="BitArray" /> to <paramref name="dest" />, beginning at the specified source offset, written to the specified destination offset.
+		/// </summary>
+		/// <param name="sourceOffset">The offset, at which to start reading from this <see cref="BitArray" />.</param>
+		/// <param name="dest">The <see cref="BitArray" /> that is written to.</param>
+		/// <param name="destOffset">The offset, at which to start writing to <paramref name="dest" />.</param>
+		/// <param name="count">The number of <see cref="bool" /> values to copy.</param>
+		public void CopyTo(int sourceOffset, BitArray dest, int destOffset, int count)
 		{
-			dest[i + destOffset] = array[i + sourceOffset];
+			Check.ArgumentNull(array);
+			Check.ArgumentOutOfRangeEx.GreaterEqual0(sourceOffset);
+			Check.ArgumentNull(dest);
+			Check.ArgumentOutOfRangeEx.GreaterEqual0(destOffset);
+			Check.ArgumentOutOfRangeEx.GreaterEqual0(count);
+			Check.ArgumentEx.OffsetAndLengthOutOfBounds(sourceOffset, count, array.Length);
+			Check.ArgumentEx.OffsetAndLengthOutOfBounds(destOffset, count, dest.Length);
+
+			for (int i = 0; i < count; i++)
+			{
+				dest[i + destOffset] = array[i + sourceOffset];
+			}
 		}
-	}
-	/// <summary>
-	/// Merges all <see cref="BitArray" /> objects and returns a new <see cref="BitArray" />, where <paramref name="otherArrays" /> are concatenated after this array.
-	/// </summary>
-	/// <param name="array">The first <see cref="BitArray" /> object.</param>
-	/// <param name="otherArrays">An array of <see cref="BitArray" /> objects to append.</param>
-	/// <returns>
-	/// A new <see cref="BitArray" /> starting with <paramref name="array" />, followed by all elements from <paramref name="otherArrays" />.
-	/// </returns>
-	public static BitArray Concat(this BitArray array, params BitArray[] otherArrays)
-	{
-		Check.ArgumentNull(array);
-		Check.ArgumentNull(otherArrays);
-		Check.ArgumentEx.ArrayValuesNotNull(otherArrays);
-
-		BitArray result = new(array.Length + otherArrays.Sum(other => other.Length));
-		array.CopyTo(0, result, 0, array.Length);
-
-		int offset = array.Length;
-		foreach (BitArray other in otherArrays)
+		/// <summary>
+		/// Merges all <see cref="BitArray" /> objects and returns a new <see cref="BitArray" />, where <paramref name="otherArrays" /> are concatenated after this array.
+		/// </summary>
+		/// <param name="otherArrays">An array of <see cref="BitArray" /> objects to append.</param>
+		/// <returns>
+		/// A new <see cref="BitArray" /> starting with this <see cref="BitArray" />, followed by all elements from <paramref name="otherArrays" />.
+		/// </returns>
+		public BitArray Concat(params BitArray[] otherArrays)
 		{
-			other.CopyTo(0, result, offset, other.Length);
-			offset += other.Length;
-		}
+			Check.ArgumentNull(array);
+			Check.ArgumentNull(otherArrays);
+			Check.ArgumentEx.ArrayValuesNotNull(otherArrays);
 
-		return result;
+			BitArray result = new(array.Length + otherArrays.Sum(other => other.Length));
+			array.CopyTo(0, result, 0, array.Length);
+
+			int offset = array.Length;
+			foreach (BitArray other in otherArrays)
+			{
+				other.CopyTo(0, result, offset, other.Length);
+				offset += other.Length;
+			}
+
+			return result;
+		}
 	}
 }

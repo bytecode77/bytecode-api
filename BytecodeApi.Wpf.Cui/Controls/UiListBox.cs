@@ -14,7 +14,7 @@ public class UiListBox : ListBox
 	/// <summary>
 	/// Identifies the <see cref="CanSelect" /> dependency property. This field is read-only.
 	/// </summary>
-	public static readonly DependencyProperty CanSelectProperty = DependencyPropertyEx.Register(nameof(CanSelect), new(true));
+	public static readonly DependencyProperty CanSelectProperty = DependencyProperty.Register(nameof(CanSelect), new(true));
 	/// <summary>
 	/// Gets or sets a <see cref="bool" /> value indicating whether the user can select items.
 	/// </summary>

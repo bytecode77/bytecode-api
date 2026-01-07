@@ -15,7 +15,7 @@ public sealed class SortAdorner : Adorner
 	/// <summary>
 	/// Gets the <see cref="ListSortDirection" /> value that specifies the sorting direction.
 	/// </summary>
-	public ListSortDirection Direction { get; private init; }
+	public ListSortDirection Direction { get; }
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="SortAdorner" /> class.
