@@ -14,124 +14,70 @@ public sealed class MainWindowViewModel : ObservableObject
 {
 	public MainWindow View { get; set; }
 
-	private DelegateCommand<bool>? _ShowDialogWindowCommand;
-	public DelegateCommand<bool> ShowDialogWindowCommand => _ShowDialogWindowCommand ??= new(ShowDialogWindowCommand_Execute);
+	public DelegateCommand<bool> ShowDialogWindowCommand => field ??= new(ShowDialogWindowCommand_Execute);
 
-	private string[] _TextBoxAutoCompleteItems = ["James", "Robert", "John", "Michael", "David", "William", "Richard", "Joseph", "Thomas", "Charles", "Christopher", "Daniel", "Matthew", "Anthony", "Mark", "Donald", "Steven", "Paul", "Andrew", "Joshua", "Kenneth", "Kevin", "Brian", "George", "Timothy", "Ronald", "Edward", "Jason", "Jeffrey", "Ryan", "Jacob", "Gary", "Nicholas", "Eric", "Jonathan", "Stephen", "Larry", "Justin", "Scott", "Brandon", "Benjamin", "Samuel", "Gregory", "Alexander", "Frank", "Patrick", "Raymond", "Jack", "Dennis", "Jerry", "Tyler", "Aaron", "Jose", "Adam", "Nathan", "Henry", "Douglas", "Zachary", "Peter", "Kyle", "Ethan", "Walter", "Noah", "Jeremy", "Christian", "Keith", "Roger", "Terry", "Gerald", "Harold", "Sean", "Austin", "Carl", "Arthur", "Lawrence", "Dylan", "Jesse", "Jordan", "Bryan", "Billy", "Joe", "Bruce", "Gabriel", "Logan", "Albert", "Willie", "Alan", "Juan", "Wayne", "Elijah", "Randy", "Roy", "Vincent", "Ralph", "Eugene", "Russell", "Bobby", "Mason", "Philip", "Louis"];
-	private string[] _ListBoxItems = ["Item 1", "Item 2", "Item 3", "Item 4", "Item 5"];
-	private double _SliderValue1 = 80;
-	private double _SliderValue2 = 2;
-	private double _SliderValue3;
-	private double _SliderValue4;
-	private double _SliderValue5 = 4;
-	private double _SliderValue6 = 7;
-	private TreeViewNode[] _TreeNodes =
-	[
-		new("Solution 'MyProject' (1 of 1 project)", "/Playground.Wpf.Cui;component/Resources/Icons/Application.svg", true,
-		[
-			new("MyProject", "/Playground.Wpf.Cui;component/Resources/Icons/CSProjectNode.svg", true,
-			[
-				new("Depemndencies", "/Playground.Wpf.Cui;component/Resources/Icons/ReferenceGroup.svg", false,
-				[
-					new("Analyzers", "/Playground.Wpf.Cui;component/Resources/Icons/CodeInformation.svg"),
-					new("Frameworks", "/Playground.Wpf.Cui;component/Resources/Icons/Framework.svg", false,
-					[
-						new("Microsoft.NETCore.App", "/Playground.Wpf.Cui;component/Resources/Icons/FrameworkPrivate.svg"),
-						new("Microsoft.WindowsDesktop.App.WPF", "/Playground.Wpf.Cui;component/Resources/Icons/FrameworkPrivate.svg")
-					])
-				]),
-				new("Properties", "/Playground.Wpf.Cui;component/Resources/Icons/PropertiesFolderClosed.svg", false,
-				[
-					new("AssemblyInfo.cs", "/Playground.Wpf.Cui;component/Resources/Icons/CSFileNode.svg")
-				]),
-				new("App.xaml", "/Playground.Wpf.Cui;component/Resources/Icons/WPFFile.svg", false,
-				[
-					new("App.xaml.cs", "/Playground.Wpf.Cui;component/Resources/Icons/CSFileNode.svg")
-				]),
-				new("MainWindow.xaml", "/Playground.Wpf.Cui;component/Resources/Icons/WPFFile.svg", true,
-				[
-					new("MainWindow.xaml.cs", "/Playground.Wpf.Cui;component/Resources/Icons/CSFileNode.svg")
-				])
-			])
-		])
-	];
-	private Customer[] _Customers = [];
-	private Product[] _Products = [];
-	private CompileErrorListItem[] _CompileErrorListItems =
-	[
-		new("/Playground.Wpf.Cui;component/Resources/Icons/StatusError.svg", "CS1585", "Member modifier 'private' must precede the member type and name", "MyProject", "MainWindow.xaml.cs", 7),
-		new("/Playground.Wpf.Cui;component/Resources/Icons/StatusWarning.svg", "CS0162", "Unreachable code detected", "MyProject", "MainWindow.xaml.cs", 42)
-	];
-	private DataTable _CustomersDataTable = new();
-	public string[] TextBoxAutoCompleteItems
-	{
-		get => _TextBoxAutoCompleteItems;
-		set => Set(ref _TextBoxAutoCompleteItems, value);
-	}
-	public string[] ListBoxItems
-	{
-		get => _ListBoxItems;
-		set => Set(ref _ListBoxItems, value);
-	}
-	public double SliderValue1
-	{
-		get => _SliderValue1;
-		set => Set(ref _SliderValue1, value);
-	}
-	public double SliderValue2
-	{
-		get => _SliderValue2;
-		set => Set(ref _SliderValue2, value);
-	}
-	public double SliderValue3
-	{
-		get => _SliderValue3;
-		set => Set(ref _SliderValue3, value);
-	}
-	public double SliderValue4
-	{
-		get => _SliderValue4;
-		set => Set(ref _SliderValue4, value);
-	}
-	public double SliderValue5
-	{
-		get => _SliderValue5;
-		set => Set(ref _SliderValue5, value);
-	}
-	public double SliderValue6
-	{
-		get => _SliderValue6;
-		set => Set(ref _SliderValue6, value);
-	}
-	public TreeViewNode[] TreeNodes
-	{
-		get => _TreeNodes;
-		set => Set(ref _TreeNodes, value);
-	}
-	public Customer[] Customers
-	{
-		get => _Customers;
-		set => Set(ref _Customers, value);
-	}
-	public Product[] Products
-	{
-		get => _Products;
-		set => Set(ref _Products, value);
-	}
-	public CompileErrorListItem[] CompileErrorListItems
-	{
-		get => _CompileErrorListItems;
-		set => Set(ref _CompileErrorListItems, value);
-	}
-	public DataTable CustomersDataTable
-	{
-		get => _CustomersDataTable;
-		set => Set(ref _CustomersDataTable, value);
-	}
+	public TreeViewNode[] TreeNodes { get; set => Set(ref field, value); }
+	public CompileErrorListItem[] CompileErrorListItems { get; set => Set(ref field, value); }
+	public string[] TextBoxAutoCompleteItems { get; set => Set(ref field, value); }
+	public string[] ListBoxItems { get; set => Set(ref field, value); }
+	public double SliderValue1 { get; set => Set(ref field, value); }
+	public double SliderValue2 { get; set => Set(ref field, value); }
+	public double SliderValue3 { get; set => Set(ref field, value); }
+	public double SliderValue4 { get; set => Set(ref field, value); }
+	public double SliderValue5 { get; set => Set(ref field, value); }
+	public double SliderValue6 { get; set => Set(ref field, value); }
+	public Customer[] Customers { get; set => Set(ref field, value); }
+	public DataTable CustomersDataTable { get; set => Set(ref field, value); }
+	public Product[] Products { get; set => Set(ref field, value); }
 
 	public MainWindowViewModel(MainWindow view)
 	{
 		View = view;
+
+		TreeNodes =
+		[
+			new("Solution 'MyProject' (1 of 1 project)", "/Playground.Wpf.Cui;component/Resources/Icons/Application.svg", true,
+			[
+				new("MyProject", "/Playground.Wpf.Cui;component/Resources/Icons/CSProjectNode.svg", true,
+				[
+					new("Depemndencies", "/Playground.Wpf.Cui;component/Resources/Icons/ReferenceGroup.svg", false,
+					[
+						new("Analyzers", "/Playground.Wpf.Cui;component/Resources/Icons/CodeInformation.svg"),
+						new("Frameworks", "/Playground.Wpf.Cui;component/Resources/Icons/Framework.svg", false,
+						[
+							new("Microsoft.NETCore.App", "/Playground.Wpf.Cui;component/Resources/Icons/FrameworkPrivate.svg"),
+							new("Microsoft.WindowsDesktop.App.WPF", "/Playground.Wpf.Cui;component/Resources/Icons/FrameworkPrivate.svg")
+						])
+					]),
+					new("Properties", "/Playground.Wpf.Cui;component/Resources/Icons/PropertiesFolderClosed.svg", false,
+					[
+						new("AssemblyInfo.cs", "/Playground.Wpf.Cui;component/Resources/Icons/CSFileNode.svg")
+					]),
+					new("App.xaml", "/Playground.Wpf.Cui;component/Resources/Icons/WPFFile.svg", false,
+					[
+						new("App.xaml.cs", "/Playground.Wpf.Cui;component/Resources/Icons/CSFileNode.svg")
+					]),
+					new("MainWindow.xaml", "/Playground.Wpf.Cui;component/Resources/Icons/WPFFile.svg", true,
+					[
+						new("MainWindow.xaml.cs", "/Playground.Wpf.Cui;component/Resources/Icons/CSFileNode.svg")
+					])
+				])
+			])
+		];
+
+		CompileErrorListItems =
+		[
+			new("/Playground.Wpf.Cui;component/Resources/Icons/StatusError.svg", "CS1585", "Member modifier 'private' must precede the member type and name", "MyProject", "MainWindow.xaml.cs", 7),
+			new("/Playground.Wpf.Cui;component/Resources/Icons/StatusWarning.svg", "CS0162", "Unreachable code detected", "MyProject", "MainWindow.xaml.cs", 42)
+		];
+
+		TextBoxAutoCompleteItems = ["James", "Robert", "John", "Michael", "David", "William", "Richard", "Joseph", "Thomas", "Charles", "Christopher", "Daniel", "Matthew", "Anthony", "Mark", "Donald", "Steven", "Paul", "Andrew", "Joshua", "Kenneth", "Kevin", "Brian", "George", "Timothy", "Ronald", "Edward", "Jason", "Jeffrey", "Ryan", "Jacob", "Gary", "Nicholas", "Eric", "Jonathan", "Stephen", "Larry", "Justin", "Scott", "Brandon", "Benjamin", "Samuel", "Gregory", "Alexander", "Frank", "Patrick", "Raymond", "Jack", "Dennis", "Jerry", "Tyler", "Aaron", "Jose", "Adam", "Nathan", "Henry", "Douglas", "Zachary", "Peter", "Kyle", "Ethan", "Walter", "Noah", "Jeremy", "Christian", "Keith", "Roger", "Terry", "Gerald", "Harold", "Sean", "Austin", "Carl", "Arthur", "Lawrence", "Dylan", "Jesse", "Jordan", "Bryan", "Billy", "Joe", "Bruce", "Gabriel", "Logan", "Albert", "Willie", "Alan", "Juan", "Wayne", "Elijah", "Randy", "Roy", "Vincent", "Ralph", "Eugene", "Russell", "Bobby", "Mason", "Philip", "Louis"];
+		ListBoxItems = ["Item 1", "Item 2", "Item 3", "Item 4", "Item 5"];
+
+		SliderValue1 = 80;
+		SliderValue2 = 2;
+		SliderValue5 = 4;
+		SliderValue6 = 7;
 
 		CsvFile customers = CsvFile.FromString(Resources.Customers, true);
 
@@ -151,6 +97,8 @@ public sealed class MainWindowViewModel : ObservableObject
 				Fax = row[10].Value
 			})
 			.ToArray();
+
+		CustomersDataTable = new();
 
 		if (customers.Headers != null)
 		{

@@ -31,7 +31,7 @@ public class CsvFile
 	/// <summary>
 	/// Gets a collection of <see cref="CsvRow" /> objects that represents the content of this CSV file.
 	/// </summary>
-	public CsvRowCollection Rows { get; private init; }
+	public CsvRowCollection Rows { get; }
 	/// <summary>
 	/// Gets a <see cref="bool" /> value indicating whether this CSV file contains rows that could not be parsed. This property does not change once the file is loaded.
 	/// </summary>

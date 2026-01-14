@@ -1,4 +1,4 @@
-﻿using BytecodeApi.IO;
+﻿using BytecodeApi.Extensions;
 
 namespace BytecodeApi.Wpf.Converters;
 
@@ -47,7 +47,7 @@ public sealed class PathConverter : ConverterBase<string, string>
 				PathConverterMethod.Root => Path.GetPathRoot(value),
 				PathConverterMethod.Combine => parameter != null ? Path.Combine(value, parameter) : value,
 				PathConverterMethod.ChangeExtension => Path.ChangeExtension(value, parameter),
-				PathConverterMethod.OriginalPath => PathEx.GetOriginalPath(value),
+				PathConverterMethod.OriginalPath => Path.GetOriginalPath(value),
 				_ => throw Throw.InvalidEnumArgument(nameof(Method), Method)
 			};
 		}

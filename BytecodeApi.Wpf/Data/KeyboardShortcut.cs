@@ -9,17 +9,15 @@ namespace BytecodeApi.Wpf.Data;
 /// </summary>
 public sealed class KeyboardShortcut : ObservableObject, IEquatable<KeyboardShortcut>
 {
-	private ModifierKeys _Modifiers;
-	private Key _Key;
 	/// <summary>
 	/// Gets or sets the modifiers for this <see cref="KeyboardShortcut" />.
 	/// </summary>
 	public ModifierKeys Modifiers
 	{
-		get => _Modifiers;
+		get;
 		set
 		{
-			Set(ref _Modifiers, value);
+			Set(ref field, value);
 			RaisePropertyChanged(nameof(IsCtrl));
 			RaisePropertyChanged(nameof(IsShift));
 			RaisePropertyChanged(nameof(IsAlt));
@@ -104,10 +102,10 @@ public sealed class KeyboardShortcut : ObservableObject, IEquatable<KeyboardShor
 	/// </summary>
 	public Key Key
 	{
-		get => _Key;
+		get;
 		set
 		{
-			Set(ref _Key, value);
+			Set(ref field, value);
 			RaisePropertyChanged(nameof(KeyName));
 			RaisePropertyChanged(nameof(DisplayName));
 		}

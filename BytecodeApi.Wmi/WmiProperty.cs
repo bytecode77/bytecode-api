@@ -11,11 +11,11 @@ public readonly struct WmiProperty : IEquatable<WmiProperty>
 	/// <summary>
 	/// Gets the name of this <see cref="WmiProperty" />.
 	/// </summary>
-	public string Name { get; private init; }
+	public string Name { get; }
 	/// <summary>
 	/// Gets the value of this <see cref="WmiProperty" />.
 	/// </summary>
-	public object? Value { get; private init; }
+	public object? Value { get; }
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="WmiProperty" /> structure with the specified name and value.

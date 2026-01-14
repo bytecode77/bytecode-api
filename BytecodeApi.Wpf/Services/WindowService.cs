@@ -16,27 +16,27 @@ public static class WindowService
 	/// <summary>
 	/// Identifies the <see cref="WindowService" />.ShowIcon dependency property. This field is read-only.
 	/// </summary>
-	public static readonly DependencyProperty ShowIconProperty = DependencyPropertyEx.RegisterAttached<Window, bool>("ShowIcon", new FrameworkPropertyMetadata(true, ShowIcon_Changed));
+	public static readonly DependencyProperty ShowIconProperty = DependencyProperty.RegisterAttached<Window, bool>("ShowIcon", new FrameworkPropertyMetadata(true, ShowIcon_Changed));
 	/// <summary>
 	/// Identifies the <see cref="WindowService" />.DisableMinimizeButton dependency property. This field is read-only.
 	/// </summary>
-	public static readonly DependencyProperty DisableMinimizeButtonProperty = DependencyPropertyEx.RegisterAttached<Window, bool>("DisableMinimizeButton", new FrameworkPropertyMetadata(DisableMinimizeButton_Changed));
+	public static readonly DependencyProperty DisableMinimizeButtonProperty = DependencyProperty.RegisterAttached<Window, bool>("DisableMinimizeButton", new FrameworkPropertyMetadata(DisableMinimizeButton_Changed));
 	/// <summary>
 	/// Identifies the <see cref="WindowService" />.DisableMaximizeButton dependency property. This field is read-only.
 	/// </summary>
-	public static readonly DependencyProperty DisableMaximizeButtonProperty = DependencyPropertyEx.RegisterAttached<Window, bool>("DisableMaximizeButton", new FrameworkPropertyMetadata(DisableMaximizeButton_Changed));
+	public static readonly DependencyProperty DisableMaximizeButtonProperty = DependencyProperty.RegisterAttached<Window, bool>("DisableMaximizeButton", new FrameworkPropertyMetadata(DisableMaximizeButton_Changed));
 	/// <summary>
 	/// Identifies the <see cref="WindowService" />.TitleBarBrush dependency property. This field is read-only.
 	/// </summary>
-	public static readonly DependencyProperty TitleBarBrushProperty = DependencyPropertyEx.RegisterAttached<Window, SolidColorBrush>("TitleBarBrush", new FrameworkPropertyMetadata(TitleBarBrush_Changed));
+	public static readonly DependencyProperty TitleBarBrushProperty = DependencyProperty.RegisterAttached<Window, SolidColorBrush>("TitleBarBrush", new FrameworkPropertyMetadata(TitleBarBrush_Changed));
 	/// <summary>
 	/// Identifies the <see cref="WindowService" />.BorderBrush dependency property. This field is read-only.
 	/// </summary>
-	public static readonly DependencyProperty BorderBrushProperty = DependencyPropertyEx.RegisterAttached<Window, SolidColorBrush>("BorderBrush", new FrameworkPropertyMetadata(BorderBrush_Changed));
+	public static readonly DependencyProperty BorderBrushProperty = DependencyProperty.RegisterAttached<Window, SolidColorBrush>("BorderBrush", new FrameworkPropertyMetadata(BorderBrush_Changed));
 	/// <summary>
 	/// Identifies the <see cref="WindowService" />.IsAcrylicEnabled dependency property. This field is read-only.
 	/// </summary>
-	public static readonly DependencyProperty IsAcrylicEnabledProperty = DependencyPropertyEx.RegisterAttached<Window, bool>("IsAcrylicEnabled", new FrameworkPropertyMetadata(IsAcrylicEnabled_Changed));
+	public static readonly DependencyProperty IsAcrylicEnabledProperty = DependencyProperty.RegisterAttached<Window, bool>("IsAcrylicEnabled", new FrameworkPropertyMetadata(IsAcrylicEnabled_Changed));
 	/// <summary>
 	/// Gets a <see cref="bool" /> value indicating whether this <see cref="Window" /> displays an icon.
 	/// </summary>

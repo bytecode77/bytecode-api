@@ -13,11 +13,11 @@ public class UiTreeView : TreeView
 	/// <summary>
 	/// Identifies the <see cref="SelectedItemBinding" /> dependency property. This field is read-only.
 	/// </summary>
-	public static readonly DependencyProperty SelectedItemBindingProperty = DependencyPropertyEx.Register(nameof(SelectedItemBinding));
+	public static readonly DependencyProperty SelectedItemBindingProperty = DependencyProperty.Register(nameof(SelectedItemBinding));
 	/// <summary>
 	/// Identifies the <see cref="SelectOnRightClick" /> dependency property. This field is read-only.
 	/// </summary>
-	public static readonly DependencyProperty SelectOnRightClickProperty = DependencyPropertyEx.Register(nameof(SelectOnRightClick));
+	public static readonly DependencyProperty SelectOnRightClickProperty = DependencyProperty.Register(nameof(SelectOnRightClick));
 	/// <summary>
 	/// Provides a two-way binding for the selected item.
 	/// </summary>

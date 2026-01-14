@@ -23,124 +23,122 @@ public static class XDocumentExtensions
 		};
 	}
 
-	/// <summary>
-	/// Returns the <see cref="XAttribute" /> of this <see cref="XElement" /> that has the specified <see cref="XName" />, or returns a new <see cref="XAttribute" /> with a default value.
-	/// </summary>
-	/// <param name="element">The <see cref="XElement" /> to be searched by the <paramref name="name" /> parameter.</param>
-	/// <param name="name">The <see cref="XName" /> of the <see cref="XAttribute" /> to get.</param>
-	/// <param name="defaultValue">The value that is used if the <see cref="XAttribute" /> was not found.</param>
-	/// <returns>
-	/// The <see cref="XAttribute" /> of this <see cref="XElement" /> that has the specified <see cref="XName" />, or a new <see cref="XAttribute" /> with a default value, if the <see cref="XAttribute" /> was not found.
-	/// </returns>
-	public static XAttribute Attribute(this XElement element, XName name, object defaultValue)
+	extension(XDocument xml)
 	{
-		Check.ArgumentNull(element);
-		Check.ArgumentNull(name);
+		/// <summary>
+		/// Serializes this <see cref="XDocument" /> to a file with the specified filename.
+		/// </summary>
+		/// <param name="path">A <see cref="string" /> specifying the path of a file to which this <see cref="XDocument" /> is written to.</param>
+		/// <param name="settings">An <see cref="XmlWriterSettings" /> value with serialization settings.</param>
+		public void Save(string path, XmlWriterSettings settings)
+		{
+			Check.ArgumentNull(xml);
+			Check.ArgumentNull(path);
+			Check.ArgumentNull(settings);
 
-		return element.Attribute(name) ?? new(name, defaultValue);
+			using XmlWriter xmlWriter = XmlWriter.Create(path, settings);
+			xml.Save(xmlWriter);
+		}
+		/// <summary>
+		/// Serializes this <see cref="XDocument" /> to a <see cref="Stream" />.
+		/// </summary>
+		/// <param name="stream">The <see cref="Stream" /> to which this <see cref="XDocument" /> is written to.</param>
+		/// <param name="settings">An <see cref="XmlWriterSettings" /> value with serialization settings.</param>
+		public void Save(Stream stream, XmlWriterSettings settings)
+		{
+			Check.ArgumentNull(xml);
+			Check.ArgumentNull(stream);
+			Check.ArgumentNull(settings);
+
+			using XmlWriter xmlWriter = XmlWriter.Create(stream, settings);
+			xml.Save(xmlWriter);
+		}
+		/// <summary>
+		/// Serializes this <see cref="XDocument" /> to a file with the specified filename using the formatting settings as specified in <see cref="FormattedXmlWriterSettings" />.
+		/// </summary>
+		/// <param name="path">A <see cref="string" /> specifying the path of a file to which this <see cref="XDocument" /> is written to.</param>
+		public void SaveFormatted(string path)
+		{
+			Check.ArgumentNull(xml);
+			Check.ArgumentNull(path);
+			Check.ArgumentNull(FormattedXmlWriterSettings);
+
+			xml.Save(path, FormattedXmlWriterSettings);
+		}
+		/// <summary>
+		/// Serializes this <see cref="XDocument" /> to a <see cref="Stream" /> using the formatting settings as specified in <see cref="FormattedXmlWriterSettings" />.
+		/// </summary>
+		/// <param name="stream">The <see cref="Stream" /> to which this <see cref="XDocument" /> is written to.</param>
+		public void SaveFormatted(Stream stream)
+		{
+			Check.ArgumentNull(xml);
+			Check.ArgumentNull(stream);
+			Check.ArgumentNull(FormattedXmlWriterSettings);
+
+			xml.Save(stream, FormattedXmlWriterSettings);
+		}
+		/// <summary>
+		/// Serializes this <see cref="XDocument" /> to a <see cref="byte" />[].
+		/// </summary>
+		/// <returns>
+		/// A new <see cref="byte" />[] representing this <see cref="XDocument" />.
+		/// </returns>
+		public byte[] ToArray()
+		{
+			Check.ArgumentNull(xml);
+
+			using MemoryStream memoryStream = new();
+			xml.Save(memoryStream);
+			return memoryStream.ToArray();
+		}
+		/// <summary>
+		/// Serializes this <see cref="XDocument" /> to a <see cref="byte" />[].
+		/// </summary>
+		/// <param name="settings">An <see cref="XmlWriterSettings" /> value with serialization settings.</param>
+		/// <returns>
+		/// A new <see cref="byte" />[] representing this <see cref="XDocument" />.
+		/// </returns>
+		public byte[] ToArray(XmlWriterSettings settings)
+		{
+			Check.ArgumentNull(xml);
+			Check.ArgumentNull(settings);
+
+			using MemoryStream memoryStream = new();
+			xml.Save(memoryStream, settings);
+			return memoryStream.ToArray();
+		}
+		/// <summary>
+		/// Serializes this <see cref="XDocument" /> to a <see cref="byte" />[] using the formatting settings as specified in <see cref="FormattedXmlWriterSettings" />.
+		/// </summary>
+		/// <returns>
+		/// A new <see cref="byte" />[] representing this <see cref="XDocument" />.
+		/// </returns>
+		public byte[] ToArrayFormatted()
+		{
+			Check.ArgumentNull(xml);
+
+			using MemoryStream memoryStream = new();
+			xml.SaveFormatted(memoryStream);
+			return memoryStream.ToArray();
+		}
 	}
 
-	/// <summary>
-	/// Serializes this <see cref="XDocument" /> to a file with the specified filename.
-	/// </summary>
-	/// <param name="xml">The <see cref="XDocument" /> to be serialized.</param>
-	/// <param name="path">A <see cref="string" /> specifying the path of a file to which this <see cref="XDocument" /> is written to.</param>
-	/// <param name="settings">An <see cref="XmlWriterSettings" /> value with serialization settings.</param>
-	public static void Save(this XDocument xml, string path, XmlWriterSettings settings)
+	extension(XElement element)
 	{
-		Check.ArgumentNull(xml);
-		Check.ArgumentNull(path);
-		Check.ArgumentNull(settings);
+		/// <summary>
+		/// Returns the <see cref="XAttribute" /> of this <see cref="XElement" /> that has the specified <see cref="XName" />, or returns a new <see cref="XAttribute" /> with a default value.
+		/// </summary>
+		/// <param name="name">The <see cref="XName" /> of the <see cref="XAttribute" /> to get.</param>
+		/// <param name="defaultValue">The value that is used if the <see cref="XAttribute" /> was not found.</param>
+		/// <returns>
+		/// The <see cref="XAttribute" /> of this <see cref="XElement" /> that has the specified <see cref="XName" />, or a new <see cref="XAttribute" /> with a default value, if the <see cref="XAttribute" /> was not found.
+		/// </returns>
+		public XAttribute Attribute(XName name, object defaultValue)
+		{
+			Check.ArgumentNull(element);
+			Check.ArgumentNull(name);
 
-		using XmlWriter xmlWriter = XmlWriter.Create(path, settings);
-		xml.Save(xmlWriter);
-	}
-	/// <summary>
-	/// Serializes this <see cref="XDocument" /> to a <see cref="Stream" />.
-	/// </summary>
-	/// <param name="xml">The <see cref="XDocument" /> to be serialized.</param>
-	/// <param name="stream">The <see cref="Stream" /> to which this <see cref="XDocument" /> is written to.</param>
-	/// <param name="settings">An <see cref="XmlWriterSettings" /> value with serialization settings.</param>
-	public static void Save(this XDocument xml, Stream stream, XmlWriterSettings settings)
-	{
-		Check.ArgumentNull(xml);
-		Check.ArgumentNull(stream);
-		Check.ArgumentNull(settings);
-
-		using XmlWriter xmlWriter = XmlWriter.Create(stream, settings);
-		xml.Save(xmlWriter);
-	}
-	/// <summary>
-	/// Serializes this <see cref="XDocument" /> to a file with the specified filename using the formatting settings as specified in <see cref="FormattedXmlWriterSettings" />.
-	/// </summary>
-	/// <param name="xml">The <see cref="XDocument" /> to be serialized.</param>
-	/// <param name="path">A <see cref="string" /> specifying the path of a file to which this <see cref="XDocument" /> is written to.</param>
-	public static void SaveFormatted(this XDocument xml, string path)
-	{
-		Check.ArgumentNull(xml);
-		Check.ArgumentNull(path);
-		Check.ArgumentNull(FormattedXmlWriterSettings);
-
-		xml.Save(path, FormattedXmlWriterSettings);
-	}
-	/// <summary>
-	/// Serializes this <see cref="XDocument" /> to a <see cref="Stream" /> using the formatting settings as specified in <see cref="FormattedXmlWriterSettings" />.
-	/// </summary>
-	/// <param name="xml">The <see cref="XDocument" /> to be serialized.</param>
-	/// <param name="stream">The <see cref="Stream" /> to which this <see cref="XDocument" /> is written to.</param>
-	public static void SaveFormatted(this XDocument xml, Stream stream)
-	{
-		Check.ArgumentNull(xml);
-		Check.ArgumentNull(stream);
-		Check.ArgumentNull(FormattedXmlWriterSettings);
-
-		xml.Save(stream, FormattedXmlWriterSettings);
-	}
-	/// <summary>
-	/// Serializes this <see cref="XDocument" /> to a <see cref="byte" />[].
-	/// </summary>
-	/// <param name="xml">The <see cref="XDocument" /> to be serialized.</param>
-	/// <returns>
-	/// A new <see cref="byte" />[] representing this <see cref="XDocument" />.
-	/// </returns>
-	public static byte[] ToArray(this XDocument xml)
-	{
-		Check.ArgumentNull(xml);
-
-		using MemoryStream memoryStream = new();
-		xml.Save(memoryStream);
-		return memoryStream.ToArray();
-	}
-	/// <summary>
-	/// Serializes this <see cref="XDocument" /> to a <see cref="byte" />[].
-	/// </summary>
-	/// <param name="xml">The <see cref="XDocument" /> to be serialized.</param>
-	/// <param name="settings">An <see cref="XmlWriterSettings" /> value with serialization settings.</param>
-	/// <returns>
-	/// A new <see cref="byte" />[] representing this <see cref="XDocument" />.
-	/// </returns>
-	public static byte[] ToArray(this XDocument xml, XmlWriterSettings settings)
-	{
-		Check.ArgumentNull(xml);
-		Check.ArgumentNull(settings);
-
-		using MemoryStream memoryStream = new();
-		xml.Save(memoryStream, settings);
-		return memoryStream.ToArray();
-	}
-	/// <summary>
-	/// Serializes this <see cref="XDocument" /> to a <see cref="byte" />[] using the formatting settings as specified in <see cref="FormattedXmlWriterSettings" />.
-	/// </summary>
-	/// <param name="xml">The <see cref="XDocument" /> to be serialized.</param>
-	/// <returns>
-	/// A new <see cref="byte" />[] representing this <see cref="XDocument" />.
-	/// </returns>
-	public static byte[] ToArrayFormatted(this XDocument xml)
-	{
-		Check.ArgumentNull(xml);
-
-		using MemoryStream memoryStream = new();
-		xml.SaveFormatted(memoryStream);
-		return memoryStream.ToArray();
+			return element.Attribute(name) ?? new(name, defaultValue);
+		}
 	}
 }

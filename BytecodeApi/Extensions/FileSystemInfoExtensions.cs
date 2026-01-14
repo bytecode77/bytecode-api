@@ -9,51 +9,52 @@ namespace BytecodeApi.Extensions;
 /// </summary>
 public static class FileSystemInfoExtensions
 {
-	/// <summary>
-	/// Shows the properties dialog for this file or directory. The dialog closes, when this process exits.
-	/// </summary>
-	/// <param name="fileOrDirectory">The <see cref="FileSystemInfo" /> representing a file or directory to show the properties dialog from.</param>
-	[SupportedOSPlatform("windows")]
-	public static void ShowPropertiesDialog(this FileSystemInfo fileOrDirectory)
+	extension(FileSystemInfo fileSystemInfo)
 	{
-		Check.ArgumentNull(fileOrDirectory);
-		Check.FileOrDirectoryNotFound(fileOrDirectory.FullName);
+		/// <summary>
+		/// Shows the properties dialog for this file or directory. The dialog closes, when this process exits.
+		/// </summary>
+		[SupportedOSPlatform("windows")]
+		public void ShowPropertiesDialog()
+		{
+			Check.ArgumentNull(fileSystemInfo);
+			Check.FileOrDirectoryNotFound(fileSystemInfo.FullName);
 
-		Native.ShellExecuteInfo info = new()
-		{
-			StructSize = Marshal.SizeOf<Native.ShellExecuteInfo>(),
-			Verb = "properties",
-			FileName = fileOrDirectory.FullName,
-			Show = 5,
-			Mask = 0x50c
-		};
+			Native.ShellExecuteInfo info = new()
+			{
+				StructSize = Marshal.SizeOf<Native.ShellExecuteInfo>(),
+				Verb = "properties",
+				FileName = fileSystemInfo.FullName,
+				Show = 5,
+				Mask = 0x50c
+			};
 
-		if (!Native.ShellExecuteEx(ref info))
-		{
-			throw Throw.Win32("Could not open properties dialog.");
+			if (!Native.ShellExecuteEx(ref info))
+			{
+				throw Throw.Win32("Could not open properties dialog.");
+			}
 		}
-	}
-	/// <summary>
-	/// Sends this file or directory to recycle bin.
-	/// </summary>
-	/// <param name="fileOrDirectory">The <see cref="DirectoryInfo" /> to process.</param>
-	[SupportedOSPlatform("windows")]
-	public static void SendToRecycleBin(this FileSystemInfo fileOrDirectory)
-	{
-		Check.ArgumentNull(fileOrDirectory);
-		Check.FileOrDirectoryNotFound(fileOrDirectory.FullName);
+		/// <summary>
+		/// Sends this file or directory to recycle bin.
+		/// </summary>
+		[SupportedOSPlatform("windows")]
+		public void SendToRecycleBin()
+		{
+			Check.ArgumentNull(fileSystemInfo);
+			Check.FileOrDirectoryNotFound(fileSystemInfo.FullName);
 
-		if (fileOrDirectory is DirectoryInfo && fileOrDirectory.Exists)
-		{
-			FileSystem.DeleteDirectory(fileOrDirectory.FullName, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin, UICancelOption.ThrowException);
-		}
-		else if (fileOrDirectory is FileInfo && fileOrDirectory.Exists)
-		{
-			FileSystem.DeleteFile(fileOrDirectory.FullName, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin, UICancelOption.ThrowException);
-		}
-		else
-		{
-			throw Throw.UnsupportedType(nameof(fileOrDirectory));
+			if (fileSystemInfo is DirectoryInfo && fileSystemInfo.Exists)
+			{
+				FileSystem.DeleteDirectory(fileSystemInfo.FullName, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin, UICancelOption.ThrowException);
+			}
+			else if (fileSystemInfo is FileInfo && fileSystemInfo.Exists)
+			{
+				FileSystem.DeleteFile(fileSystemInfo.FullName, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin, UICancelOption.ThrowException);
+			}
+			else
+			{
+				throw Throw.UnsupportedType(nameof(fileSystemInfo));
+			}
 		}
 	}
 }

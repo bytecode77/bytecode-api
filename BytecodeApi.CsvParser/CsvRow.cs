@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using BytecodeApi.Extensions;
+using System.Collections;
 using System.Diagnostics;
 
 namespace BytecodeApi.CsvParser;
@@ -37,13 +38,13 @@ public sealed class CsvRow : IReadOnlyCollection<CsvCell>
 		{
 			Check.ArgumentNull(column);
 			Check.ArgumentEx.StringNotEmpty(column);
-			return this[ConvertEx.FromExcelColumnString(column)];
+			return this[Convert.FromExcelColumnString(column)];
 		}
 		set
 		{
 			Check.ArgumentNull(column);
 			Check.ArgumentEx.StringNotEmpty(column);
-			this[ConvertEx.FromExcelColumnString(column)] = value;
+			this[Convert.FromExcelColumnString(column)] = value;
 		}
 	}
 	/// <summary>

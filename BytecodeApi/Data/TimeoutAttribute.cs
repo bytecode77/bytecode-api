@@ -8,7 +8,7 @@ public sealed class TimeoutAttribute : Attribute
 	/// <summary>
 	/// Gets the timeout, in milliseconds.
 	/// </summary>
-	public int Milliseconds { get; private init; }
+	public int Milliseconds { get; }
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="TimeoutAttribute" /> class.

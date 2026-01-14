@@ -223,7 +223,7 @@ public static class ConsoleWriter
 	{
 		Check.ArgumentNull(exception);
 
-		Error($"{exception.Message}\r\n{exception.GetFullStackTrace()}");
+		Error($"{exception.Message}\r\n{exception.FullStackTrace}");
 	}
 
 	private static void RemovePreviewLines()

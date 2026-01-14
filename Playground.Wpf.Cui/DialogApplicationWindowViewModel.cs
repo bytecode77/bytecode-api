@@ -7,43 +7,17 @@ public sealed class DialogApplicationWindowViewModel : ObservableObject
 {
 	public DialogApplicationWindow View { get; set; }
 
-	private bool _ShowIcon = true;
-	private bool _ShowMenu = true;
-	private bool _ShowTitle = true;
-	private bool _ShowToolBar = true;
-	private bool _ShowStatusBar = true;
-	private ResizeMode _ResizeMode = ResizeMode.CanResize;
-	public bool ShowIcon
-	{
-		get => _ShowIcon;
-		set => Set(ref _ShowIcon, value);
-	}
-	public bool ShowMenu
-	{
-		get => _ShowMenu;
-		set => Set(ref _ShowMenu, value);
-	}
-	public bool ShowTitle
-	{
-		get => _ShowTitle;
-		set => Set(ref _ShowTitle, value);
-	}
-	public bool ShowToolBar
-	{
-		get => _ShowToolBar;
-		set => Set(ref _ShowToolBar, value);
-	}
-	public bool ShowStatusBar
-	{
-		get => _ShowStatusBar;
-		set => Set(ref _ShowStatusBar, value);
-	}
+	public bool ShowIcon { get; set => Set(ref field, value); }
+	public bool ShowMenu { get; set => Set(ref field, value); }
+	public bool ShowTitle { get; set => Set(ref field, value); }
+	public bool ShowToolBar { get; set => Set(ref field, value); }
+	public bool ShowStatusBar { get; set => Set(ref field, value); }
 	public ResizeMode ResizeMode
 	{
-		get => _ResizeMode;
+		get;
 		set
 		{
-			Set(ref _ResizeMode, value);
+			Set(ref field, value);
 			View.ResizeMode = ResizeMode;
 		}
 	}
@@ -51,5 +25,12 @@ public sealed class DialogApplicationWindowViewModel : ObservableObject
 	public DialogApplicationWindowViewModel(DialogApplicationWindow view)
 	{
 		View = view;
+
+		ShowIcon = true;
+		ShowMenu = true;
+		ShowTitle = true;
+		ShowToolBar = true;
+		ShowStatusBar = true;
+		ResizeMode = ResizeMode.CanResize;
 	}
 }

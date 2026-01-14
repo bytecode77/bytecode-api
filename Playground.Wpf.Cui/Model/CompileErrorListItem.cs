@@ -4,42 +4,12 @@ namespace Playground.Wpf.Cui.Model;
 
 public sealed class CompileErrorListItem : ObservableObject
 {
-	private string? _Icon;
-	private string? _Code;
-	private string? _Description;
-	private string? _Project;
-	private string? _File;
-	private int? _Line;
-	public string? Icon
-	{
-		get => _Icon;
-		set => Set(ref _Icon, value);
-	}
-	public string? Code
-	{
-		get => _Code;
-		set => Set(ref _Code, value);
-	}
-	public string? Description
-	{
-		get => _Description;
-		set => Set(ref _Description, value);
-	}
-	public string? Project
-	{
-		get => _Project;
-		set => Set(ref _Project, value);
-	}
-	public string? File
-	{
-		get => _File;
-		set => Set(ref _File, value);
-	}
-	public int? Line
-	{
-		get => _Line;
-		set => Set(ref _Line, value);
-	}
+	public string? Icon { get; set => Set(ref field, value); }
+	public string? Code { get; set => Set(ref field, value); }
+	public string? Description { get; set => Set(ref field, value); }
+	public string? Project { get; set => Set(ref field, value); }
+	public string? File { get; set => Set(ref field, value); }
+	public int? Line { get; set => Set(ref field, value); }
 
 	public CompileErrorListItem(string? icon, string? code, string? description, string? project, string? file, int? line)
 	{

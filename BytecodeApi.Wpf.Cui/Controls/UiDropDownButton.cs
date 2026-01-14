@@ -11,8 +11,8 @@ namespace BytecodeApi.Wpf.Cui.Controls;
 /// </summary>
 public class UiDropDownButton : Button
 {
-	private static readonly DependencyPropertyKey IsDropDownOpenPropertyKey = DependencyPropertyEx.RegisterReadOnly(nameof(IsDropDownOpen), new FrameworkPropertyMetadata(false, IsDropDownOpen_Changed));
-	private static readonly DependencyPropertyKey IsDropDownContextMenuPropertyKey = DependencyPropertyEx.RegisterReadOnly(nameof(IsDropDownContextMenu), new FrameworkPropertyMetadata(false));
+	private static readonly DependencyPropertyKey IsDropDownOpenPropertyKey = DependencyProperty.RegisterReadOnly(nameof(IsDropDownOpen), new FrameworkPropertyMetadata(false, IsDropDownOpen_Changed));
+	private static readonly DependencyPropertyKey IsDropDownContextMenuPropertyKey = DependencyProperty.RegisterReadOnly(nameof(IsDropDownContextMenu), new FrameworkPropertyMetadata(false));
 	/// <summary>
 	/// Identifies the <see cref="IsDropDownOpen" /> dependency property. This field is read-only.
 	/// </summary>
@@ -20,7 +20,7 @@ public class UiDropDownButton : Button
 	/// <summary>
 	/// Identifies the <see cref="DropDownContent" /> dependency property. This field is read-only.
 	/// </summary>
-	public static readonly DependencyProperty DropDownContentProperty = DependencyPropertyEx.Register(nameof(DropDownContent), new(DropDownContent_Changed));
+	public static readonly DependencyProperty DropDownContentProperty = DependencyProperty.Register(nameof(DropDownContent), new(DropDownContent_Changed));
 	/// <summary>
 	/// Identifies the <see cref="IsDropDownContextMenu" /> dependency property. This field is read-only.
 	/// </summary>
@@ -28,7 +28,7 @@ public class UiDropDownButton : Button
 	/// <summary>
 	/// Identifies the <see cref="UiDropDownButton" />.CloseOnClick dependency property. This field is read-only.
 	/// </summary>
-	public static readonly DependencyProperty CloseOnClickProperty = DependencyPropertyEx.RegisterAttached<UiDropDownButton, bool>("CloseOnClick", new FrameworkPropertyMetadata(CloseOnClick_Changed));
+	public static readonly DependencyProperty CloseOnClickProperty = DependencyProperty.RegisterAttached<UiDropDownButton, bool>("CloseOnClick", new FrameworkPropertyMetadata(CloseOnClick_Changed));
 	/// <summary>
 	/// Gets a <see cref="bool" /> value indicating whether the drop-down is currently open.
 	/// </summary>
@@ -90,17 +90,11 @@ public class UiDropDownButton : Button
 	{
 		base.OnApplyTemplate();
 
-		if (Popup != null)
-		{
-			Popup.Closed -= Popup_Closed;
-		}
+		Popup?.Closed -= Popup_Closed;
 
 		Popup = GetTemplateChild("PART_Popup") as Popup;
 
-		if (Popup != null)
-		{
-			Popup.Closed += Popup_Closed;
-		}
+		Popup?.Closed += Popup_Closed;
 	}
 	/// <summary>
 	/// Called when a control is clicked by the mouse or the keyboard.
@@ -219,11 +213,8 @@ public class UiDropDownButton : Button
 	{
 		UiDropDownButton dropDownButton = (UiDropDownButton)dependencyObject;
 
-		if (dropDownButton.ContextMenu != null)
-		{
-			dropDownButton.ContextMenu.Closed -= dropDownButton.ContextMenu_Closed;
-			dropDownButton.ContextMenu = null;
-		}
+		dropDownButton.ContextMenu?.Closed -= dropDownButton.ContextMenu_Closed;
+		dropDownButton.ContextMenu = null;
 
 		dropDownButton.IsDropDownContextMenu = e.NewValue is ContextMenu;
 
@@ -265,36 +256,24 @@ public class UiDropDownButton : Button
 	}
 	private static void CloseOnClick_Click(object? sender, RoutedEventArgs e)
 	{
-		if (OpenInstance != null)
-		{
-			OpenInstance.IsDropDownOpen = false;
-		}
+		OpenInstance?.IsDropDownOpen = false;
 	}
 	private static void CloseOnClick_MouseLeftButtonUp(object? sender, MouseButtonEventArgs e)
 	{
-		if (OpenInstance != null)
-		{
-			OpenInstance.IsDropDownOpen = false;
-		}
+		OpenInstance?.IsDropDownOpen = false;
 	}
 
 	private void HookOutsideClick()
 	{
 		Window = Window.GetWindow(this);
-		if (Window != null)
-		{
-			Window.PreviewMouseDown += Window_PreviewMouseDown;
-			Window.Deactivated += Window_Deactivated;
-		}
+		Window?.PreviewMouseDown += Window_PreviewMouseDown;
+		Window?.Deactivated += Window_Deactivated;
 	}
 	private void UnhookOutsideClick()
 	{
-		if (Window != null)
-		{
-			Window.PreviewMouseDown -= Window_PreviewMouseDown;
-			Window.Deactivated -= Window_Deactivated;
-			Window = null;
-		}
+		Window?.PreviewMouseDown -= Window_PreviewMouseDown;
+		Window?.Deactivated -= Window_Deactivated;
+		Window = null;
 	}
 	private void Window_PreviewMouseDown(object? sender, MouseButtonEventArgs e)
 	{

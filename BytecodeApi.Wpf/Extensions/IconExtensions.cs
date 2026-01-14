@@ -8,17 +8,19 @@ namespace BytecodeApi.Wpf.Extensions;
 /// </summary>
 public static class IconExtensions
 {
-	/// <summary>
-	/// Returns a managed <see cref="BitmapSource" />, based on the provided <see cref="Icon" />.
-	/// </summary>
-	/// <param name="icon">The <see cref="Icon" /> to convert.</param>
-	/// <returns>
-	/// The created <see cref="BitmapSource" />.
-	/// </returns>
-	public static BitmapSource ToBitmapSource(this Icon icon)
+	extension(Icon icon)
 	{
-		Check.ArgumentNull(icon);
+		/// <summary>
+		/// Returns a managed <see cref="BitmapSource" />, based on the provided <see cref="Icon" />.
+		/// </summary>
+		/// <returns>
+		/// The created <see cref="BitmapSource" />.
+		/// </returns>
+		public BitmapSource ToBitmapSource()
+		{
+			Check.ArgumentNull(icon);
 
-		return icon.ToBitmap().ToBitmapSource();
+			return icon.ToBitmap().ToBitmapSource();
+		}
 	}
 }

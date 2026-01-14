@@ -14,8 +14,8 @@ public class UiPropertyGridItem : ContentControl
 	/// <summary>
 	/// Identifies the <see cref="Header" /> dependency property. This field is read-only.
 	/// </summary>
-	public static readonly DependencyProperty HeaderProperty = DependencyPropertyEx.Register(nameof(Header));
-	private static readonly DependencyPropertyKey IsSelectedPropertyKey = DependencyPropertyEx.RegisterReadOnly(nameof(IsSelected), new FrameworkPropertyMetadata(false));
+	public static readonly DependencyProperty HeaderProperty = DependencyProperty.Register(nameof(Header));
+	private static readonly DependencyPropertyKey IsSelectedPropertyKey = DependencyProperty.RegisterReadOnly(nameof(IsSelected), new FrameworkPropertyMetadata(false));
 	/// <summary>
 	/// Identifies the <see cref="IsSelected" /> dependency property. This field is read-only.
 	/// </summary>
@@ -51,18 +51,12 @@ public class UiPropertyGridItem : ContentControl
 	{
 		base.OnApplyTemplate();
 
-		if (HeaderLabel != null)
-		{
-			HeaderLabel.MouseLeftButtonDown -= HeaderLabel_MouseLeftButtonDown;
-		}
+		HeaderLabel?.MouseLeftButtonDown -= HeaderLabel_MouseLeftButtonDown;
 
 		HeaderLabel = GetTemplateChild("PART_HeaderLabel") as Label;
 		ContentPresenter = GetTemplateChild("PART_ContentPresenter") as ContentPresenter;
 
-		if (HeaderLabel != null)
-		{
-			HeaderLabel.MouseLeftButtonDown += HeaderLabel_MouseLeftButtonDown;
-		}
+		HeaderLabel?.MouseLeftButtonDown += HeaderLabel_MouseLeftButtonDown;
 	}
 	/// <summary>
 	/// Invoked when an unhandled <see cref="Keyboard.GotKeyboardFocusEvent" /> attached event reaches an element in its route that is derived from this class.
@@ -72,12 +66,10 @@ public class UiPropertyGridItem : ContentControl
 	{
 		base.OnGotKeyboardFocus(e);
 
-		if (this.FindParent<UiPropertyGrid>(UITreeType.Logical) is UiPropertyGrid propertyGrid)
-		{
-			propertyGrid
-				.FindChildren<UiPropertyGridItem>(UITreeType.Logical)
-				.ForEach(propertyGridItem => propertyGridItem.IsSelected = propertyGridItem == this);
-		}
+		this
+			.FindParent<UiPropertyGrid>(UITreeType.Logical)
+			?.FindChildren<UiPropertyGridItem>(UITreeType.Logical)
+			.ForEach(propertyGridItem => propertyGridItem.IsSelected = propertyGridItem == this);
 	}
 	private void HeaderLabel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
 	{

@@ -8,7 +8,7 @@ public class GenericRestClient : RestClient
 	/// <summary>
 	/// Represents a singleton <see cref="GenericRestClient" /> instance. Changes to properties of this object are global.
 	/// </summary>
-	public static GenericRestClient Instance { get; private set; }
+	public static GenericRestClient Instance { get; }
 
 	static GenericRestClient()
 	{

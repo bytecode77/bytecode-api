@@ -13,11 +13,11 @@ public sealed class ParsedOptionSet
 	/// <summary>
 	/// Gets a <see cref="string" /> collection with arguments that are not associated to any <see cref="Option" />. These are the first arguments before any option parameter, e.g. anything before "-a".
 	/// </summary>
-	public ReadOnlyCollection<string> Arguments { get; private init; }
+	public ReadOnlyCollection<string> Arguments { get; }
 	/// <summary>
 	/// Gets a collection of <see cref="ParsedOption" /> objects that were parsed from the given commandline.
 	/// </summary>
-	public ReadOnlyCollection<ParsedOption> Options { get; private init; }
+	public ReadOnlyCollection<ParsedOption> Options { get; }
 	/// <summary>
 	/// Gets the <see cref="ParsedOption" />, identified by an <see cref="Option" /> that matches the <paramref name="argument" /> parameter and throws an exception, if it was not found.
 	/// </summary>
@@ -38,11 +38,11 @@ public sealed class ParsedOptionSet
 	/// <summary>
 	/// Validates conditions of this <see cref="ParsedOptionSet" /> and invokes a custom handler, if the condition was not met.
 	/// </summary>
-	public ValidateHelper Validate { get; private init; }
+	public ValidateHelper Validate { get; }
 	/// <summary>
 	/// Asserts conditions of this <see cref="ParsedOptionSet" /> and throws a <see cref="CommandLineParserException" />, if the condition was not met.
 	/// </summary>
-	public AssertHelper Assert { get; private init; }
+	public AssertHelper Assert { get; }
 
 	internal ParsedOptionSet(IEnumerable<string> arguments, IEnumerable<ParsedOption> options)
 	{

@@ -1,7 +1,6 @@
 ﻿using BytecodeApi.Extensions;
-using BytecodeApi.Mathematics;
-using BytecodeApi.Threading;
 using System.IO.Pipes;
+using System.Security.Cryptography;
 using System.Text;
 using System.Windows;
 
@@ -42,8 +41,8 @@ public class SingleInstance : IDisposable
 
 		PipeName = $"BAPI_SINGLE_INSTANCE_PIPE_{identifier}";
 		Pipe = new(PipeName, PipeDirection.In, NamedPipeServerStream.MaxAllowedServerInstances);
-		PipeIdentifier = MathEx.RandomNumberGenerator.GetInt32();
-		ThreadFactory.StartThread(PipeThreadFunc);
+		PipeIdentifier = RandomNumberGenerator.Shared.GetInt32();
+		Thread.StartNew(PipeThreadFunc);
 	}
 	/// <summary>
 	/// Releases all resources used by the current instance of the <see cref="SingleInstance" /> class.

@@ -10,8 +10,6 @@ namespace BytecodeApi.Win32.SystemInfo;
 /// </summary>
 public static class HardwareInfo
 {
-	private static string[]? _ProcessorNames;
-	private static string[]? _VideoControllerNames;
 	private static long? _TotalMemory;
 	/// <summary>
 	/// Gets the names of all installed processors.
@@ -20,7 +18,7 @@ public static class HardwareInfo
 	{
 		get
 		{
-			if (_ProcessorNames == null)
+			if (field == null)
 			{
 				List<string> names = [];
 
@@ -34,16 +32,16 @@ public static class HardwareInfo
 					}
 				}
 
-				_ProcessorNames = names.ToArray();
+				field = names.ToArray();
 			}
 
-			return _ProcessorNames;
+			return field;
 		}
 	}
 	/// <summary>
 	/// Gets the names of all installed video controllers.
 	/// </summary>
-	public static string[] VideoControllerNames => _VideoControllerNames ??= WmiContext.Root
+	public static string[] VideoControllerNames => field ??= WmiContext.Root
 		.GetNamespace("CIMV2")
 		.GetClass("Win32_VideoController")
 		.Select("Name")

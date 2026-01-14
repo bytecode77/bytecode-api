@@ -18,7 +18,7 @@ public class HotKey : IDisposable
 	/// <summary>
 	/// Gets the keyboard shortcut associated with this hotkey.
 	/// </summary>
-	public KeyboardShortcut Shortcut { get; private init; }
+	public KeyboardShortcut Shortcut { get; }
 	/// <summary>
 	/// Occurs when the hotkey was pressed.
 	/// </summary>

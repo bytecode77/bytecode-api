@@ -11,11 +11,7 @@ namespace BytecodeApi.Win32.SystemInfo;
 /// </summary>
 public static class OperatingSystemInfo
 {
-	private static string? _Name;
 	private static DateTime? _InstallDate;
-	private static string[]? _InstalledAntiVirusSoftware;
-	private static Version[]? _FrameworkVersions;
-	private static string? _JavaVersion;
 	/// <summary>
 	/// Gets the name of the operating system.
 	/// <para>Examples: "Windows 7 Professional", "Windows 10 Pro"</para>
@@ -24,14 +20,14 @@ public static class OperatingSystemInfo
 	{
 		get
 		{
-			if (_Name == null)
+			if (field == null)
 			{
 				using RegistryKey baseKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64);
 				using RegistryKey key = baseKey.OpenSubKey(@"Software\Microsoft\Windows NT\CurrentVersion") ?? throw Throw.Win32();
-				_Name = key.GetStringValue("ProductName") ?? throw Throw.Win32();
+				field = key.GetStringValue("ProductName") ?? throw Throw.Win32();
 			}
 
-			return _Name;
+			return field;
 		}
 	}
 	/// <summary>
@@ -46,7 +42,7 @@ public static class OperatingSystemInfo
 				using RegistryKey baseKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64);
 				using RegistryKey key = baseKey.OpenSubKey(@"Software\Microsoft\Windows NT\CurrentVersion") ?? throw Throw.Win32();
 				int installDate = key.GetInt32Value("InstallDate", 0);
-				_InstallDate = installDate > 0 ? DateTimeEx.FromUnixTimeStamp(installDate, DateTimeKind.Utc) : throw Throw.Win32();
+				_InstallDate = installDate > 0 ? DateTime.FromUnixTimeStamp(installDate, DateTimeKind.Utc) : throw Throw.Win32();
 			}
 
 			return _InstallDate.Value;
@@ -55,7 +51,7 @@ public static class OperatingSystemInfo
 	/// <summary>
 	/// Gets an array containing a list of installed antivirus software.
 	/// </summary>
-	public static string[] InstalledAntiVirusSoftware => _InstalledAntiVirusSoftware ??= WmiContext.Root
+	public static string[] InstalledAntiVirusSoftware => field ??= WmiContext.Root
 		.GetNamespace("SecurityCenter2")
 		.GetClass("AntiVirusProduct")
 		.Select("displayName")
@@ -130,16 +126,16 @@ public static class OperatingSystemInfo
 	{
 		get
 		{
-			if (_FrameworkVersions == null)
+			if (field == null)
 			{
 				List<Version> versions = [];
 				GetFramework4(versions);
 				GetFramework5(versions);
 
-				_FrameworkVersions = versions.Distinct().ToArray();
+				field = versions.Distinct().ToArray();
 			}
 
-			return _FrameworkVersions;
+			return field;
 
 			static void GetFramework4(List<Version> versions)
 			{
@@ -190,7 +186,7 @@ public static class OperatingSystemInfo
 	{
 		get
 		{
-			if (_JavaVersion == null)
+			if (field == null)
 			{
 				CliResult? result;
 
@@ -210,16 +206,16 @@ public static class OperatingSystemInfo
 
 				if (result == null)
 				{
-					_JavaVersion = "";
+					field = "";
 				}
 				else
 				{
 					Match match = Regex.Match(result.Output, "^\\s*java version \"(.+)\"");
-					_JavaVersion = match.Success ? match.Groups[1].Value : "";
+					field = match.Success ? match.Groups[1].Value : "";
 				}
 			}
 
-			return _JavaVersion.ToNullIfEmpty();
+			return field.ToNullIfEmpty();
 		}
 	}
 }

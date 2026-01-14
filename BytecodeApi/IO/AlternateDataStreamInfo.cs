@@ -15,11 +15,11 @@ public sealed class AlternateDataStreamInfo
 	/// <summary>
 	/// Gets the path of the file.
 	/// </summary>
-	public string Path { get; private init; }
+	public string Path { get; }
 	/// <summary>
 	/// Gets a collection of <see cref="AlternateDataStream" /> objects associated with the specified file.
 	/// </summary>
-	public ReadOnlyCollection<AlternateDataStream> Streams { get; private init; }
+	public ReadOnlyCollection<AlternateDataStream> Streams { get; }
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="AlternateDataStreamInfo" /> class with the specified file path.

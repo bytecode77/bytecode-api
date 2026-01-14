@@ -12,7 +12,7 @@ public static class TreeViewItemService
 {
 	private static TreeViewItem? CurrentItem;
 	private static readonly RoutedEvent UpdateOverItemEvent = EventManager.RegisterRoutedEvent("UpdateOverItem", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(TreeViewItemService));
-	private static readonly DependencyPropertyKey IsMouseDirectlyOverItemKey = DependencyPropertyEx.RegisterAttachedReadOnly<bool>("IsMouseDirectlyOverItem", new FrameworkPropertyMetadata(null, CalculateIsMouseDirectlyOverItem));
+	private static readonly DependencyPropertyKey IsMouseDirectlyOverItemKey = DependencyProperty.RegisterAttachedReadOnly<bool>("IsMouseDirectlyOverItem", new FrameworkPropertyMetadata(null, CalculateIsMouseDirectlyOverItem));
 	/// <summary>
 	/// Identifies the <see cref="TreeViewItemService" />.IsMouseDirectlyOverItem dependency property. This field is read-only.
 	/// </summary>

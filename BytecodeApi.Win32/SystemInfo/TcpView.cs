@@ -15,7 +15,7 @@ public sealed class TcpView
 	/// <summary>
 	/// Gets all entries of the TCPView table.
 	/// </summary>
-	public ReadOnlyCollection<TcpViewEntry> Entries { get; private init; }
+	public ReadOnlyCollection<TcpViewEntry> Entries { get; }
 
 	private TcpView(IEnumerable<TcpViewEntry> entries)
 	{

@@ -12,11 +12,11 @@ public static class TextBlockService
 	/// <summary>
 	/// Identifies the <see cref="TextBlockService" />.TextWrapping dependency property. This field is read-only.
 	/// </summary>
-	public static readonly DependencyProperty TextWrappingProperty = DependencyPropertyEx.RegisterAttached<ContentControl, TextWrapping>("TextWrapping", new FrameworkPropertyMetadata(TextWrapping.NoWrap, FrameworkPropertyMetadataOptions.Inherits, TextWrapping_Changed));
+	public static readonly DependencyProperty TextWrappingProperty = DependencyProperty.RegisterAttached<ContentControl, TextWrapping>("TextWrapping", new FrameworkPropertyMetadata(TextWrapping.NoWrap, FrameworkPropertyMetadataOptions.Inherits, TextWrapping_Changed));
 	/// <summary>
 	/// Identifies the <see cref="TextBlockService" />.TextTrimming dependency property. This field is read-only.
 	/// </summary>
-	public static readonly DependencyProperty TextTrimmingProperty = DependencyPropertyEx.RegisterAttached<ContentControl, TextTrimming>("TextTrimming", new FrameworkPropertyMetadata(TextTrimming.None, FrameworkPropertyMetadataOptions.Inherits, TextTrimming_Changed));
+	public static readonly DependencyProperty TextTrimmingProperty = DependencyProperty.RegisterAttached<ContentControl, TextTrimming>("TextTrimming", new FrameworkPropertyMetadata(TextTrimming.None, FrameworkPropertyMetadataOptions.Inherits, TextTrimming_Changed));
 	/// <summary>
 	/// Returns the <see cref="TextBlock.TextWrapping" /> property.
 	/// </summary>

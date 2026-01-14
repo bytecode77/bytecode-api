@@ -12,11 +12,11 @@ public class UiProgressBar : ProgressBar
 	/// <summary>
 	/// Identifies the <see cref="State" /> dependency property. This field is read-only.
 	/// </summary>
-	public static readonly DependencyProperty StateProperty = DependencyPropertyEx.Register(nameof(State), new(ProgressBarState.Normal));
+	public static readonly DependencyProperty StateProperty = DependencyProperty.Register(nameof(State), new(ProgressBarState.Normal));
 	/// <summary>
 	/// Identifies the <see cref="Text" /> dependency property. This field is read-only.
 	/// </summary>
-	public static readonly DependencyProperty TextProperty = DependencyPropertyEx.Register(nameof(Text));
+	public static readonly DependencyProperty TextProperty = DependencyProperty.Register(nameof(Text));
 	/// <summary>
 	/// Gets or sets the state of the progress bar that determines its appearance.
 	/// </summary>

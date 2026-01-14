@@ -13,7 +13,7 @@ public sealed class WmiNamespace
 	/// <summary>
 	/// Gets the path of this <see cref="WmiNamespace" />.
 	/// </summary>
-	public string Path { get; private init; }
+	public string Path { get; }
 	internal string FullPath => System.IO.Path.Combine(@"\\", Environment.MachineName, "ROOT", Path);
 
 	internal WmiNamespace(string path)

@@ -15,15 +15,15 @@ public class UiTextBox : TextBox
 	/// <summary>
 	/// Identifies the <see cref="Watermark" /> dependency property. This field is read-only.
 	/// </summary>
-	public static readonly DependencyProperty WatermarkProperty = DependencyPropertyEx.Register(nameof(Watermark));
+	public static readonly DependencyProperty WatermarkProperty = DependencyProperty.Register(nameof(Watermark));
 	/// <summary>
 	/// Identifies the <see cref="AutoCompleteItems" /> dependency property. This field is read-only.
 	/// </summary>
-	public static readonly DependencyProperty AutoCompleteItemsProperty = DependencyPropertyEx.Register(nameof(AutoCompleteItems));
+	public static readonly DependencyProperty AutoCompleteItemsProperty = DependencyProperty.Register(nameof(AutoCompleteItems));
 	/// <summary>
 	/// Identifies the <see cref="AutoCompleteMaxItems" /> dependency property. This field is read-only.
 	/// </summary>
-	public static readonly DependencyProperty AutoCompleteMaxItemsProperty = DependencyPropertyEx.Register(nameof(AutoCompleteMaxItems), new(10));
+	public static readonly DependencyProperty AutoCompleteMaxItemsProperty = DependencyProperty.Register(nameof(AutoCompleteMaxItems), new(10));
 	/// <summary>
 	/// Identifies the <see cref="Submit" /> dependency property. This field is read-only.
 	/// </summary>
@@ -75,18 +75,12 @@ public class UiTextBox : TextBox
 	{
 		base.OnApplyTemplate();
 
-		if (AutoCompleteListBox != null)
-		{
-			AutoCompleteListBox.PreviewMouseLeftButtonUp -= AutoCompleteListBox_PreviewMouseLeftButtonUp;
-		}
+		AutoCompleteListBox?.PreviewMouseLeftButtonUp -= AutoCompleteListBox_PreviewMouseLeftButtonUp;
 
 		AutoCompletePopup = GetTemplateChild("PART_AutoCompletePopup") as Popup;
 		AutoCompleteListBox = GetTemplateChild("PART_AutoCompleteListBox") as ListBox;
 
-		if (AutoCompleteListBox != null)
-		{
-			AutoCompleteListBox.PreviewMouseLeftButtonUp += AutoCompleteListBox_PreviewMouseLeftButtonUp;
-		}
+		AutoCompleteListBox?.PreviewMouseLeftButtonUp += AutoCompleteListBox_PreviewMouseLeftButtonUp;
 	}
 	/// <summary>
 	/// Invoked whenever an unhandled <see cref="UIElement.GotFocus" /> event reaches this element in its route.
@@ -96,10 +90,7 @@ public class UiTextBox : TextBox
 	{
 		base.OnGotFocus(e);
 
-		if (AutoCompletePopup != null)
-		{
-			AutoCompletePopup.IsOpen = UpdateAutoCompleteItems();
-		}
+		AutoCompletePopup?.IsOpen = UpdateAutoCompleteItems();
 	}
 	/// <summary>
 	/// Raises the <see cref="UIElement.LostFocus" /> event (using the provided arguments).
@@ -109,9 +100,9 @@ public class UiTextBox : TextBox
 	{
 		base.OnLostFocus(e);
 
-		if (AutoCompletePopup != null && AutoCompleteListBox?.IsKeyboardFocusWithin == false)
+		if (AutoCompleteListBox?.IsKeyboardFocusWithin == false)
 		{
-			AutoCompletePopup.IsOpen = false;
+			AutoCompletePopup?.IsOpen = false;
 		}
 	}
 	/// <summary>
@@ -122,18 +113,10 @@ public class UiTextBox : TextBox
 	{
 		base.OnPreviewMouseDown(e);
 
-		if (AutoCompletePopup != null &&
-			e.OriginalSource is FrameworkElement originalSource &&
+		if (e.OriginalSource is FrameworkElement originalSource &&
 			originalSource.FindParent<TextBox>(UITreeType.Visual) != null)
 		{
-			if (AutoCompletePopup.IsOpen)
-			{
-				AutoCompletePopup.IsOpen = false;
-			}
-			else
-			{
-				AutoCompletePopup.IsOpen = UpdateAutoCompleteItems();
-			}
+			AutoCompletePopup?.IsOpen = AutoCompletePopup.IsOpen ? false : UpdateAutoCompleteItems();
 		}
 	}
 	/// <summary>
@@ -144,10 +127,7 @@ public class UiTextBox : TextBox
 	{
 		base.OnTextChanged(e);
 
-		if (AutoCompletePopup != null)
-		{
-			AutoCompletePopup.IsOpen = UpdateAutoCompleteItems();
-		}
+		AutoCompletePopup?.IsOpen = UpdateAutoCompleteItems();
 	}
 	/// <summary>
 	/// Invoked when an unhandled <see cref="Keyboard.PreviewKeyDownEvent" /> attached event reaches an element in its route that is derived from this class.
@@ -201,10 +181,7 @@ public class UiTextBox : TextBox
 		}
 		else if (e.Key == Key.Escape)
 		{
-			if (AutoCompletePopup != null)
-			{
-				AutoCompletePopup.IsOpen = false;
-			}
+			AutoCompletePopup?.IsOpen = false;
 		}
 		else if (e.Key is Key.Up or Key.Down)
 		{

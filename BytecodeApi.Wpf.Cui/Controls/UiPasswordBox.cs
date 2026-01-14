@@ -16,19 +16,19 @@ public class UiPasswordBox : Control
 	/// <summary>
 	/// Identifies the <see cref="Password" /> dependency property. This field is read-only.
 	/// </summary>
-	public static readonly DependencyProperty PasswordProperty = DependencyPropertyEx.Register(nameof(Password), new(Password_Changed));
+	public static readonly DependencyProperty PasswordProperty = DependencyProperty.Register(nameof(Password), new(Password_Changed));
 	/// <summary>
 	/// Identifies the <see cref="IsReadOnly" /> dependency property. This field is read-only.
 	/// </summary>
-	public static readonly DependencyProperty IsReadOnlyProperty = DependencyPropertyEx.Register(nameof(IsReadOnly));
+	public static readonly DependencyProperty IsReadOnlyProperty = DependencyProperty.Register(nameof(IsReadOnly));
 	/// <summary>
 	/// Identifies the <see cref="CanPreview" /> dependency property. This field is read-only.
 	/// </summary>
-	public static readonly DependencyProperty CanPreviewProperty = DependencyPropertyEx.Register(nameof(CanPreview), new(true));
+	public static readonly DependencyProperty CanPreviewProperty = DependencyProperty.Register(nameof(CanPreview), new(true));
 	/// <summary>
 	/// Identifies the <see cref="CanCopy" /> dependency property. This field is read-only.
 	/// </summary>
-	public static readonly DependencyProperty CanCopyProperty = DependencyPropertyEx.Register(nameof(CanCopy));
+	public static readonly DependencyProperty CanCopyProperty = DependencyProperty.Register(nameof(CanCopy));
 	/// <summary>
 	/// Identifies the <see cref="UiPasswordBox" />.CopyPassword dependency property. This field is read-only.
 	/// </summary>
@@ -37,7 +37,7 @@ public class UiPasswordBox : Control
 	/// Identifies the <see cref="UiPasswordBox" />.CutPassword dependency property. This field is read-only.
 	/// </summary>
 	public static readonly RoutedUICommand CutPasswordCommand = new RoutedUICommand("Cut Password", "CutPassword", typeof(UiPasswordBox), [new KeyGesture(Key.C, ModifierKeys.Control)]);
-	private static readonly DependencyPropertyKey PreviewPasswordPropertyKey = DependencyPropertyEx.RegisterReadOnly(nameof(PreviewPassword), new FrameworkPropertyMetadata(false));
+	private static readonly DependencyPropertyKey PreviewPasswordPropertyKey = DependencyProperty.RegisterReadOnly(nameof(PreviewPassword), new FrameworkPropertyMetadata(false));
 	/// <summary>
 	/// Identifies the <see cref="PreviewPassword" /> dependency property. This field is read-only.
 	/// </summary>
@@ -101,31 +101,17 @@ public class UiPasswordBox : Control
 		CommandBindings.Add(new CommandBinding(CopyPasswordCommand, OnCopyPasswordExecuted, OnCopyPasswordCanExecute));
 		CommandBindings.Add(new CommandBinding(CutPasswordCommand, OnCutPasswordExecuted, OnCutPasswordCanExecute));
 
-		if (PasswordBox != null)
-		{
-			PasswordBox.PasswordChanged -= PasswordBox_PasswordChanged;
-		}
-
-		if (PreviewButton != null)
-		{
-			PreviewButton.PreviewMouseLeftButtonDown -= PreviewButton_PreviewMouseLeftButtonDown;
-			PreviewButton.PreviewMouseLeftButtonUp -= PreviewButton_PreviewMouseLeftButtonUp;
-		}
+		PasswordBox?.PasswordChanged -= PasswordBox_PasswordChanged;
+		PreviewButton?.PreviewMouseLeftButtonDown -= PreviewButton_PreviewMouseLeftButtonDown;
+		PreviewButton?.PreviewMouseLeftButtonUp -= PreviewButton_PreviewMouseLeftButtonUp;
 
 		PasswordBox = GetTemplateChild("PART_PasswordBox") as PasswordBox;
 		PreviewButton = GetTemplateChild("PART_PreviewButton") as Button;
 
-		if (PasswordBox != null)
-		{
-			PasswordBox.Password = Password;
-			PasswordBox.PasswordChanged += PasswordBox_PasswordChanged;
-		}
-
-		if (PreviewButton != null)
-		{
-			PreviewButton.PreviewMouseLeftButtonDown += PreviewButton_PreviewMouseLeftButtonDown;
-			PreviewButton.PreviewMouseLeftButtonUp += PreviewButton_PreviewMouseLeftButtonUp;
-		}
+		PasswordBox?.Password = Password;
+		PasswordBox?.PasswordChanged += PasswordBox_PasswordChanged;
+		PreviewButton?.PreviewMouseLeftButtonDown += PreviewButton_PreviewMouseLeftButtonDown;
+		PreviewButton?.PreviewMouseLeftButtonUp += PreviewButton_PreviewMouseLeftButtonUp;
 	}
 	/// <summary>
 	/// Invoked when an unhandled <see cref="Keyboard.PreviewGotKeyboardFocusEvent" /> attached event reaches an element in its route that is derived from this class.
@@ -185,33 +171,30 @@ public class UiPasswordBox : Control
 
 		passwordBox.PasswordChangeCriticalSection.Invoke(() =>
 		{
-			if (passwordBox.PasswordBox != null)
-			{
-				passwordBox.PasswordBox.Password = passwordBox.Password;
-			}
+			passwordBox.PasswordBox?.Password = passwordBox.Password;
 		});
 	}
 	private void OnCopyPasswordCanExecute(object sender, CanExecuteRoutedEventArgs e)
 	{
-		e.CanExecute = CanCopy && PasswordBox?.GetSelectionLength() > 0;
+		e.CanExecute = CanCopy && PasswordBox?.SelectionLength > 0;
 	}
 	private void OnCopyPasswordExecuted(object sender, ExecutedRoutedEventArgs e)
 	{
 		if (PasswordBox != null && !Password.IsNullOrEmpty())
 		{
-			Clipboard.SetDataObject(Password.Substring(PasswordBox.GetSelectionStart(), PasswordBox.GetSelectionLength()));
+			Clipboard.SetDataObject(Password.Substring(PasswordBox.SelectionStart, PasswordBox.SelectionLength));
 		}
 	}
 	private void OnCutPasswordCanExecute(object sender, CanExecuteRoutedEventArgs e)
 	{
-		e.CanExecute = CanCopy && !IsReadOnly && PasswordBox?.GetSelectionLength() > 0;
+		e.CanExecute = CanCopy && !IsReadOnly && PasswordBox?.SelectionLength > 0;
 	}
 	private void OnCutPasswordExecuted(object sender, ExecutedRoutedEventArgs e)
 	{
 		if (PasswordBox != null && !Password.IsNullOrEmpty())
 		{
-			Clipboard.SetDataObject(Password.Substring(PasswordBox.GetSelectionStart(), PasswordBox.GetSelectionLength()));
-			Password = Password[..PasswordBox.GetSelectionStart()] + Password[(PasswordBox.GetSelectionStart() + PasswordBox.GetSelectionLength())..];
+			Clipboard.SetDataObject(Password.Substring(PasswordBox.SelectionStart, PasswordBox.SelectionLength));
+			Password = Password[..PasswordBox.SelectionStart] + Password[(PasswordBox.SelectionStart + PasswordBox.SelectionLength)..];
 		}
 	}
 }

@@ -12,7 +12,7 @@ public class UiTabControl : TabControl
 	/// <summary>
 	/// Identifies the <see cref="TabPanelOffset" /> dependency property. This field is read-only.
 	/// </summary>
-	public static readonly DependencyProperty TabPanelOffsetProperty = DependencyPropertyEx.Register(nameof(TabPanelOffset));
+	public static readonly DependencyProperty TabPanelOffsetProperty = DependencyProperty.Register(nameof(TabPanelOffset));
 	/// <summary>
 	/// Gets or sets the offset of the tab panel from the top left corner of the control.
 	/// </summary>
