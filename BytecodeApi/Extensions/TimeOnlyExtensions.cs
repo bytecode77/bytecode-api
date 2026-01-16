@@ -13,6 +13,10 @@ public static class TimeOnlyExtensions
 		/// Gets a <see cref="TimeOnly" /> object that is set to the current date and time on this computer.
 		/// </summary>
 		public static TimeOnly Now => DateTime.Now.ToTimeOnly();
+		/// <summary>
+		/// Gets a <see cref="TimeOnly" /> object that is set to the current date and time on this computer, expressed as the Coordinated Universal Time (UTC).
+		/// </summary>
+		public static TimeOnly UtcNow => DateTime.UtcNow.ToTimeOnly();
 
 		/// <summary>
 		/// Converts the value of this <see cref="TimeOnly" /> to its equivalent <see cref="string" /> representation using a specified format and the invariant culture.
