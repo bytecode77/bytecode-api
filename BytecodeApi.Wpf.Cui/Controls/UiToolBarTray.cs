@@ -112,7 +112,9 @@ public class UiToolBarTray : ToolBarTray
 	/// Called to arrange and size its <see cref="ToolBar" /> children.
 	/// </summary>
 	/// <param name="arrangeSize">The size that the <see cref="ToolBarTray" /> assumes to position its children.</param>
-	/// <returns></returns>
+	/// <returns>
+	/// The size of the control.
+	/// </returns>
 	protected override Size ArrangeOverride(Size arrangeSize)
 	{
 		Size contentSize = new(

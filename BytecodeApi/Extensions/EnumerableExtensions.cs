@@ -234,7 +234,6 @@ public static class EnumerableExtensions
 
 		bool hasTrue = false;
 		bool hasFalse = false;
-		bool hasNull = false;
 
 		foreach (bool? value in values)
 		{
@@ -248,10 +247,10 @@ public static class EnumerableExtensions
 			}
 			else
 			{
-				hasNull = true;
+				return null;
 			}
 
-			if (hasNull || hasTrue && hasFalse)
+			if (hasTrue && hasFalse)
 			{
 				return null;
 			}
