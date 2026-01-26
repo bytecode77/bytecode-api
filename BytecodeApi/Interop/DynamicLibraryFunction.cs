@@ -64,7 +64,7 @@ public sealed class DynamicLibraryFunction<T>
 	/// <summary>
 	/// Gets the <see cref="DynamicLibrary" /> that was used to create this <see cref="DynamicLibraryFunction{T}" />.
 	/// </summary>
-	public DynamicLibrary Library { get; private set; }
+	public DynamicLibrary Library { get; }
 	/// <summary>
 	/// Gets the name of the entry point in the DLL.
 	/// </summary>
