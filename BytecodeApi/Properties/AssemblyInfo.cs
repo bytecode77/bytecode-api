@@ -20,4 +20,5 @@ using System.Runtime.CompilerServices;
 #if DEBUG
 [assembly: InternalsVisibleTo("Playground.Console")]
 [assembly: InternalsVisibleTo("Playground.Wpf")]
+[assembly: InternalsVisibleTo("Playground.Wpf.Cui")]
 #endif
