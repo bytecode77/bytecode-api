@@ -8,9 +8,9 @@
 		<GeneratePackageOnBuild Condition="'$(Configuration)' == 'Release'">True</GeneratePackageOnBuild>
 	</PropertyGroup>
 	<PropertyGroup>
-		<Version>4.0.2</Version>
-		<AssemblyVersion>4.0.2</AssemblyVersion>
-		<FileVersion>4.0.2</FileVersion>
+		<Version>5.0.0</Version>
+		<AssemblyVersion>5.0.0</AssemblyVersion>
+		<FileVersion>5.0.0</FileVersion>
 	</PropertyGroup>
 	<PropertyGroup>
 		<Product>BytecodeApi.Wpf.Cui</Product>
@@ -18,7 +18,7 @@
 		<Description>Bytecode77 WPF common UI.</Description>
 		<Company>bytecode77</Company>
 		<Authors>Martin Fischer</Authors>
-		<Copyright>© bytecode77, 2025.</Copyright>
+		<Copyright>© bytecode77, 2026.</Copyright>
 	</PropertyGroup>
 	<PropertyGroup>
 		<PackageId>BytecodeApi.Wpf.Cui</PackageId>
