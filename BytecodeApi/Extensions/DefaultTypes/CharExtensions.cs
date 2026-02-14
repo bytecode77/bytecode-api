@@ -151,7 +151,6 @@ public static class CharExtensions
 		{
 			return char.GetUnicodeCategory(value);
 		}
-
 		/// <summary>
 		/// Converts the value of this <see langword="char" /> to its uppercase equivalent.
 		/// </summary>

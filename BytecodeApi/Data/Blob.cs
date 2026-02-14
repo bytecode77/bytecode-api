@@ -53,7 +53,7 @@ public class Blob
 	/// <param name="name">The name of the <see cref="Blob" />.</param>
 	/// <param name="content">The binary content of the <see cref="Blob" />.</param>
 	/// <param name="tag">the object that contains data about the <see cref="Blob" />.</param>
-	public Blob(string name, byte[] content, object tag) : this(name, content)
+	public Blob(string name, byte[] content, object? tag) : this(name, content)
 	{
 		Tag = tag;
 	}

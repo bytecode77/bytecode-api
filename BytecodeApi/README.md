@@ -73,47 +73,6 @@ UserDto userDto = CSharp.ConvertObject<UserDto>(userEntity, ConvertObjectOptions
 </details>
 
 <details>
-<summary>DateTimeEx</summary>
-
-Convert unix timestamps:
-
-```
-int? unixTimeStamp = DateTimeEx.ToUnixTimeStamp(DateTime.Now);
-DateTime dateTime = DateTimeEx.FromUnixTimeStamp(unixTimeStamp);
-```
-
-Arithmetics:
-
-```
-int age = CalculateAgeFromBirthday(new DateTime(1991, xx, xx));
-```
-</details>
-
-<details>
-<summary>EnumEx</summary>
-
-Querying the `DescriptionAttribute`:
-
-```
-// Get values with descriptions
-Dictionary<MyEnum, string> lookup = EnumEx.GetDescriptionLookup<MyEnum>();
-
-// Find enum value by description
-MyEnum? value = EnumEx.FindValueByDescription<MyEnum>("The first value");
-
-public enum MyEnum
-{
-	[Description("The first value")]
-	Value1,
-	[Description("The second value")]
-	Value2,
-	[Description("The third value")]
-	Value3
-}
-```
-</details>
-
-<details>
 <summary>IndexedProperty & ReadOnlyIndexedProperty</summary>
 
 Use `IndexedProperty` or `ReadOnlyIndexedProperty` to provide a property that has an indexer without the need to create a new class.
@@ -249,12 +208,7 @@ The `ObservableObject` class provides a base class for observable objects. This 
 ```
 public class MyDto : ObservableObject
 {
-	private string _Name;
-	public string Name
-	{
-		get => _Name;
-		set => Set(ref _Name, value);
-	}
+	public string Name { get; set => Set(ref field, value); }
 }
 ```
 
@@ -268,7 +222,7 @@ The pattern is simple and does not bulge performance.
 
 This namespace contains extensions for all default types and several common .NET classes.
 
-Here are some examples. However, there are so many extension methods that it's not possible to provide examples for each of them here.
+Here are some examples. However, there are many more extension methods and members.
 
 ```
 // StringExtensions:
@@ -285,6 +239,14 @@ int? maybeInt32Value = "123".ToInt32OrNull();
 bool arraysEqual = byteArrayA.Compare(byteArrayB);
 
 int index = byteArrayA.FindSequence(byteArrayB);
+```
+
+Extensions are also available as extension members, which allows for a more natural syntax:
+
+```
+// DateOnlyExtensions:
+
+DateOnly today = DateOnly.Today; // .net 10 extension member
 ```
 </details>
 
@@ -428,25 +390,6 @@ byte[] zipFile = ZipCompression.Compress(decompressed);
 ### ![](http://bytecode77.com/public/vs/namespace.png) BytecodeApi.Mathematics
 
 <details>
-<summary>BitCalculator</summary>
-
-This class performs bitwise computations on numeric values.
-
-Get n'th bit from integer number:
-
-```
-bool bit = BitCalculator.GetBit(number, 3);
-```
-
-Set n'th bit of integer number:
-
-```
-// true = bit set; false = bit not set
-number = BitCalculator.SetBit(number, 3, true);
-```
-</details>
-
-<details>
 <summary>ByteSize</summary>
 
 The `ByteSize` structure represents a size, in bytes:
@@ -494,6 +437,30 @@ string wrappedTo80chars = Wording.WrapText("A whole paragraph with 1000 words [.
 </details>
 
 ## Changelog
+
+### 5.0.0 (15.02.2026)
+
+* **change:** Targeting .NET 10.0
+* **new:** `EnumerableExtensions.UnorderedEqual` method
+* **new:** `RandomNumberGenerator.Shared` extension member
+* **new:** `DateOnly.Today` extension member
+* **new:** `TimeOnly.Now` and `UtcNow` extension member
+* **new:** `Undefinable` class
+* **change:** `BitArrayExtensions` methods changed to extension members: `CountTrue`, `CountFalse`, `AllTrue`, `AllFalse`
+* **change:** `BitCalculator` methods changed to extension members of `BitOperations`
+* **change:** `ConvertEx` methods changed to extension members of `Convert`
+* **change:** `DateTimeEx` methods changed to extension members of `DateTime`
+* **change:** `DateOnlyEx` methods changed to extension members of `DateOnly`
+* **change:** `TimeOnlyEx` methods changed to extension members of `TimeOnly`
+* **change:** `DirectoryEx` methods changed to extension members of `Directory`
+* **change:** `FileEx` methods changed to extension members of `File`
+* **change:** `PathEx` methods changed to extension members of `Path`
+* **change:** `MathEx` methods changed to extension members of `Math`
+* **change:** `EnumExtensions` methods changed to extension members of `Enum`
+* **change:** `ExceptionExtensions` methods changed to extension members: `FullStackTrace`, `ChildExceptionCount`
+* **change:** `ReflectionExtensions` methods changed to extension members: `NestedName`, `NestedFullName`
+* **change:** `Create.HexadecimalString` method renamed to `HexString` to match .net naming conventions
+* **removed:** `ConvertEx.ToHexadecimalString` and `FromHexadecimalString`
 
 ### 4.0.1 (27.10.2025)
 

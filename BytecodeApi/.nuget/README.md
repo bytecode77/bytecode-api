@@ -8,6 +8,29 @@ See: [Examples](https://github.com/bytecode77/bytecode-api/blob/master/BytecodeA
 
 ## Changelog
 
+### 5.0.0 (15.02.2026)
+
+* **change:** Targeting .NET 10.0
+* **new:** `EnumerableExtensions.UnorderedEqual` method
+* **new:** `RandomNumberGenerator.Shared` extension member
+* **new:** `DateOnly.Today` extension member
+* **new:** `TimeOnly.Now` and `UtcNow` extension member
+* **change:** `BitArrayExtensions` methods changed to extension members: `CountTrue`, `CountFalse`, `AllTrue`, `AllFalse`
+* **change:** `BitCalculator` methods changed to extension members of `BitOperations`
+* **change:** `ConvertEx` methods changed to extension members of `Convert`
+* **change:** `DateTimeEx` methods changed to extension members of `DateTime`
+* **change:** `DateOnlyEx` methods changed to extension members of `DateOnly`
+* **change:** `TimeOnlyEx` methods changed to extension members of `TimeOnly`
+* **change:** `DirectoryEx` methods changed to extension members of `Directory`
+* **change:** `FileEx` methods changed to extension members of `File`
+* **change:** `PathEx` methods changed to extension members of `Path`
+* **change:** `MathEx` methods changed to extension members of `Math`
+* **change:** `EnumExtensions` methods changed to extension members of `Enum`
+* **change:** `ExceptionExtensions` methods changed to extension members: `FullStackTrace`, `ChildExceptionCount`
+* **change:** `ReflectionExtensions` methods changed to extension members: `NestedName`, `NestedFullName`
+* **change:** `Create.HexadecimalString` method renamed to `HexString` to match .net naming conventions
+* **removed:** `ConvertEx.ToHexadecimalString` and `FromHexadecimalString`
+
 ### 4.0.1 (27.10.2025)
 
 * **change:** Added `ParseExact` parameter to JSON converters
