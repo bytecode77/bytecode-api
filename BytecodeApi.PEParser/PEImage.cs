@@ -10,27 +10,27 @@ public class PEImage
 	/// <summary>
 	/// Gets the original PE image file, if this file was loaded from an existing source; otherwise, <see langword="null" />.
 	/// </summary>
-	public byte[] OriginalImage { get; private init; }
+	public byte[] OriginalImage { get; }
 	/// <summary>
 	/// Gets the DOS header of this PE image file.
 	/// </summary>
-	public ImageDosHeader DosHeader { get; private init; }
+	public ImageDosHeader DosHeader { get; }
 	/// <summary>
 	/// Gets the MS-DOS stub of this PE image file.
 	/// </summary>
-	public byte[] DosStub { get; private init; }
+	public byte[] DosStub { get; }
 	/// <summary>
 	/// Gets the COFF header of this PE image file.
 	/// </summary>
-	public ImageCoffHeader CoffHeader { get; private init; }
+	public ImageCoffHeader CoffHeader { get; }
 	/// <summary>
 	/// Gets the optional header of this PE image file.
 	/// </summary>
-	public ImageOptionalHeader OptionalHeader { get; private init; }
+	public ImageOptionalHeader OptionalHeader { get; }
 	/// <summary>
 	/// Gets the collection of section headers and data of this PE image file.
 	/// </summary>
-	public ImageSection[] Sections { get; private init; }
+	public ImageSection[] Sections { get; }
 
 	private PEImage(byte[] originalImage)
 	{

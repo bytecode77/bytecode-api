@@ -12,7 +12,7 @@ public sealed class InstalledSoftware
 	/// <summary>
 	/// Gets a list of installed software products.
 	/// </summary>
-	public ReadOnlyCollection<InstalledSoftwareInfo> Software { get; private init; }
+	public ReadOnlyCollection<InstalledSoftwareInfo> Software { get; }
 
 	private InstalledSoftware(IEnumerable<InstalledSoftwareInfo> software)
 	{
@@ -56,7 +56,7 @@ public sealed class InstalledSoftware
 							Name = subKey.GetStringValue("DisplayName")?.Trim().ToNullIfEmpty(),
 							Publisher = subKey.GetStringValue("Publisher")?.Trim().ToNullIfEmpty(),
 							Version = subKey.GetStringValue("DisplayVersion")?.Trim().ToNullIfEmpty(),
-							InstallDate = subKey.GetStringValue("InstallDate").ToDateTime("yyyyMMdd"),
+							InstallDate = subKey.GetStringValue("InstallDate")?.ToDateTime("yyyyMMdd"),
 							InstallPath = subKey.GetStringValue("InstallLocation")?.TrimEnd('\\').ToNullIfEmpty()
 						});
 					}

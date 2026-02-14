@@ -14,11 +14,11 @@ public sealed class Option : IEquatable<Option>
 	/// <summary>
 	/// Gets a collection of strings that defines what arguments apply to this commandline option.
 	/// </summary>
-	public ReadOnlyCollection<string> Arguments { get; private init; }
+	public ReadOnlyCollection<string> Arguments { get; }
 	/// <summary>
 	/// Gets a collection of strings that defines what arguments apply to this commandline option alternatively.
 	/// </summary>
-	public ReadOnlyCollection<string> Alternatives { get; private init; }
+	public ReadOnlyCollection<string> Alternatives { get; }
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="Option" /> class with the specified collection of arguments.

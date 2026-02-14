@@ -14,7 +14,7 @@ public sealed class ProtocolMapping
 	/// <summary>
 	/// Gets all protocol mapping entries.
 	/// </summary>
-	public ReadOnlyCollection<ProtocolMappingEntry> Entries { get; private init; }
+	public ReadOnlyCollection<ProtocolMappingEntry> Entries { get; }
 
 	private ProtocolMapping(IEnumerable<ProtocolMappingEntry> entries)
 	{

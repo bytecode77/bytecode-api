@@ -8,7 +8,7 @@ public sealed class CurrencyConverter
 	/// <summary>
 	/// A list of conversion rules.
 	/// </summary>
-	public List<CurrencyConversion> Conversions { get; private init; }
+	public List<CurrencyConversion> Conversions { get; }
 	/// <summary>
 	/// Specifies whether conversion rules apply only in the direction that has explicitly been specified.
 	/// The default value is <see langword="false" />.

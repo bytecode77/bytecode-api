@@ -12,11 +12,11 @@ public sealed class WmiClass : IWmiQueryable
 	/// <summary>
 	/// Gets the <see cref="WmiNamespace" /> associated with this <see cref="WmiClass" />.
 	/// </summary>
-	public WmiNamespace Namespace { get; private init; }
+	public WmiNamespace Namespace { get; }
 	/// <summary>
 	/// Gets the name of this <see cref="WmiClass" />.
 	/// </summary>
-	public string Name { get; private init; }
+	public string Name { get; }
 
 	internal WmiClass(WmiNamespace @namespace, string name)
 	{

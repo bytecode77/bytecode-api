@@ -6,9 +6,18 @@ using System.Windows.Media;
 
 namespace BytecodeApi.Wpf.Cui.Controls;
 
+/// <summary>
+/// Represents a window control.
+/// </summary>
 public class UiWindow : ObservableWindow
 {
-	public static readonly DependencyProperty TitleBarBrushProperty = DependencyPropertyEx.Register(nameof(TitleBarBrush), new(TitleBarBrush_Changed));
+	/// <summary>
+	/// Identifies the <see cref="TitleBarBrush" /> dependency property. This field is read-only.
+	/// </summary>
+	public static readonly DependencyProperty TitleBarBrushProperty = DependencyProperty.Register(nameof(TitleBarBrush), new(TitleBarBrush_Changed));
+	/// <summary>
+	/// Gets or sets the brush used to paint the title bar of the window.
+	/// </summary>
 	public Brush? TitleBarBrush
 	{
 		get => this.GetValue<Brush>(TitleBarBrushProperty);
@@ -21,6 +30,10 @@ public class UiWindow : ObservableWindow
 		BorderBrushProperty.OverrideMetadata(typeof(UiWindow), new FrameworkPropertyMetadata(BorderBrush_Changed));
 	}
 
+	/// <summary>
+	/// Raises the System.Windows.Window.SourceInitialized event.
+	/// </summary>
+	/// <param name="e">An <see cref="EventArgs" /> that contains the event data.</param>
 	protected override void OnSourceInitialized(EventArgs e)
 	{
 		base.OnSourceInitialized(e);

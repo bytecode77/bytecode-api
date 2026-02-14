@@ -8,11 +8,11 @@ public sealed class CommandPromptEventArgs : EventArgs
 	/// <summary>
 	/// Gets a value indicating whether the message was read from the standard error stream or the standard output stream.
 	/// </summary>
-	public bool IsError { get; private init; }
+	public bool IsError { get; }
 	/// <summary>
 	/// Gets a <see cref="string" /> with the message that was read from the output stream.
 	/// </summary>
-	public string Message { get; private init; }
+	public string Message { get; }
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="CommandPromptEventArgs" /> class using the specified message.

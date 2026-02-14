@@ -5,7 +5,6 @@
 /// </summary>
 public class ProgressCalculator
 {
-	private double _Value;
 	private DateTime LastMeasuredTime;
 	private double LastMeasuredValue;
 	/// <summary>
@@ -13,7 +12,7 @@ public class ProgressCalculator
 	/// </summary>
 	public double Value
 	{
-		get => _Value;
+		get;
 		set
 		{
 			bool measured = false;
@@ -28,7 +27,7 @@ public class ProgressCalculator
 				measured = true;
 			}
 
-			_Value = value;
+			field = value;
 
 			ProgressCalculatorEventArgs e = new(Value, Progress, ProgressPercentage, Difference, DifferencePerSecond);
 			OnValueChanged(e);
@@ -50,7 +49,7 @@ public class ProgressCalculator
 	/// <summary>
 	/// Gets a <see cref="double" /> value indicating the progress. This value is between 0.0 and 1.0, if <see cref="Value" /> is in bounds of 0.0 and <see cref="MaxValue" />.
 	/// </summary>
-	public double? Progress => MaxValue == null ? null : Value == 0 ? 1 : Value / MaxValue.Value;
+	public double? Progress => MaxValue == null ? null : MaxValue == 0 ? 1 : Value / MaxValue.Value;
 	/// <summary>
 	/// Gets a <see cref="double" /> value indicating the progress in percent. This value is between 0.0 and 100.0, if <see cref="Value" /> is in bounds of 0.0 and <see cref="MaxValue" />.
 	/// </summary>

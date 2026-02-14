@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFramework>net9.0-windows</TargetFramework>
+		<TargetFramework>net10.0-windows</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<UseWPF>true</UseWPF>
@@ -31,16 +31,12 @@
 		<PackageIcon>.nuget\PackageIcon.png</PackageIcon>
 		<PackageOutputPath>../$Build</PackageOutputPath>
 	</PropertyGroup>
-	<ItemGroup Condition="'$(Configuration)' != 'Release'">
-		<ProjectReference Include="..\BytecodeApi\BytecodeApi.csproj" />
-		<ProjectReference Include="..\BytecodeApi.Wpf\BytecodeApi.Wpf.csproj" />
-	</ItemGroup>
-	<ItemGroup Condition="'$(Configuration)' == 'Release'">
-		<PackageReference Include="BytecodeApi" Version="4.*" />
-		<PackageReference Include="BytecodeApi.Wpf" Version="4.*" />
-	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="SharpVectors" Version="1.8.5" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\BytecodeApi\BytecodeApi.csproj" />
+		<ProjectReference Include="..\BytecodeApi.Wpf\BytecodeApi.Wpf.csproj" />
 	</ItemGroup>
 	<ItemGroup>
 		<None Include=".nuget\README.md" Pack="true" PackagePath=".nuget\" />

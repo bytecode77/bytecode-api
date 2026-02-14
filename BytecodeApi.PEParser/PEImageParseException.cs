@@ -8,7 +8,7 @@ public sealed class PEImageParseException : Exception
 	/// <summary>
 	/// Gets the offset within the image file at which parsing failed.
 	/// </summary>
-	public int Offset { get; private init; }
+	public int Offset { get; }
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="PEImageParseException" /> class.

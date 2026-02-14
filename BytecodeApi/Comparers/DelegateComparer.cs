@@ -11,7 +11,7 @@ public sealed class DelegateComparer<T> : IComparer, IComparer<T>
 	/// <summary>
 	/// The <see cref="Comparison{T}" /> delegate that is used to compare objects.
 	/// </summary>
-	public Comparison<T> Comparison { get; private init; }
+	public Comparison<T> Comparison { get; }
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="DelegateComparer{T}" /> class with the specified <see cref="Comparison{T}" /> delegate.

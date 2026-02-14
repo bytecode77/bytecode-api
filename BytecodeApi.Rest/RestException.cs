@@ -10,11 +10,11 @@ public sealed class RestException : Exception
 	/// <summary>
 	/// Gets the response status code that is associated with this <see cref="RestException" />.
 	/// </summary>
-	public HttpStatusCode StatusCode { get; private init; }
+	public HttpStatusCode StatusCode { get; }
 	/// <summary>
 	/// Gets the HTTP body that is associated with this <see cref="RestException" />.
 	/// </summary>
-	public string Content { get; private init; }
+	public string Content { get; }
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="RestException" /> class.

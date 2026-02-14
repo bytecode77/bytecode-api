@@ -17,23 +17,23 @@ public sealed class AlternateDataStream
 	/// Gets the full path to the file, including the alternate data stream name.
 	/// <para>Example: C:\path\to\file.txt:NameOfADS</para>
 	/// </summary>
-	public string FullPath { get; private init; }
+	public string FullPath { get; }
 	/// <summary>
 	/// Gets the name of the alternate data stream without the leading colon.
 	/// </summary>
-	public string Name { get; private init; }
+	public string Name { get; }
 	/// <summary>
 	/// Gets the size of the alternate data stream.
 	/// </summary>
-	public long Size { get; private init; }
+	public long Size { get; }
 	/// <summary>
 	/// Gets the type of the alternate data stream.
 	/// </summary>
-	public AlternateDataStreamType Type { get; private init; }
+	public AlternateDataStreamType Type { get; }
 	/// <summary>
 	/// Gets the alternate data stream attributes.
 	/// </summary>
-	public AlternateDataStreamAttributes Attributes { get; private init; }
+	public AlternateDataStreamAttributes Attributes { get; }
 
 	internal AlternateDataStream(string fullPath, string name, long size, AlternateDataStreamType type, AlternateDataStreamAttributes attributes)
 	{

@@ -11,26 +11,28 @@ namespace BytecodeApi.Wpf.Extensions;
 /// </summary>
 public static class ImageExtensions
 {
-	/// <summary>
-	/// Returns a managed <see cref="BitmapSource" />, based on the provided <see cref="Bitmap" />.
-	/// </summary>
-	/// <param name="bitmap">The <see cref="Bitmap" /> to convert.</param>
-	/// <returns>
-	/// The created <see cref="BitmapSource" />.
-	/// </returns>
-	public static BitmapSource ToBitmapSource(this Bitmap bitmap)
+	extension(Bitmap bitmap)
 	{
-		Check.ArgumentNull(bitmap);
-
-		nint hBitmap = bitmap.GetHbitmap();
-
-		try
+		/// <summary>
+		/// Returns a managed <see cref="BitmapSource" />, based on the provided <see cref="Bitmap" />.
+		/// </summary>
+		/// <returns>
+		/// The created <see cref="BitmapSource" />.
+		/// </returns>
+		public BitmapSource ToBitmapSource()
 		{
-			return Imaging.CreateBitmapSourceFromHBitmap(hBitmap, 0, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-		}
-		finally
-		{
-			Native.DeleteObject(hBitmap);
+			Check.ArgumentNull(bitmap);
+
+			nint hBitmap = bitmap.GetHbitmap();
+
+			try
+			{
+				return Imaging.CreateBitmapSourceFromHBitmap(hBitmap, 0, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+			}
+			finally
+			{
+				Native.DeleteObject(hBitmap);
+			}
 		}
 	}
 }

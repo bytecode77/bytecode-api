@@ -7,269 +7,249 @@ namespace BytecodeApi.Extensions;
 /// </summary>
 public static class CharExtensions
 {
-	/// <summary>
-	/// Indicates whether this <see langword="char" /> is categorized as a decimal.
-	/// </summary>
-	/// <param name="value">The unicode character to evaluate.</param>
-	/// <returns>
-	/// <see langword="true" />, if <paramref name="value" /> is a decimal;
-	/// otherwise, <see langword="false" />.
-	/// </returns>
-	public static bool IsDigit(this char value)
+	extension(char value)
 	{
-		return char.IsDigit(value);
-	}
-	/// <summary>
-	/// Indicates whether this <see langword="char" /> is categorized as a number.
-	/// </summary>
-	/// <param name="value">The unicode character to evaluate.</param>
-	/// <returns>
-	/// <see langword="true" />, if <paramref name="value" /> is a number;
-	/// otherwise, <see langword="false" />.
-	/// </returns>
-	public static bool IsNumber(this char value)
-	{
-		return char.IsNumber(value);
-	}
-	/// <summary>
-	/// Indicates whether this <see langword="char" /> is categorized as a unicode letter.
-	/// </summary>
-	/// <param name="value">The unicode character to evaluate.</param>
-	/// <returns>
-	/// <see langword="true" />, if <paramref name="value" /> is a letter;
-	/// otherwise, <see langword="false" />.
-	/// </returns>
-	public static bool IsLetter(this char value)
-	{
-		return char.IsLetter(value);
-	}
-	/// <summary>
-	/// Indicates whether this <see langword="char" /> is categorized as whitespace.
-	/// </summary>
-	/// <param name="value">The unicode character to evaluate.</param>
-	/// <returns>
-	/// <see langword="true" />, if <paramref name="value" /> is whitespace;
-	/// otherwise, <see langword="false" />.
-	/// </returns>
-	public static bool IsWhiteSpace(this char value)
-	{
-		return char.IsWhiteSpace(value);
-	}
-	/// <summary>
-	/// Indicates whether this <see langword="char" /> is categorized as an uppercase letter.
-	/// </summary>
-	/// <param name="value">The unicode character to evaluate.</param>
-	/// <returns>
-	/// <see langword="true" />, if <paramref name="value" /> is an uppercase letter;
-	/// otherwise, <see langword="false" />.
-	/// </returns>
-	public static bool IsUpper(this char value)
-	{
-		return char.IsUpper(value);
-	}
-	/// <summary>
-	/// Indicates whether this <see langword="char" /> is categorized as a lowercase letter.
-	/// </summary>
-	/// <param name="value">The unicode character to evaluate.</param>
-	/// <returns>
-	/// <see langword="true" />, if <paramref name="value" /> is a lowercase letter;
-	/// otherwise, <see langword="false" />.
-	/// </returns>
-	public static bool IsLower(this char value)
-	{
-		return char.IsLower(value);
-	}
-	/// <summary>
-	/// Indicates whether this <see langword="char" /> is categorized as a hexadecimal character (0-9, a-f, A-F).
-	/// </summary>
-	/// <param name="value">The unicode character to evaluate.</param>
-	/// <returns>
-	/// <see langword="true" />, if <paramref name="value" /> is a hexadecimal character (0-9, a-f, A-F);
-	/// otherwise, <see langword="false" />.
-	/// </returns>
-	public static bool IsHexadecimal(this char value)
-	{
-		return char.IsAsciiHexDigit(value);
-	}
-	/// <summary>
-	/// Indicates whether this <see langword="char" /> is categorized as a punctuation mark.
-	/// </summary>
-	/// <param name="value">The unicode character to evaluate.</param>
-	/// <returns>
-	/// <see langword="true" />, if <paramref name="value" /> is a punctuation mark;
-	/// otherwise, <see langword="false" />.
-	/// </returns>
-	public static bool IsPunctuation(this char value)
-	{
-		return char.IsPunctuation(value);
-	}
-	/// <summary>
-	/// Indicates whether this <see langword="char" /> is categorized as a separator character.
-	/// </summary>
-	/// <param name="value">The unicode character to evaluate.</param>
-	/// <returns>
-	/// <see langword="true" />, if <paramref name="value" /> is a separator character;
-	/// otherwise, <see langword="false" />.
-	/// </returns>
-	public static bool IsSeparator(this char value)
-	{
-		return char.IsSeparator(value);
-	}
-	/// <summary>
-	/// Indicates whether this <see langword="char" /> is categorized as a symbol character.
-	/// </summary>
-	/// <param name="value">The unicode character to evaluate.</param>
-	/// <returns>
-	/// <see langword="true" />, if <paramref name="value" /> is a symbol character;
-	/// otherwise, <see langword="false" />.
-	/// </returns>
-	public static bool IsSymbol(this char value)
-	{
-		return char.IsSymbol(value);
-	}
-	/// <summary>
-	/// Indicates whether this <see langword="char" /> is categorized as a unicode letter or a decimal digit.
-	/// </summary>
-	/// <param name="value">The unicode character to evaluate.</param>
-	/// <returns>
-	/// <see langword="true" />, if <paramref name="value" /> is a letter or a decimal digit;
-	/// otherwise, <see langword="false" />.
-	/// </returns>
-	public static bool IsLetterOrDigit(this char value)
-	{
-		return char.IsLetterOrDigit(value);
-	}
-	/// <summary>
-	/// Indicates whether this <see langword="char" /> is categorized as a control character.
-	/// </summary>
-	/// <param name="value">The unicode character to evaluate.</param>
-	/// <returns>
-	/// <see langword="true" />, if <paramref name="value" /> is a control character;
-	/// otherwise, <see langword="false" />.
-	/// </returns>
-	public static bool IsControl(this char value)
-	{
-		return char.IsControl(value);
-	}
-	/// <summary>
-	/// Categorizes this <see langword="char" /> into a group identified by one of the <see cref="UnicodeCategory" /> values.
-	/// </summary>
-	/// <param name="value">The unicode character to categorize.</param>
-	/// <returns>
-	/// A <see cref="UnicodeCategory" /> value that identifies the group that contains <paramref name="value" />.
-	/// </returns>
-	public static UnicodeCategory GetUnicodeCategory(this char value)
-	{
-		return char.GetUnicodeCategory(value);
-	}
+		/// <summary>
+		/// Indicates whether this <see langword="char" /> is categorized as a decimal.
+		/// </summary>
+		/// <returns>
+		/// <see langword="true" />, if this <see cref="char" /> is a decimal;
+		/// otherwise, <see langword="false" />.
+		/// </returns>
+		public bool IsDigit()
+		{
+			return char.IsDigit(value);
+		}
+		/// <summary>
+		/// Indicates whether this <see langword="char" /> is categorized as a number.
+		/// </summary>
+		/// <returns>
+		/// <see langword="true" />, if this <see cref="char" /> is a number;
+		/// otherwise, <see langword="false" />.
+		/// </returns>
+		public bool IsNumber()
+		{
+			return char.IsNumber(value);
+		}
+		/// <summary>
+		/// Indicates whether this <see langword="char" /> is categorized as a unicode letter.
+		/// </summary>
+		/// <returns>
+		/// <see langword="true" />, if this <see cref="char" /> is a letter;
+		/// otherwise, <see langword="false" />.
+		/// </returns>
+		public bool IsLetter()
+		{
+			return char.IsLetter(value);
+		}
+		/// <summary>
+		/// Indicates whether this <see langword="char" /> is categorized as whitespace.
+		/// </summary>
+		/// <returns>
+		/// <see langword="true" />, if this <see cref="char" /> is whitespace;
+		/// otherwise, <see langword="false" />.
+		/// </returns>
+		public bool IsWhiteSpace()
+		{
+			return char.IsWhiteSpace(value);
+		}
+		/// <summary>
+		/// Indicates whether this <see langword="char" /> is categorized as an uppercase letter.
+		/// </summary>
+		/// <returns>
+		/// <see langword="true" />, if this <see cref="char" /> is an uppercase letter;
+		/// otherwise, <see langword="false" />.
+		/// </returns>
+		public bool IsUpper()
+		{
+			return char.IsUpper(value);
+		}
+		/// <summary>
+		/// Indicates whether this <see langword="char" /> is categorized as a lowercase letter.
+		/// </summary>
+		/// <returns>
+		/// <see langword="true" />, if this <see cref="char" /> is a lowercase letter;
+		/// otherwise, <see langword="false" />.
+		/// </returns>
+		public bool IsLower()
+		{
+			return char.IsLower(value);
+		}
+		/// <summary>
+		/// Indicates whether this <see langword="char" /> is categorized as a hexadecimal character (0-9, a-f, A-F).
+		/// </summary>
+		/// <returns>
+		/// <see langword="true" />, if this <see cref="char" /> is a hexadecimal character (0-9, a-f, A-F);
+		/// otherwise, <see langword="false" />.
+		/// </returns>
+		public bool IsHexadecimal()
+		{
+			return char.IsAsciiHexDigit(value);
+		}
+		/// <summary>
+		/// Indicates whether this <see langword="char" /> is categorized as a punctuation mark.
+		/// </summary>
+		/// <returns>
+		/// <see langword="true" />, if this <see cref="char" /> is a punctuation mark;
+		/// otherwise, <see langword="false" />.
+		/// </returns>
+		public bool IsPunctuation()
+		{
+			return char.IsPunctuation(value);
+		}
+		/// <summary>
+		/// Indicates whether this <see langword="char" /> is categorized as a separator character.
+		/// </summary>
+		/// <returns>
+		/// <see langword="true" />, if this <see cref="char" /> is a separator character;
+		/// otherwise, <see langword="false" />.
+		/// </returns>
+		public bool IsSeparator()
+		{
+			return char.IsSeparator(value);
+		}
+		/// <summary>
+		/// Indicates whether this <see langword="char" /> is categorized as a symbol character.
+		/// </summary>
+		/// <returns>
+		/// <see langword="true" />, if this <see cref="char" /> is a symbol character;
+		/// otherwise, <see langword="false" />.
+		/// </returns>
+		public bool IsSymbol()
+		{
+			return char.IsSymbol(value);
+		}
+		/// <summary>
+		/// Indicates whether this <see langword="char" /> is categorized as a unicode letter or a decimal digit.
+		/// </summary>
+		/// <returns>
+		/// <see langword="true" />, if this <see cref="char" /> is a letter or a decimal digit;
+		/// otherwise, <see langword="false" />.
+		/// </returns>
+		public bool IsLetterOrDigit()
+		{
+			return char.IsLetterOrDigit(value);
+		}
+		/// <summary>
+		/// Indicates whether this <see langword="char" /> is categorized as a control character.
+		/// </summary>
+		/// <returns>
+		/// <see langword="true" />, if this <see cref="char" /> is a control character;
+		/// otherwise, <see langword="false" />.
+		/// </returns>
+		public bool IsControl()
+		{
+			return char.IsControl(value);
+		}
+		/// <summary>
+		/// Categorizes this <see langword="char" /> into a group identified by one of the <see cref="UnicodeCategory" /> values.
+		/// </summary>
+		/// <returns>
+		/// A <see cref="UnicodeCategory" /> value that identifies the group that contains this <see cref="char" />.
+		/// </returns>
+		public UnicodeCategory GetUnicodeCategory()
+		{
+			return char.GetUnicodeCategory(value);
+		}
+		/// <summary>
+		/// Converts the value of this <see langword="char" /> to its uppercase equivalent.
+		/// </summary>
+		/// <returns>
+		/// The uppercase equivalent of this <see cref="char" />, or the unchanged value of this <see cref="char" />, if this <see cref="char" /> is already uppercase or not alphabetic.
+		/// </returns>
+		public char ToUpper()
+		{
+			return char.ToUpper(value);
+		}
+		/// <summary>
+		/// Converts the value of this <see langword="char" /> to its uppercase equivalent using specified culture-specific formatting information.
+		/// </summary>
+		/// <param name="culture">An object that supplies culture-specific casing rules.</param>
+		/// <returns>
+		/// The uppercase equivalent of this <see cref="char" />, modified according to <paramref name="culture" />, or the unchanged value of this <see cref="char" />, if this <see cref="char" /> is already uppercase, has no uppercase equivalent, or is not alphabetic.
+		/// </returns>
+		public char ToUpper(CultureInfo culture)
+		{
+			Check.ArgumentNull(culture);
 
-	/// <summary>
-	/// Converts the value of this <see langword="char" /> to its uppercase equivalent.
-	/// </summary>
-	/// <param name="value">The unicode character to convert.</param>
-	/// <returns>
-	/// The uppercase equivalent of <paramref name="value" />, or the unchanged value of <paramref name="value" />, if <paramref name="value" /> is already uppercase or not alphabetic.
-	/// </returns>
-	public static char ToUpper(this char value)
-	{
-		return char.ToUpper(value);
-	}
-	/// <summary>
-	/// Converts the value of this <see langword="char" /> to its uppercase equivalent using specified culture-specific formatting information.
-	/// </summary>
-	/// <param name="value">The unicode character to convert.</param>
-	/// <param name="culture">An object that supplies culture-specific casing rules.</param>
-	/// <returns>
-	/// The uppercase equivalent of <paramref name="value" />, modified according to <paramref name="culture" />, or the unchanged value of <paramref name="value" />, if <paramref name="value" /> is already uppercase, has no uppercase equivalent, or is not alphabetic.
-	/// </returns>
-	public static char ToUpper(this char value, CultureInfo culture)
-	{
-		Check.ArgumentNull(culture);
+			return char.ToUpper(value, culture);
+		}
+		/// <summary>
+		/// Converts the value of this <see langword="char" /> to its uppercase equivalent using the casing rules of the invariant culture.
+		/// </summary>
+		/// <returns>
+		/// The uppercase equivalent of this <see cref="char" />, or the unchanged value of this <see cref="char" />, if this <see cref="char" /> is already uppercase, has no uppercase equivalent, or is not alphabetic.
+		/// </returns>
+		public char ToUpperInvariant()
+		{
+			return char.ToUpperInvariant(value);
+		}
+		/// <summary>
+		/// Converts the value of this <see langword="char" /> to its lowercase equivalent.
+		/// </summary>
+		/// <returns>
+		/// The lowercase equivalent of this <see cref="char" />, or the unchanged value of this <see cref="char" />, if this <see cref="char" /> is already lowercase or not alphabetic.
+		/// </returns>
+		public char ToLower()
+		{
+			return char.ToLower(value);
+		}
+		/// <summary>
+		/// Converts the value of this <see langword="char" /> to its lowercase equivalent using specified culture-specific formatting information.
+		/// </summary>
+		/// <param name="culture">An object that supplies culture-specific casing rules.</param>
+		/// <returns>
+		/// The lowercase equivalent of this <see cref="char" />, modified according to <paramref name="culture" />, or the unchanged value of this <see cref="char" />, if this <see cref="char" /> is already lowercase, has no lowercase equivalent, or is not alphabetic.
+		/// </returns>
+		public char ToLower(CultureInfo culture)
+		{
+			Check.ArgumentNull(culture);
 
-		return char.ToUpper(value, culture);
-	}
-	/// <summary>
-	/// Converts the value of this <see langword="char" /> to its uppercase equivalent using the casing rules of the invariant culture.
-	/// </summary>
-	/// <param name="value">The unicode character to evaluate.</param>
-	/// <returns>
-	/// The uppercase equivalent of <paramref name="value" />, or the unchanged value of <paramref name="value" />, if <paramref name="value" /> is already uppercase, has no uppercase equivalent, or is not alphabetic.
-	/// </returns>
-	public static char ToUpperInvariant(this char value)
-	{
-		return char.ToUpperInvariant(value);
-	}
-	/// <summary>
-	/// Converts the value of this <see langword="char" /> to its lowercase equivalent.
-	/// </summary>
-	/// <param name="value">The unicode character to convert.</param>
-	/// <returns>
-	/// The lowercase equivalent of <paramref name="value" />, or the unchanged value of <paramref name="value" />, if <paramref name="value" /> is already lowercase or not alphabetic.
-	/// </returns>
-	public static char ToLower(this char value)
-	{
-		return char.ToLower(value);
-	}
-	/// <summary>
-	/// Converts the value of this <see langword="char" /> to its lowercase equivalent using specified culture-specific formatting information.
-	/// </summary>
-	/// <param name="value">The unicode character to convert.</param>
-	/// <param name="culture">An object that supplies culture-specific casing rules.</param>
-	/// <returns>
-	/// The lowercase equivalent of <paramref name="value" />, modified according to <paramref name="culture" />, or the unchanged value of <paramref name="value" />, if <paramref name="value" /> is already lowercase, has no lowercase equivalent, or is not alphabetic.
-	/// </returns>
-	public static char ToLower(this char value, CultureInfo culture)
-	{
-		Check.ArgumentNull(culture);
+			return char.ToLower(value, culture);
+		}
+		/// <summary>
+		/// Converts the value of this <see langword="char" /> to its lowercase equivalent using the casing rules of the invariant culture.
+		/// </summary>
+		/// <returns>
+		/// The lowercase equivalent of this <see cref="char" />, or the unchanged value of this <see cref="char" />, if this <see cref="char" /> is already lowercase, has no lowercase equivalent, or is not alphabetic.
+		/// </returns>
+		public char ToLowerInvariant()
+		{
+			return char.ToLowerInvariant(value);
+		}
+		/// <summary>
+		/// Converts the value of this <see cref="char" /> to its equivalent <see cref="string" /> representation using the invariant culture.
+		/// </summary>
+		/// <returns>
+		/// The equivalent <see cref="string" /> representation of this <see cref="char" />.
+		/// </returns>
+		public string ToStringInvariant()
+		{
+			return value.ToString(CultureInfo.InvariantCulture);
+		}
+		/// <summary>
+		/// Returns <see langword="null" />, if this <see cref="char" /> value is '\0', otherwise its original value.
+		/// </summary>
+		/// <returns>
+		/// <see langword="null" />, if this <see cref="char" /> value is '\0';
+		/// otherwise, its original value.
+		/// </returns>
+		public char? ToNullIfDefault()
+		{
+			return value == default(char) ? null : value;
+		}
+		/// <summary>
+		/// Creates a <see cref="string" /> using the value of the this <see cref="char" /> parameter and repeats it a specified number of times.
+		/// </summary>
+		/// <param name="count">The number of times this <see cref="char" /> is repeated.</param>
+		/// <returns>
+		/// A new <see cref="string" /> object containing characters with the value of this <see cref="char" /> with a length based on <paramref name="count" />.
+		/// </returns>
+		public string Repeat(int count)
+		{
+			Check.ArgumentOutOfRangeEx.GreaterEqual0(count);
 
-		return char.ToLower(value, culture);
-	}
-	/// <summary>
-	/// Converts the value of this <see langword="char" /> to its lowercase equivalent using the casing rules of the invariant culture.
-	/// </summary>
-	/// <param name="value">The unicode character to evaluate.</param>
-	/// <returns>
-	/// The lowercase equivalent of <paramref name="value" />, or the unchanged value of <paramref name="value" />, if <paramref name="value" /> is already lowercase, has no lowercase equivalent, or is not alphabetic.
-	/// </returns>
-	public static char ToLowerInvariant(this char value)
-	{
-		return char.ToLowerInvariant(value);
-	}
-	/// <summary>
-	/// Converts the value of this <see cref="char" /> to its equivalent <see cref="string" /> representation using the invariant culture.
-	/// </summary>
-	/// <param name="value">The <see cref="char" /> value to convert.</param>
-	/// <returns>
-	/// The equivalent <see cref="string" /> representation of this <see cref="char" />.
-	/// </returns>
-	public static string ToStringInvariant(this char value)
-	{
-		return value.ToString(CultureInfo.InvariantCulture);
-	}
-	/// <summary>
-	/// Returns <see langword="null" />, if this <see cref="char" /> value is '\0', otherwise its original value.
-	/// </summary>
-	/// <param name="value">The <see cref="char" /> value to convert.</param>
-	/// <returns>
-	/// <see langword="null" />, if this <see cref="char" /> value is '\0';
-	/// otherwise, its original value.
-	/// </returns>
-	public static char? ToNullIfDefault(this char value)
-	{
-		return value == default(char) ? null : value;
-	}
-	/// <summary>
-	/// Creates a <see cref="string" /> using the value of the <paramref name="value" /> parameter and repeats it a specified number of times.
-	/// </summary>
-	/// <param name="value">The unicode character to repeat.</param>
-	/// <param name="count">The number of times <paramref name="value" /> is repeated.</param>
-	/// <returns>
-	/// A new <see cref="string" /> object containing characters with the value of <paramref name="value" /> with a length based on <paramref name="count" />.
-	/// </returns>
-	public static string Repeat(this char value, int count)
-	{
-		Check.ArgumentOutOfRangeEx.GreaterEqual0(count);
-
-		return new(value, count);
+			return new(value, count);
+		}
 	}
 }

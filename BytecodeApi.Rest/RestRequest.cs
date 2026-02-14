@@ -15,13 +15,13 @@ namespace BytecodeApi.Rest;
 public sealed class RestRequest
 {
 	/// <summary>
-	/// Gets the <see cref="BytecodeApi.Rest.RestClient" /> from which this <see cref="RestRequest" /> has been initiated.
+	/// Gets the <see cref="Rest.RestClient" /> from which this <see cref="RestRequest" /> has been initiated.
 	/// </summary>
-	public RestClient RestClient { get; private init; }
+	public RestClient RestClient { get; }
 	/// <summary>
 	/// Gets the <see cref="System.Net.Http.HttpMethod" /> of this <see cref="RestRequest" />.
 	/// </summary>
-	public HttpMethod HttpMethod { get; private init; }
+	public HttpMethod HttpMethod { get; }
 	/// <summary>
 	/// Gets the URL of this <see cref="RestRequest" />.
 	/// </summary>
@@ -222,12 +222,20 @@ public sealed class RestRequest
 	/// <summary>
 	/// Sends the request without reading the response body.
 	/// </summary>
-	public async Task Execute()
+	public Task Execute()
+	{
+		return Execute(default);
+	}
+	/// <summary>
+	/// Sends the request without reading the response body.
+	/// </summary>
+	/// <param name="cancellationToken">The cancellation token to cancel the request.</param>
+	public async Task Execute(CancellationToken cancellationToken)
 	{
 		Check.ObjectDisposed<RestClient>(RestClient.Disposed);
 
-		using HttpResponseMessage response = await Send(HttpCompletionOption.ResponseHeadersRead).ConfigureAwait(false);
-		await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+		using HttpResponseMessage response = await Send(completionOption: HttpCompletionOption.ResponseHeadersRead, cancellationToken: cancellationToken).ConfigureAwait(false);
+		await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
 	}
 	/// <summary>
 	/// Sends the request and reads the response <see cref="string" />.
@@ -235,12 +243,23 @@ public sealed class RestRequest
 	/// <returns>
 	/// A <see cref="string" />, representing the REST response.
 	/// </returns>
-	public async Task<string> ReadString()
+	public Task<string> ReadString()
+	{
+		return ReadString(default);
+	}
+	/// <summary>
+	/// Sends the request and reads the response <see cref="string" />.
+	/// </summary>
+	/// <param name="cancellationToken">The cancellation token to cancel the request.</param>
+	/// <returns>
+	/// A <see cref="string" />, representing the REST response.
+	/// </returns>
+	public async Task<string> ReadString(CancellationToken cancellationToken)
 	{
 		Check.ObjectDisposed<RestClient>(RestClient.Disposed);
 
-		using HttpResponseMessage response = await Send().ConfigureAwait(false);
-		return await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+		using HttpResponseMessage response = await Send(cancellationToken: cancellationToken).ConfigureAwait(false);
+		return await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
 	}
 	/// <summary>
 	/// Sends the request and reads the response as a <see cref="byte" />[].
@@ -259,11 +278,23 @@ public sealed class RestRequest
 	/// <returns>
 	/// A <see cref="byte" />[], representing the REST response.
 	/// </returns>
-	public async Task<byte[]> ReadByteArray(ProgressCallback? progressCallback)
+	public Task<byte[]> ReadByteArray(ProgressCallback? progressCallback)
+	{
+		return ReadByteArray(progressCallback, default);
+	}
+	/// <summary>
+	/// Sends the request and reads the response as a <see cref="byte" />[].
+	/// </summary>
+	/// <param name="progressCallback">A delegate that is invoked with information about the progress of the download.</param>
+	/// <param name="cancellationToken">The cancellation token to cancel the download.</param>
+	/// <returns>
+	/// A <see cref="byte" />[], representing the REST response.
+	/// </returns>
+	public async Task<byte[]> ReadByteArray(ProgressCallback? progressCallback, CancellationToken cancellationToken)
 	{
 		Check.ObjectDisposed<RestClient>(RestClient.Disposed);
 
-		return (await ReadFile(progressCallback).ConfigureAwait(false)).Content;
+		return (await ReadFile(progressCallback, cancellationToken).ConfigureAwait(false)).Content;
 	}
 	/// <summary>
 	/// Sends the request and reads the response as a <see cref="byte" />[], including the filename from the Content-Disposition.
@@ -282,24 +313,36 @@ public sealed class RestRequest
 	/// <returns>
 	/// A new <see cref="Blob" /> that contains both the filename from the Content-Disposition, and the file content.
 	/// </returns>
-	public async Task<Blob> ReadFile(ProgressCallback? progressCallback)
+	public Task<Blob> ReadFile(ProgressCallback? progressCallback)
+	{
+		return ReadFile(progressCallback, default);
+	}
+	/// <summary>
+	/// Sends the request and reads the response as a <see cref="byte" />[], including the filename from the Content-Disposition.
+	/// </summary>
+	/// <param name="progressCallback">A delegate that is invoked with information about the progress of the download.</param>
+	/// <param name="cancellationToken">The cancellation token to cancel the download.</param>
+	/// <returns>
+	/// A new <see cref="Blob" /> that contains both the filename from the Content-Disposition, and the file content.
+	/// </returns>
+	public async Task<Blob> ReadFile(ProgressCallback? progressCallback, CancellationToken cancellationToken)
 	{
 		Check.ObjectDisposed<RestClient>(RestClient.Disposed);
 
 		if (progressCallback == null)
 		{
-			using HttpResponseMessage response = await Send().ConfigureAwait(false);
+			using HttpResponseMessage response = await Send(cancellationToken: cancellationToken).ConfigureAwait(false);
 
 			return new(
 				response.Content.Headers.ContentDisposition?.FileNameStar ?? "",
-				await response.Content.ReadAsByteArrayAsync().ConfigureAwait(false));
+				await response.Content.ReadAsByteArrayAsync(cancellationToken).ConfigureAwait(false));
 		}
 		else
 		{
-			using HttpResponseMessage response = await Send(HttpCompletionOption.ResponseHeadersRead).ConfigureAwait(false);
-			using Stream stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+			using HttpResponseMessage response = await Send(completionOption: HttpCompletionOption.ResponseHeadersRead, cancellationToken: cancellationToken).ConfigureAwait(false);
+			using Stream stream = await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
 
-			using MemoryStream memoryStream = new(response.Content.Headers.ContentLength <= int.MaxValue ? (int)response.Content.Headers.ContentLength.Value : int.MaxValue);
+			using MemoryStream memoryStream = new(response.Content.Headers.ContentLength is > 0 and < int.MaxValue ? (int)response.Content.Headers.ContentLength.Value : 0);
 			byte[] buffer = new byte[4096];
 			int bytesRead;
 			long totalBytesRead = 0;
@@ -307,7 +350,7 @@ public sealed class RestRequest
 
 			do
 			{
-				bytesRead = await stream.ReadAsync(buffer).ConfigureAwait(false);
+				bytesRead = await stream.ReadAsync(buffer, cancellationToken).ConfigureAwait(false);
 				totalBytesRead += bytesRead;
 				memoryStream.Write(buffer, 0, bytesRead);
 
@@ -345,13 +388,26 @@ public sealed class RestRequest
 	/// <returns>
 	/// The JSON object, deserialized from the REST response.
 	/// </returns>
-	public async Task<T> ReadJson<T>(JsonSerializerOptions? serializerOptions)
+	public Task<T> ReadJson<T>(JsonSerializerOptions? serializerOptions)
+	{
+		return ReadJson<T>(serializerOptions, default);
+	}
+	/// <summary>
+	/// Sends the request and reads the response as a JSON object.
+	/// </summary>
+	/// <typeparam name="T">The type of the JSON object.</typeparam>
+	/// <param name="serializerOptions">Options to control the conversion behavior.</param>
+	/// <param name="cancellationToken">The cancellation token to cancel the read operation.</param>
+	/// <returns>
+	/// The JSON object, deserialized from the REST response.
+	/// </returns>
+	public async Task<T> ReadJson<T>(JsonSerializerOptions? serializerOptions, CancellationToken cancellationToken)
 	{
 		Check.ObjectDisposed<RestClient>(RestClient.Disposed);
 
-		using HttpResponseMessage response = await Send().ConfigureAwait(false);
-		using Stream stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-		return (await JsonSerializer.DeserializeAsync<T>(stream, serializerOptions).ConfigureAwait(false)) ?? throw new JsonException("Deserialization returned null value.");
+		using HttpResponseMessage response = await Send(cancellationToken: cancellationToken).ConfigureAwait(false);
+		using Stream stream = await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
+		return (await JsonSerializer.DeserializeAsync<T>(stream, serializerOptions, cancellationToken).ConfigureAwait(false)) ?? throw new JsonException("Deserialization returned null value.");
 	}
 	/// <summary>
 	/// Sends the request and reads server-sent events.
@@ -362,7 +418,7 @@ public sealed class RestRequest
 		Check.ObjectDisposed<RestClient>(RestClient.Disposed);
 		Check.ArgumentNull(eventCallback);
 
-		using HttpResponseMessage response = await Send(HttpCompletionOption.ResponseHeadersRead).ConfigureAwait(false);
+		using HttpResponseMessage response = await Send(completionOption: HttpCompletionOption.ResponseHeadersRead).ConfigureAwait(false);
 		using Stream stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
 		using StreamReader reader = new(stream);
 
@@ -372,62 +428,61 @@ public sealed class RestRequest
 		string? eventId = null;
 		StringBuilder data = new();
 
-		while (!reader.EndOfStream)
+		while (await reader.ReadLineAsync().ConfigureAwait(false) is string line)
 		{
-			if (reader.ReadLine() is string line)
+			if (line == "")
 			{
-				if (line == "")
-				{
-					eventCallback(eventType, data.ToString().Trim(), eventId);
+				eventCallback(eventType, data.ToString().Trim(), eventId);
 
-					eventType = "message";
-					data.Clear();
+				eventType = "message";
+				data.Clear();
+			}
+			else if (line.StartsWith(':'))
+			{
+				// Ignore
+			}
+			else if (line.Contains(':'))
+			{
+				string field;
+				string value;
+
+				if (line.Contains(':'))
+				{
+					field = line.SubstringUntil(':');
+					value = line.SubstringFrom(':');
+
+					if (value.StartsWith(' '))
+					{
+						value = value[1..];
+					}
 				}
-				else if (line.StartsWith(':'))
+				else
 				{
-					// Ignore
+					field = line;
+					value = "";
 				}
-				else if (line.Contains(':'))
+
+				switch (field)
 				{
-					string field;
-					string value;
-
-					if (line.Contains(':'))
-					{
-						field = line.SubstringUntil(':');
-						value = line.SubstringFrom(':');
-
-						if (value.StartsWith(' '))
-						{
-							value = value[1..];
-						}
-					}
-					else
-					{
-						field = line;
-						value = "";
-					}
-
-					switch (field)
-					{
-						case "event":
-							eventType = value;
-							break;
-						case "data":
-							data.AppendLine(value);
-							break;
-						case "id" when !value.Contains('\0'):
-							eventId = value.ToNullIfEmpty();
-							break;
-					}
+					case "event":
+						eventType = value;
+						break;
+					case "data":
+						data.AppendLine(value);
+						break;
+					case "id" when !value.Contains('\0'):
+						eventId = value.ToNullIfEmpty();
+						break;
 				}
 			}
 		}
 	}
 
-	private async Task<HttpResponseMessage> Send(HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+	private async Task<HttpResponseMessage> Send(HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead, CancellationToken cancellationToken = default)
 	{
-		HttpRequestMessage request = new(HttpMethod, Url)
+		cancellationToken.ThrowIfCancellationRequested();
+
+		using HttpRequestMessage request = new(HttpMethod, Url)
 		{
 			Content = HttpContent
 		};
@@ -437,7 +492,7 @@ public sealed class RestRequest
 			request.Headers.Add(header.Key, header.Value);
 		}
 
-		HttpResponseMessage response = await RestClient.HttpClient.SendAsync(request, completionOption).ConfigureAwait(false);
+		HttpResponseMessage response = await RestClient.HttpClient.SendAsync(request, completionOption, cancellationToken).ConfigureAwait(false);
 
 		if (response.IsSuccessStatusCode)
 		{
@@ -448,7 +503,7 @@ public sealed class RestRequest
 			string content = "";
 			try
 			{
-				content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+				content = await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
 			}
 			catch
 			{

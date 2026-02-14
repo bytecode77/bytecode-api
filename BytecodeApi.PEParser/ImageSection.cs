@@ -11,11 +11,11 @@ public sealed class ImageSection
 	/// <summary>
 	/// Gets the section header.
 	/// </summary>
-	public ImageSectionHeader Header { get; private init; }
+	public ImageSectionHeader Header { get; }
 	/// <summary>
 	/// Gets a <see cref="byte" />[] representing the contents of the section.
 	/// </summary>
-	public byte[] Data { get; private init; }
+	public byte[] Data { get; }
 
 	internal ImageSection(ImageSectionHeader header, byte[] data)
 	{

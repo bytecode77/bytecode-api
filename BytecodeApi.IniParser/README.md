@@ -133,6 +133,10 @@ iniFile.Save(@"C:\path\to\file.ini", Encoding.UTF8, formattingOptions);
 
 ## Changelog
 
+### 5.0.0 (15.02.2026)
+
+* **change:** Targeting .NET 10.0
+
 ### 4.0.0 (15.09.2025)
 
 * **change:** Targeting .NET 9.0

@@ -11,11 +11,11 @@ public class JsonDateOnlyAttribute : JsonConverterAttribute
 	/// <summary>
 	/// The format that is used to convert <see cref="DateOnly" /> values.
 	/// </summary>
-	public string Format { get; private init; }
+	public string Format { get; }
 	/// <summary>
 	/// A <see cref="bool" /> value indicating whether to require the exact format during read operations. The default value is <see langword="false" />, which allows any format during read operations.
 	/// </summary>
-	public bool ParseExact { get; private init; }
+	public bool ParseExact { get; }
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="JsonDateOnlyAttribute" /> class.

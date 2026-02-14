@@ -1,5 +1,4 @@
 using BytecodeApi.Extensions;
-using BytecodeApi.Threading;
 using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -208,7 +207,7 @@ public static class ExecutableInjection
 
 		if (thread)
 		{
-			ThreadFactory.StartThread(invoke);
+			Thread.StartNew(invoke);
 		}
 		else
 		{

@@ -9,7 +9,7 @@ public abstract class RestClient : IDisposable
 	/// <summary>
 	/// Gets the base URL of the REST service without a trailing slash.
 	/// </summary>
-	public string BaseUrl { get; private init; }
+	public string BaseUrl { get; }
 	/// <summary>
 	/// Gets or sets a <see cref="bool" /> value indicating whether to disable SSL validation.
 	/// </summary>
@@ -25,7 +25,7 @@ public abstract class RestClient : IDisposable
 	/// <summary>
 	/// Gets the <see cref="System.Net.Http.HttpClient" /> that is used to process requests.
 	/// </summary>
-	protected internal HttpClient HttpClient { get; private init; }
+	protected internal HttpClient HttpClient { get; }
 	private readonly HttpClientHandler HttpClientHandler;
 
 	/// <summary>

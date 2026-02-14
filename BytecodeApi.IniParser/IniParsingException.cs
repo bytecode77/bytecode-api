@@ -8,11 +8,11 @@ public sealed class IniParsingException : Exception
 	/// <summary>
 	/// Gets the one-based line number of the line at which parsing failed.
 	/// </summary>
-	public int LineNumber { get; private init; }
+	public int LineNumber { get; }
 	/// <summary>
 	/// Gets the line at which parsing failed as its original <see cref="string" /> representation.
 	/// </summary>
-	public string Line { get; private init; }
+	public string Line { get; }
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="IniParsingException" /> class.

@@ -27,7 +27,7 @@ public sealed class BloomFilter<T>
 	/// <summary>
 	/// Gets a collection of hash functions to be used for comparison. At least one hash function is required.
 	/// </summary>
-	public List<BloomFilterHashFunction<T>> HashFunctions { get; private init; }
+	public List<BloomFilterHashFunction<T>> HashFunctions { get; }
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="BloomFilter{T}" /> class.

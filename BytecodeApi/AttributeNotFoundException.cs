@@ -8,7 +8,7 @@ public sealed class AttributeNotFoundException : Exception
 	/// <summary>
 	/// A <see cref="Type" /> that represents the expected attribute class.
 	/// </summary>
-	public Type? AttributeClass { get; private init; }
+	public Type? AttributeClass { get; }
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="AttributeNotFoundException" /> class.

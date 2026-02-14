@@ -117,7 +117,7 @@ public static class Hashes
 		Check.ArgumentNull(data);
 		Check.ArgumentOutOfRangeEx.Greater0(passes);
 
-		return ComputeBytes(data.ToUTF8Bytes(), type, passes).ToHexadecimalString();
+		return ComputeBytes(data.ToUTF8Bytes(), type, passes).ToHexString();
 	}
 	/// <summary>
 	/// Computes the hash value for the specified <see cref="byte" />[] using the specified <see cref="HashType" />. The result is the lowercase hexadecimal hash representation of the <paramref name="data" /> parameter.
@@ -145,6 +145,6 @@ public static class Hashes
 		Check.ArgumentNull(data);
 		Check.ArgumentOutOfRangeEx.Greater0(passes);
 
-		return ComputeBytes(data, type, passes).ToHexadecimalString();
+		return ComputeBytes(data, type, passes).ToHexString();
 	}
 }

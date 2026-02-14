@@ -9,6 +9,9 @@ using System.Windows.Resources;
 
 namespace BytecodeApi.Wpf.Cui;
 
+/// <summary>
+/// Class to convert SVG resources to WPF image sources.
+/// </summary>
 public static class SvgSource
 {
 	private static readonly Dictionary<string, DrawingImage> ImageSourceCache = [];
@@ -18,8 +21,19 @@ public static class SvgSource
 	private static readonly Dictionary<(string, int), BitmapSource> BitmapSourceCache = [];
 	private static readonly Dictionary<(string, int, Color), BitmapSource> BitmapSourceColoredCache = [];
 
+	/// <summary>
+	/// Loads an SVG resource from the specified URI and converts it to a <see cref="DrawingImage" />.
+	/// </summary>
+	/// <param name="uri">The URI of the SVG resource.</param>
+	/// <returns>
+	/// A new <see cref="DrawingImage" /> if the resource was found;
+	/// otherwise, <see langword="null" />.
+	/// </returns>
 	public static DrawingImage? ImageSource(string uri)
 	{
+		Check.ArgumentNull(uri);
+		Check.ArgumentEx.StringNotEmpty(uri);
+
 		if (ImageSourceCache.TryGetValue(uri, out DrawingImage? existingImage))
 		{
 			return existingImage;
@@ -35,8 +49,20 @@ public static class SvgSource
 			return null;
 		}
 	}
+	/// <summary>
+	/// Loads an SVG resource from the specified URI, converts it to a <see cref="DrawingImage" />, and changes its color.
+	/// </summary>
+	/// <param name="uri">The URI of the SVG resource.</param>
+	/// <param name="color">A <see cref="Color" /> to apply to all SVG elements.</param>
+	/// <returns>
+	/// A new <see cref="DrawingImage" /> if the resource was found;
+	/// otherwise, <see langword="null" />.
+	/// </returns>
 	public static DrawingImage? ImageSource(string uri, Color color)
 	{
+		Check.ArgumentNull(uri);
+		Check.ArgumentEx.StringNotEmpty(uri);
+
 		if (ImageSourceColoredCache.TryGetValue((uri, color), out DrawingImage? existingImage))
 		{
 			return existingImage;
@@ -54,8 +80,21 @@ public static class SvgSource
 			return null;
 		}
 	}
+	/// <summary>
+	/// Loads an SVG resource from the specified URI and converts it to a <see cref="System.Drawing.Bitmap" /> of the specified size.
+	/// </summary>
+	/// <param name="uri">The URI of the SVG resource.</param>
+	/// <param name="size">The width and height, in pixels, of the resulting <see cref="System.Drawing.Bitmap" />.</param>
+	/// <returns>
+	/// A new <see cref="System.Drawing.Bitmap" /> if the resource was found;
+	/// otherwise, <see langword="null" />.
+	/// </returns>
 	public static System.Drawing.Bitmap? Bitmap(string uri, int size)
 	{
+		Check.ArgumentNull(uri);
+		Check.ArgumentEx.StringNotEmpty(uri);
+		Check.ArgumentOutOfRangeEx.Greater0(size);
+
 		if (BitmapCache.TryGetValue((uri, size), out System.Drawing.Bitmap? existingImage))
 		{
 			return existingImage;
@@ -71,8 +110,22 @@ public static class SvgSource
 			return null;
 		}
 	}
+	/// <summary>
+	/// Loads an SVG resource from the specified URI, converts it to a <see cref="System.Drawing.Bitmap" /> of the specified size, and changes its color.
+	/// </summary>
+	/// <param name="uri">The URI of the SVG resource.</param>
+	/// <param name="size">The width and height, in pixels, of the resulting <see cref="System.Drawing.Bitmap" />.</param>
+	/// <param name="color">A <see cref="Color" /> to apply to all SVG elements.</param>
+	/// <returns>
+	/// A new <see cref="System.Drawing.Bitmap" /> if the resource was found;
+	/// otherwise, <see langword="null" />.
+	/// </returns>
 	public static System.Drawing.Bitmap? Bitmap(string uri, int size, Color color)
 	{
+		Check.ArgumentNull(uri);
+		Check.ArgumentEx.StringNotEmpty(uri);
+		Check.ArgumentOutOfRangeEx.Greater0(size);
+
 		if (BitmapColoredCache.TryGetValue((uri, size, color), out System.Drawing.Bitmap? existingImage))
 		{
 			return existingImage;
@@ -88,8 +141,21 @@ public static class SvgSource
 			return null;
 		}
 	}
+	/// <summary>
+	/// Loads an SVG resource from the specified URI, converts it to a <see cref="System.Drawing.Bitmap" /> of the specified size, and returns an equivalent <see cref="System.Windows.Media.Imaging.BitmapSource" />.
+	/// </summary>
+	/// <param name="uri">The URI of the SVG resource.</param>
+	/// <param name="size">The width and height, in pixels, of the <see cref="System.Drawing.Bitmap" />.</param>
+	/// <returns>
+	/// A new <see cref="System.Windows.Media.Imaging.BitmapSource" /> if the resource was found;
+	/// otherwise, <see langword="null" />.
+	/// </returns>
 	public static BitmapSource? BitmapSource(string uri, int size)
 	{
+		Check.ArgumentNull(uri);
+		Check.ArgumentEx.StringNotEmpty(uri);
+		Check.ArgumentOutOfRangeEx.Greater0(size);
+
 		if (BitmapSourceCache.TryGetValue((uri, size), out BitmapSource? existingImage))
 		{
 			return existingImage;
@@ -105,8 +171,22 @@ public static class SvgSource
 			return null;
 		}
 	}
+	/// <summary>
+	/// Loads an SVG resource from the specified URI, converts it to a <see cref="System.Drawing.Bitmap" /> of the specified size, changes its color, and returns an equivalent <see cref="System.Windows.Media.Imaging.BitmapSource" />.
+	/// </summary>
+	/// <param name="uri">The URI of the SVG resource.</param>
+	/// <param name="size">The width and height, in pixels, of the <see cref="System.Drawing.Bitmap" />.</param>
+	/// <param name="color">A <see cref="Color" /> to apply to all SVG elements.</param>
+	/// <returns>
+	/// A new <see cref="System.Windows.Media.Imaging.BitmapSource" /> if the resource was found;
+	/// otherwise, <see langword="null" />.
+	/// </returns>
 	public static BitmapSource? BitmapSource(string uri, int size, Color color)
 	{
+		Check.ArgumentNull(uri);
+		Check.ArgumentEx.StringNotEmpty(uri);
+		Check.ArgumentOutOfRangeEx.Greater0(size);
+
 		if (BitmapSourceColoredCache.TryGetValue((uri, size, color), out BitmapSource? existingImage))
 		{
 			return existingImage;

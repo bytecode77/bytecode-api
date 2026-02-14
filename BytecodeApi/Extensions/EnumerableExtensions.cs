@@ -1,4 +1,3 @@
-using BytecodeApi.Mathematics;
 using System.Collections;
 
 namespace BytecodeApi.Extensions;
@@ -75,6 +74,84 @@ public static class EnumerableExtensions
 		}
 
 		return -1;
+	}
+	/// <summary>
+	/// Determines whether two sequences have the same set of elements, regardless of the order of the elements.
+	/// </summary>
+	/// <typeparam name="TSource">The type of the elements of the input sequence and the second element.</typeparam>
+	/// <param name="first">An <see cref="IEnumerable{T}" /> to compare to <paramref name="second" />.</param>
+	/// <param name="second">An <see cref="IEnumerable{T}" /> to compare to <paramref name="first" />.</param>
+	/// <returns>
+	/// <see langword="true" />, if both sequences contain the same elements, regardless of the order of the elements;
+	/// otherwise, <see langword="false" />.
+	/// </returns>
+	public static bool UnorderedEqual<TSource>(this IEnumerable<TSource> first, IEnumerable<TSource> second)
+	{
+		return UnorderedEqual(first, second, null);
+	}
+	/// <summary>
+	/// Determines whether two sequences have the same set of elements, regardless of the order of the elements.
+	/// </summary>
+	/// <typeparam name="TSource">The type of the elements of the input sequence and the second element.</typeparam>
+	/// <param name="first">An <see cref="IEnumerable{T}" /> to compare to <paramref name="second" />.</param>
+	/// <param name="second">An <see cref="IEnumerable{T}" /> to compare to <paramref name="first" />.</param>
+	/// <param name="comparer">An <see cref="IComparer{T}" /> to compare the elements.</param>
+	/// <returns>
+	/// <see langword="true" />, if both sequences contain the same elements, regardless of the order of the elements;
+	/// otherwise, <see langword="false" />.
+	/// </returns>
+	public static bool UnorderedEqual<TSource>(this IEnumerable<TSource> first, IEnumerable<TSource> second, IEqualityComparer<TSource>? comparer)
+	{
+		Check.ArgumentNull(first);
+		Check.ArgumentNull(second);
+
+		if (ReferenceEquals(first, second))
+		{
+			return true;
+		}
+
+#pragma warning disable CS8714
+		Dictionary<TSource, int> counts = new(comparer ?? EqualityComparer<TSource>.Default);
+#pragma warning restore CS8714
+		int nullCount = 0;
+
+		foreach (TSource item in first)
+		{
+			if (item is null)
+			{
+				nullCount++;
+			}
+			else if (counts.TryGetValue(item, out int count))
+			{
+				counts[item] = count + 1;
+			}
+			else
+			{
+				counts[item] = 1;
+			}
+		}
+
+		foreach (TSource item in second)
+		{
+			if (item is null)
+			{
+				nullCount--;
+			}
+			else if (!counts.TryGetValue(item, out int count))
+			{
+				return false;
+			}
+			else if (count == 1)
+			{
+				counts.Remove(item);
+			}
+			else
+			{
+				counts[item] = count - 1;
+			}
+		}
+
+		return counts.Count == 0 && nullCount == 0;
 	}
 	/// <summary>
 	/// Returns <see langword="true" />, if all values of <paramref name="source" /> are equal or if the <see cref="IEnumerable{T}" /> has no elements.
@@ -157,7 +234,6 @@ public static class EnumerableExtensions
 
 		bool hasTrue = false;
 		bool hasFalse = false;
-		bool hasNull = false;
 
 		foreach (bool? value in values)
 		{
@@ -171,10 +247,10 @@ public static class EnumerableExtensions
 			}
 			else
 			{
-				hasNull = true;
+				return null;
 			}
 
-			if (hasNull || hasTrue && hasFalse)
+			if (hasTrue && hasFalse)
 			{
 				return null;
 			}

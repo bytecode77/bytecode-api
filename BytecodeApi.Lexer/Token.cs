@@ -11,15 +11,15 @@ public sealed class Token<TTokenType> where TTokenType : struct, IConvertible
 	/// <summary>
 	/// Gets the one-based line number of this token.
 	/// </summary>
-	public int LineNumber { get; private init; }
+	public int LineNumber { get; }
 	/// <summary>
 	/// Gets the type of this token.
 	/// </summary>
-	public TTokenType Type { get; private init; }
+	public TTokenType Type { get; }
 	/// <summary>
 	/// Gets a <see cref="string" /> with the value of this token.
 	/// </summary>
-	public string Value { get; private init; }
+	public string Value { get; }
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="Token{TTokenType}" /> class.

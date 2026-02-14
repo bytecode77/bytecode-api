@@ -8,157 +8,154 @@ namespace BytecodeApi.Extensions;
 /// </summary>
 public static class DirectoryInfoExtensions
 {
-	/// <summary>
-	/// Computes the size of this directory including all of its subdirectories.
-	/// </summary>
-	/// <param name="directory">The <see cref="DirectoryInfo" /> to process.</param>
-	/// <returns>
-	/// The total size in bytes of this directory.
-	/// </returns>
-	public static long ComputeDirectorySize(this DirectoryInfo directory)
+	extension(DirectoryInfo directory)
 	{
-		Check.ArgumentNull(directory);
-		Check.DirectoryNotFound(directory.FullName);
-
-		return directory.EnumerateFiles("*", SearchOption.AllDirectories).Sum(file => file.Length);
-	}
-	/// <summary>
-	/// Compares two directories with an <see cref="CompareDirectoryOptions" /> parameter specifying the properties to compare.
-	/// </summary>
-	/// <param name="directory">The <see cref="DirectoryInfo" /> to process.</param>
-	/// <param name="other">The other <see cref="DirectoryInfo" /> to compare to <paramref name="directory" />.</param>
-	/// <param name="options">The <see cref="CompareDirectoryOptions" /> flags specifying what properties to compare.</param>
-	/// <returns>
-	/// A value indicating whether the directories are equal.
-	/// </returns>
-	public static bool Compare(this DirectoryInfo directory, DirectoryInfo other, CompareDirectoryOptions options)
-	{
-		Check.ArgumentNull(directory);
-		Check.DirectoryNotFound(directory.FullName);
-		Check.ArgumentNull(other);
-		Check.DirectoryNotFound(other.FullName);
-
-		if (!options.HasFlag(CompareDirectoryOptions.IgnoreDirectories))
+		/// <summary>
+		/// Computes the size of this directory including all of its subdirectories.
+		/// </summary>
+		/// <returns>
+		/// The total size in bytes of this directory.
+		/// </returns>
+		public long ComputeDirectorySize()
 		{
-			DirectoryInfo[] directoriesA = directory.GetDirectories().OrderBy(d => d.Name).ToArray();
-			DirectoryInfo[] directoriesB = other.GetDirectories().OrderBy(d => d.Name).ToArray();
+			Check.ArgumentNull(directory);
+			Check.DirectoryNotFound(directory.FullName);
 
-			if (directoriesA.Length == directoriesB.Length)
+			return directory.EnumerateFiles("*", SearchOption.AllDirectories).Sum(file => file.Length);
+		}
+		/// <summary>
+		/// Compares two directories with an <see cref="CompareDirectoryOptions" /> parameter specifying the properties to compare.
+		/// </summary>
+		/// <param name="other">The other <see cref="DirectoryInfo" /> to compare to this <see cref="DirectoryInfo" />.</param>
+		/// <param name="options">The <see cref="CompareDirectoryOptions" /> flags specifying what properties to compare.</param>
+		/// <returns>
+		/// A value indicating whether the directories are equal.
+		/// </returns>
+		public bool Compare(DirectoryInfo other, CompareDirectoryOptions options)
+		{
+			Check.ArgumentNull(directory);
+			Check.DirectoryNotFound(directory.FullName);
+			Check.ArgumentNull(other);
+			Check.DirectoryNotFound(other.FullName);
+
+			if (!options.HasFlag(CompareDirectoryOptions.IgnoreDirectories))
 			{
-				DelegateEqualityComparer<DirectoryInfo> comparer = new((a, b) =>
-					CompareNames(a.Name, b.Name) &&
-					(!options.HasFlag(CompareDirectoryOptions.CompareDirectoryLastWriteTime) || a.LastWriteTime == b.LastWriteTime) &&
-					(!options.HasFlag(CompareDirectoryOptions.Recursive) || a.Compare(b, options))
-				);
+				DirectoryInfo[] directoriesA = directory.GetDirectories().OrderBy(d => d.Name).ToArray();
+				DirectoryInfo[] directoriesB = other.GetDirectories().OrderBy(d => d.Name).ToArray();
 
-				if (!directoriesA.SequenceEqual(directoriesB, comparer))
+				if (directoriesA.Length == directoriesB.Length)
+				{
+					DelegateEqualityComparer<DirectoryInfo> comparer = new((a, b) =>
+						CompareNames(a.Name, b.Name) &&
+						(!options.HasFlag(CompareDirectoryOptions.CompareDirectoryLastWriteTime) || a.LastWriteTime == b.LastWriteTime) &&
+						(!options.HasFlag(CompareDirectoryOptions.Recursive) || a.Compare(b, options))
+					);
+
+					if (!directoriesA.SequenceEqual(directoriesB, comparer))
+					{
+						return false;
+					}
+				}
+				else
 				{
 					return false;
 				}
 			}
-			else
+
+			if (!options.HasFlag(CompareDirectoryOptions.IgnoreFiles))
 			{
-				return false;
-			}
-		}
+				FileInfo[] filesA = directory.GetFiles().OrderBy(f => f.Name).ToArray();
+				FileInfo[] filesB = other.GetFiles().OrderBy(f => f.Name).ToArray();
 
-		if (!options.HasFlag(CompareDirectoryOptions.IgnoreFiles))
-		{
-			FileInfo[] filesA = directory.GetFiles().OrderBy(f => f.Name).ToArray();
-			FileInfo[] filesB = other.GetFiles().OrderBy(f => f.Name).ToArray();
+				if (filesA.Length == filesB.Length)
+				{
+					DelegateEqualityComparer<FileInfo> comparer = new((a, b) =>
+						CompareNames(a.Name, b.Name) &&
+						(!options.HasFlag(CompareDirectoryOptions.CompareFileLastWriteTime) || a.LastWriteTime == b.LastWriteTime) &&
+						(!options.HasFlag(CompareDirectoryOptions.CompareFileContents) || a.CompareContents(b)) &&
+						(!options.HasFlag(CompareDirectoryOptions.CompareFileSize) || a.Length == b.Length)
+					);
 
-			if (filesA.Length == filesB.Length)
-			{
-				DelegateEqualityComparer<FileInfo> comparer = new((a, b) =>
-					CompareNames(a.Name, b.Name) &&
-					(!options.HasFlag(CompareDirectoryOptions.CompareFileLastWriteTime) || a.LastWriteTime == b.LastWriteTime) &&
-					(!options.HasFlag(CompareDirectoryOptions.CompareFileContents) || a.CompareContents(b)) &&
-					(!options.HasFlag(CompareDirectoryOptions.CompareFileSize) || a.Length == b.Length)
-				);
-
-				if (!filesA.SequenceEqual(filesB, comparer))
+					if (!filesA.SequenceEqual(filesB, comparer))
+					{
+						return false;
+					}
+				}
+				else
 				{
 					return false;
 				}
 			}
-			else
+
+			return true;
+
+			bool CompareNames(string nameA, string nameB)
 			{
-				return false;
+				return nameA.Equals(nameB, options.HasFlag(CompareDirectoryOptions.IgnoreCase) ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal);
 			}
 		}
-
-		return true;
-
-		bool CompareNames(string nameA, string nameB)
+		/// <summary>
+		/// Copies this directory to a new location including all files and subdirectories recursively.
+		/// </summary>
+		/// <param name="destDirectoryName">The path of the new location including the top directory name.</param>
+		public void CopyTo(string destDirectoryName)
 		{
-			return nameA.Equals(nameB, options.HasFlag(CompareDirectoryOptions.IgnoreCase) ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal);
+			directory.CopyTo(destDirectoryName, false);
 		}
-	}
-	/// <summary>
-	/// Copies this directory to a new location including all files and subdirectories recursively.
-	/// </summary>
-	/// <param name="directory">The <see cref="DirectoryInfo" /> to process.</param>
-	/// <param name="destDirectoryName">The path of the new location including the top directory name.</param>
-	public static void CopyTo(this DirectoryInfo directory, string destDirectoryName)
-	{
-		directory.CopyTo(destDirectoryName, false);
-	}
-	/// <summary>
-	/// Copies this directory to a new location including all files and subdirectories recursively.
-	/// </summary>
-	/// <param name="directory">The <see cref="DirectoryInfo" /> to process.</param>
-	/// <param name="destDirectoryName">The path of the new location including the top directory name.</param>
-	/// <param name="overwrite"><see langword="true" /> to overwrite contents. Existing files in the destination directory that do not exist in the source directory are not deleted.</param>
-	public static void CopyTo(this DirectoryInfo directory, string destDirectoryName, bool overwrite)
-	{
-		Check.ArgumentNull(directory);
-		Check.DirectoryNotFound(directory.FullName);
-		Check.ArgumentNull(destDirectoryName);
-
-		Directory.CreateDirectory(destDirectoryName);
-
-		foreach (DirectoryInfo subDirectory in directory.EnumerateDirectories())
+		/// <summary>
+		/// Copies this directory to a new location including all files and subdirectories recursively.
+		/// </summary>
+		/// <param name="destDirectoryName">The path of the new location including the top directory name.</param>
+		/// <param name="overwrite"><see langword="true" /> to overwrite contents. Existing files in the destination directory that do not exist in the source directory are not deleted.</param>
+		public void CopyTo(string destDirectoryName, bool overwrite)
 		{
-			subDirectory.CopyTo(Path.Combine(destDirectoryName, subDirectory.Name), overwrite);
-		}
+			Check.ArgumentNull(directory);
+			Check.DirectoryNotFound(directory.FullName);
+			Check.ArgumentNull(destDirectoryName);
 
-		foreach (FileInfo file in directory.EnumerateFiles())
-		{
-			file.CopyTo(Path.Combine(destDirectoryName, file.Name), overwrite);
-		}
-	}
-	/// <summary>
-	/// Deletes all files and directories from this directory, if it exists.
-	/// </summary>
-	/// <param name="directory">The <see cref="DirectoryInfo" /> to process.</param>
-	public static void DeleteContents(this DirectoryInfo directory)
-	{
-		directory.DeleteContents(false);
-	}
-	/// <summary>
-	/// Deletes all files and directories from this directory, if it exists. If <paramref name="create" /> is set to <see langword="true" />, an empty directory will be created.
-	/// </summary>
-	/// <param name="directory">The <see cref="DirectoryInfo" /> to process.</param>
-	/// <param name="create"><see langword="true" /> to create the directory, if it does not exist.</param>
-	public static void DeleteContents(this DirectoryInfo directory, bool create)
-	{
-		Check.ArgumentNull(directory);
+			Directory.CreateDirectory(destDirectoryName);
 
-		if (Directory.Exists(directory.FullName))
-		{
-			foreach (FileInfo file in directory.GetFiles())
+			foreach (DirectoryInfo subDirectory in directory.EnumerateDirectories())
 			{
-				file.Delete();
+				subDirectory.CopyTo(Path.Combine(destDirectoryName, subDirectory.Name), overwrite);
 			}
 
-			foreach (DirectoryInfo subDirectory in directory.GetDirectories())
+			foreach (FileInfo file in directory.EnumerateFiles())
 			{
-				subDirectory.Delete(true);
+				file.CopyTo(Path.Combine(destDirectoryName, file.Name), overwrite);
 			}
 		}
-		else if (create)
+		/// <summary>
+		/// Deletes all files and directories from this directory, if it exists.
+		/// </summary>
+		public void DeleteContents()
 		{
-			directory.Create();
+			directory.DeleteContents(false);
+		}
+		/// <summary>
+		/// Deletes all files and directories from this directory, if it exists. If <paramref name="create" /> is set to <see langword="true" />, an empty directory will be created.
+		/// </summary>
+		/// <param name="create"><see langword="true" /> to create the directory, if it does not exist.</param>
+		public void DeleteContents(bool create)
+		{
+			Check.ArgumentNull(directory);
+
+			if (Directory.Exists(directory.FullName))
+			{
+				foreach (FileInfo file in directory.GetFiles())
+				{
+					file.Delete();
+				}
+
+				foreach (DirectoryInfo subDirectory in directory.GetDirectories())
+				{
+					subDirectory.Delete(true);
+				}
+			}
+			else if (create)
+			{
+				directory.Create();
+			}
 		}
 	}
 }

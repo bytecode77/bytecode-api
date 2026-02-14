@@ -8,6 +8,11 @@ See: [Examples](https://github.com/bytecode77/bytecode-api/blob/master/BytecodeA
 
 ## Changelog
 
+### 5.0.0 (15.02.2026)
+
+* **change:** Targeting .NET 10.0
+* **change:** `SystemParametersEx` methods changed to extension members of `SystemParameters`
+
 ### 4.0.2 (14.11.2025)
 
 * **new:** `UiSlider` control

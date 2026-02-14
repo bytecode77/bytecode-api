@@ -1,8 +1,5 @@
 ﻿global using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-
-[assembly: Guid("d3793ffa-fc22-4089-8225-76b14deea8d2")]
 
 [assembly: InternalsVisibleTo("BytecodeApi.CommandLineParser")]
 [assembly: InternalsVisibleTo("BytecodeApi.ConsoleUI")]
@@ -23,4 +20,5 @@ using System.Runtime.InteropServices;
 #if DEBUG
 [assembly: InternalsVisibleTo("Playground.Console")]
 [assembly: InternalsVisibleTo("Playground.Wpf")]
+[assembly: InternalsVisibleTo("Playground.Wpf.Cui")]
 #endif

@@ -17,11 +17,11 @@ public sealed class ParsedOption
 	/// <summary>
 	/// Gets a reference to the associated <see cref="CommandLineParser.Option" /> this <see cref="ParsedOption" /> is associated with.
 	/// </summary>
-	public Option Option { get; private init; }
+	public Option Option { get; }
 	/// <summary>
 	/// Gets a <see cref="string" /> collection with the parsed values.
 	/// </summary>
-	public ReadOnlyCollection<string> Values { get; private init; }
+	public ReadOnlyCollection<string> Values { get; }
 
 	internal ParsedOption(Option option, string[] values)
 	{

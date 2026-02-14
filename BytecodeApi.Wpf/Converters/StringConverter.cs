@@ -36,7 +36,7 @@ public sealed class StringConverter : ConverterBase<object, object>
 
 		return Method switch
 		{
-            StringConverterMethod.Coalesce => str.IsNullOrEmpty() ? parameter : str,
+			StringConverterMethod.Coalesce => str.IsNullOrEmpty() ? parameter : str,
 			StringConverterMethod.Concat => str + parameter,
 			StringConverterMethod.ConcatIfNotEmpty => str.IsNullOrEmpty() ? str : str + parameter,
 			StringConverterMethod.ConcatBefore => parameter + str,

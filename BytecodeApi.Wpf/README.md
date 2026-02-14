@@ -249,6 +249,15 @@ if (FileDialogs.OpenFolder(@"C:\path\to\directory") is string directory)
 
 ## Changelog
 
+### 5.0.0 (15.02.2026)
+
+* **change:** Targeting .NET 10.0
+* **new:** `Dialog.IsVisible` property
+* **new:** `Dialog.ProgressBar`, `SetButtonEnabled` and `ShowAsync` method
+* **new:** `Dialog.Button` and `CommandLink` methods with `isEnabled` and `onClick` callback parameter
+* **change:** `DependencyPropertyEx` methods changed to extension members of `DependencyProperty`
+* **change:** `DispatcherTimerFactory` methods changed to extension members of `DispatcherTimer`
+
 ### 4.0.1 (10.11.2025)
 
 * **new:** `WindowService.BorderBrushProperty`

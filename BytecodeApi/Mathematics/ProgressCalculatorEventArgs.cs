@@ -8,23 +8,23 @@ public sealed class ProgressCalculatorEventArgs : EventArgs
 	/// <summary>
 	/// Gets the value indicating the total progress. This is typically the amount of transferred bytes in a binary transfer operation.
 	/// </summary>
-	public double Value { get; private init; }
+	public double Value { get; }
 	/// <summary>
 	/// Gets a <see cref="double" /> value indicating the progress. This value is between 0.0 and 1.0, if <see cref="Value" /> is in bounds of 0.0 and <see cref="ProgressCalculator.MaxValue" />.
 	/// </summary>
-	public double? Progress { get; private init; }
+	public double? Progress { get; }
 	/// <summary>
 	/// Gets a <see cref="double" /> value indicating the progress in percent. This value is between 0.0 and 100.0, if <see cref="Value" /> is in bounds of 0.0 and <see cref="ProgressCalculator.MaxValue" />.
 	/// </summary>
-	public double? ProgressPercentage { get; private init; }
+	public double? ProgressPercentage { get; }
 	/// <summary>
 	/// Gets the difference of the <see cref="Value" /> property between the last two measurements.
 	/// </summary>
-	public double Difference { get; private init; }
+	public double Difference { get; }
 	/// <summary>
 	/// Gets the difference of the <see cref="Value" /> property between the last two measurements, interpolated to one second based on <see cref="ProgressCalculator.MeasureTimeSpan" />.
 	/// </summary>
-	public double DifferencePerSecond { get; private init; }
+	public double DifferencePerSecond { get; }
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="ProgressCalculatorEventArgs" /> class using the specified properties equivalent to the properties of <see cref="ProgressCalculator" />.

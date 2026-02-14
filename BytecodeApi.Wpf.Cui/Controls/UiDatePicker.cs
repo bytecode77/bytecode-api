@@ -9,15 +9,30 @@ using System.Windows.Input;
 
 namespace BytecodeApi.Wpf.Cui.Controls;
 
+/// <summary>
+/// Represents a date picker control.
+/// </summary>
 public class UiDatePicker : DatePicker
 {
-	public static readonly DependencyProperty WatermarkProperty = DependencyPropertyEx.Register(nameof(Watermark));
-	public static readonly DependencyProperty ShowResetButtonProperty = DependencyPropertyEx.Register(nameof(ShowResetButton));
+	/// <summary>
+	/// Identifies the <see cref="Watermark" /> dependency property. This field is read-only.
+	/// </summary>
+	public static readonly DependencyProperty WatermarkProperty = DependencyProperty.Register(nameof(Watermark));
+	/// <summary>
+	/// Identifies the <see cref="ShowResetButton" /> dependency property. This field is read-only.
+	/// </summary>
+	public static readonly DependencyProperty ShowResetButtonProperty = DependencyProperty.Register(nameof(ShowResetButton));
+	/// <summary>
+	/// Gets or sets an object that represents the watermark displayed when no date is selected.
+	/// </summary>
 	public object? Watermark
 	{
 		get => GetValue(WatermarkProperty);
 		set => SetValue(WatermarkProperty, value);
 	}
+	/// <summary>
+	/// Gets or sets a <see cref="bool" /> value that indicates whether a reset button is shown to clear the selected date.
+	/// </summary>
 	public bool ShowResetButton
 	{
 		get => this.GetValue<bool>(ShowResetButtonProperty);
@@ -33,20 +48,16 @@ public class UiDatePicker : DatePicker
 		DefaultStyleKeyProperty.OverrideMetadata(typeof(UiDatePicker), new FrameworkPropertyMetadata(typeof(UiDatePicker)));
 	}
 
+	/// <summary>
+	/// Applies the control template to this <see cref="UiDatePicker" />.
+	/// </summary>
 	public override void OnApplyTemplate()
 	{
 		base.OnApplyTemplate();
 
-		if (TextBox != null)
-		{
-			TextBox.PreviewMouseLeftButtonUp -= TextBox_PreviewMouseLeftButtonUp;
-			TextBox.PreviewKeyDown -= TextBox_PreviewKeyDown;
-		}
-
-		if (ResetButton != null)
-		{
-			ResetButton.Click -= ResetButton_Click;
-		}
+		TextBox?.PreviewMouseLeftButtonUp -= TextBox_PreviewMouseLeftButtonUp;
+		TextBox?.PreviewKeyDown -= TextBox_PreviewKeyDown;
+		ResetButton?.Click -= ResetButton_Click;
 
 		TextBox? datePickerTextBox = GetTemplateChild("PART_TextBox") as TextBox;
 		datePickerTextBox?.ApplyTemplate();
@@ -55,17 +66,14 @@ public class UiDatePicker : DatePicker
 		Popup = GetTemplateChild("PART_Popup") as Popup;
 		ResetButton = GetTemplateChild("PART_ResetButton") as Button;
 
-		if (TextBox != null)
-		{
-			TextBox.PreviewMouseLeftButtonUp += TextBox_PreviewMouseLeftButtonUp;
-			TextBox.PreviewKeyDown += TextBox_PreviewKeyDown;
-		}
-
-		if (ResetButton != null)
-		{
-			ResetButton.Click += ResetButton_Click;
-		}
+		TextBox?.PreviewMouseLeftButtonUp += TextBox_PreviewMouseLeftButtonUp;
+		TextBox?.PreviewKeyDown += TextBox_PreviewKeyDown;
+		ResetButton?.Click += ResetButton_Click;
 	}
+	/// <summary>
+	/// Invoked when an unhandled <see cref="Keyboard.GotKeyboardFocusEvent" /> attached event reaches an element in its route that is derived from this class.
+	/// </summary>
+	/// <param name="e">A <see cref="KeyboardFocusChangedEventArgs" /> that contains the event data.</param>
 	protected override void OnGotKeyboardFocus(KeyboardFocusChangedEventArgs e)
 	{
 		if (e.OriginalSource is UiDatePicker or DatePickerTextBox)
@@ -79,6 +87,10 @@ public class UiDatePicker : DatePicker
 			});
 		}
 	}
+	/// <summary>
+	/// Raises the <see cref="DatePicker.CalendarOpened" /> routed event.
+	/// </summary>
+	/// <param name="e">A <see cref="RoutedEventArgs" /> that contains the event data.</param>
 	protected override void OnCalendarOpened(RoutedEventArgs e)
 	{
 		base.OnCalendarOpened(e);

@@ -9,11 +9,11 @@ public sealed class DelegateEqualityComparer<T> : IEqualityComparer<T>
 	/// <summary>
 	/// The <see cref="Func{T1, T2, TResult}" /> delegate that is used to compare objects for equality.
 	/// </summary>
-	public Func<T, T, bool> Comparison { get; private init; }
+	public Func<T, T, bool> Comparison { get; }
 	/// <summary>
 	/// The <see cref="Func{T, TResult}" /> delegate that is used to compute the hash code.
 	/// </summary>
-	public Func<T, int>? HashCode { get; private init; }
+	public Func<T, int>? HashCode { get; }
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="DelegateEqualityComparer{T}" /> class with the specified comparison delegate.

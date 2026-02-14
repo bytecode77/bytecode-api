@@ -12,11 +12,11 @@ public class IniFile
 	/// <summary>
 	/// Gets the <see cref="IniSection" /> containing all properties prior to the first section declaration associated with this INI file.
 	/// </summary>
-	public IniSection GlobalProperties { get; private init; }
+	public IniSection GlobalProperties { get; }
 	/// <summary>
 	/// Gets the collection of INI sections associated with this INI file.
 	/// </summary>
-	public IniSectionCollection Sections { get; private init; }
+	public IniSectionCollection Sections { get; }
 	/// <summary>
 	/// Gets the collection of lines that could not be parsed. This collection popuplated, if <see cref="IniFileParsingOptions.IgnoreErrors" /> is set to <see langword="true" />.
 	/// </summary>

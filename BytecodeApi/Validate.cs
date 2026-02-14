@@ -228,7 +228,7 @@ public static class Validate
 	{
 		if (str != null && MacAddressRegex.Any(regex => regex.IsMatch(str)))
 		{
-			result = ConvertEx.FromHexadecimalString(str.ReplaceMultiple(null, ":", "-", "."));
+			result = Convert.FromHexString(str.ReplaceMultiple(null, ":", "-", "."));
 			return true;
 		}
 		else

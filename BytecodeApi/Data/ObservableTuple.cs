@@ -1,4 +1,4 @@
-﻿namespace BytecodeApi.Data;
+namespace BytecodeApi.Data;
 
 /// <summary>
 /// Provides static methods for creating observable tuple objects.
@@ -165,15 +165,10 @@ public static class ObservableTuple
 /// <typeparam name="T1">The type of the tuple's only component.</typeparam>
 public sealed class ObservableTuple<T1> : ObservableObject, IEquatable<ObservableTuple<T1>>
 {
-	private T1 _Item1;
 	/// <summary>
 	/// Gets or sets the value of the <see cref="ObservableTuple{T1}" /> object's single value.
 	/// </summary>
-	public T1 Item1
-	{
-		get => _Item1;
-		set => Set(ref _Item1, value);
-	}
+	public T1 Item1 { get; set => Set(ref field, value); }
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="ObservableTuple{T1}" /> class.
@@ -181,7 +176,7 @@ public sealed class ObservableTuple<T1> : ObservableObject, IEquatable<Observabl
 	/// <param name="item1">The value of the tuple's only component.</param>
 	public ObservableTuple(T1 item1)
 	{
-		_Item1 = item1;
+		Item1 = item1;
 	}
 
 	/// <summary>
@@ -266,24 +261,14 @@ public sealed class ObservableTuple<T1> : ObservableObject, IEquatable<Observabl
 /// <typeparam name="T2">The type of the tuple's second component.</typeparam>
 public sealed class ObservableTuple<T1, T2> : ObservableObject, IEquatable<ObservableTuple<T1, T2>>
 {
-	private T1 _Item1;
-	private T2 _Item2;
 	/// <summary>
 	/// Gets or sets the value of the <see cref="ObservableTuple{T1, T2}" /> object's first value.
 	/// </summary>
-	public T1 Item1
-	{
-		get => _Item1;
-		set => Set(ref _Item1, value);
-	}
+	public T1 Item1 { get; set => Set(ref field, value); }
 	/// <summary>
 	/// Gets or sets the value of the <see cref="ObservableTuple{T1, T2}" /> object's second value.
 	/// </summary>
-	public T2 Item2
-	{
-		get => _Item2;
-		set => Set(ref _Item2, value);
-	}
+	public T2 Item2 { get; set => Set(ref field, value); }
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="ObservableTuple{T1, T2}" /> class.
@@ -292,8 +277,8 @@ public sealed class ObservableTuple<T1, T2> : ObservableObject, IEquatable<Obser
 	/// <param name="item2">The value of the tuple's second component.</param>
 	public ObservableTuple(T1 item1, T2 item2)
 	{
-		_Item1 = item1;
-		_Item2 = item2;
+		Item1 = item1;
+		Item2 = item2;
 	}
 
 	/// <summary>
@@ -380,33 +365,18 @@ public sealed class ObservableTuple<T1, T2> : ObservableObject, IEquatable<Obser
 /// <typeparam name="T3">The type of the tuple's third component.</typeparam>
 public sealed class ObservableTuple<T1, T2, T3> : ObservableObject, IEquatable<ObservableTuple<T1, T2, T3>>
 {
-	private T1 _Item1;
-	private T2 _Item2;
-	private T3 _Item3;
 	/// <summary>
 	/// Gets or sets the value of the <see cref="ObservableTuple{T1, T2, T3}" /> object's first value.
 	/// </summary>
-	public T1 Item1
-	{
-		get => _Item1;
-		set => Set(ref _Item1, value);
-	}
+	public T1 Item1 { get; set => Set(ref field, value); }
 	/// <summary>
 	/// Gets or sets the value of the <see cref="ObservableTuple{T1, T2, T3}" /> object's second value.
 	/// </summary>
-	public T2 Item2
-	{
-		get => _Item2;
-		set => Set(ref _Item2, value);
-	}
+	public T2 Item2 { get; set => Set(ref field, value); }
 	/// <summary>
 	/// Gets or sets the value of the <see cref="ObservableTuple{T1, T2, T3}" /> object's third value.
 	/// </summary>
-	public T3 Item3
-	{
-		get => _Item3;
-		set => Set(ref _Item3, value);
-	}
+	public T3 Item3 { get; set => Set(ref field, value); }
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="ObservableTuple{T1, T2, T3}" /> class.
@@ -416,9 +386,9 @@ public sealed class ObservableTuple<T1, T2, T3> : ObservableObject, IEquatable<O
 	/// <param name="item3">The value of the tuple's third component.</param>
 	public ObservableTuple(T1 item1, T2 item2, T3 item3)
 	{
-		_Item1 = item1;
-		_Item2 = item2;
-		_Item3 = item3;
+		Item1 = item1;
+		Item2 = item2;
+		Item3 = item3;
 	}
 
 	/// <summary>
@@ -507,42 +477,22 @@ public sealed class ObservableTuple<T1, T2, T3> : ObservableObject, IEquatable<O
 /// <typeparam name="T4">The type of the tuple's fourth component.</typeparam>
 public sealed class ObservableTuple<T1, T2, T3, T4> : ObservableObject, IEquatable<ObservableTuple<T1, T2, T3, T4>>
 {
-	private T1 _Item1;
-	private T2 _Item2;
-	private T3 _Item3;
-	private T4 _Item4;
 	/// <summary>
 	/// Gets or sets the value of the <see cref="ObservableTuple{T1, T2, T3, T4}" /> object's first value.
 	/// </summary>
-	public T1 Item1
-	{
-		get => _Item1;
-		set => Set(ref _Item1, value);
-	}
+	public T1 Item1 { get; set => Set(ref field, value); }
 	/// <summary>
 	/// Gets or sets the value of the <see cref="ObservableTuple{T1, T2, T3, T4}" /> object's second value.
 	/// </summary>
-	public T2 Item2
-	{
-		get => _Item2;
-		set => Set(ref _Item2, value);
-	}
+	public T2 Item2 { get; set => Set(ref field, value); }
 	/// <summary>
 	/// Gets or sets the value of the <see cref="ObservableTuple{T1, T2, T3, T4}" /> object's third value.
 	/// </summary>
-	public T3 Item3
-	{
-		get => _Item3;
-		set => Set(ref _Item3, value);
-	}
+	public T3 Item3 { get; set => Set(ref field, value); }
 	/// <summary>
 	/// Gets or sets the value of the <see cref="ObservableTuple{T1, T2, T3, T4}" /> object's third value.
 	/// </summary>
-	public T4 Item4
-	{
-		get => _Item4;
-		set => Set(ref _Item4, value);
-	}
+	public T4 Item4 { get; set => Set(ref field, value); }
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="ObservableTuple{T1, T2, T3, T4}" /> class.
@@ -553,10 +503,10 @@ public sealed class ObservableTuple<T1, T2, T3, T4> : ObservableObject, IEquatab
 	/// <param name="item4">The value of the tuple's fourth component.</param>
 	public ObservableTuple(T1 item1, T2 item2, T3 item3, T4 item4)
 	{
-		_Item1 = item1;
-		_Item2 = item2;
-		_Item3 = item3;
-		_Item4 = item4;
+		Item1 = item1;
+		Item2 = item2;
+		Item3 = item3;
+		Item4 = item4;
 	}
 
 	/// <summary>
@@ -647,51 +597,26 @@ public sealed class ObservableTuple<T1, T2, T3, T4> : ObservableObject, IEquatab
 /// <typeparam name="T5">The type of the tuple's fifth component.</typeparam>
 public sealed class ObservableTuple<T1, T2, T3, T4, T5> : ObservableObject, IEquatable<ObservableTuple<T1, T2, T3, T4, T5>>
 {
-	private T1 _Item1;
-	private T2 _Item2;
-	private T3 _Item3;
-	private T4 _Item4;
-	private T5 _Item5;
 	/// <summary>
 	/// Gets or sets the value of the <see cref="ObservableTuple{T1, T2, T3, T4, T5}" /> object's first value.
 	/// </summary>
-	public T1 Item1
-	{
-		get => _Item1;
-		set => Set(ref _Item1, value);
-	}
+	public T1 Item1 { get; set => Set(ref field, value); }
 	/// <summary>
 	/// Gets or sets the value of the <see cref="ObservableTuple{T1, T2, T3, T4, T5}" /> object's second value.
 	/// </summary>
-	public T2 Item2
-	{
-		get => _Item2;
-		set => Set(ref _Item2, value);
-	}
+	public T2 Item2 { get; set => Set(ref field, value); }
 	/// <summary>
 	/// Gets or sets the value of the <see cref="ObservableTuple{T1, T2, T3, T4, T5}" /> object's third value.
 	/// </summary>
-	public T3 Item3
-	{
-		get => _Item3;
-		set => Set(ref _Item3, value);
-	}
+	public T3 Item3 { get; set => Set(ref field, value); }
 	/// <summary>
 	/// Gets or sets the value of the <see cref="ObservableTuple{T1, T2, T3, T4, T5}" /> object's third value.
 	/// </summary>
-	public T4 Item4
-	{
-		get => _Item4;
-		set => Set(ref _Item4, value);
-	}
+	public T4 Item4 { get; set => Set(ref field, value); }
 	/// <summary>
 	/// Gets or sets the value of the <see cref="ObservableTuple{T1, T2, T3, T4, T5}" /> object's third value.
 	/// </summary>
-	public T5 Item5
-	{
-		get => _Item5;
-		set => Set(ref _Item5, value);
-	}
+	public T5 Item5 { get; set => Set(ref field, value); }
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="ObservableTuple{T1, T2, T3, T4, T5}" /> class.
@@ -703,11 +628,11 @@ public sealed class ObservableTuple<T1, T2, T3, T4, T5> : ObservableObject, IEqu
 	/// <param name="item5">The value of the tuple's fifth component.</param>
 	public ObservableTuple(T1 item1, T2 item2, T3 item3, T4 item4, T5 item5)
 	{
-		_Item1 = item1;
-		_Item2 = item2;
-		_Item3 = item3;
-		_Item4 = item4;
-		_Item5 = item5;
+		Item1 = item1;
+		Item2 = item2;
+		Item3 = item3;
+		Item4 = item4;
+		Item5 = item5;
 	}
 
 	/// <summary>
@@ -800,60 +725,30 @@ public sealed class ObservableTuple<T1, T2, T3, T4, T5> : ObservableObject, IEqu
 /// <typeparam name="T6">The type of the tuple's sixth component.</typeparam>
 public sealed class ObservableTuple<T1, T2, T3, T4, T5, T6> : ObservableObject, IEquatable<ObservableTuple<T1, T2, T3, T4, T5, T6>>
 {
-	private T1 _Item1;
-	private T2 _Item2;
-	private T3 _Item3;
-	private T4 _Item4;
-	private T5 _Item5;
-	private T6 _Item6;
 	/// <summary>
 	/// Gets or sets the value of the <see cref="ObservableTuple{T1, T2, T3, T4, T5, T6}" /> object's first value.
 	/// </summary>
-	public T1 Item1
-	{
-		get => _Item1;
-		set => Set(ref _Item1, value);
-	}
+	public T1 Item1 { get; set => Set(ref field, value); }
 	/// <summary>
 	/// Gets or sets the value of the <see cref="ObservableTuple{T1, T2, T3, T4, T5, T6}" /> object's second value.
 	/// </summary>
-	public T2 Item2
-	{
-		get => _Item2;
-		set => Set(ref _Item2, value);
-	}
+	public T2 Item2 { get; set => Set(ref field, value); }
 	/// <summary>
 	/// Gets or sets the value of the <see cref="ObservableTuple{T1, T2, T3, T4, T5, T6}" /> object's third value.
 	/// </summary>
-	public T3 Item3
-	{
-		get => _Item3;
-		set => Set(ref _Item3, value);
-	}
+	public T3 Item3 { get; set => Set(ref field, value); }
 	/// <summary>
 	/// Gets or sets the value of the <see cref="ObservableTuple{T1, T2, T3, T4, T5, T6}" /> object's third value.
 	/// </summary>
-	public T4 Item4
-	{
-		get => _Item4;
-		set => Set(ref _Item4, value);
-	}
+	public T4 Item4 { get; set => Set(ref field, value); }
 	/// <summary>
 	/// Gets or sets the value of the <see cref="ObservableTuple{T1, T2, T3, T4, T5, T6}" /> object's third value.
 	/// </summary>
-	public T5 Item5
-	{
-		get => _Item5;
-		set => Set(ref _Item5, value);
-	}
+	public T5 Item5 { get; set => Set(ref field, value); }
 	/// <summary>
 	/// Gets or sets the value of the <see cref="ObservableTuple{T1, T2, T3, T4, T5, T6}" /> object's third value.
 	/// </summary>
-	public T6 Item6
-	{
-		get => _Item6;
-		set => Set(ref _Item6, value);
-	}
+	public T6 Item6 { get; set => Set(ref field, value); }
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="ObservableTuple{T1, T2, T3, T4, T5, T6}" /> class.
@@ -866,12 +761,12 @@ public sealed class ObservableTuple<T1, T2, T3, T4, T5, T6> : ObservableObject, 
 	/// <param name="item6">The value of the tuple's sixth component.</param>
 	public ObservableTuple(T1 item1, T2 item2, T3 item3, T4 item4, T5 item5, T6 item6)
 	{
-		_Item1 = item1;
-		_Item2 = item2;
-		_Item3 = item3;
-		_Item4 = item4;
-		_Item5 = item5;
-		_Item6 = item6;
+		Item1 = item1;
+		Item2 = item2;
+		Item3 = item3;
+		Item4 = item4;
+		Item5 = item5;
+		Item6 = item6;
 	}
 
 	/// <summary>
@@ -966,69 +861,34 @@ public sealed class ObservableTuple<T1, T2, T3, T4, T5, T6> : ObservableObject, 
 /// <typeparam name="T7">The type of the tuple's seventh component.</typeparam>
 public sealed class ObservableTuple<T1, T2, T3, T4, T5, T6, T7> : ObservableObject, IEquatable<ObservableTuple<T1, T2, T3, T4, T5, T6, T7>>
 {
-	private T1 _Item1;
-	private T2 _Item2;
-	private T3 _Item3;
-	private T4 _Item4;
-	private T5 _Item5;
-	private T6 _Item6;
-	private T7 _Item7;
 	/// <summary>
 	/// Gets or sets the value of the <see cref="ObservableTuple{T1, T2, T3, T4, T5, T6, T7}" /> object's first value.
 	/// </summary>
-	public T1 Item1
-	{
-		get => _Item1;
-		set => Set(ref _Item1, value);
-	}
+	public T1 Item1 { get; set => Set(ref field, value); }
 	/// <summary>
 	/// Gets or sets the value of the <see cref="ObservableTuple{T1, T2, T3, T4, T5, T6, T7}" /> object's second value.
 	/// </summary>
-	public T2 Item2
-	{
-		get => _Item2;
-		set => Set(ref _Item2, value);
-	}
+	public T2 Item2 { get; set => Set(ref field, value); }
 	/// <summary>
 	/// Gets or sets the value of the <see cref="ObservableTuple{T1, T2, T3, T4, T5, T6, T7}" /> object's third value.
 	/// </summary>
-	public T3 Item3
-	{
-		get => _Item3;
-		set => Set(ref _Item3, value);
-	}
+	public T3 Item3 { get; set => Set(ref field, value); }
 	/// <summary>
 	/// Gets or sets the value of the <see cref="ObservableTuple{T1, T2, T3, T4, T5, T6, T7}" /> object's third value.
 	/// </summary>
-	public T4 Item4
-	{
-		get => _Item4;
-		set => Set(ref _Item4, value);
-	}
+	public T4 Item4 { get; set => Set(ref field, value); }
 	/// <summary>
 	/// Gets or sets the value of the <see cref="ObservableTuple{T1, T2, T3, T4, T5, T6, T7}" /> object's third value.
 	/// </summary>
-	public T5 Item5
-	{
-		get => _Item5;
-		set => Set(ref _Item5, value);
-	}
+	public T5 Item5 { get; set => Set(ref field, value); }
 	/// <summary>
 	/// Gets or sets the value of the <see cref="ObservableTuple{T1, T2, T3, T4, T5, T6, T7}" /> object's third value.
 	/// </summary>
-	public T6 Item6
-	{
-		get => _Item6;
-		set => Set(ref _Item6, value);
-	}
+	public T6 Item6 { get; set => Set(ref field, value); }
 	/// <summary>
 	/// Gets or sets the value of the <see cref="ObservableTuple{T1, T2, T3, T4, T5, T6, T7}" /> object's third value.
 	/// </summary>
-	public T7 Item7
-	{
-		get => _Item7;
-		set => Set(ref _Item7, value);
-	}
+	public T7 Item7 { get; set => Set(ref field, value); }
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="ObservableTuple{T1, T2, T3, T4, T5, T6, T7}" /> class.
@@ -1042,13 +902,13 @@ public sealed class ObservableTuple<T1, T2, T3, T4, T5, T6, T7> : ObservableObje
 	/// <param name="item7">The value of the tuple's seventh component.</param>
 	public ObservableTuple(T1 item1, T2 item2, T3 item3, T4 item4, T5 item5, T6 item6, T7 item7)
 	{
-		_Item1 = item1;
-		_Item2 = item2;
-		_Item3 = item3;
-		_Item4 = item4;
-		_Item5 = item5;
-		_Item6 = item6;
-		_Item7 = item7;
+		Item1 = item1;
+		Item2 = item2;
+		Item3 = item3;
+		Item4 = item4;
+		Item5 = item5;
+		Item6 = item6;
+		Item7 = item7;
 	}
 
 	/// <summary>
@@ -1145,78 +1005,38 @@ public sealed class ObservableTuple<T1, T2, T3, T4, T5, T6, T7> : ObservableObje
 /// <typeparam name="T8">The type of the tuple's eighth component.</typeparam>
 public sealed class ObservableTuple<T1, T2, T3, T4, T5, T6, T7, T8> : ObservableObject, IEquatable<ObservableTuple<T1, T2, T3, T4, T5, T6, T7, T8>>
 {
-	private T1 _Item1;
-	private T2 _Item2;
-	private T3 _Item3;
-	private T4 _Item4;
-	private T5 _Item5;
-	private T6 _Item6;
-	private T7 _Item7;
-	private T8 _Item8;
 	/// <summary>
 	/// Gets or sets the value of the <see cref="ObservableTuple{T1, T2, T3, T4, T5, T6, T7, T8}" /> object's first value.
 	/// </summary>
-	public T1 Item1
-	{
-		get => _Item1;
-		set => Set(ref _Item1, value);
-	}
+	public T1 Item1 { get; set => Set(ref field, value); }
 	/// <summary>
 	/// Gets or sets the value of the <see cref="ObservableTuple{T1, T2, T3, T4, T5, T6, T7, T8}" /> object's second value.
 	/// </summary>
-	public T2 Item2
-	{
-		get => _Item2;
-		set => Set(ref _Item2, value);
-	}
+	public T2 Item2 { get; set => Set(ref field, value); }
 	/// <summary>
 	/// Gets or sets the value of the <see cref="ObservableTuple{T1, T2, T3, T4, T5, T6, T7, T8}" /> object's third value.
 	/// </summary>
-	public T3 Item3
-	{
-		get => _Item3;
-		set => Set(ref _Item3, value);
-	}
+	public T3 Item3 { get; set => Set(ref field, value); }
 	/// <summary>
 	/// Gets or sets the value of the <see cref="ObservableTuple{T1, T2, T3, T4, T5, T6, T7, T8}" /> object's third value.
 	/// </summary>
-	public T4 Item4
-	{
-		get => _Item4;
-		set => Set(ref _Item4, value);
-	}
+	public T4 Item4 { get; set => Set(ref field, value); }
 	/// <summary>
 	/// Gets or sets the value of the <see cref="ObservableTuple{T1, T2, T3, T4, T5, T6, T7, T8}" /> object's third value.
 	/// </summary>
-	public T5 Item5
-	{
-		get => _Item5;
-		set => Set(ref _Item5, value);
-	}
+	public T5 Item5 { get; set => Set(ref field, value); }
 	/// <summary>
 	/// Gets or sets the value of the <see cref="ObservableTuple{T1, T2, T3, T4, T5, T6, T7, T8}" /> object's third value.
 	/// </summary>
-	public T6 Item6
-	{
-		get => _Item6;
-		set => Set(ref _Item6, value);
-	}
+	public T6 Item6 { get; set => Set(ref field, value); }
 	/// <summary>
 	/// Gets or sets the value of the <see cref="ObservableTuple{T1, T2, T3, T4, T5, T6, T7, T8}" /> object's third value.
 	/// </summary>
-	public T7 Item7
-	{
-		get => _Item7;
-		set => Set(ref _Item7, value);
-	}
+	public T7 Item7 { get; set => Set(ref field, value); }
 	/// <summary>
 	/// Gets or sets the value of the <see cref="ObservableTuple{T1, T2, T3, T4, T5, T6, T7, T8}" /> object's third value.
 	/// </summary>
-	public T8 Item8
-	{
-		get => _Item8;
-		set => Set(ref _Item8, value);
-	}
+	public T8 Item8 { get; set => Set(ref field, value); }
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="ObservableTuple{T1, T2, T3, T4, T5, T6, T7, T8}" /> class.
@@ -1231,14 +1051,14 @@ public sealed class ObservableTuple<T1, T2, T3, T4, T5, T6, T7, T8> : Observable
 	/// <param name="item8">The value of the tuple's eighth component.</param>
 	public ObservableTuple(T1 item1, T2 item2, T3 item3, T4 item4, T5 item5, T6 item6, T7 item7, T8 item8)
 	{
-		_Item1 = item1;
-		_Item2 = item2;
-		_Item3 = item3;
-		_Item4 = item4;
-		_Item5 = item5;
-		_Item6 = item6;
-		_Item7 = item7;
-		_Item8 = item8;
+		Item1 = item1;
+		Item2 = item2;
+		Item3 = item3;
+		Item4 = item4;
+		Item5 = item5;
+		Item6 = item6;
+		Item7 = item7;
+		Item8 = item8;
 	}
 
 	/// <summary>

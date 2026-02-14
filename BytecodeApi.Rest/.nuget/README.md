@@ -8,6 +8,11 @@ See: [Examples](https://github.com/bytecode77/bytecode-api/blob/master/BytecodeA
 
 ## Changelog
 
+### 5.0.0 (15.02.2026)
+
+* **change:** Targeting .NET 10.0
+* **new:** `RestRequest` extended all methods with `CancellationToken` parameter
+
 ### 4.0.0 (15.09.2025)
 
 * **change:** Targeting .NET 9.0

@@ -4,15 +4,30 @@ using System.Windows.Controls;
 
 namespace BytecodeApi.Wpf.Cui.Controls;
 
+/// <summary>
+/// Represents a column in a <see cref="UiListView" /> with extended properties.
+/// </summary>
 public class UiGridViewColumn : GridViewColumn
 {
-	public static readonly DependencyProperty SortPropertyProperty = DependencyPropertyEx.Register(nameof(SortProperty));
-	public static readonly DependencyProperty IsVisibleProperty = DependencyPropertyEx.Register(nameof(IsVisible), new(true, IsVisible_Changed));
+	/// <summary>
+	/// Identifies the <see cref="SortProperty" /> dependency property. This field is read-only.
+	/// </summary>
+	public static readonly DependencyProperty SortPropertyProperty = DependencyProperty.Register(nameof(SortProperty));
+	/// <summary>
+	/// Identifies the <see cref="IsVisible" /> dependency property. This field is read-only.
+	/// </summary>
+	public static readonly DependencyProperty IsVisibleProperty = DependencyProperty.Register(nameof(IsVisible), new(true, IsVisible_Changed));
+	/// <summary>
+	/// Gets or sets a <see cref="string" /> value that corresponds to the <see cref="UiListView.SortColumn" /> property when sorting by this column.
+	/// </summary>
 	public string? SortProperty
 	{
 		get => this.GetValue<string?>(SortPropertyProperty);
 		set => SetValue(SortPropertyProperty, value);
 	}
+	/// <summary>
+	/// Gets or sets a <see cref="bool" /> value that indicates whether the column is visible.
+	/// </summary>
 	public bool IsVisible
 	{
 		get => this.GetValue<bool>(IsVisibleProperty);

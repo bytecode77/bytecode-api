@@ -12,75 +12,151 @@ using System.Windows.Input;
 
 namespace BytecodeApi.Wpf.Cui.Controls;
 
+/// <summary>
+/// Represents a list view control with extended properties and sorting capabilities.
+/// </summary>
 public class UiListView : ListView
 {
-	public static readonly DependencyProperty ShowHeaderRowProperty = DependencyPropertyEx.Register(nameof(ShowHeaderRow), new(true));
-	public static readonly DependencyProperty CanResizeColumnsProperty = DependencyPropertyEx.Register(nameof(CanResizeColumns), new(true));
-	public static readonly DependencyProperty CanSelectProperty = DependencyPropertyEx.Register(nameof(CanSelect), new(true));
-	public static readonly DependencyProperty SelectedItemListProperty = DependencyPropertyEx.Register(nameof(SelectedItemList), new(SelectedItemList_Changed));
-	public static readonly DependencyProperty SortColumnProperty = DependencyPropertyEx.Register(nameof(SortColumn));
-	public static readonly DependencyProperty SortDirectionProperty = DependencyPropertyEx.Register(nameof(SortDirection), new(ListSortDirection.Ascending));
-	public static readonly DependencyProperty SortColumn2Property = DependencyPropertyEx.Register(nameof(SortColumn2));
-	public static readonly DependencyProperty SortDirection2Property = DependencyPropertyEx.Register(nameof(SortDirection2), new(ListSortDirection.Ascending));
-	public static readonly DependencyProperty GroupSortDirectionProperty = DependencyPropertyEx.Register(nameof(GroupSortDirection), new(ListSortDirection.Ascending));
-	public static readonly DependencyProperty GroupIsExpandedConverterProperty = DependencyPropertyEx.Register(nameof(GroupIsExpandedConverter));
-	public static readonly DependencyProperty GroupIsExpandedConverterParameterProperty = DependencyPropertyEx.Register(nameof(GroupIsExpandedConverterParameter));
-	public static readonly DependencyProperty ItemDoubleClickCommandProperty = DependencyPropertyEx.Register(nameof(ItemDoubleClickCommand));
+	/// <summary>
+	/// Identifies the <see cref="ShowHeaderRow" /> dependency property. This field is read-only.
+	/// </summary>
+	public static readonly DependencyProperty ShowHeaderRowProperty = DependencyProperty.Register(nameof(ShowHeaderRow), new(true));
+	/// <summary>
+	/// Identifies the <see cref="CanResizeColumns" /> dependency property. This field is read-only.
+	/// </summary>
+	public static readonly DependencyProperty CanResizeColumnsProperty = DependencyProperty.Register(nameof(CanResizeColumns), new(true));
+	/// <summary>
+	/// Identifies the <see cref="CanSelect" /> dependency property. This field is read-only.
+	/// </summary>
+	public static readonly DependencyProperty CanSelectProperty = DependencyProperty.Register(nameof(CanSelect), new(true));
+	/// <summary>
+	/// Identifies the <see cref="SelectedItemList" /> dependency property. This field is read-only.
+	/// </summary>
+	public static readonly DependencyProperty SelectedItemListProperty = DependencyProperty.Register(nameof(SelectedItemList), new(SelectedItemList_Changed));
+	/// <summary>
+	/// Identifies the <see cref="SortColumn" /> dependency property. This field is read-only.
+	/// </summary>
+	public static readonly DependencyProperty SortColumnProperty = DependencyProperty.Register(nameof(SortColumn));
+	/// <summary>
+	/// Identifies the <see cref="SortDirection" /> dependency property. This field is read-only.
+	/// </summary>
+	public static readonly DependencyProperty SortDirectionProperty = DependencyProperty.Register(nameof(SortDirection), new(ListSortDirection.Ascending));
+	/// <summary>
+	/// Identifies the <see cref="SortColumn2" /> dependency property. This field is read-only.
+	/// </summary>
+	public static readonly DependencyProperty SortColumn2Property = DependencyProperty.Register(nameof(SortColumn2));
+	/// <summary>
+	/// Identifies the <see cref="SortDirection2" /> dependency property. This field is read-only.
+	/// </summary>
+	public static readonly DependencyProperty SortDirection2Property = DependencyProperty.Register(nameof(SortDirection2), new(ListSortDirection.Ascending));
+	/// <summary>
+	/// Identifies the <see cref="GroupSortDirection" /> dependency property. This field is read-only.
+	/// </summary>
+	public static readonly DependencyProperty GroupSortDirectionProperty = DependencyProperty.Register(nameof(GroupSortDirection), new(ListSortDirection.Ascending));
+	/// <summary>
+	/// Identifies the <see cref="GroupIsExpandedConverter" /> dependency property. This field is read-only.
+	/// </summary>
+	public static readonly DependencyProperty GroupIsExpandedConverterProperty = DependencyProperty.Register(nameof(GroupIsExpandedConverter));
+	/// <summary>
+	/// Identifies the <see cref="GroupIsExpandedConverterParameter" /> dependency property. This field is read-only.
+	/// </summary>
+	public static readonly DependencyProperty GroupIsExpandedConverterParameterProperty = DependencyProperty.Register(nameof(GroupIsExpandedConverterParameter));
+	/// <summary>
+	/// Identifies the <see cref="ItemDoubleClickCommand" /> dependency property. This field is read-only.
+	/// </summary>
+	public static readonly DependencyProperty ItemDoubleClickCommandProperty = DependencyProperty.Register(nameof(ItemDoubleClickCommand));
+	/// <summary>
+	/// Gets or sets a <see cref="bool" /> value indicating whether the header row is visible.
+	/// </summary>
 	public bool ShowHeaderRow
 	{
 		get => this.GetValue<bool>(ShowHeaderRowProperty);
 		set => SetValue(ShowHeaderRowProperty, value);
 	}
+	/// <summary>
+	/// Gets or sets a <see cref="bool" /> value indicating whether the user can resize columns.
+	/// </summary>
 	public bool CanResizeColumns
 	{
 		get => this.GetValue<bool>(CanResizeColumnsProperty);
 		set => SetValue(CanResizeColumnsProperty, value);
 	}
+	/// <summary>
+	/// Gets or sets a <see cref="bool" /> value indicating whether the user can select items.
+	/// </summary>
 	public bool CanSelect
 	{
 		get => this.GetValue<bool>(CanSelectProperty);
 		set => SetValue(CanSelectProperty, value);
 	}
+	/// <summary>
+	/// Provides a two-way binding of the selected items to a <see cref="List{T}" /> property.
+	/// </summary>
 	public IList? SelectedItemList
 	{
 		get => this.GetValue<IList?>(SelectedItemListProperty);
 		set => SetValue(SelectedItemListProperty, value);
 	}
+	/// <summary>
+	/// Gets or sets the column that is used for sorting the items. This property corresponds to the <see cref="UiGridViewColumn.SortProperty" /> property of a column.
+	/// </summary>
 	public string? SortColumn
 	{
 		get => this.GetValue<string?>(SortColumnProperty);
 		set => SetValue(SortColumnProperty, value);
 	}
+	/// <summary>
+	/// Gets or sets the sort direction for the currently sorted column.
+	/// </summary>
 	public ListSortDirection SortDirection
 	{
 		get => this.GetValue<ListSortDirection>(SortDirectionProperty);
 		set => SetValue(SortDirectionProperty, value);
 	}
+	/// <summary>
+	/// Gets or sets the secondary sort column. This is relevant, if the primary sort column contains duplicate values that should still be consistently sorted.
+	/// </summary>
 	public string? SortColumn2
 	{
 		get => this.GetValue<string?>(SortColumn2Property);
 		set => SetValue(SortColumn2Property, value);
 	}
+	/// <summary>
+	/// Gets or sets the sort direction for the secondary sort column.
+	/// </summary>
 	public ListSortDirection SortDirection2
 	{
 		get => this.GetValue<ListSortDirection>(SortDirection2Property);
 		set => SetValue(SortDirection2Property, value);
 	}
+	/// <summary>
+	/// Gets or sets the sort direction for the item groups.
+	/// </summary>
 	public ListSortDirection GroupSortDirection
 	{
 		get => this.GetValue<ListSortDirection>(GroupSortDirectionProperty);
 		set => SetValue(GroupSortDirectionProperty, value);
 	}
+	/// <summary>
+	/// Gets or sets the <see cref="IValueConverter" /> used to determine whether a group is expanded or collapsed.
+	/// This <see cref="UiListView" /> invokes the converter for each group to determinate its expanded state.
+	/// </summary>
 	public IValueConverter? GroupIsExpandedConverter
 	{
 		get => this.GetValue<IValueConverter?>(GroupIsExpandedConverterProperty);
 		set => SetValue(GroupIsExpandedConverterProperty, value);
 	}
+	/// <summary>
+	/// Gets or sets an optional converter parameter that is passed to <see cref="GroupIsExpandedConverter" />.
+	/// </summary>
 	public object? GroupIsExpandedConverterParameter
 	{
 		get => GetValue(GroupIsExpandedConverterParameterProperty);
 		set => SetValue(GroupIsExpandedConverterParameterProperty, value);
 	}
+	/// <summary>
+	/// Gets or sets the <see cref="ICommand" /> that is executed when an item is double-clicked.
+	/// </summary>
 	public ICommand? ItemDoubleClickCommand
 	{
 		get => this.GetValue<ICommand?>(ItemDoubleClickCommandProperty);
@@ -94,6 +170,9 @@ public class UiListView : ListView
 	private string? CurrentSortProperty;
 	private SortAdorner? SortAdorner;
 
+	/// <summary>
+	/// Initializes a new instance of the <see cref="UiListView" /> class.
+	/// </summary>
 	public UiListView()
 	{
 		AddHandler(ButtonBase.ClickEvent, new RoutedEventHandler(UiListView_Click));
@@ -122,6 +201,10 @@ public class UiListView : ListView
 			listView.SetSelectedItems(listView.SelectedItemList);
 		}
 	}
+	/// <summary>
+	/// Raises the <see cref="Control.PreviewMouseDoubleClick" /> routed event.
+	/// </summary>
+	/// <param name="e">A <see cref="MouseButtonEventArgs" /> that contains the event data.</param>
 	protected override void OnPreviewMouseDoubleClick(MouseButtonEventArgs e)
 	{
 		base.OnPreviewMouseDoubleClick(e);
@@ -139,12 +222,21 @@ public class UiListView : ListView
 			}
 		}
 	}
+	/// <summary>
+	/// Called when the source of an item in a selector changes.
+	/// </summary>
+	/// <param name="oldValue">Old value of the source.</param>
+	/// <param name="newValue">New value of the source.</param>
 	protected override void OnItemsSourceChanged(IEnumerable oldValue, IEnumerable newValue)
 	{
 		base.OnItemsSourceChanged(oldValue, newValue);
 
 		UnselectAll();
 	}
+	/// <summary>
+	/// Responds to a list box selection change by raising a <see cref="Selector.SelectionChanged" /> event.
+	/// </summary>
+	/// <param name="e">A <see cref="SelectionChangedEventArgs" /> that contains the event data.</param>
 	protected override void OnSelectionChanged(SelectionChangedEventArgs e)
 	{
 		base.OnSelectionChanged(e);
@@ -243,10 +335,8 @@ public class UiListView : ListView
 					{
 						throw Throw.InvalidOperation("Converters are not supported in sorted groups.");
 					}
-					else
-					{
-						Items.SortDescriptions.Add(new(groupDescription.PropertyName, GroupSortDirection));
-					}
+
+					Items.SortDescriptions.Add(new(groupDescription.PropertyName, GroupSortDirection));
 				}
 
 				// 2.) Sort by columns

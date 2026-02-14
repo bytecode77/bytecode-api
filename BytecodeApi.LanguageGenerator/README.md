@@ -22,6 +22,12 @@ WordGenerator wordGenerator = new()
 
 string randomWord = wordGenerator.Generate();
 ```
+
+**Output:**
+
+```
+Ridavajoob
+```
 </details>
 
 <details>
@@ -43,6 +49,12 @@ SentenceGenerator sentenceGenerator = new()
 
 string randomSentence = sentenceGenerator.Generate();
 ```
+
+**Output:**
+
+```
+Gawunumo refuttaazi tepaba cirumos narerr, esizibe?
+```
 </details>
 
 <details>
@@ -57,12 +69,20 @@ TextGenerator textGenerator = new()
 {
 	SentenceGenerator = sentenceGenerator,
 	MinSentenceCount = 10,
-	MinSentenceCount = 20,
+	MaxSentenceCount = 20,
 	LineBreakChance = 0,
 	ParagraphChance = .1
 };
 
 string randomText = textGenerator.Generate();
+```
+
+**Output:**
+
+```
+Ihotovewii yyewilezo bumi ahi inu agakooqqoz voperosi, uqigora ibisazut! Popime oddupulih, okis, ciinicoz orrib, naarruqqin furaveeto apezoyu kaliniicaa oju. Retokapag, ibbutakuyi efov! Irudis, zenexere ure evvuse ugecexi, ugeqeh duujufire lopeeyomuu jebevol, yofukodeem. Kas, unoow ussu sifiizid, izzucuci uwaxavici ipamabenna yuqa ecuupo. Ilacac ahhitiic ebeqodinni eedaffaha, enohotadi uyi urocava toovorriy, ceequww kiheetale! Gecc, pomezzi kiigozafo ecufucu, eppaxayaz, qubeh, anezaqam wuujujakib. Adulo ovevi, uurolaq? Xuloxil yyigij iyihisoqef uqaziwodos onihiccot, ucabb. Avihinedag ohedivol oqoxuti vop sepatez geguni iyufore zafejar, zaxom! Wwiforimug uxihun jicucu, efuli zuuvane, vufira, inisotila tazexxooqu ezeluseqos. Yufirokim uhhewes awewoy jufelife melacig alejeyivir? Umaj laroyemmu obotooniya livu ummibe, ezuw. Ejokanit nadijuxi igepujeq oki bob mefelaaxe ottenoonni etezoow? Aatokenizz, oqocikozey yeh sibizz uqapuff uxatiwokki, ucoca ummu ofeh ayaraccaa!
+
+Effa umamidor zorerewebi upikob hekuxuj votoxugaa! Umitte qagacuzii fabaquk accijaa cewosu?
 ```
 </details>
 
@@ -72,6 +92,10 @@ string randomText = textGenerator.Generate();
 * `LoremIpsumGenerator` to generate text placeholders with lorem ipsum paragraphs.
 
 ## Changelog
+
+### 5.0.0 (15.02.2026)
+
+* **change:** Targeting .NET 10.0
 
 ### 4.0.0 (15.09.2025)
 

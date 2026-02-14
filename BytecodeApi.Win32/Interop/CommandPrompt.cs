@@ -35,15 +35,11 @@ public class CommandPrompt : IDisposable
 	{
 		if (!Disposed)
 		{
-			if (Process != null)
-			{
-				Process.OutputDataReceived -= Process_OutputDataReceived;
-				Process.ErrorDataReceived -= Process_ErrorDataReceived;
-				Process.Kill();
-				Process.Dispose();
-				Process = null;
-			}
-
+			Process?.OutputDataReceived -= Process_OutputDataReceived;
+			Process?.ErrorDataReceived -= Process_ErrorDataReceived;
+			Process?.Kill();
+			Process?.Dispose();
+			Process = null;
 			Disposed = true;
 		}
 	}

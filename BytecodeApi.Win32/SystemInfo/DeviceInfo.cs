@@ -13,15 +13,15 @@ public sealed class DeviceInfo
 	/// <summary>
 	/// Gets the collection of attributes associated with this device.
 	/// </summary>
-	public ReadOnlyDictionary<string, object> Attributes { get; private init; }
+	public ReadOnlyDictionary<string, object> Attributes { get; }
 	/// <summary>
 	/// Gets the name associated with this device.
 	/// </summary>
-	public string? Name { get; private init; }
+	public string? Name { get; }
 	/// <summary>
 	/// Gets the description associated with this device.
 	/// </summary>
-	public string? Description { get; private init; }
+	public string? Description { get; }
 
 	internal DeviceInfo(IDictionary<string, object> attributes)
 	{

@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFramework>net9.0-windows</TargetFramework>
+		<TargetFramework>net10.0-windows</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
@@ -30,14 +30,11 @@
 		<PackageIcon>.nuget\PackageIcon.png</PackageIcon>
 		<PackageOutputPath>../$Build</PackageOutputPath>
 	</PropertyGroup>
-	<ItemGroup Condition="'$(Configuration)' != 'Release'">
-		<ProjectReference Include="..\BytecodeApi\BytecodeApi.csproj" />
-	</ItemGroup>
-	<ItemGroup Condition="'$(Configuration)' == 'Release'">
-		<PackageReference Include="BytecodeApi" Version="4.*" />
+	<ItemGroup>
+		<PackageReference Include="System.Management" Version="10.0.1" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="System.Management" Version="9.0.9" />
+		<ProjectReference Include="..\BytecodeApi\BytecodeApi.csproj" />
 	</ItemGroup>
 	<ItemGroup>
 		<None Include=".nuget\README.md" Pack="true" PackagePath=".nuget\" />

@@ -18,7 +18,7 @@ public class BinaryStream : IDisposable
 	/// <summary>
 	/// Returns the underlying <see cref="Stream" />.
 	/// </summary>
-	public Stream BaseStream { get; private init; }
+	public Stream BaseStream { get; }
 	/// <summary>
 	/// Gets the total amount of bytes read from the underlying <see cref="Stream" /> of this instance.
 	/// </summary>

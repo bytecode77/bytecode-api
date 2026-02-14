@@ -6,35 +6,16 @@ namespace Playground.Wpf.Cui.Model;
 
 public sealed class TreeViewNode : ObservableObject
 {
-	private string _Header = "";
-	private string? _Icon;
-	private bool _IsExpanded;
-	private ObservableCollection<TreeViewNode> _Children = [];
-	public string Header
-	{
-		get => _Header;
-		set => Set(ref _Header, value);
-	}
-	public string? Icon
-	{
-		get => _Icon;
-		set => Set(ref _Icon, value);
-	}
-	public bool IsExpanded
-	{
-		get => _IsExpanded;
-		set => Set(ref _IsExpanded, value);
-	}
-	public ObservableCollection<TreeViewNode> Children
-	{
-		get => _Children;
-		set => Set(ref _Children, value);
-	}
+	public string Header { get; set => Set(ref field, value); }
+	public string? Icon { get; set => Set(ref field, value); }
+	public bool IsExpanded { get; set => Set(ref field, value); }
+	public ObservableCollection<TreeViewNode> Children { get; set => Set(ref field, value); }
 
 	public TreeViewNode(string header, string? icon)
 	{
 		Header = header;
 		Icon = icon;
+		Children = [];
 	}
 	public TreeViewNode(string header, string? icon, bool isExpanded, IEnumerable<TreeViewNode> children) : this(header, icon)
 	{

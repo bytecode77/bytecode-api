@@ -28,7 +28,7 @@ public static class Lexer
 /// <typeparam name="TTokenType">The <see langword="enum" /> type of the token.</typeparam>
 public sealed class Lexer<TTokenType> where TTokenType : struct, IConvertible
 {
-	private List<Grammar<TTokenType>> Grammar { get; init; }
+	private List<Grammar<TTokenType>> Grammar { get; }
 
 	internal Lexer()
 	{

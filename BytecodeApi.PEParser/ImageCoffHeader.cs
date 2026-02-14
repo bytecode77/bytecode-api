@@ -1,3 +1,5 @@
+using BytecodeApi.Extensions;
+
 namespace BytecodeApi.PEParser;
 
 /// <summary>
@@ -20,7 +22,7 @@ public sealed class ImageCoffHeader
 	/// <summary>
 	/// Gets the <see cref="DateTime" /> representation of the <see cref="TimeDateStamp" /> property.
 	/// </summary>
-	public DateTime TimeDateStampValue => DateTimeEx.FromUnixTimeStamp((int)TimeDateStamp, DateTimeKind.Utc);
+	public DateTime TimeDateStampValue => DateTime.FromUnixTimeStamp((int)TimeDateStamp, DateTimeKind.Utc);
 	/// <summary>
 	/// Gets the file offset of the COFF symbol table, or zero if no COFF symbol table is present. This value should be zero for an image because COFF debugging information is deprecated.
 	/// </summary>

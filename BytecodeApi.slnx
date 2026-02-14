@@ -1,0 +1,24 @@
+<Solution>
+  <Folder Name="/Playground/">
+    <Project Path="Playground.Console/Playground.Console.csproj" />
+    <Project Path="Playground.Wpf.Cui/Playground.Wpf.Cui.csproj" />
+    <Project Path="Playground.Wpf/Playground.Wpf.csproj" />
+  </Folder>
+  <Project Path="BytecodeApi.CommandLineParser/BytecodeApi.CommandLineParser.csproj" />
+  <Project Path="BytecodeApi.ConsoleUI/BytecodeApi.ConsoleUI.csproj" />
+  <Project Path="BytecodeApi.Cryptography.Tests/BytecodeApi.Cryptography.Tests.csproj" />
+  <Project Path="BytecodeApi.Cryptography/BytecodeApi.Cryptography.csproj" />
+  <Project Path="BytecodeApi.CsvParser/BytecodeApi.CsvParser.csproj" />
+  <Project Path="BytecodeApi.IniParser/BytecodeApi.IniParser.csproj" />
+  <Project Path="BytecodeApi.LanguageGenerator/BytecodeApi.LanguageGenerator.csproj" />
+  <Project Path="BytecodeApi.Lexer/BytecodeApi.Lexer.csproj" />
+  <Project Path="BytecodeApi.Penetration/BytecodeApi.Penetration.csproj" />
+  <Project Path="BytecodeApi.PEParser/BytecodeApi.PEParser.csproj" />
+  <Project Path="BytecodeApi.PEResources/BytecodeApi.PEResources.csproj" />
+  <Project Path="BytecodeApi.Rest/BytecodeApi.Rest.csproj" />
+  <Project Path="BytecodeApi.Win32/BytecodeApi.Win32.csproj" />
+  <Project Path="BytecodeApi.Wmi/BytecodeApi.Wmi.csproj" />
+  <Project Path="BytecodeApi.Wpf.Cui/BytecodeApi.Wpf.Cui.csproj" />
+  <Project Path="BytecodeApi.Wpf/BytecodeApi.Wpf.csproj" />
+  <Project Path="BytecodeApi/BytecodeApi.csproj" />
+</Solution>

@@ -5,15 +5,30 @@ using System.Windows.Media;
 
 namespace BytecodeApi.Wpf.Cui.Controls;
 
+/// <summary>
+/// Represents a control that contains and arranges multiple <see cref="UiToolBar" /> controls.
+/// </summary>
 public class UiToolBarTray : ToolBarTray
 {
-	public static readonly DependencyProperty BorderThicknessProperty = DependencyPropertyEx.Register(nameof(BorderThickness), new(new Thickness()));
-	public static readonly DependencyProperty BorderBrushProperty = DependencyPropertyEx.Register(nameof(BorderBrush), new(Brushes.Transparent));
+	/// <summary>
+	/// Identifies the <see cref="BorderThickness" /> dependency property. This field is read-only.
+	/// </summary>
+	public static readonly DependencyProperty BorderThicknessProperty = DependencyProperty.Register(nameof(BorderThickness), new(new Thickness()));
+	/// <summary>
+	/// Identifies the <see cref="BorderBrush" /> dependency property. This field is read-only.
+	/// </summary>
+	public static readonly DependencyProperty BorderBrushProperty = DependencyProperty.Register(nameof(BorderBrush), new(Brushes.Transparent));
+	/// <summary>
+	/// Gets or sets the thickness of the border around this <see cref="UiToolBarTray" />.
+	/// </summary>
 	public Thickness BorderThickness
 	{
 		get => this.GetValue<Thickness>(BorderThicknessProperty);
 		set => SetValue(BorderThicknessProperty, value);
 	}
+	/// <summary>
+	/// Gets or sets the brush that describes the border color of this <see cref="UiToolBarTray" />.
+	/// </summary>
 	public Brush BorderBrush
 	{
 		get => this.GetValue<Brush>(BorderBrushProperty);
@@ -25,6 +40,10 @@ public class UiToolBarTray : ToolBarTray
 		DefaultStyleKeyProperty.OverrideMetadata(typeof(UiToolBarTray), new FrameworkPropertyMetadata(typeof(UiToolBarTray)));
 	}
 
+	/// <summary>
+	/// Invoked whenever the effective value of any dependency property on this <see cref="FrameworkElement" /> has been updated. The specific dependency property that changed is reported in the arguments parameter.
+	/// </summary>
+	/// <param name="e">A <see cref="DependencyPropertyChangedEventArgs" /> that contains the event data.</param>
 	protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
 	{
 		base.OnPropertyChanged(e);
@@ -36,6 +55,11 @@ public class UiToolBarTray : ToolBarTray
 			InvalidateVisual();
 		}
 	}
+	/// <summary>
+	/// Implements basic measure-pass layout system behavior for <see cref="FrameworkElement" />.
+	/// </summary>
+	/// <param name="constraint">The available size that the parent element can give to the child elements.</param>
+	/// <returns>The desired size of this element in layout.</returns>
 	protected override Size MeasureOverride(Size constraint)
 	{
 		Size contentConstraint = new(
@@ -84,6 +108,13 @@ public class UiToolBarTray : ToolBarTray
 			contentSize.Width + BorderThickness.Left + BorderThickness.Right,
 			contentSize.Height + BorderThickness.Top + BorderThickness.Bottom);
 	}
+	/// <summary>
+	/// Called to arrange and size its <see cref="ToolBar" /> children.
+	/// </summary>
+	/// <param name="arrangeSize">The size that the <see cref="ToolBarTray" /> assumes to position its children.</param>
+	/// <returns>
+	/// The size of the control.
+	/// </returns>
 	protected override Size ArrangeOverride(Size arrangeSize)
 	{
 		Size contentSize = new(
@@ -141,6 +172,10 @@ public class UiToolBarTray : ToolBarTray
 
 		return arrangeSize;
 	}
+	/// <summary>
+	/// Called when a <see cref="ToolBarTray" /> is displayed to get the Drawing Context (DC) to use to render the <see cref="ToolBarTray" />.
+	/// </summary>
+	/// <param name="dc">Drawing context to use to render the <see cref="ToolBarTray" />.</param>
 	protected override void OnRender(DrawingContext dc)
 	{
 		base.OnRender(dc);

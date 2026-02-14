@@ -1,5 +1,4 @@
 using BytecodeApi.Extensions;
-using BytecodeApi.Mathematics;
 
 namespace BytecodeApi.Cryptography.Tests;
 

@@ -10,38 +10,71 @@ using System.Windows.Shell;
 
 namespace BytecodeApi.Wpf.Cui.Controls;
 
+/// <summary>
+/// Represents the main application window styled using a custom window chrome.
+/// </summary>
 public class UiApplicationWindow : ObservableWindow
 {
 	private const int CaptionHeight = 37;
 	private const int CaptionHeightWithMenu = 37;
 	private const int CaptionHeightWithToolBar = 66;
 	private const int CaptionHeightWithMenuAndToolBar = 66;
-	public static readonly DependencyProperty IconControlProperty = DependencyPropertyEx.Register(nameof(IconControl));
-	public static readonly DependencyProperty MenuProperty = DependencyPropertyEx.Register(nameof(Menu), new(Menu_Changed));
-	public static readonly DependencyProperty ToolBarTrayProperty = DependencyPropertyEx.Register(nameof(ToolBarTray), new(ToolBar_Changed));
-	public static readonly DependencyProperty StatusBarProperty = DependencyPropertyEx.Register(nameof(StatusBar));
-	private static readonly DependencyPropertyKey ShowResizeGripPropertyKey = DependencyPropertyEx.RegisterReadOnly(nameof(ShowResizeGrip), new FrameworkPropertyMetadata(false));
+	/// <summary>
+	/// Identifies the <see cref="IconControl" /> dependency property. This field is read-only.
+	/// </summary>
+	public static readonly DependencyProperty IconControlProperty = DependencyProperty.Register(nameof(IconControl));
+	/// <summary>
+	/// Identifies the <see cref="Menu" /> dependency property. This field is read-only.
+	/// </summary>
+	public static readonly DependencyProperty MenuProperty = DependencyProperty.Register(nameof(Menu), new(Menu_Changed));
+	/// <summary>
+	/// Identifies the <see cref="ToolBarTray" /> dependency property. This field is read-only.
+	/// </summary>
+	public static readonly DependencyProperty ToolBarTrayProperty = DependencyProperty.Register(nameof(ToolBarTray), new(ToolBar_Changed));
+	/// <summary>
+	/// Identifies the <see cref="StatusBar" /> dependency property. This field is read-only.
+	/// </summary>
+	public static readonly DependencyProperty StatusBarProperty = DependencyProperty.Register(nameof(StatusBar));
+	private static readonly DependencyPropertyKey ShowResizeGripPropertyKey = DependencyProperty.RegisterReadOnly(nameof(ShowResizeGrip), new FrameworkPropertyMetadata(false));
+	/// <summary>
+	/// Identifies the <see cref="ShowResizeGrip" /> dependency property. This field is read-only.
+	/// </summary>
 	public static readonly DependencyProperty ShowResizeGripProperty = ShowResizeGripPropertyKey.DependencyProperty;
+	/// <summary>
+	/// Gets or sets an object that represents the icon control displayed in the window's title bar.
+	/// </summary>
 	public object? IconControl
 	{
 		get => GetValue(IconControlProperty);
 		set => SetValue(IconControlProperty, value);
 	}
+	/// <summary>
+	/// Gets or sets a <see cref="System.Windows.Controls.Menu" /> control that is displayed below the window's title bar.
+	/// </summary>
 	public Menu? Menu
 	{
 		get => this.GetValue<Menu?>(MenuProperty);
 		set => SetValue(MenuProperty, value);
 	}
+	/// <summary>
+	/// Gets or sets the <see cref="System.Windows.Controls.ToolBarTray" /> that is displayed below the main menu.
+	/// </summary>
 	public ToolBarTray? ToolBarTray
 	{
 		get => this.GetValue<ToolBarTray?>(ToolBarTrayProperty);
 		set => SetValue(ToolBarTrayProperty, value);
 	}
+	/// <summary>
+	/// Gets or sets the <see cref="System.Windows.Controls.Primitives.StatusBar" /> that is displayed at the bottom of the window.
+	/// </summary>
 	public StatusBar? StatusBar
 	{
 		get => this.GetValue<StatusBar?>(StatusBarProperty);
 		set => SetValue(StatusBarProperty, value);
 	}
+	/// <summary>
+	/// Gets a <see cref="bool" /> value that indicates whether the resize grip is shown in the bottom-right corner of the window.
+	/// </summary>
 	public bool ShowResizeGrip
 	{
 		get => this.GetValue<bool>(ShowResizeGripProperty);
@@ -56,6 +89,9 @@ public class UiApplicationWindow : ObservableWindow
 		ResizeModeProperty.OverrideMetadata(typeof(UiApplicationWindow), new FrameworkPropertyMetadata(ResizeMode_Changed));
 		BorderBrushProperty.OverrideMetadata(typeof(UiApplicationWindow), new FrameworkPropertyMetadata(BorderBrush_Changed));
 	}
+	/// <summary>
+	/// Initializes a new instance of the <see cref="UiApplicationWindow" /> class.
+	/// </summary>
 	public UiApplicationWindow()
 	{
 		CommandBindings.Add(new(SystemCommands.CloseWindowCommand, (sender, e) => SystemCommands.CloseWindow(this)));
@@ -66,12 +102,19 @@ public class UiApplicationWindow : ObservableWindow
 		UpdateWindowChrome();
 	}
 
+	/// <summary>
+	/// Applies the control template to this <see cref="UiApplicationWindow" />.
+	/// </summary>
 	public override void OnApplyTemplate()
 	{
 		base.OnApplyTemplate();
 
 		ResizeGrip = GetTemplateChild("PART_ResizeGrip") as ResizeGrip;
 	}
+	/// <summary>
+	/// Raises the System.Windows.Window.SourceInitialized event.
+	/// </summary>
+	/// <param name="e">An <see cref="EventArgs" /> that contains the event data.</param>
 	protected override void OnSourceInitialized(EventArgs e)
 	{
 		base.OnSourceInitialized(e);
@@ -128,9 +171,7 @@ public class UiApplicationWindow : ObservableWindow
 	}
 	private void UpdateCaptionHeight()
 	{
-		WindowChrome? windowChrome = WindowChrome.GetWindowChrome(this);
-
-		if (windowChrome != null)
+		if (WindowChrome.GetWindowChrome(this) is WindowChrome windowChrome)
 		{
 			windowChrome.CaptionHeight = (Menu, ToolBarTray) switch
 			{

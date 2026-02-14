@@ -3,6 +3,9 @@ using System.Windows.Controls.Primitives;
 
 namespace BytecodeApi.Wpf.Cui.Controls;
 
+/// <summary>
+/// Represents a toggle button control.
+/// </summary>
 public class UiToggleButton : ToggleButton
 {
 	static UiToggleButton()
