@@ -306,7 +306,7 @@
 							</cui:UiGroupBox>
 							<cui:UiGroupBox Header="ToggleSwitch" Margin="10" Padding="10">
 								<StackPanel>
-									<cui:UiToggleSwitch Content="Yes" ContentOff="No" Margin="0,0,0,5" />
+									<cui:UiToggleSwitch Content="Active" Margin="0,0,0,5" />
 									<cui:UiToggleSwitch Content="Yes" ContentOff="No" IsChecked="True" Margin="0,0,0,5" />
 									<cui:UiToggleSwitch Content="Yes" ContentOff="No" IsEnabled="False" Margin="0,0,0,5" />
 									<cui:UiToggleSwitch Content="Yes" ContentOff="No" IsChecked="True" IsEnabled="False" />

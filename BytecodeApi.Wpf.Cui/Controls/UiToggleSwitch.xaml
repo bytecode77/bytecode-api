@@ -81,6 +81,9 @@
 						<Trigger Property="IsKeyboardFocusWithin" Value="True">
 							<Setter TargetName="FocusRing" Property="Visibility" Value="Visible" />
 						</Trigger>
+						<Trigger Property="ContentOff" Value="{x:Null}">
+							<Setter TargetName="ContentOff" Property="Visibility" Value="Collapsed" />
+						</Trigger>
 						<Trigger Property="IsEnabled" Value="False">
 							<Setter Property="Foreground" Value="#757575" />
 							<Setter TargetName="Content" Property="TextElement.Foreground" Value="#757575" />
