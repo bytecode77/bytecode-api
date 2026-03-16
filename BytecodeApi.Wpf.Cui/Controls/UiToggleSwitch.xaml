@@ -15,9 +15,20 @@
 						<StackPanel Orientation="Horizontal">
 							<ContentPresenter Name="ContentOff" Content="{TemplateBinding ContentOff}" VerticalAlignment="Center" Margin="0,-1,6,1" Focusable="False" />
 							<Grid Width="28" Height="16">
-								<Border Name="Track" BorderThickness="1" BorderBrush="#bababa" Background="#f0f0f0" CornerRadius="8" SnapsToDevicePixels="True" />
-								<Border Name="TrackFill" Background="#006bbe" CornerRadius="8" Opacity="0" />
-								<Ellipse Name="Thumb" HorizontalAlignment="Left" Width="12" Height="12" Margin="1" Fill="White" StrokeThickness="0">
+								<Border Name="Track" BorderThickness="1" BorderBrush="#bababa" CornerRadius="8" SnapsToDevicePixels="True">
+									<Border.Background>
+										<SolidColorBrush x:Name="TrackBrush" Color="#f0f0f0" />
+									</Border.Background>
+								</Border>
+								<Border Name="TrackFill" CornerRadius="8" Opacity="0">
+									<Border.Background>
+										<SolidColorBrush x:Name="TrackFillBrush" Color="#006bbe" />
+									</Border.Background>
+								</Border>
+								<Ellipse Name="Thumb" HorizontalAlignment="Left" Width="12" Height="12" Margin="1" StrokeThickness="0">
+									<Ellipse.Fill>
+										<SolidColorBrush x:Name="ThumbBrush" Color="White" />
+									</Ellipse.Fill>
 									<Ellipse.RenderTransform>
 										<TranslateTransform x:Name="ThumbTranslate" X="1" />
 									</Ellipse.RenderTransform>
@@ -46,41 +57,53 @@
 								</BeginStoryboard>
 							</Trigger.ExitActions>
 						</Trigger>
-						<Trigger Property="IsMouseOver" Value="True">
-							<Trigger.EnterActions>
+						<MultiTrigger>
+							<MultiTrigger.Conditions>
+								<Condition Property="IsEnabled" Value="True" />
+								<Condition Property="IsMouseOver" Value="True" />
+							</MultiTrigger.Conditions>
+							<MultiTrigger.EnterActions>
 								<BeginStoryboard>
 									<Storyboard>
 										<ColorAnimation Storyboard.TargetName="Track" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" To="#e7e7e7" Duration="0:0:0.08" />
 									</Storyboard>
 								</BeginStoryboard>
-							</Trigger.EnterActions>
-							<Trigger.ExitActions>
+							</MultiTrigger.EnterActions>
+							<MultiTrigger.ExitActions>
 								<BeginStoryboard>
 									<Storyboard>
 										<ColorAnimation Storyboard.TargetName="Track" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" To="#f0f0f0" Duration="0:0:0.08" />
 									</Storyboard>
 								</BeginStoryboard>
-							</Trigger.ExitActions>
-						</Trigger>
-						<Trigger Property="IsPressed" Value="True">
-							<Trigger.EnterActions>
+							</MultiTrigger.ExitActions>
+						</MultiTrigger>
+						<MultiTrigger>
+							<MultiTrigger.Conditions>
+								<Condition Property="IsEnabled" Value="True" />
+								<Condition Property="IsPressed" Value="True" />
+							</MultiTrigger.Conditions>
+							<MultiTrigger.EnterActions>
 								<BeginStoryboard>
 									<Storyboard>
 										<DoubleAnimation Storyboard.TargetName="Thumb" Storyboard.TargetProperty="Opacity" To=".8" Duration="0:0:0.05" />
 									</Storyboard>
 								</BeginStoryboard>
-							</Trigger.EnterActions>
-							<Trigger.ExitActions>
+							</MultiTrigger.EnterActions>
+							<MultiTrigger.ExitActions>
 								<BeginStoryboard>
 									<Storyboard>
 										<DoubleAnimation Storyboard.TargetName="Thumb" Storyboard.TargetProperty="Opacity" To="1.0" Duration="0:0:0.05" />
 									</Storyboard>
 								</BeginStoryboard>
-							</Trigger.ExitActions>
-						</Trigger>
-						<Trigger Property="IsKeyboardFocusWithin" Value="True">
+							</MultiTrigger.ExitActions>
+						</MultiTrigger>
+						<MultiTrigger>
+							<MultiTrigger.Conditions>
+								<Condition Property="IsEnabled" Value="True" />
+								<Condition Property="IsKeyboardFocusWithin" Value="True" />
+							</MultiTrigger.Conditions>
 							<Setter TargetName="FocusRing" Property="Visibility" Value="Visible" />
-						</Trigger>
+						</MultiTrigger>
 						<Trigger Property="ContentOff" Value="{x:Null}">
 							<Setter TargetName="ContentOff" Property="Visibility" Value="Collapsed" />
 						</Trigger>
