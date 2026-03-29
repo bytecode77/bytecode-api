@@ -10,6 +10,19 @@ public class GenericRestClient : RestClient
 	/// </summary>
 	public static GenericRestClient Instance { get; }
 
+	/// <summary>
+	/// A <see cref="RestRequestOptions" /> object with options for REST requests.
+	/// </summary>
+	new public RestRequestOptions RequestOptions
+	{
+		get => base.RequestOptions;
+		set => base.RequestOptions = value;
+	}
+	/// <summary>
+	/// Gets the <see cref="System.Net.Http.HttpClient" /> that is used to process requests.
+	/// </summary>
+	new public HttpClient HttpClient => base.HttpClient;
+
 	static GenericRestClient()
 	{
 		Instance = new();

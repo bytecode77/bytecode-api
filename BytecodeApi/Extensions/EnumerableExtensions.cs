@@ -782,4 +782,32 @@ public static class EnumerableExtensions
 			action(item, i++);
 		}
 	}
+
+	/// <summary>
+	/// Creates a task that will complete when all tasks ihave completed.
+	/// </summary>
+	/// <param name="tasks">The tasks to await.</param>
+	/// <returns>
+	/// A task that represents the completion of all tasks.
+	/// </returns>
+	public static Task WhenAll(this IEnumerable<Task> tasks)
+	{
+		Check.ArgumentNull(tasks);
+
+		return Task.WhenAll(tasks);
+	}
+	/// <summary>
+	/// Creates a task that will complete when all tasks ihave completed.
+	/// </summary>
+	/// <typeparam name="TSource">The type of the tasks to await.</typeparam>
+	/// <param name="tasks">The tasks to await.</param>
+	/// <returns>
+	/// A task that represents the completion of all tasks.
+	/// </returns>
+	public static Task<TSource[]> WhenAll<TSource>(this IEnumerable<Task<TSource>> tasks)
+	{
+		Check.ArgumentNull(tasks);
+
+		return Task.WhenAll(tasks);
+	}
 }
