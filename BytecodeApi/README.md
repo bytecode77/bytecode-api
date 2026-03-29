@@ -438,6 +438,10 @@ string wrappedTo80chars = Wording.WrapText("A whole paragraph with 1000 words [.
 
 ## Changelog
 
+### 5.0.1 (29.03.2026)
+
+* * **new:** `EnumerableExtensions.WhenAll` method
+
 ### 5.0.0 (15.02.2026)
 
 * **change:** Targeting .NET 10.0
