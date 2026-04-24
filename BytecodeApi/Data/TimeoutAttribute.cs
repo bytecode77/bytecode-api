@@ -3,6 +3,7 @@
 /// <summary>
 /// Represents an attribute that specifies a timeout for an operation.
 /// </summary>
+[AttributeUsage(AttributeTargets.All)]
 public sealed class TimeoutAttribute : Attribute
 {
 	/// <summary>

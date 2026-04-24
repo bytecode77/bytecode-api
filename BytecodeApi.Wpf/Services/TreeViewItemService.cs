@@ -54,7 +54,7 @@ public static class TreeViewItemService
 				oldItem.InvalidateProperty(IsMouseDirectlyOverItemProperty);
 			}
 
-			Mouse.DirectlyOver?.RaiseEvent(new RoutedEventArgs(UpdateOverItemEvent));
+			Mouse.DirectlyOver?.RaiseEvent(new(UpdateOverItemEvent));
 		}
 	}
 	private static void OnUpdateOverItem(object sender, RoutedEventArgs e)
