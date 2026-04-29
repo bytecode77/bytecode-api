@@ -210,8 +210,8 @@ public static class OperatingSystemInfo
 				}
 				else
 				{
-					Match match = Regex.Match(result.Output, "^\\s*java version \"(.+)\"");
-					field = match.Success ? match.Groups[1].Value : "";
+					Match match = Regex.Match(result.Output, "^\\s*(java|openjdk) version \"(?<Version>.+)\"");
+					field = match.Success ? match.Groups["Version"].Value : "";
 				}
 			}
 
