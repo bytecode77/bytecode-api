@@ -1,4 +1,4 @@
-﻿using Microsoft.Win32;
+using Microsoft.Win32;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Text;
@@ -11,9 +11,9 @@ namespace BytecodeApi.Wpf.Dialogs;
 public sealed class IconPickerDialog : CommonDialog
 {
 	/// <summary>
-	/// Gets a <see cref="string" /> containing the full path of the selected file.
+	/// Gets or sets a <see cref="string" /> containing the full path of the selected file.
 	/// </summary>
-	public string? FileName { get; private set; }
+	public string? FileName { get; set; }
 	/// <summary>
 	/// Gets a <see cref="int" /> value specifying the selected icon index.
 	/// </summary>
