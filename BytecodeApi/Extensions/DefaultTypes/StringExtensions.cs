@@ -34,26 +34,26 @@ public static class StringExtensions
 	{
 		return string.IsNullOrWhiteSpace(str);
 	}
-	/// <summary> 
-	/// Returns <see langword="null" />, if this <see cref="string" /> is <see cref="string.Empty" />, otherwise, its original value. 
-	/// </summary> 
-	/// <param name="str">The <see cref="string" /> to convert.</param> 
-	/// <returns> 
-	/// <see langword="null" />, if this <see cref="string" /> is <see cref="string.Empty" />; 
-	/// otherwise, its original value. 
-	/// </returns> 
+	/// <summary>
+	/// Returns <see langword="null" />, if this <see cref="string" /> is <see cref="string.Empty" />, otherwise, its original value.
+	/// </summary>
+	/// <param name="str">The <see cref="string" /> to convert.</param>
+	/// <returns>
+	/// <see langword="null" />, if this <see cref="string" /> is <see cref="string.Empty" />;
+	/// otherwise, its original value.
+	/// </returns>
 	public static string? ToNullIfEmpty(this string? str)
 	{
 		return str.IsNullOrEmpty() ? null : str;
 	}
-	/// <summary> 
-	/// Returns <see langword="null" />, if this <see cref="string" /> is <see cref="string.Empty" />, or consists only of white-space characters, otherwise, its original value. 
-	/// </summary> 
-	/// <param name="str">The <see cref="string" /> to convert.</param> 
-	/// <returns> 
-	/// <see langword="null" />, if this <see cref="string" /> is <see cref="string.Empty" />, or consists only of white-space characters; 
-	/// otherwise, its original value. 
-	/// </returns> 
+	/// <summary>
+	/// Returns <see langword="null" />, if this <see cref="string" /> is <see cref="string.Empty" />, or consists only of white-space characters, otherwise, its original value.
+	/// </summary>
+	/// <param name="str">The <see cref="string" /> to convert.</param>
+	/// <returns>
+	/// <see langword="null" />, if this <see cref="string" /> is <see cref="string.Empty" />, or consists only of white-space characters;
+	/// otherwise, its original value.
+	/// </returns>
 	public static string? ToNullIfEmptyOrWhiteSpace(this string? str)
 	{
 		return str.IsNullOrWhiteSpace() ? null : str;
