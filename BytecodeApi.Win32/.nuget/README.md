@@ -8,6 +8,10 @@ See: [Examples](https://github.com/bytecode77/bytecode-api/blob/master/BytecodeA
 
 ## Changelog
 
+### 5.0.1 (07.07.2026)
+
+* **bugfix:** `OperatingSystemInfo.JavaVersion` did not recognize OpenJDK.
+
 ### 5.0.0 (15.02.2026)
 
 * **change:** Targeting .NET 10.0
