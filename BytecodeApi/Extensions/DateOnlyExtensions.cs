@@ -48,7 +48,7 @@ public static class DateOnlyExtensions
 			if (Math.Min(a.Day, b.GetDaysInMonth()) - 1 == b.Day)
 			{
 				// Full month with 1 day offset (e.g. 16.03. - 15.06.)
-				// This includes "end of month days" (e.g. 30.01. - 27.02. is two full months)
+				// This includes "end of month days" (e.g. 30.01. - 28.02. is two full months)
 				difference = GetMonthsDifference(a, b);
 			}
 			else
@@ -76,7 +76,7 @@ public static class DateOnlyExtensions
 		/// <summary>
 		/// Calculates the age from a birthday.
 		/// </summary>
-		/// <param name="birthday">A <see cref="DateOnly" /> value representing the birhtday to calculate the age from.</param>
+		/// <param name="birthday">A <see cref="DateOnly" /> value representing the birthday to calculate the age from.</param>
 		/// <returns>
 		/// An equivalent <see cref="int" /> value representing an age, calculated from <paramref name="birthday" />.
 		/// </returns>
@@ -87,7 +87,7 @@ public static class DateOnlyExtensions
 		/// <summary>
 		/// Calculates the age from a birthday at a specified point in time.
 		/// </summary>
-		/// <param name="birthday">A <see cref="DateOnly" /> value representing the birhtday to calculate the age from.</param>
+		/// <param name="birthday">A <see cref="DateOnly" /> value representing the birthday to calculate the age from.</param>
 		/// <param name="now">A <see cref="DateOnly" /> value representing the current date. This is usually <see cref="DateTime.Now" />.</param>
 		/// <returns>
 		/// An equivalent <see cref="int" /> value representing an age, calculated from <paramref name="birthday" /> and <paramref name="now" />.
@@ -227,6 +227,19 @@ public static class DateOnlyExtensions
 			return dateOnly;
 		}
 		/// <summary>
+		/// Determines whether the specified <see cref="DateOnly" /> is equal to this instance. The <paramref name="part" /> parameter specifies which fraction is considered during comparison.
+		/// </summary>
+		/// <param name="other">A <see cref="DateOnly" /> to compare with this <see cref="DateOnly" />.</param>
+		/// <param name="part">The <see cref="DateOnlyPart" /> specifying, which fraction is considered during comparison.</param>
+		/// <returns>
+		/// <see langword="true" />, if the specified <see cref="DateOnly" /> is equal to this instance;
+		/// otherwise, <see langword="false" />.
+		/// </returns>
+		public bool Equals(DateOnly other, DateOnlyPart part)
+		{
+			return dateOnly.GetPart(part) == other.GetPart(part);
+		}
+		/// <summary>
 		/// Compares the value of this <see cref="DateOnly" /> instance to a specified <see cref="DateOnly" /> value and returns an integer that indicates whether this instance is earlier than, the same as, or later than the specified <see cref="DateOnly" /> value. The <paramref name="part" /> parameter specifies which fraction is considered during comparison.
 		/// </summary>
 		/// <param name="other">A <see cref="DateOnly" /> to compare with this <see cref="DateOnly" />.</param>
@@ -292,13 +305,14 @@ public static class DateOnlyExtensions
 			{
 				dateOnly = dateOnly.AddDays(-1);
 			}
+
 			return dateOnly;
 		}
 		/// <summary>
 		/// Returns a <see cref="DateTime" /> from this <see cref="DateOnly" /> value.
 		/// </summary>
 		/// <returns>
-		/// The converted <see cref="DateOnly" /> value.
+		/// The converted <see cref="DateTime" /> value.
 		/// </returns>
 		public DateTime ToDateTime()
 		{

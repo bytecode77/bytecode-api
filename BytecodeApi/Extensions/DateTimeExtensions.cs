@@ -1,4 +1,4 @@
-﻿using System.Globalization;
+using System.Globalization;
 
 namespace BytecodeApi.Extensions;
 
@@ -63,7 +63,7 @@ public static class DateTimeExtensions
 			return FromUnixTimeStamp(seconds, DateTimeKind.Unspecified);
 		}
 		/// <summary>
-		/// Converts a <see cref="int" /> value representing a unix time stamp to a <see cref="DateTime" /> object, using the specified <see cref="DateTimeKind" />.
+		/// Converts a <see cref="int" /> value representing a unix time stamp to a <see cref="DateTime" /> object.
 		/// </summary>
 		/// <param name="seconds">The seconds starting from 01.01.1970 00:00:00.</param>
 		/// <param name="kind">The <see cref="DateTimeKind" /> to be used for creation of the <see cref="DateTime" /> object.</param>
@@ -75,7 +75,7 @@ public static class DateTimeExtensions
 			return new DateTime(1970, 1, 1, 0, 0, 0, kind).AddSeconds(seconds);
 		}
 		/// <summary>
-		/// Converts a <see cref="DateTime" /> value to its equivalent unix time stamp represented as a <see cref="int" /> value, using the specified <see cref="DateTimeKind" />. If <paramref name="dateTime" /> is out of bounds of the unix epoch, <see langword="null" /> is returned.
+		/// Converts a <see cref="DateTime" /> value to its equivalent unix time stamp represented as a <see cref="int" /> value. If <paramref name="dateTime" /> is out of bounds of the unix epoch, <see langword="null" /> is returned.
 		/// </summary>
 		/// <param name="dateTime">The <see cref="DateTime" /> object which is converted to its equivalent unix time stamp representation.</param>
 		/// <returns>
@@ -87,7 +87,7 @@ public static class DateTimeExtensions
 			return ToUnixTimeStamp(dateTime, DateTimeKind.Unspecified);
 		}
 		/// <summary>
-		/// Converts a <see cref="DateTime" /> value to its equivalent unix time stamp represented as a <see cref="int" /> value, using the <see cref="DateTimeKind.Unspecified" /> kind. If <paramref name="dateTime" /> is out of bounds of the unix epoch, <see langword="null" /> is returned.
+		/// Converts a <see cref="DateTime" /> value to its equivalent unix time stamp represented as a <see cref="int" /> value. If <paramref name="dateTime" /> is out of bounds of the unix epoch, <see langword="null" /> is returned.
 		/// </summary>
 		/// <param name="dateTime">The <see cref="DateTime" /> object which is converted to its equivalent unix time stamp representation.</param>
 		/// <param name="kind">The <see cref="DateTimeKind" /> to be used for conversion of the <see cref="DateTime" /> object.</param>
@@ -98,36 +98,30 @@ public static class DateTimeExtensions
 		public static int? ToUnixTimeStamp(DateTime dateTime, DateTimeKind kind)
 		{
 			double seconds = (dateTime - new DateTime(1970, 1, 1, 0, 0, 0, kind)).TotalSeconds;
-			return seconds is > 0 and <= int.MaxValue ? (int)seconds : null;
+			return seconds is >= 0 and <= int.MaxValue ? (int)seconds : null;
 		}
 		/// <summary>
 		/// Calculates the age from a birthday.
 		/// </summary>
-		/// <param name="birthday">A <see cref="DateTime" /> value representing the birhtday to calculate the age from.</param>
+		/// <param name="birthday">A <see cref="DateTime" /> value representing the birthday to calculate the age from.</param>
 		/// <returns>
 		/// An equivalent <see cref="int" /> value representing an age, calculated from <paramref name="birthday" />.
 		/// </returns>
 		public static int CalculateAgeFromBirthday(DateTime birthday)
 		{
-			return CalculateAgeFromBirthday(birthday, DateTime.Now);
+			return DateOnly.CalculateAgeFromBirthday(birthday.ToDateOnly());
 		}
 		/// <summary>
 		/// Calculates the age from a birthday at a specified point in time.
 		/// </summary>
-		/// <param name="birthday">A <see cref="DateTime" /> value representing the birhtday to calculate the age from.</param>
+		/// <param name="birthday">A <see cref="DateTime" /> value representing the birthday to calculate the age from.</param>
 		/// <param name="now">A <see cref="DateTime" /> value representing the current time stamp. This is usually <see cref="DateTime.Now" />.</param>
 		/// <returns>
 		/// An equivalent <see cref="int" /> value representing an age, calculated from <paramref name="birthday" /> and <paramref name="now" />.
 		/// </returns>
 		public static int CalculateAgeFromBirthday(DateTime birthday, DateTime now)
 		{
-			int age = now.Year - birthday.Year;
-			if (now < birthday.AddYears(age))
-			{
-				age--;
-			}
-
-			return age;
+			return DateOnly.CalculateAgeFromBirthday(birthday.ToDateOnly(), now.ToDateOnly());
 		}
 	}
 
@@ -335,6 +329,7 @@ public static class DateTimeExtensions
 			{
 				dateTime = dateTime.AddDays(-1);
 			}
+
 			return dateTime.Date;
 		}
 		/// <summary>

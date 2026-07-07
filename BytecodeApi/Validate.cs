@@ -1,5 +1,6 @@
 ﻿using BytecodeApi.Extensions;
 using System.ComponentModel.DataAnnotations;
+using System.Net.Mail;
 using System.Text.RegularExpressions;
 
 namespace BytecodeApi;
@@ -188,7 +189,33 @@ public static class Validate
 	/// </returns>
 	public static bool Url([NotNullWhen(true)] string? str)
 	{
-		return Uri.TryCreate(str, UriKind.Absolute, out Uri? result) && result.Scheme is "http" or "https";
+		return Uri.TryCreate(str, UriKind.Absolute, out Uri? uri) && uri.Scheme is "http" or "https";
+	}
+	/// <summary>
+	/// Validates a <see cref="string" /> that is a website (with or without http(s):// or www.)
+	/// </summary>
+	/// <param name="str">The <see cref="string" /> to be validated.</param>
+	/// <returns>
+	/// <see langword="true" />, if validation of <paramref name="str" /> succeeded;
+	/// otherwise, <see langword="false" />.
+	/// </returns>
+	public static bool Website([NotNullWhen(true)] string? str)
+	{
+		if (str.IsNullOrWhiteSpace())
+		{
+			return false;
+		}
+
+		if (!str.Contains("://"))
+		{
+			str = $"http://{str}";
+		}
+
+		return
+			Uri.TryCreate(str, UriKind.Absolute, out Uri? uri) &&
+			Uri.CheckHostName(uri.Host) == UriHostNameType.Dns &&
+			uri.Scheme.ToLower() is "http" or "https" &&
+			uri.Host.TrimStartString("www.").Contains('.');
 	}
 	/// <summary>
 	/// Validates a <see cref="string" /> that is an email address.
@@ -200,7 +227,10 @@ public static class Validate
 	/// </returns>
 	public static bool EmailAddress([NotNullWhen(true)] string? str)
 	{
-		return str != null && new EmailAddressAttribute().IsValid(str);
+		return
+			MailAddress.TryCreate(str, out MailAddress? mailAddress) &&
+			mailAddress.Address == str && // John Doe <foo@example.com> might still be parsed as valid email address!
+			mailAddress.Host.Contains('.');
 	}
 	/// <summary>
 	/// Validates a <see cref="string" /> that is an <see cref="System.Net.IPAddress" />. Both IPv4 and IPv6 values are validated.

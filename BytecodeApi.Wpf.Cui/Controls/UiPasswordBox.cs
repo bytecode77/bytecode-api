@@ -32,11 +32,11 @@ public class UiPasswordBox : Control
 	/// <summary>
 	/// Identifies the <see cref="UiPasswordBox" />.CopyPassword dependency property. This field is read-only.
 	/// </summary>
-	public static readonly RoutedUICommand CopyPasswordCommand = new RoutedUICommand("Copy Password", "CopyPassword", typeof(UiPasswordBox), [new KeyGesture(Key.C, ModifierKeys.Control)]);
+	public static readonly RoutedUICommand CopyPasswordCommand = new("Copy Password", "CopyPassword", typeof(UiPasswordBox), [new KeyGesture(Key.C, ModifierKeys.Control)]);
 	/// <summary>
 	/// Identifies the <see cref="UiPasswordBox" />.CutPassword dependency property. This field is read-only.
 	/// </summary>
-	public static readonly RoutedUICommand CutPasswordCommand = new RoutedUICommand("Cut Password", "CutPassword", typeof(UiPasswordBox), [new KeyGesture(Key.C, ModifierKeys.Control)]);
+	public static readonly RoutedUICommand CutPasswordCommand = new("Cut Password", "CutPassword", typeof(UiPasswordBox), [new KeyGesture(Key.C, ModifierKeys.Control)]);
 	private static readonly DependencyPropertyKey PreviewPasswordPropertyKey = DependencyProperty.RegisterReadOnly(nameof(PreviewPassword), new FrameworkPropertyMetadata(false));
 	/// <summary>
 	/// Identifies the <see cref="PreviewPassword" /> dependency property. This field is read-only.

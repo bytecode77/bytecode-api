@@ -142,7 +142,7 @@ internal static class Check
 		[DebuggerHidden, MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void StringNotEmptyOrWhiteSpace(string parameter, [CallerArgumentExpression(nameof(parameter))] string? parameterName = null)
 		{
-			if (parameter == "" || parameter.Any(char.IsWhiteSpace))
+			if (parameter != null && string.IsNullOrWhiteSpace(parameter))
 			{
 				throw new ArgumentException(ExceptionMessages.Argument.StringNotEmptyOrWhiteSpace, parameterName);
 			}
@@ -185,6 +185,14 @@ internal static class Check
 			if (parameter.Any(itm => itm == ""))
 			{
 				throw new ArgumentException(ExceptionMessages.Argument.ArrayValuesNotStringEmpty, parameterName);
+			}
+		}
+		[DebuggerHidden, MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void ArrayValuesNotStringEmptyOrWhiteSpace(IEnumerable<string> parameter, [CallerArgumentExpression(nameof(parameter))] string? parameterName = null)
+		{
+			if (parameter.Any(itm => itm != null && string.IsNullOrWhiteSpace(itm)))
+			{
+				throw new ArgumentException(ExceptionMessages.Argument.ArrayValuesNotStringEmptyOrWhiteSpace, parameterName);
 			}
 		}
 		[DebuggerHidden, MethodImpl(MethodImplOptions.AggressiveInlining)]

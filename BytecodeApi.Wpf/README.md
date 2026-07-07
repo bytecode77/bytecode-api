@@ -249,6 +249,10 @@ if (FileDialogs.OpenFolder(@"C:\path\to\directory") is string directory)
 
 ## Changelog
 
+### 5.1.0 (07.07.2026)
+
+* **change:** `FileDialogs` class reworked to a fluent builder, allowing for more diverse scenarios.
+
 ### 5.0.1 (29.03.2026)
 
 * **new:** `TimeOnlyConverter` class

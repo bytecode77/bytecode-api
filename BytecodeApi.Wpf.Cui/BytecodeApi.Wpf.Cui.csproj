@@ -43,23 +43,7 @@
 		<None Include="..\.nuget\PackageIcon.png" Link=".nuget\PackageIcon.png" Pack="true" PackagePath=".nuget\" />
 	</ItemGroup>
 	<ItemGroup>
-		<None Remove="Resources\Icons\Calendar.svg" />
-		<None Remove="Resources\Icons\Cancel.svg" />
-		<None Remove="Resources\Icons\Copy.svg" />
-		<None Remove="Resources\Icons\Cut.svg" />
-		<None Remove="Resources\Icons\PasswordPreview.svg" />
-		<None Remove="Resources\Icons\Paste.svg" />
-		<None Remove="Resources\Icons\Redo.svg" />
-		<None Remove="Resources\Icons\Undo.svg" />
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Resources\Icons\Calendar.svg" />
-		<Resource Include="Resources\Icons\Cancel.svg" />
-		<Resource Include="Resources\Icons\Copy.svg" />
-		<Resource Include="Resources\Icons\Cut.svg" />
-		<Resource Include="Resources\Icons\PasswordPreview.svg" />
-		<Resource Include="Resources\Icons\Paste.svg" />
-		<Resource Include="Resources\Icons\Redo.svg" />
-		<Resource Include="Resources\Icons\Undo.svg" />
+		<None Remove="Resources\Icons\**\*.svg" />
+		<Resource Include="Resources\Icons\**\*.svg" />
 	</ItemGroup>
 </Project>

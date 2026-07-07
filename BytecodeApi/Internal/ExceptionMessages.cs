@@ -17,6 +17,7 @@ internal static class ExceptionMessages
 		public const string EnumerableElementsRequired = "Sequence contains no elements.";
 		public const string ArrayValuesNotNull = "Array must not contain null values.";
 		public const string ArrayValuesNotStringEmpty = "Array must not contain empty strings.";
+		public const string ArrayValuesNotStringEmptyOrWhiteSpace = "Array must not contain empty or whitespace strings.";
 		public const string InvalidHandle = "Invalid handle.";
 	}
 	public static class ArgumentOutOfRange
