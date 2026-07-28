@@ -38,6 +38,10 @@ public static class WindowService
 	/// </summary>
 	public static readonly DependencyProperty IsAcrylicEnabledProperty = DependencyProperty.RegisterAttached<Window, bool>("IsAcrylicEnabled", new FrameworkPropertyMetadata(IsAcrylicEnabled_Changed));
 	/// <summary>
+	/// Identifies the <see cref="WindowService" />.DisableTransitions dependency property. This field is read-only.
+	/// </summary>
+	public static readonly DependencyProperty DisableTransitionsProperty = DependencyProperty.RegisterAttached<Window, bool>("DisableTransitions", new FrameworkPropertyMetadata(DisableTransitions_Changed));
+	/// <summary>
 	/// Gets a <see cref="bool" /> value indicating whether this <see cref="Window" /> displays an icon.
 	/// </summary>
 	/// <param name="dependencyObject">The <see cref="Window" /> to check.</param>
@@ -186,6 +190,31 @@ public static class WindowService
 
 		dependencyObject.SetValue(IsAcrylicEnabledProperty, value);
 	}
+	/// <summary>
+	/// Gets a <see cref="bool" /> value indicating whether transitions of this <see cref="Window" /> are disabled.
+	/// </summary>
+	/// <param name="dependencyObject">The <see cref="Window" /> to check.</param>
+	/// <returns>
+	/// <see langword="true" />, if transitions are disabled;
+	/// <see langword="false" />, if transitions are enabled.
+	/// </returns>
+	public static bool GetDisableTransitions(DependencyObject dependencyObject)
+	{
+		Check.ArgumentNull(dependencyObject);
+
+		return dependencyObject.GetValue<bool>(DisableTransitionsProperty);
+	}
+	/// <summary>
+	/// Enables or disables transitions on this <see cref="Window" />.
+	/// </summary>
+	/// <param name="dependencyObject">The <see cref="Window" /> to enable or disable transitions on.</param>
+	/// <param name="value"><see langword="true" /> to disable transitions; <see langword="false" /> to enable transitions.</param>
+	public static void SetDisableTransitions(DependencyObject dependencyObject, bool value)
+	{
+		Check.ArgumentNull(dependencyObject);
+
+		dependencyObject.SetValue(DisableTransitionsProperty, value);
+	}
 
 	private static void ShowIcon_Changed(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
 	{
@@ -279,6 +308,17 @@ public static class WindowService
 				{
 					throw Throw.Win32("SetWindowCompositionAttribute failed.");
 				}
+			});
+		}
+	}
+	private static void DisableTransitions_Changed(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
+	{
+		if (dependencyObject is Window window)
+		{
+			ApplyWindowChange(window, handle =>
+			{
+				uint disableTransitions = GetDisableTransitions(dependencyObject) ? 1u : 0u;
+				Native.DwmSetWindowAttribute(handle, 3, ref disableTransitions, sizeof(int));
 			});
 		}
 	}
