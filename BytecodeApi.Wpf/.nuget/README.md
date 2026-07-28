@@ -8,6 +8,10 @@ See: [Examples](https://github.com/bytecode77/bytecode-api/blob/master/BytecodeA
 
 ## Changelog
 
+### 5.1.1 (28.07.2026)
+
+* **new:** `WindowService.DisableTransitions` property
+
 ### 5.1.0 (07.07.2026)
 
 * **change:** `FileDialogs` class reworked to a fluent builder, allowing for more diverse scenarios.
