@@ -11,6 +11,11 @@ public sealed class IniFileFormattingOptions
 	/// </summary>
 	public IniPropertyDelimiter PropertyDelimiter { get; set; }
 	/// <summary>
+	/// <see langword="true" /> to omit the delimiter when the property value is empty; <see langword="false" /> to always write the delimiter.
+	/// <para>The default value is <see langword="false" />.</para>
+	/// </summary>
+	public bool OmitDelimiterForEmptyValues { get; set; }
+	/// <summary>
 	/// <see langword="true" /> to use a space before the delimiter; <see langword="false" /> to append the delimiter directly after the property name.
 	/// <para>The default value is <see langword="true" />.</para>
 	/// </summary>
