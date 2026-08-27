@@ -133,6 +133,12 @@ iniFile.Save(@"C:\path\to\file.ini", Encoding.UTF8, formattingOptions);
 
 ## Changelog
 
+### 5.0.1 (27.08.2026)
+
+* **new:** `IniFile.FromString` method
+* **new:** `IniFileFormattingOptions.OmitDelimiterForEmptyValues` property
+* **new:** `IniFileParsingOptions.AllowEmptyValues` property
+
 ### 5.0.0 (15.02.2026)
 
 * **change:** Targeting .NET 10.0

@@ -90,6 +90,10 @@ The configured formats are used in `RestRequest.QueryParameter`.
 
 ## Changelog
 
+### 5.0.2 (27.08.2026)
+
+* **new:** `GenericRestClient` constructor with `baseUrl`
+
 ### 5.0.1 (29.03.2026)
 
 * **new:** `GenericRestClient` class exposes `RequestOptions` and `HttpClient`

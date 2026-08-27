@@ -8,6 +8,10 @@ See: [Examples](https://github.com/bytecode77/bytecode-api/blob/master/BytecodeA
 
 ## Changelog
 
+### 5.0.2 (27.08.2026)
+
+* **new:** `GenericRestClient` constructor with `baseUrl`
+
 ### 5.0.1 (29.03.2026)
 
 * **new:** `GenericRestClient` class exposes `RequestOptions` and `HttpClient`
