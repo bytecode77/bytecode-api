@@ -30,7 +30,14 @@ public class GenericRestClient : RestClient
 	/// <summary>
 	/// Initializes a new instance of the <see cref="GenericRestClient" /> class.
 	/// </summary>
-	public GenericRestClient() : base("")
+	public GenericRestClient() : this("")
+	{
+	}
+	/// <summary>
+	/// Initializes a new instance of the <see cref="GenericRestClient" /> class.
+	/// </summary>
+	/// <param name="baseUrl">The base URL of the REST service. Trailing slashes will be removed.</param>
+	public GenericRestClient(string baseUrl) : base(baseUrl)
 	{
 	}
 

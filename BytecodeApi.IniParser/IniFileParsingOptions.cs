@@ -46,6 +46,11 @@ public sealed class IniFileParsingOptions
 	/// </summary>
 	public IniPropertyDelimiter PropertyDelimiter { get; set; }
 	/// <summary>
+	/// <see langword="true" /> to allow properties with no values (only a name); <see langword="false" /> to throw an <see cref="IniParsingException" />.
+	/// <para>The default value is <see langword="false" />.</para>
+	/// </summary>
+	public bool AllowEmptyValues { get; set; }
+	/// <summary>
 	/// <see langword="true" /> to ignore lines that start with a semicolon; <see langword="false" /> to treat it as a normal character, which will be included in the property name.
 	/// <para>The default value is <see langword="true" />.</para>
 	/// </summary>

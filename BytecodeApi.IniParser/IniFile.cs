@@ -111,6 +111,31 @@ public class IniFile
 		return FromStream(memoryStream, encoding, parsingOptions);
 	}
 	/// <summary>
+	/// Creates an <see cref="IniFile" /> object from the specified <see cref="string" /> that represents the contents of an INI file.
+	/// </summary>
+	/// <param name="ini">The <see cref="string" /> that represents the contents of an INI file to read from.</param>
+	/// <returns>
+	/// The <see cref="IniFile" /> this method creates.
+	/// </returns>
+	public static IniFile FromString(string ini)
+	{
+		return FromString(ini, null);
+	}
+	/// <summary>
+	/// Creates an <see cref="IniFile" /> object from the specified <see cref="string" /> that represents the contents of an INI file.
+	/// </summary>
+	/// <param name="ini">The <see cref="string" /> that represents the contents of an INI file to read from.</param>
+	/// <param name="parsingOptions">A <see cref="IniFileParsingOptions" /> object with format specifications for INI parsing, or <see langword="null" /> to use default parsing options.</param>
+	/// <returns>
+	/// The <see cref="IniFile" /> this method creates.
+	/// </returns>
+	public static IniFile FromString(string ini, IniFileParsingOptions? parsingOptions)
+	{
+		Check.ArgumentNull(ini);
+
+		return FromBinary(ini.ToUTF8Bytes(), Encoding.UTF8, parsingOptions);
+	}
+	/// <summary>
 	/// Creates an <see cref="IniFile" /> object from the specified <see cref="Stream" />.
 	/// </summary>
 	/// <param name="stream">The <see cref="Stream" /> from which to parse the INI file from.</param>
@@ -242,6 +267,10 @@ public class IniFile
 			{
 				ParseProperty(":");
 			}
+			else if (parsingOptions.AllowEmptyValues)
+			{
+				ParseProperty(null);
+			}
 			else
 			{
 				Abort();
@@ -265,13 +294,15 @@ public class IniFile
 					Abort();
 				}
 			}
-			void ParseProperty(string delimiter)
+			void ParseProperty(string? delimiter)
 			{
 				if (!ignoreSection)
 				{
 					AbortIf(!parsingOptions.AllowGlobalProperties && section == ini.GlobalProperties);
 
-					IniProperty property = new(line.SubstringUntil(delimiter), line.SubstringFrom(delimiter));
+					IniProperty property = delimiter != null
+						? new(line.SubstringUntil(delimiter), line.SubstringFrom(delimiter))
+						: new(line, "");
 
 					if (parsingOptions.TrimPropertyNames)
 					{
@@ -448,8 +479,53 @@ public class IniFile
 
 			foreach (IniProperty property in section.Properties)
 			{
-				streamWriter.WriteLine(property.Name + delimiter + property.Value);
+				if (property.Value.IsNullOrEmpty() && formattingOptions.OmitDelimiterForEmptyValues)
+				{
+					streamWriter.WriteLine(property.Name);
+				}
+				else
+				{
+					streamWriter.WriteLine(property.Name + delimiter + property.Value);
+				}
 			}
 		}
+	}
+	/// <summary>
+	/// Converts this <see cref="IniFile" /> to its <see cref="byte" />[] representation.
+	/// </summary>
+	/// <returns>
+	/// A new <see cref="byte" />[] representing this <see cref="IniFile" />.
+	/// </returns>
+	public byte[] Save()
+	{
+		return Save(Encoding.UTF8);
+	}
+	/// <summary>
+	/// Converts this <see cref="IniFile" /> to its <see cref="byte" />[] representation.
+	/// </summary>
+	/// <param name="encoding">The encoding to use to write to the file.</param>
+	/// <returns>
+	/// A new <see cref="byte" />[] representing this <see cref="IniFile" />.
+	/// </returns>
+	public byte[] Save(Encoding encoding)
+	{
+		return Save(encoding, null);
+	}
+	/// <summary>
+	/// Converts this <see cref="IniFile" /> to its <see cref="byte" />[] representation.
+	/// </summary>
+	/// <param name="encoding">The encoding to use to write to the file.</param>
+	/// <param name="formattingOptions">An <see cref="IniFileFormattingOptions" /> object specifying how to format the INI file.</param>
+	/// <returns>
+	/// A new <see cref="byte" />[] representing this <see cref="IniFile" />.
+	/// </returns>
+	public byte[] Save(Encoding encoding, IniFileFormattingOptions? formattingOptions)
+	{
+		Check.ArgumentNull(encoding);
+
+		using MemoryStream memoryStream = new();
+		Save(memoryStream, encoding, formattingOptions);
+
+		return memoryStream.ToArray();
 	}
 }
