@@ -318,5 +318,16 @@ public static class DateOnlyExtensions
 		{
 			return dateOnly.ToDateTime(default);
 		}
+		/// <summary>
+		/// Returns a <see cref="DateTime" /> from this <see cref="DateOnly" /> value.
+		/// </summary>
+		/// <param name="kind">The <see cref="DateTimeKind" /> to be used for creation of the <see cref="DateTime" /> object.</param>
+		/// <returns>
+		/// The converted <see cref="DateTime" /> value.
+		/// </returns>
+		public DateTime ToDateTime(DateTimeKind kind)
+		{
+			return dateOnly.ToDateTime(default, kind);
+		}
 	}
 }
