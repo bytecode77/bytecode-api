@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Windows.Forms;
 
 namespace BytecodeApi.Win32.Interop;
@@ -5,7 +6,7 @@ namespace BytecodeApi.Win32.Interop;
 /// <summary>
 /// Provides data for the <see cref="GlobalKeyboardHook.KeyPressed" /> event.
 /// </summary>
-public sealed class KeyboardHookEventArgs : EventArgs
+public sealed class KeyboardHookEventArgs : HandledEventArgs
 {
 	/// <summary>
 	/// Gets the keycode of the pressed key.
@@ -19,10 +20,6 @@ public sealed class KeyboardHookEventArgs : EventArgs
 	/// Gets the key character, or '\0', if the key does not represent a printable character.
 	/// </summary>
 	public char KeyChar { get; }
-	/// <summary>
-	/// Gets or sets a <see cref="bool" /> value indicating whether to cancel the keyboard event.
-	/// </summary>
-	public bool Handled { get; set; }
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="KeyboardHookEventArgs" /> class.
