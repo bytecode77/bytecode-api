@@ -1,4 +1,5 @@
 using System.Collections;
+using System.ComponentModel;
 
 namespace BytecodeApi.Extensions;
 
@@ -627,6 +628,79 @@ public static class EnumerableExtensions
 		return first.Union([second], comparer);
 	}
 	/// <summary>
+	/// Sorts the elements of a sequence in ascending or descending order, depending on the specified <see cref="ListSortDirection" />.
+	/// </summary>
+	/// <typeparam name="TSource">The type of the elements of <paramref name="source" />.</typeparam>
+	/// <param name="source">A sequence of values to sort.</param>
+	/// <param name="direction">Specifies the direction to sort (ascending or descending).</param>
+	/// <returns>
+	/// An <see cref="IOrderedEnumerable{T}" /> whose elements are sorted according to the specified direction.
+	/// </returns>
+	public static IOrderedEnumerable<TSource> Order<TSource>(this IEnumerable<TSource> source, ListSortDirection direction)
+	{
+		return source.Order(direction, null);
+	}
+	/// <summary>
+	/// Sorts the elements of a sequence in ascending or descending order, depending on the specified <see cref="ListSortDirection" />.
+	/// </summary>
+	/// <typeparam name="TSource">The type of the elements of <paramref name="source" />.</typeparam>
+	/// <param name="source">A sequence of values to sort.</param>
+	/// <param name="direction">Specifies the direction to sort (ascending or descending).</param>
+	/// <param name="comparer">An <see cref="IComparer{T}" /> to compare the elements.</param>
+	/// <returns>
+	/// An <see cref="IOrderedEnumerable{T}" /> whose elements are sorted according to the specified direction.
+	/// </returns>
+	public static IOrderedEnumerable<TSource> Order<TSource>(this IEnumerable<TSource> source, ListSortDirection direction, IComparer<TSource>? comparer)
+	{
+		Check.ArgumentNull(source);
+
+		return direction switch
+		{
+			ListSortDirection.Ascending => source.Order(comparer),
+			ListSortDirection.Descending => source.OrderDescending(comparer),
+			_ => throw Throw.InvalidEnumArgument(nameof(direction), direction),
+		};
+	}
+	/// <summary>
+	/// Sorts the elements of a sequence in ascending or descending order, depending on the specified <see cref="ListSortDirection" />.
+	/// </summary>
+	/// <typeparam name="TSource">The type of the elements of <paramref name="source" />.</typeparam>
+	/// <typeparam name="TKey">The type of the key returned by <paramref name="keySelector" />.</typeparam>
+	/// <param name="source">A sequence of values to sort.</param>
+	/// <param name="keySelector">A function to extract a key from an element.</param>
+	/// <param name="direction">Specifies the direction to sort (ascending or descending).</param>
+	/// <returns>
+	/// An <see cref="IOrderedEnumerable{T}" /> whose elements are sorted according to the specified direction.
+	/// </returns>
+	public static IOrderedEnumerable<TSource> OrderBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, ListSortDirection direction)
+	{
+		return source.OrderBy(keySelector, direction, null);
+	}
+	/// <summary>
+	/// Sorts the elements of a sequence in ascending or descending order, depending on the specified <see cref="ListSortDirection" />.
+	/// </summary>
+	/// <typeparam name="TSource">The type of the elements of <paramref name="source" />.</typeparam>
+	/// <typeparam name="TKey">The type of the key returned by <paramref name="keySelector" />.</typeparam>
+	/// <param name="source">A sequence of values to sort.</param>
+	/// <param name="keySelector">A function to extract a key from an element.</param>
+	/// <param name="direction">Specifies the direction to sort (ascending or descending).</param>
+	/// <param name="comparer">An <see cref="IComparer{T}" /> to compare keys, or <see langword="null" /> to use the default comparer.</param>
+	/// <returns>
+	/// An <see cref="IOrderedEnumerable{T}" /> whose elements are sorted according to the specified direction.
+	/// </returns>
+	public static IOrderedEnumerable<TSource> OrderBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, ListSortDirection direction, IComparer<TKey>? comparer)
+	{
+		Check.ArgumentNull(source);
+		Check.ArgumentNull(keySelector);
+
+		return direction switch
+		{
+			ListSortDirection.Ascending => source.OrderBy(keySelector, comparer),
+			ListSortDirection.Descending => source.OrderByDescending(keySelector, comparer),
+			_ => throw Throw.InvalidEnumArgument(nameof(direction), direction),
+		};
+	}
+	/// <summary>
 	/// Randomizes the order of the elements of a sequence.
 	/// </summary>
 	/// <typeparam name="TSource">The type of the elements of <paramref name="source" />.</typeparam>
@@ -634,7 +708,7 @@ public static class EnumerableExtensions
 	/// <returns>
 	/// An <see cref="IOrderedEnumerable{T}" /> whose elements are sorted in randomized order.
 	/// </returns>
-	public static IOrderedEnumerable<TSource> SortRandom<TSource>(this IEnumerable<TSource> source)
+	public static IOrderedEnumerable<TSource> OrderRandom<TSource>(this IEnumerable<TSource> source)
 	{
 		Check.ArgumentNull(source);
 
